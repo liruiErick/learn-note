@@ -1,0 +1,232 @@
+﻿*NSDate 日期类
+
+
+
+// 获取代表当前日期、时间的NSDate
+
+NSDate* date1 = [NSDate date];
+
+
+
+// 获取从当前时间开始，一天之后的日期
+
+NSDate* date2 = [[NSDate alloc] initWithTimeIntervalSinceNow: 3600*24];
+
+
+
+// 获取从当前时间开始，3天之前的日期
+
+NSDate* date3 = [[NSDate alloc] initWithTimeIntervalSinceNow: -3*3600*24];
+
+
+
+// 获取从1970年1月1日开始，20年之后的日期
+
+NSDate* date4 = [NSDate dateWithTimeIntervalSince1970: 3600 * 24 * 366 * 20];
+
+
+
+// 获取系统当前时区的Locale
+
+NSLocale* cn = [NSLocale currentLocale];
+
+
+
+// 获取NSDate在当前Locale下对应的字符串
+
+[date1 descriptionWithLocale:cn];
+
+
+
+// 获取两个日期之间较早的日期
+
+NSDate* earlier = [date1 earlierDate:date2];
+
+
+
+// 获取两个日期之间较晚的日期
+
+NSDate* later = [date1 laterDate:date2];
+
+
+
+// 比较两个日期，compare:方法返回NSComparisonResult枚举值
+
+// 该枚举类型包含NSOrderedAscending、NSOrderedSame和NSOrderedDescending三个值
+
+// 分别代表调用compare:的日期位于被比较日期之前、相同、之后。
+
+switch ([date1 compare:date3])
+
+{
+
+	case NSOrderedAscending:
+
+		NSLog(@"date1位于date3之前");
+
+		break;
+
+	case NSOrderedSame:
+
+		NSLog(@"date1与date3日期相等");
+
+		break;
+
+	case NSOrderedDescending:
+
+		NSLog(@"date1位于date3之后");
+
+		break;
+
+}
+
+
+
+// 获取两个时间之间的时间差，单位秒
+
+[date1 timeIntervalSinceDate:date3];
+
+
+
+// 获取指定时间与现在的时间差，单位秒
+[date2 timeIntervalSinceNow];
+
+
+
+
+
+
+
+
+
+*NSDateFormatter 日期格式器
+
+
+
+// 创建两个时区NSLocale，分别代表中国、美国
+
+NSLocale* locales[] = {[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]
+
+			,[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]};
+
+
+
+// 创建日期格式器
+NSDateFormatter* df = [[NSDateFormatter alloc] init];
+
+
+
+// 设置NSDateFormatter的日期、时间样式
+
+// NSDateFormatterNoStyle;无样式
+
+// NSDateFormatterShortStyle;简短样式
+
+// NSDateFormatterMediumStyle;中等样式
+
+// NSDateFormatterLongStyle;长样式
+
+// NSDateFormatterFulltStyle;完整样式
+
+[df setDateStyle:NSDateFormatterShortStyle];
+
+[df setTimeStyle:NSDateFormatterShortStyle];
+
+
+
+// 设置NSDateFormatter的时区NSLocale
+
+[df setLocale: locales[i]];
+
+// 应用格式器，将NSDate转换为NSString
+
+NSString* str = [df stringFromDate: date1];
+
+
+
+// 设置自定义的格式器模板
+
+NSDateFormatter* df2 = [[NSDateFormatter alloc] init];
+
+[df2 setDateFormat:@"公元yyyy年MM月DD日 HH时mm分"];
+// 执行格式化
+
+[df2 stringFromDate:date1];
+
+
+
+// 根据日期字符串的格式设置格式模板
+
+NSString* dateStr = @"2013-03-02";
+
+NSDateFormatter* df3 = [[NSDateFormatter alloc] init];
+
+[df3 setDateFormat:@"yyyy-MM-dd"];
+
+// 将字符串转换为NSDate对象
+
+NSDate* date2 = [df3 dateFromString: dateStr];
+
+
+
+
+
+
+
+
+
+*NSCalendar 日历
+
+*NSDateComponents 日期组件
+
+
+
+// 获取代表公历的Calendar对象
+
+NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+
+
+// 获取当前日期
+
+NSDate* dt = [NSDate date];
+
+
+
+// 定义一个时间字段的旗标，指定将会获取指定年、月、日、时、分、秒的信息
+
+unsigned unitFlags = NSYearCalendarUnit |
+
+		NSMonthCalendarUnit |  NSDayCalendarUnit |
+
+		NSHourCalendarUnit |  NSMinuteCalendarUnit |
+
+		NSSecondCalendarUnit | NSWeekdayCalendarUnit;
+
+
+
+// 获取不同时间字段的信息
+
+NSDateComponents* comp = [gregorian components:unitFlags
+
+			fromDate:dt];
+
+comp.year;//年
+
+comp.month;//月
+
+comp.day;//日
+
+comp.hour;//时
+
+comp.minute;//分
+
+comp.second;//秒
+
+comp.weekday;//星期
+
+
+
+// 通过NSDateComponents所包含的时间字段的数值来恢复NSDate对象
+
+NSDate *date = [gregorian dateFromComponents:comp];

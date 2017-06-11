@@ -1,0 +1,144 @@
+一．简单数组单值形
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<item>
+
+<b  name="夏天的树人"/>
+
+</item>
+
+ 
+
+（2）
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<item>
+
+<b  name="夏天的树人"/>
+
+<b  name="秋天的树人"/>
+
+<b  name="冬天的树人"/>
+
+<b  name="春天的树人"/>
+
+</item>
+
+ 
+
+（3）
+
+<item>
+
+<book id='1'>
+
+<title>夏天的树人</title>
+
+</book>
+
+<book id='2'>
+
+<title>秋天的树人</title>
+
+</book>
+
+</item>
+
+ 
+
+ 
+
+有两个book的元素，
+
+ 
+
+三．数组形
+
+ 
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<item>
+
+  <person>
+
+    <number>1</number>
+
+    <title>hero</title>
+
+    <sex>boy</sex>
+
+    <age>20</age>
+
+  </person>
+
+  <person>
+
+    <number>2</number>
+
+    <title>tt</title>
+
+    <sex>boy</sex>
+
+    <age>21</age>
+
+  </person>
+
+ 
+
+  <person>
+
+    <number>3</number>
+
+    <title>gigi</title>
+
+    <sex>girl</sex>
+
+    <age>20</age>
+
+  </person>
+
+  <person>
+
+    <number>5</number>
+
+    <title>sisi</title>
+
+    <sex>girl</sex>
+
+    <age>21</age>
+
+  </person>
+
+</item>
+
+这个是一个简单的xml’数据库，用来储存人员信息，当然元素<person>
+
+里面的值还可以添加，这是看自己发挥的
+
+ 
+
+四：多值形
+
+ 
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<item>
+
+<b  name="夏天的树人"  address=”http://www.baidu.com”/>
+
+<b  name="秋天的树人"  address=”http://www.qq.com”/>
+
+<b  name="冬天的树人"  address=”http://www.hao123.com”/>
+
+<b  name="春天的树人"  address=”http://www.163.com”/>
+
+</item>
+
+ 
+
+元素b中有多个值。这个也可以用来做个动态的导航菜单，相当有意思哦
+

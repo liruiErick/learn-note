@@ -1,0 +1,84 @@
+// 得到原始的图片路径
+NSString* filePath = [[NSBundle mainBundle] pathForResource:@"图片文件名" ofType:@"图片文件扩展名"];
+
+// 使用文件路径来创建UIImage，设置界面初始显示的图片
+UIImageView对象.image = [UIImage imageWithContentsOfFile:filePath];
+
+// 将图片路径转换为图片URL
+NSURL* fileUrl = [NSURL fileURLWithPath:filePath];
+
+// 使用图片URL创建CIImage
+CIImage* beginImage = [CIImage imageWithContentsOfURL:fileUrl];
+
+
+
+// 创建基于CPU的CIContext对象
+CIContext* ctx;
+ctx = [CIContext contextWithOptions:
+		[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
+		forKey:kCIContextUseSoftwareRenderer]];
+
+// 创建基于GPU的CIContext对象
+ctx = [CIContext contextWithOptions: nil];
+
+// 创建基于OpenGL优化的CIContext对象，可获得实时性能
+EAGLContext * eaglctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+ctx = [CIContext contextWithEAGLContext:eaglctx];
+
+
+
+// 创建高斯模糊过滤器
+CIFilter* filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+// 设置过滤器该过滤器处理的原始图片
+[filter setValue:beginImage forKey:@"inputImage"];
+// 为过滤器设置参数
+[filter setValue:[NSNumber numberWithFloat:(0 ~ 10之间的值)]
+	forKey:@"inputRadius"];
+
+// 创建变形过滤器
+CIFilter* filter = [CIFilter filterWithName:@"CIBumpDistortion"];
+// 设置过滤器该过滤器处理的原始图片
+[filter setValue:beginImage forKey:@"inputImage"];
+// 为过滤器设置参数
+[filter setValue:[CIVector vectorWithX:150 Y:240]
+	forKey:@"inputCenter"];
+[filter setValue:[NSNumber numberWithFloat:50]
+	forKey:@"inputRadius"];
+[filter setValue:[NSNumber numberWithFloat:(-4 ~ 4之间的值)]
+	forKey:@"inputScale"];
+
+// 创建色彩调整过滤器
+CIFilter* filter = [CIFilter filterWithName:@"CIHueAdjust"];
+// 设置过滤器该过滤器处理的原始图片
+[filter setValue:beginImage forKey:@"inputImage"];
+// 为过滤器设置参数
+[filter setValue:[NSNumber numberWithFloat:(-2 * M_PI ~ 2 * M_PI之间的值)]
+	forKey:@"inputAngle"];
+
+// 创建像素过滤器
+CIFilter* filter = [CIFilter filterWithName:@"CIPixellate"];
+// 设置过滤器该过滤器处理的原始图片
+[filter setValue:beginImage forKey:@"inputImage"];
+// 为过滤器设置参数
+[filter setValue:[CIVector vectorWithX:150 Y:240]
+	forKey:@"inputCenter"];
+[filter setValue:[NSNumber numberWithFloat:(0 ~ 30之间的值)]
+	forKey:@"inputScale"];
+
+
+
+// 得到过滤器处理后的图片
+CIImage* outImage = [filter outputImage];
+// 获取处理后图片的大小
+CGRect rect = [outImage extent];
+// 生成临时CGImage
+CGImageRef tmp = [ctx createCGImage:outImage
+				fromRect:rect];
+// 将处理后的图片转换为UIImage
+UIImage* resultImage = [UIImage imageWithCGImage:tmp];
+// 释放临时CGImage
+CGImageRelease(tmp);
+// 显示图片
+[UIImageView对象 setImage:resultImage];
+
+

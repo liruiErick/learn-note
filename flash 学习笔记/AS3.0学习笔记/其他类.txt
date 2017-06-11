@@ -1,0 +1,160 @@
+其他类
+
+1、如果我需要属性公开，并且可以被自己的子类继承，那么定义成public的。子类也可重写（override）之。
+2、如果我需要属性隐藏，但是可以被自己的子类继承，那么定义成protected的。与public类似，子类也可重写（override）之。
+3、如果我的某一个类有一个属性不想在任何位置可见，包括其子类，那么定义为private的。其子类无需重写（override），因为它根本就不存在于子类中。
+4、如果我的某一个类有一个属性不想被本包以外的其他成员访问，仅对本包内的成员公开，那么定义成internal的。
+5、final类不能被继承，因此final类的成员方法没有机会被覆盖，默认都是final的。在设计类时候，如果这个类不需要有子类，类的实现细节不允许改变，并且确信这个类不会再被扩展，那么就设计为final类。
+
+public static class 公共静止类
+
+public dynamic class 公共动态类
+
+import flash.geom.SimpleButton;加入按钮类
+
+var btn:SimpleButton=new SimpleButton();
+
+btn.name="btn";
+
+btn.upState=new Sprite();//设置弹起
+
+btn.overState=new Sprite();//设置指针经过
+
+btn.downState=new Sprite();//设置按下
+
+btn.hitTestState=btn.upState;//设置感应区域
+
+btn.useHandCursor=false;表示指针滑过按钮上方时是否显示手形光标
+
+btn.trackAsMenu=true;按钮的子对象是否可以接收用户输入释放事件,trackAsMenu属性允许您创建菜单
+
+btn.enabled=false;禁用按钮
+
+import flash.geom.Rectangle 加入矩形类
+
+var rectangle:Rectangle=new Rectangle(左边框x,顶边框y,width,height) 左上注册法,创建一个矩形,同时可以为它设置xy坐标,width和height(rectangle.x;rectangle.width)
+
+矩形变量=对象.getBounds(父级) 获取该对象的矩形,包括笔触宽度
+
+矩形变量=对象.getRect(父级) 获取该对象的矩形,不包括笔触宽度
+
+矩形变量=矩形.clone() 复制一个矩形
+
+矩形.top 矩形顶部坐标(bottom,left,right可得到其他部位坐标)
+
+矩形.size;返回包含矩形宽高的点(topLeft,bottomRight两个属性分别返回矩形左上和右下点)
+
+矩形.contains(x,y);检测矩形是否包含该点,containsPoint(point)方法作用相同
+
+矩形A.intersects(矩形B) 判断两矩形是否相交
+
+矩形A.containsRect(矩形B);检测矩形A是否完全包含矩形B
+
+矩形A.equals(矩形B);检测矩形A是否完全等于矩形B
+
+矩形A.union(矩形B);返回包含两个矩形的新矩形
+
+矩形A.intersection(矩形B);返回两个矩形重叠部分的新矩形
+
+矩形.offset(dx,dy);将矩形移动指定距离
+
+矩形.offsetPoint(point);将矩形移动到指定点
+
+矩形.inflate(dx,dy);以指定值来增加矩形尺寸,以矩形中心点为中心,上下左右均匀增加,会改变矩形坐标
+
+
+import flash.Point 加入点类
+
+var point:Point=new Point(x,y) 创建一个局部坐标点
+
+A.localToGlobal(new Point(x,y)).x 将局部坐标点转换成舞台的全局坐标,A必须为该局部点的父级对象
+
+A.globalToLocal(new Point(x,y)).x 将舞台的全局坐标点转换成局部坐标,A必须为将要转化到的局部坐标系的父级对象
+
+Point.distance(point1,point2) 获取两点间的距离
+
+Point.interpolate(point1,point2,距离);返回两点间指定距离的点,距离为0返回point1,距离为1返回point2,距离为0.5返回中间点
+
+point1.add(point2);两点坐标相加
+
+point1.subtract(point2);两点坐标相减
+
+point1.equals(point2);检测两点是否相等
+
+point.offset(dx,dy);将点移动指定距离
+
+*解决加载的中文文本是乱码的方法
+
+import flash.system.System;加入系统类
+
+System.useCodePage=true;使用解码器,写在文档了开头
+
+System.gc();强制执行GC垃圾回收
+
+import flash.ui.Mouse;加入鼠标类
+
+import flash.ui.MouseCursor;加入鼠标光标类
+
+Mouse.cursor=MouseCursor.AUTO;鼠标光标将根据鼠标下的对象自动更改
+
+Mouse.cursor=MouseCursor.ARROW;鼠标光标将是一个箭头
+
+Mouse.cursor=MouseCursor.BUTTON;鼠标光标将是一只点击按钮的手
+
+Mouse.cursor=MouseCursor.HAND;鼠标光标将是一只正在拖动的手
+
+Mouse.cursor=MouseCursor.IBEAM;鼠标光标将呈工字形
+
+*禁用右键菜单
+
+import flash.ui.ContextMenu;加入上下文菜单类
+
+var myContextMenu:ContextMenu=new ContextMenu(); 
+
+myContextMenu.hideBuiltInItems(); 
+
+this.contextMenu=myContextMenu;
+
+*fscommand类
+
+import flash.system.fscommand;加入fs命令类
+
+可以在包含 SWF 内容的 HTML 页中设置 object 和 embed 标签的 allowNetworking 参数，防止 SWF 文件使用此方法。 
+
+如果执行调用的 SWF 文件位于只能与本地文件系统内容交互的沙箱或只能与远程内容交互的沙箱中，并且包含 SWF 文件的 HTML 页在不受信任的沙箱中，则不允许使用 fscommand() 函数。
+
+fscommand(command,args);两个参数均为字符
+
+命令           参数                 目的  
+
+quit           无                   关闭播放器。
+ 
+fullscreen     true/false           true将FlashPlayer设置为全屏，false将播放器返回到标准视图。
+ 
+allowscale     true/false           true调整为播放器比例。false从不进行缩放。
+ 
+showmenu       true/false           true启用整个上下文菜单项。false隐藏除所有上下文菜单项。
+
+exec           指向应用程序的路径   在放映文件内执行应用程序。
+ 
+trapallkeys    true/false           true将按键事件发送到FlashPlayer中的onClipEvent(keyDown/keyUp)处理函数。
+
+
+*浏览器下得弹出框
+
+import flash.external.ExternalInterface;加入外部插件类
+
+ExternalInterface.call("alert","你好");//在浏览器访问网络SWF时，可弹出对话框
+
+
+*文件保存到本地
+
+import flash.net.FileReference;加入文件编辑类
+
+var file:FileReference = new FileReference();
+
+file.save(图片字节流:*, 默认保存名称);//打开一个对话框，允许用户将文件保存到本地文件系统。
+
+file.download(request:URLRequest, 默认保存名称);//打开对话框，以允许用户从远程服务器下载文件。
+
+

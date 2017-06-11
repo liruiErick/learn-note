@@ -1,0 +1,5 @@
+﻿以下方法可实现渐变透明遮罩的效果
+
+被遮罩对象.cacheAsBitmap = true;
+透明渐变对象.cacheAsBitmap = true;
+被遮罩对象.mask = 透明渐变对象;

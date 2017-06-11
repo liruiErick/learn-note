@@ -1,0 +1,91 @@
+﻿* jQuery Transit CSS3 动画函数扩展
+// Query Transit 使用 CSS3 的新特性来实现过渡效果，比默认的 .animate() 方法要顺畅得多。
+// 因为使用 CSS3 的 transition 进行过渡效果，所以对不支持 CSS3 的浏览器效果有所下降。
+// 语法和 .animate() 方法相同。
+
+PS：对于使用连接符的属性需改为驼峰式写法，或者使用引号包括。如：padding-top 属性需写为：paddingTop 或者 "padding-top"。
+
+// 除 jQuery 原本支持的属性外，还新支持一些 transform 属性（使用 .css 方法不会进行动画效果，只是直接改变值）
+// 注意，在设置 transform 相关属性时，先后次序一旦设定，之后将无法改变
+$("#box").css({ x: '30px'});						//向右偏移
+$("#box").css({ y: '60px'});						//向下偏移
+$("#box").css({ translate: [60, 30]});				//向右下偏移
+$("#box").css({ rotate: '30deg'});					//顺时针旋转（注意，rotateZ属性是无效的，可直接写为rotate）
+$("#box").css({ scale: 2});							//放大2倍 (200%)
+$("#box").css({ scale: [2, 1.5]});					//宽度和高度不同的放大（注意，scale的值如果为数组，那么将无法使用animate()方法设置动画）
+$("#box").css({ skewX: '30deg'});					//水平斜切
+$("#box").css({ skewY: '30deg'});					//垂直斜切
+$("#box").css({ perspective: 100, rotateX: 30});	//Webkit 3d 旋转
+$("#box").css({ rotateY: 30});						//延Y轴旋转
+$("#box").css({ rotate3d: [1, 1, 0, 45]});			//延XY轴旋转45度
+
+// 支持相对值
+$("#box").css({ rotate: '+=30' }); //增加30度
+$("#box").css({ rotate: '-=30' }); //减少30度
+
+// 可以省略单位
+$("#box").css({ x: '30px' });
+$("#box").css({ x: 30 });
+
+// 多个值时，可以是数组或者用逗号分隔
+$("#box").css({ translate: [60,30] });
+$("#box").css({ translate: ['60px','30px'] });
+$("#box").css({ translate: '60px,30px' });
+
+// 支持获取属性值（若属性有多个值，则返回数组）
+$("#box").css('rotate');     //返回 "30deg"
+$("#box").css('translate');  //返回 ['60px', '30px']
+$("#box").css('scaleX');     //注意，获取到的值与.css('scale')无关，如果未定义，则会获取到数字0。如果定义为0，则获取到字符"0"。
+
+
+
+
+// 动画效果 - $.fn.transition
+$('...').transition(options, [duration], [easing], [complete]);
+
+// 可以使用 $.fn.transition() 来设置 CSS3 动画效果。也可以和 $.fn.animate() 一样设置其它的 CSS 属性，但不能设置 DOM 元素的可写属性。
+// 同时它支持动画队列，支持 .delay() .queue() 函数，但是 .stop() .finish() 函数会导致队列执行不正常，也不支持禁用动画属性 $.fx.off。
+// 经过测试 .stop() 会使动画队列从当前值开始直接过渡到队列结尾的设定值。而 .finish() 只会清除掉后续的动画队列，当前动画仍然会顺利执行。
+
+$("#box").transition({ opacity: 0.1, scale: 0.3, delay: 500 });						//动画延时
+$("#box").transition({ opacity: 0.1, scale: 0.3 }, 500);							//动画时长
+$("#box").transition({ opacity: 0.1, scale: 0.3 }, 'swing');						//缓动效果
+$("#box").transition({ opacity: 0.1, scale: 0.3 }, 500, 'linear');					//动画时长 + 缓动效果
+$("#box").transition({ opacity: 0.1, scale: 0.3 }, function() {..});				//回调函数
+$("#box").transition({ opacity: 0.1, scale: 0.3 }, 500, 'linear', function() {..}); //动画时长 + 缓动效果 + 回调函数
+
+// 也可以在参数中配置所有选项
+// 在设置多个属性时需要特别注意先后次序，因为所有的变换属性都是在被前一个变换属性改变的坐标系统的基础上变换的。
+$("#box").transition({
+  opacity: 0.1, scale: 0.3, rotate: '+=30deg', x: '+=10',
+  delay: 500,
+  duration: 500,
+  easing: 'linear',
+  complete: function(){}
+});
+
+// $.fn.transition() 自己的缓动效果
+// 它不支持 jQuery Easing 缓动函数扩展，如果必须使用某个缓动效果，比如弹簧，那么可以使用 .animate() 代替，只是影响动画效率
+linear			ease（默认值）		snap
+in			out			in-out
+easeInCubic		easeOutCubic		easeInOutCubic
+easeInCirc		easeOutCirc		easeInOutCirc
+easeInExpo		easeOutExpo		easeInOutExpo
+easeInQuad		easeOutQuad		easeInOutQuad
+easeInQuart		easeOutQuart		easeInOutQuart
+easeInQuint		easeOutQuint		easeInOutQuint
+easeInSine		easeOutSine		easeInOutSine
+easeInBack		easeOutBack		easeInOutBack
+cubic-bezier(x1, y1, x2, y2)（自定义）
+
+// 自定义缓动
+$.cssEase['bounce'] =  'cubic-bezier(0,1,.5,1.3)';
+$('.box').transition({ x: 0 }, 500, 'bounce');
+
+
+
+
+// 常见问题
+1、如果使用.animate()来设置 x、y 动画的时候需要注意，如果元素为<img>，那么动画始终是从translate(0,0)开始
+2、在设置 x、y 动画时，如果动画起始值和目标值的单位不同，那么将会把起始值单位变成目标值的单位，然后执行动画，导致动画起始值不正确。
+3、在使用动画队列时需要注意一个 BUG，调用 .transition() 的 jQuery 对象只能包含一个 DOM 元素，如果是一个包含了多个 DOM 元素的 jQuery 对象，将会导致后续队列的动画没有过渡效果。

@@ -1,0 +1,1 @@
+var red = "#ff0000";;var green = "#0000ff";

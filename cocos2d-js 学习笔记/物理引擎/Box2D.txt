@@ -1,0 +1,184 @@
+目前 box2d 在 cocos2d-js v3.1 中还不支持 jsb 编译，因此暂时不考虑使用
+
+/**
+ * 理解Box2D中的单位
+ * Box2D是根据以米和千克为其计量单位来设计的。这非常的方便，因为物理科学也是以米和千克为计量单位的。这能让Box2D对真实世界的现象进行真实的模拟。
+ * 很明显，我们不能在任何方向都让一米和一像素等价。因此我们需要降低其比例。
+ * 你可以设定你的比例，让一米等于一像素，但是这会让Box2D的运行效率降低，因为在Box2D中，1米和两米间的差异很大，很明显，但是在1像素与2像素间的差异基本上不可见。
+ * 你必须在用户可见的计量单位与Box2D的计量单位间找到一个平衡点。按照惯例，用Box2D的程序员将30个像素设置为1米，这样对Box2D的性能和精确度来说是一个折中的办法。
+ * 因此，当你想放一个对象进入Box2D世界的时候，让你的具体的像素位置除以你的比例。下面是如何将坐标转换的公式：
+ * 	pixels / pixelsPerMeter = box2DMeters;
+ *  box2DMeters * pixelsPerMeter = pixels;
+ * 请记住最后一点。Box2D刚体的注册点在其几何中心。因此，以他们的左上角为特殊点摆放物体，你会看到那些数字都除了2。
+ * 比如：如果你想创建一个100像素的正方形Box2D刚体，并将其坐标设为(0,0),你只会在屏幕上看到这个正方形的一半。
+ * 要想将100x100的方形放置在屏幕的左上方，你需要将其坐标设为(100/2,100/2)。
+ */
+ 
+ 
+* 引入 Box2D 库
+
+打开 project.json 文件，然后作如下修改：
+将："modules" : ["cocos2d"],
+改为："modules" : ["cocos2d","box2d"],
+
+
+
+* 定义变量
+
+// 获取Box2D的类引用
+var b2Vec2 = Box2D.Common.Math.b2Vec2						// x、y向量
+,	b2BodyDef = Box2D.Dynamics.b2BodyDef					// 刚体定义
+,	b2Body = Box2D.Dynamics.b2Body							// 刚体
+,	b2FixtureDef = Box2D.Dynamics.b2FixtureDef				// 材质定义
+,	b2Fixture = Box2D.Dynamics.b2Fixture					// 材质
+,	b2World = Box2D.Dynamics.b2World						// 世界工厂
+,	b2MassData = Box2D.Collision.Shapes.b2MassData			// 质量数据
+,	b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape	// 多边形
+,	b2CircleShape = Box2D.Collision.Shapes.b2CircleShape	// 圆形
+,	b2DebugDraw = Box2D.Dynamics.b2DebugDraw				// DeDbug信息绘制
+;
+
+// 定义公共变量
+var world							// box2D世界工厂
+,	gravity = new b2Vec2(0, -10)	// 定义重力，当然也可以添加其他方向的作用力
+,	doSleep = true					// 决定是否让Box2D停止检测已经停止移动的物体的碰撞
+,	timestep = 1 / 24				// 同步时间，表示处理碰撞的频率，一般为1秒24次，但最好与游戏实际的帧率相同
+,	velocityIterations = 8			// 垂直迭代，一次碰撞运算中的迭代次数
+,	positionIterations = 1			// 位置迭代，一次碰撞运算中的迭代次数
+,	pixelsPerMeter = 30				// box2D中1米代表的像素
+;
+
+
+* 创建世界工厂
+
+this.world = new b2World(gravity, doSleep);
+
+world.SetWarmStarting(true);
+// 告诉世界，所有的刚体开始的时候都没有休眠。如果你设为flase,新建的刚体将不会立刻受到重力的影响直到你明确的将他们唤醒，或受到外力的作用。
+// 对于用Box2d制作像台球类型的游戏，因为其游戏开始的时候所有的球都是静止的，就可以将其设为flase.
+
+
+
+* 定义刚体
+
+var bd = new b2BodyDef(); // 创建一个刚体定义
+
+bd.type = b2Body.b2_dynamicBody; // 设置刚体类型为动态刚体，默认为 b2Body.b2_staticBody 静态刚体
+
+bd.position.Set(posX / pixelsPerMeter, posY / pixelsPerMeter);
+// 设置刚体的位置，posX/posY代表位置的像素，必须转换成米
+// 也可以这样 bodydef.position.x = 10; bodydef.position.y = 10;
+
+bd.angle = 0; // 设置刚体角度
+
+bd.userData = new Sprite(); // 将图形赋予刚体定义的用户数据属性
+
+bd.userData.width = 60; // 设置图形的宽
+
+bd.userData.height = 60; // 设置图形的高
+
+this.addChild(bd.userData); // 将图形添加到舞台上
+
+
+
+* 定义多边形
+
+var shapeRequest = new b2PolygonShape(); // 创建多边形定义
+
+shapeRequest.SetAsBox(hx:Number, hy:Number); // 创建一个中心在刚体的矩形，hx代表矩形的半宽，hy代表矩形的半高(单位是米)
+
+shapeRequest.SetAsOrientedBox(hx:Number, hy:Number, center:b2Vec2 = null, angle:Number = 0);
+// 创建一个中心在刚体的矩形，可以设置偏移，传入一个new b2Vec2(x位置的偏移, y位置的偏移，单位是米)，angle设置角度
+
+shapeRequest.SetAsArray(vertices:Array, vertexCount:Number = 0);
+// 创建一个多边形，vertices传入一个数组，数组中包含若干b2Vec2类型的顶点(0,0位为刚体中心点，单位是米)，vertexCount为限定顶点个数，最多8个。
+
+
+
+* 定义圆形
+
+var shapeRequest = new b2CircleShape(); // 创建圆形定义
+
+shapeRequest.SetRadius(radius:Number); // 设置圆的半径(单位是米)
+
+shapeRequest.SetLocalPosition(position:b2Vec2); // 设定圆位置的偏移(单位是米)
+
+
+
+* 定义材质
+
+var fd = new b2FixtureDef(); // 创建一个材质定义
+
+fd.shape = shapeRequest; // 将多边形定义赋予材质定义的形状属性
+
+fd.density = 1.0; // Density(密度):在碰撞的等式中我们使用密度*面积=质量，密度如果是0或者null,将会是一个静止的对象。
+				
+fd.friction = 0.5; // Friction(摩擦力):这用来计算两个对象之间的摩擦，你可以在0.0-1.0之间调整它们。
+
+fd.restitution = 0.2; // Restitution(弹性):这是调整对象弹性程度的属性，你可以在0.0-1.0之间调整它们。
+
+
+
+* 最后，世界工厂根据刚体定义以及材质定义创建一个刚体
+
+var body = world.CreateBody(bd); // 世界工厂根据刚体定义创建一个刚体
+
+body.CreateFixture(fd); // 根据材质定义设置刚体
+
+
+
+* 其他方法
+
+body.SetMassFromShapes(); // 根据形状计算质量
+
+body.GetWorldCenter(); // 获取刚体的重心，为一个b2Vec2的向量
+
+body.ApplyForce(force, point); // 在刚体上添加一个外力
+// force为一个b2Vec2的向量，代表外力
+// point为一个b2Vec2的向量，代表刚体的着力点，通常可以设置为该刚体的重心
+
+body.ApplyImpulse(b2Vec2, body.GetWorldCenter()); // 为刚体添加速度
+
+body.SetLinearVelocity(b2Vec2); // 设置刚体的线性速度
+
+
+
+* 调试（目前cocos2d-js v3.1 中还不支持调试功能）
+
+var debugDraw = new b2DebugDraw();
+debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));
+debugDraw.SetDrawScale(pixelsPerMeter);
+debugDraw.SetFillAlpha(0.3);
+debugDraw.SetLineThickness(1.0);
+debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+this.world.SetDebugDraw(debugDraw);
+
+// 需要注意的是
+// SetDrawScale 需要匹配我们的 pixelsPerMeter，以至于我们通过debugDraw画出的东西能得到我们预期的状况。
+// SetFlags()告诉debugDraw我们需要显示的数据。你想要显示出什么只取决于几何(形状)或关节(joints),或其他属性。这个函数值得一些高级项目的二次运用。
+
+
+
+* 刷新世界
+
+function update(dt) {
+	world.Step(dt, velocityIterations, positionIterations);
+	world.DrawDebugData(); // 绘制调试数据
+	world.ClearForces(); // 绘制完毕后清除外力
+	
+	// 根据刚体的坐标个角度，更新绑定的userData
+	var ud, pos;
+	for (var b = this.world.GetBodyList(); b; b = b.GetNext()) {
+		ud = b.GetUserData();
+		if (userData != null) {
+			pos = b.GetPosition();
+			ud.x = pos.x * pixelsPerMeter;
+			ud.y = pos.y * pixelsPerMeter;
+			ud.rotation = -1 * cc.radiansToDegrees(b.GetAngle());
+		}
+	}
+};
+
+//循环更新和绘制世界
+setInteval(update, timestep * 1000);
+

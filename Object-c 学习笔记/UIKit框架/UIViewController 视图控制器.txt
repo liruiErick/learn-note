@@ -1,0 +1,114 @@
+﻿视图控制器包含下列常见的子类需要重写的方法，同时必须调用一次super父类的同类方法
+
+// 当系统检测到可用内存紧张将会调用该方法
+didReceiveMemoryWarning:
+
+// 当该控制器的视图被装载完成后，系统自动调用
+viewDidLoad:
+
+// 当该控制器的视图将要显示出来时，系统自动调用
+viewWillAppear:
+
+// 当该控制器的视图显示出来后，系统自动调用
+viewDidAppear:
+
+// 当该控制器的视图将要被隐藏或移除窗口时，系统自动调用
+viewWillDisappear:
+
+// 当该控制器的视图被隐藏或移除窗口后，系统自动调用
+viewDidDisappear:
+
+// 当该控制器的视图将要排列它包含的所有子视图时，系统自动调用
+viewWillLayoutSubviews:
+
+// 当该控制器的视图排列完成它包含的所有子视图后，系统自动调用
+viewDidLayoutSubviews:
+
+
+
+*指定视图控制器支持方向
+
+// 只读属性，该属性返回视图控制器对象当前屏幕方向枚举
+// UIInterfaceOrientationPortrait  纵向屏幕，Home键在下方
+// UIInterfaceOrientationPortraitUpsideDown  纵向屏幕，Home键在上方
+// UIInterfaceOrientationLandscapeLeft  横向屏幕，Home键在左边
+// UIInterfaceOrientationLandscapeRight  横向屏幕，Home键在右边
+UIViewController对象.interfaceOrientation;
+
+// 该方法将返回YES，设置该视图控制器支持自动旋转
+- (BOOL) shouldAutorotate
+{
+	return YES;
+}
+
+// 该方法返回视图支持的自动旋转方向
+// UIInterfaceOrientationMaskAll  表示所有显示方向
+// UIInterfaceOrientationMaskLandscape  表示正常纵向
+// UIInterfaceOrientationMaskPortrait  表示两种横向
+- (NSUInteger)supportedInterfaceOrientations
+{
+	return UIInterfaceOrientationMaskLandscape | UIInterfaceOrientationMaskPortrait;
+}
+
+// 该方法的返回下列枚举值决定屏幕方向
+// UIInterfaceOrientationPortrait  纵向屏幕，Home键在下方
+// UIInterfaceOrientationPortraitUpsideDown  纵向屏幕，Home键在上方
+// UIInterfaceOrientationLandscapeLeft  横向屏幕，Home键在左边
+// UIInterfaceOrientationLandscapeRight  横向屏幕，Home键在右边
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+	return UIInterfaceOrientationLandscapeRight;
+}
+
+// 当屏幕将要旋转到指定方向时，系统会自动调用该方法，第一个参数表示旋转到的方向
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+	duration:(NSTimeInterval)duration;
+
+// 当屏幕将要执行旋转动画时，系统会自动调用该方法，第一个参数表示旋转到的方向
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+	duration:(NSTimeInterval)duration;
+
+// 当屏幕完成旋转到指定显示方向时，系统会自动调用该方法，第一个参数表示旋转到的方向
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
+
+
+
+应用示例：
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+	duration:(NSTimeInterval)duration
+{
+	CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+	// 如果当前处于横屏显示状态
+	switch(interfaceOrientation)
+	{
+		case UIInterfaceOrientationPortrait:
+			self.view = self.vertical;
+			// 使用CGAffineTransformIdentity单位矩阵让该view恢复原始状态
+			self.view.transform = CGAffineTransformIdentity;
+			self.view.transform = CGAffineTransformMakeRotation(0);
+			self.view.bounds = CGRectMake(0,0,screenSize.width,screenSize.height);
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			self.view = self.vertical;
+			// 使用CGAffineTransformIdentity单位矩阵让该view旋转180度
+            self.view.transform = CGAffineTransformIdentity;
+			self.view.transform = CGAffineTransformMakeRotation(M_PI);
+			self.view.bounds = CGRectMake(0,0,screenSize.width,screenSize.height);
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			self.view = self.horizontal;
+			// 使用CGAffineTransformIdentity单位矩阵让该view旋转-90度
+            self.view.transform = CGAffineTransformIdentity;
+			self.view.transform = CGAffineTransformMakeRotation(M_PI * -90 / 180);
+			self.view.bounds = CGRectMake(0,0,screenSize.height,screenSize.width);
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			self.view = self.horizontal;
+			// 使用CGAffineTransformIdentity单位矩阵让该view旋转90度
+            self.view.transform = CGAffineTransformIdentity;
+			self.view.transform = CGAffineTransformMakeRotation(M_PI * 90 / 180);
+			self.view.bounds = CGRectMake(0,0,screenSize.height,screenSize.width);
+			break;
+	}
+}
+

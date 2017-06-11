@@ -1,0 +1,65 @@
+var world:b2World=new b2World(new b2Vec2(0, 10), true);创建一个世界工厂
+
+var body:b2Body;定义一个刚体
+
+
+
+var bodyRequest:b2BodyDef = new b2BodyDef();创建一个刚体需求
+
+bodyRequest.type = b2Body.b2_dynamicBody;设置刚体类型为动态刚体，默认为b2Body.b2_staticBody
+
+bodyRequest.position.Set(posX / 30, posY / 30);设置刚体的位置，posX/posY代表位置的像素，必须除以30转换成米
+
+bodyRequest.angle = 0;设置刚体角度
+
+bodyRequest.userData = new Sprite();将图形赋予刚体需求的用户数据属性
+
+bodyRequest.userData.width = 60;设置图形的宽
+
+bodyRequest.userData.height = 60;设置图形的高
+
+addChild(bodyRequest.userData);将图形添加到舞台上
+
+body = world.CreateBody(bodyRequest);世界工厂根据刚体需求生产出一个刚体
+
+
+
+var shapeRequest:b2PolygonShape = new b2PolygonShape();创建多边形需求
+
+shapeRequest.SetAsBox(hx:Number, hy:Number);创建一个中心在刚体的矩形，hx代表矩形的半宽，hy代表矩形的半高(单位是米)
+
+shapeRequest.SetAsOrientedBox(hx:Number, hy:Number, center:b2Vec2 = null, angle:Number = 0.0);
+创建一个中心在刚体的矩形，可以设置偏斜，出入一个new b2Vec2(x位置的偏斜, y位置的偏斜，单位是米)，angle设置角度
+
+shapeRequest.SetAsArray(vertices:Array, vertexCount:Number = 0);
+创建一个多边形，vertices传入一个数组，数组中包含若干b2Vec2类型的顶点(0,0位为刚体中心点，单位是米)，vertexCount为限定顶点个数
+
+
+
+var shapeRequest:b2CircleShape = new b2CircleShape();创建圆形需求
+
+shapeRequest.SetRadius(radius:Number);设置圆的半径(单位是米)
+
+shapeRequest.SetLocalPosition(position:b2Vec2);设定圆位置的偏移(单位是米)
+
+
+
+var fd:b2FixtureDef = new b2FixtureDef();创建一个刚体形状需求
+
+fd.shape = shapeRequest;将多边形需求赋予刚体形状需求的形状属性
+
+fd.density = 1.0;//Density(密度):在碰撞的等式中我们使用密度*面积=质量，密度如果是0或者null,将会是一个静止的对象。
+				
+fd.friction = 0.3;//Friction(摩擦力):这用来计算两个对象之间的摩擦，你可以在0.0-1.0之间调整它们。
+
+fd.restitution = 0.1;//Restitution(弹性):这是调整对象弹性程度的属性，你可以在0.0-1.0之间调整它们。
+
+body.CreateFixture(fd);根据刚体形状需求设置刚体
+
+body.GetWorldCenter();方法用来获取刚体的重心
+
+body.ApplyForce(b2Vec2, body.GetWorldCenter());在刚体上施加vector压力
+
+body.ApplyImpulse(b2Vec2, body.GetWorldCenter());//为刚体添加速度
+
+body.SetLinearVelocity(b2Vec2);//设置刚体的线性速度

@@ -1,0 +1,105 @@
+*NSSet 固定集合
+
+// 用4个元素初始化NSSet集合
+NSSet* set = [NSSet setWithObjects:
+				@"疯狂iOS讲义" , @"疯狂Android讲义",
+				@"疯狂Ajax讲义" ,@"疯狂Java讲义" , nil];
+
+// 向集合中添加单个元素，将添加元素后生成的新集合赋给set
+set = [set setByAddingObject:@"权威指南"];
+
+// 使用NSSet集合向set集合中添加多个元素，相当计算两个集合的并集
+set = [set setByAddingObjectsFromSet:set2];
+
+// 使用NSArray数组向set集合中添加多个元素，返回添加元素后的新集合
+set = [set setByAddingObjectsFromArray:arr];
+
+[set count];//返回集合中包含元素的数量
+
+[set allObjects];//返回集合中所有元素组成的NSArray
+
+[set anyObject];//返回集合中某个元素，但不是随机！
+
+[set containsObject:@"疯狂Ajax讲义"];//判断该集合是否包含指定元素
+
+// 判断该集合是否包含与指定元素相等的元素（isEqual），如果包含，返回相等的元素，否则返回nil
+[set member:@"疯狂Ajax讲义"];
+
+[set1 intersectsSet:set2];//计算两个集合的是否有交集
+
+[set2 isSubsetOfSet:set1];//判断set2是否是set1的子集
+
+// 使用代码块对集合元素进行过滤，返回一个包含所有满足该条件元素的集合
+NSSet* filteredSet = [set1 objectsPassingTest:
+			^(id obj, BOOL *stop)
+			{
+				return (BOOL)([obj length] > 8);
+			}];
+
+// 判断NSSet集合元素重复的标准
+1).两个对象通过isEqual方法比较，返回YES。
+2).两个对象的hash方法返回的hashCode值也相等。
+
+// 会重写isEqual:方法
+- (BOOL) isEqual:(id)other
+// 重写hash方法
+- (NSUInteger) hash
+{
+	NSUInteger nameHash = name == nil ? 0 : [name hash];
+	NSUInteger passHash = pass == nil ? 0 : [pass hash];
+	return nameHash * 31 + passHash;//为了避免直接相加产生偶然相同，故随机乘以一个质数
+}
+// 注意：如果重写后的isEqual方法比较结果相等，那么也一定要让hash方法结果相等，反之亦然。
+
+
+
+*NSMutableSet 可变集合
+
+// 创建一个初始容量为10的Set集合
+NSMutableSet* set = [NSMutableSet setWithCapacity:10];
+
+[set addObject:@"疯狂iOS讲义"];//向集合中添加指定元素
+
+// 使用NSArray数组向set集合中添加多个元素
+[set addObjectsFromArray:
+	[NSArray arrayWithObjects:
+		@"疯狂Android讲义" , @"疯狂Ajax讲义"
+		, @"疯狂XML讲义" ,nil]];
+
+[set removeObject:@"疯狂XML讲义"];//删除集合中的指定元素
+
+[set removeAllObjects];//删除集合中的所有元素
+
+[set unionSet: set2];//计算两个集合的并集，直接改变set集合的元素
+		
+[set minusSet: set2];//计算两个集合的差集，直接改变set集合的元素
+		
+[set intersectSet: set2];//计算两个集合的交集，直接改变set集合的元素
+		
+[set setSet: set2];//用set2的集合元素替换set的集合元素，直接改变set集合的元素
+
+
+
+
+*NSCountedSet 计数集合
+
+// NSCountedSet是NSMutableSet的子类，原理和引用计数机制相同
+// 当第一次添加一个元素是时，该元素的计数为1，当重复添加时，该元素的计数＋1，当删除该元素时，该元素的计数－1，只有当该元素的计数为0时，才会被真正删除
+
+[set countForObject:元素];//返回该元素的计数值
+
+
+
+*NSOrderedSet 固定有序集合
+*NSMutableOrderedSet 可变有序集合
+//NSSet与NSArray的结合，可以使用他们的大部分方法
+1).不允许有重复元素，和NSSet相似
+2).可以保持元素的添加顺序，而且每个元素都有索引，和NSArray相似
+
+// 对集合进行过滤，获取元素值大于20的集合元素的索引
+NSIndexSet* indexSet = [set indexesOfObjectsPassingTest:
+						^(id obj, NSUInteger idx, BOOL *stop)
+						{
+							return (BOOL)([obj intValue] > 20);
+						}];
+

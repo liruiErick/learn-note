@@ -1,0 +1,71 @@
+*NSTimer 计时器类
+
+
+
+// 启动一个定时器，每1秒触发一次
+
+// 指定以当前对象的info:方法作为执行任务
+
+NSTimer* myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+			target:self
+			selector:@selector(info:)
+			userInfo:nil
+			repeats: YES];
+
+// 指定重复执行
+
+
+// 注意：将计数器的repeats设置为YES的时候，self的引用计数会加1。因此可能会导致self（即viewController）不能release，所以，必须在viewWillAppear的时候，将计数器timer停止，否则可能会导致内存泄露。
+// 停止timer的运行，但这个是永久的停止
+
+[myTimer invalidate];
+
+
+
+// 实现计时器方法
+
+- (void) info:(NSTimer*) timer
+
+{
+	NSLog(@"取消执行定时器");
+	[myTimer invalidate];
+
+}
+
+
+
+
+// 要想实现：先停止，然后再某种情况下再次开启运行timer，可以使用下面的方法：
+
+// 首先关闭定时器不能使用上面的方法，应该使用下面的方法
+
+[myTimer setFireDate:[NSDate distantFuture]];
+
+// 然后就可以使用下面的方法再此开启这个timer了
+
+[myTimer setFireDate:[NSDate distantPast]];
+
+
+
+// 例子：比如，在页面消失的时候关闭定时器，然后等页面再次打开的时候，又开启定时器。
+
+// 主要是为了防止它在后台运行，暂用CPU，可以使用下面的代码实现：
+
+// 页面将要进入前台，开启定时器
+
+-(void)viewWillAppear:(BOOL)animated
+
+{
+	//开启定时器
+	[scrollView.myTimer setFireDate:[NSDate distantPast]];
+}
+
+
+//页面消失，进入后台不显示该页面，关闭定时器
+
+-(void)viewDidDisappear:(BOOL)animated
+{ 
+	//关闭定时器
+	[scrollView.myTimer setFireDate:[NSDate distantFuture]];
+
+}

@@ -1,0 +1,8 @@
+﻿在每个场景被运行后设置一次投影模式
+
+例如：
+
+cc.director.runScene(new PlayScene());
+cc.director.setProjection(cc.Director.PROJECTION_2D);
+
+另外，在场景背景层移动时要注意，移动量必须是整数，如果是浮点数，边界处还是会出现黑线

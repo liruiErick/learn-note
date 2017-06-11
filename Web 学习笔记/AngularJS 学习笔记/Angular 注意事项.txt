@@ -1,0 +1,39 @@
+﻿## 在指令中获取表单对象
+
+```html
+<form ng-app="myApp" ng-controller="fCtrl" name="myForm">
+	<input type="text" name="user" ng-model="userVal" required>
+	<input type="button" ng-click="onClick(myForm.user.$modelValue)" value="提交">
+</form>
+```
+
+myForm.user 并不是 DOM 对象，而是一个 angular 封装的表单对象，含有一些功能性属性。
+该表单对象的 $modelValue 属性表示它的实际 value。
+这里输入框的 ng-model="userVal" 是必须的，否则 myForm.user 就是 undefined。
+
+
+## 异步加载 angular 报错
+
+之所以报错，是应为我们再 html 中声明了 ng-app 这个指令，它告诉 angular 自动启动。
+当 angular 载入页面后就会自启动，并开始初始化。
+如果此时发现 html 中有未注册的 ng-controller 便会报错。
+
+那么异步加载 angular 就需要使用 angular.bootstrap 来手动启动。
+方法如下：
+```js
+var app = angular.module('routeApp', ['ngRoute']);
+
+app.controller('mainCtrl', function($scope) {
+	$scope.text = 'hello';
+});
+
+angular.bootstrap(document, ['routeApp']);
+```
+
+angular.bootstrap 参数说明：
+```js
+angular.bootstrap(element, [modules], [config]); // 手动启动 module
+// element  是绑定ng-app的DOM元素；
+// modules  绑定的模块名字
+// config   附加的配置
+```

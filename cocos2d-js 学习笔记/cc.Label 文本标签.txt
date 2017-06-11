@@ -1,0 +1,100 @@
+﻿* 创建标签
+
+// 创建一个文本标签
+var label = new cc.LabelTTF("Score:0", "Helvetica", 20);
+// 第一个参数为文本内容
+// 第二个参数为文本字体
+// 第三个参数为文本字体大小
+// 第四个参数可选，为一个cc.size对象，用来规定文本域的宽高
+// 第五个参数可选，为一个水平对齐常量，用来规定文本字体相对于文本域的水平对齐方式
+// 第六个参数可选，为一个垂直对齐常量，用来规定文本字体相对于文本域的垂直对齐方式
+
+
+// 创建一个位图字体标签
+var label = new cc.LabelBMFont("Collision Detected", s_bitmapFontTest5_fnt);
+
+// 创建一个Atlas字体标签
+var label = new cc.LabelAtlas("TESTING RETINA DISPLAY", s_resprefix + "fonts/larabie-16.plist");
+
+
+
+label.font = "48px 'Courier New'"; // 设置文本字体
+
+label.setFntFile(s_resprefix + "fonts/helvetica-32.fnt"); // 设置文本字体源文件
+
+label.getChildByTag(index); // 获取标签内字符串指定索引处的字符节点
+
+label.textAlign = cc.TEXT_ALIGNMENT_CENTER; // 设置标签的水平对齐方式。常量如下：
+// cc.TEXT_ALIGNMENT_LEFT  左对齐
+// cc.TEXT_ALIGNMENT_RIGHT  右对齐
+// cc.TEXT_ALIGNMENT_CENTER  水平居中对齐
+
+label.verticalAlign = cc.VERTICAL_TEXT_ALIGNMENT_TOP; // 设置标签的垂直对齐方式。常量如下：
+// 	cc.VERTICAL_TEXT_ALIGNMENT_TOP  顶对齐
+// 	cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM  底对齐
+// 	cc.VERTICAL_TEXT_ALIGNMENT_MIDDLE  垂直居中对齐
+
+// 设置文本内容
+label.setString("Green");
+label.string = "Green";
+
+// 设置文本颜色
+label.setColor(cc.color(255,255,255));
+label.color = cc.color(255,255,255);
+
+// 设置文本位置
+label.setPosition(70, size.height - 20); // 设置文本位置。也可以传入一个cc.p对象
+label.x = 70;
+label.y = size.height - 20;
+
+// 设置标签的锚点
+label.setAnchorPoint(0.5, 0.5);
+label.anchorX = 0.5;
+label.anchorY = 0.5;
+
+// 设置文本域的宽高
+label.boundingWidth = 400;
+label.boundingHeight = 40;
+
+// 启用字体边框
+label.enableStroke(cc.color(255, 0, 0, 1), 1.0); // 第二个参数表示边框粗细
+
+// 启用字体阴影
+// label.enableShadow(); // 参数暂时不明确
+
+
+
+
+* 通过字体定义来创建文本
+
+// 创建一个字体定义
+var fontDef = new cc.FontDefinition();
+fontDef.fontName = "Arial";
+fontDef.fontSize = 32;
+fontDef.textAlign = cc.TEXT_ALIGNMENT_CENTER;
+fontDef.verticalAlign = cc.VERTICAL_TEXT_ALIGNMENT_TOP;
+fontDef.fillStyle = cc.color.RED; // 定义填充色
+// 如果标签未定义颜色，则标签色等于填充色。
+// 如果标签定义了颜色，则填充色会跟标签定义的颜色混合，并成为标签最终显示的颜色
+fontDef.boundingWidth = 400;
+fontDef.boundingHeight = 100;
+// 定义字体阴影
+// 阴影的颜色等于标签定义的颜色，不会受到填充色的影响
+fontDef.shadowEnabled = true;
+fontDef.shadowOffsetX = 10;
+fontDef.shadowOffsetY = -10;
+// 定义边框
+fontDef.strokeEnabled = true;
+fontDef.strokeStyle = cc.color();
+
+// 根据定义创建标签
+var label = new cc.LabelTTF("Score:0", fontDef);
+
+
+
+
+
+
+
+
+

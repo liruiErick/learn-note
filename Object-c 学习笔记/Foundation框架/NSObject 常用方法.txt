@@ -1,0 +1,56 @@
+// 用于判断对象是不是参数提供的类型（参数可以是父类的class） 
+// 参数示例: [NSObject class];
+- (BOOL)isKindOfClass:(Class)aClass;
+使用方法:
+[对象 isKindOfClass:类名.class];
+[对象 isKindOfClass:NSClassFromString(@"类名")];
+
+
+// 用于判断对象是不是参数提供的类型（参数不可以是父类的class） 
+// 参数示例: [NSObject class];
+- (BOOL)isMemberOfClass:(Class)aClass;
+使用方法:同上
+
+// 判断对象是否为指定类的子类
++ (BOOL)isSubclassOfClass:(Class)aClass;
+使用方法:同上
+
+// 用于判断对象是否遵守了参数提供的协议 
+// 参数示例: @protocol(UIApplicationDelegate)
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol;
+使用方法:
+[对象 conformsToProtocol:@protocol(协议名)];
+[对象 conformsToProtocol:NSProtocolFromString(@"协议名")];
+
+// 用于判断对象是否拥有参数提供的方法 
+// 参数示例: @selector(test) or @selector(testById:)
+- (BOOL)respondsToSelector:(SEL)aSelector;
+使用方法:
+[对象 respondsToSelector:@selector(方法名:)];
+[对象 respondsToSelector:NSSelectorFromString(@"方法名:")];
+
+
+
+// 返回该对象方法的函数指针
+- (IMP)methodForSelector:(SEL)aSelector;
+使用方法:
+[对象 methodForSelector:@selector(方法名:)];
+[对象 methodForSelector:NSSelectorFromString(@"方法名:")];
+定义一个函数指针:
+返回值类型 (*指针变量) (id,SEL,参数1类型,参数2类型);
+指针变量 = (返回值类型 (*) (id,SEL,参数1类型,参数2类型))[对象 methodForSelector:@selector(方法名:)];
+使用函数指针:
+指针变量(对象,@selector(方法名:),参数1,参数2);
+
+// 用于判断调用者的实例对象是否拥有提供的方法
++ (BOOL)instancesRespondToSelector:(SEL)aSelector;
+
+// 延迟调用参数提供的方法，参数所需参数用withObject传入（类似于ActionScript3.0中的setTimeout函数）
+// delay单位：秒
+- (void)performSelector:(SEL)aSelector withObject:(id)anArgument afterDelay:(NSTimeInterval)delay;
+
+
+
+// 用于判断调用者的实例对象是否与提供的对象相等，请注意，对象相等与对象相同是有分别的。对于后者，请使用相同运算符 == 测试两个变量是否指向同一个实例。
+ Foundation 框架的值和集类，声明的比较方法为 isEqualToType: 格式，其中 Type 是类类型减去 NS 前缀，如 isEqualToString: 和 isEqualToDictionary:。此比较方法会假定传入的对象属于给定类型，否则会引发异常。
+- (BOOL)isEqual:(NSObject)obj;

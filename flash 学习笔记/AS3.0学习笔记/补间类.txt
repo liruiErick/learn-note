@@ -1,0 +1,79 @@
+补间类
+
+import fl.transitions.Tween;加入补间类
+
+new Tween (object,property,easingFunction,begin,finish,duration,useSeconds);
+
+参数中的object可以是任意至少拥有一个数字属性的对象。
+property参数是一个字符，即你要改变的属性的名称。比如你要改变一个Sprite 的x属性，这个参数就是“x”（包括引号）。
+easingFunction参数是flash.transitions.easing包中定义好的某个缓动类的一个方法。
+begin和finish都是数值。当补间开始的时候，对象要变动的属性将被设置为begin这个值。补间结束后，该属性就会变成finish的值。 
+默认情况下，duration参数给出的是补间运行的帧数。
+但是最后一个参数useSeconds是一个布尔值。默认值是false，表示补间会把 duration的值当作帧数使用。但是如果你把最后一个参数设为true，duration的值就会被当作秒数计算。
+
+同时可以单独修改参数，如：
+tween = new Tween(object,property,easingFunction,begin,finish,duration,useSeconds);
+
+tween.finish=200;
+
+tween.obj;获取补间对象
+
+其他属性：
+
+tween.FPS;动画播放的帧数，可修改，完全独立于主SWF的帧频率
+
+tween.isPlaying;返回该动画是否在运行的Boolean值
+
+tween.looping=true;让动画循环播放
+
+tween.position;获取补间对象属性的当前值
+
+tween.time;获取动画从开始到现在的duration值
+
+方法：
+
+tween.stop();动画停在当前位置
+
+tween.resume();动画从stop()位置开始播放
+
+tween.start();从起始位置播放动画
+
+tween.yoyo();倒放动画
+
+tween.rewind();如果动画正在播放，则让动画从头开始播放，如果动画停止播放，则让动画回到开头停止
+
+tween.prevFrame();播放动画中的前一帧
+
+tween.fforward();动画直接跳至结尾
+
+tween.continueTo(finish,duration);两个必填参数，让动画从当前位置开始按新参数播放
+
+类：
+import fl.transitions.easing.*;加入缓动类
+
+None 无缓动效果，还有一个easeNone方法，实际上None类的所有方法效果都一样，就是没有缓动效果
+Regular 常规缓动
+Strong 常规缓动强度增大，也就是说前后速度差更大
+Bounce 带反弹效果的缓动
+Elastic 带弹簧效果的缓动
+Back 开始运动前向反方向运动一段，或结束运动后继续运动一段在返回，类似弹簧
+
+这些类都有三种方法：
+easeIn 加速
+easeOut 减速
+easeInOut 先加速后减速
+
+事件：
+import fl.transitions.TweenEvent;加入补间事件类
+
+MOTION_CHANGE 当动画对象属性改变时
+
+MOTION_FINISH 当动画播放完毕时
+
+MOTION_LOOP 当动画再次从起点播放时
+
+MOTION_RESUME 当动画从停止状态恢复播放时
+
+MOTION_STOP 当动画停止时
+
+MOTION_START 当动画开始播放时

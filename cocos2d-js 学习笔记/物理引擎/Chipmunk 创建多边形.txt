@@ -1,0 +1,15 @@
+﻿// 创建一个多边形
+
+var mass = 1;
+var NUM_VERTS = 5; // 定义边的数量
+var NUM_LENGTH = 30; // 定义边长
+            
+var verts = new Array(NUM_VERTS * 2);
+for(var i=0; i<NUM_VERTS*2; i+=2){
+	var angle = -Math.PI*i/NUM_VERTS;
+	verts[i] = NUM_LENGTH*Math.cos(angle);
+	verts[i+1] = NUM_LENGTH*Math.sin(angle);
+}
+            
+var body = space.addBody(new cp.Body(mass, cp.momentForPoly(mass, verts, cp.v(0,0))));
+space.addShape(new cp.PolyShape(body, verts, cp.v(0,0)));

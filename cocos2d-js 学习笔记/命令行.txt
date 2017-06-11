@@ -1,0 +1,56 @@
+﻿* 创建工程
+
+// 创建一个同时包含Cocos2d-html5和Cocos2d-x JSB的项目
+cocos new -l js 
+          
+// 创建一个仅包含Cocos2d-html5的项目, --no-native 表示不需要支持Native平台(IOS,Android,Mac,Windows等)，只支持浏览器就可以了。
+cocos new -l js --no-native  
+
+// 创建一个置顶工程名字指定目标的项目
+cocos new projectName -l js -d ./Projects
+
+
+
+* 运行项目
+
+// 浏览器上：
+cd ./Desktop/HelloWord
+cocos run -p web
+
+// 编译并运行Cocos2d-x JSB项目在iOS，android，mac上(即：native平台上)
+cd ./Desktop/HelloWord
+cocos compile -p ios|android|mac
+cocos run -p ios|android|mac
+// 例如：我要运行在IOS上，那就运行：cocos run -p ios。编译好之后，对应的工程目录在HelloWord/frameworks/runtime-src/
+
+
+
+* 打包项目：
+
+cd ./Desktop/HelloWord
+cocos compile –p web| android|IOS –m release
+命令运行成功之后，在HelloWord工程文件夹下多出了一个publish文件夹，这个就是发布包。
+
+// 例如我想把HelloWord跑在微信上，那三个步骤搞定：
+cd ./Desktop/HelloWord
+cocos compile –p web –m release
+
+// 使用Closure Compiler高级模式压缩脚本并发布web版本 :
+cd directory/to/project
+cocos compile -p web -m release --advanced
+
+
+
+* 选项
+
+-p platform : 平台：ios|mac|android|web.
+-s source   : 项目目录，如果没有指明会使用当前路径。
+-q          : 静默模式，不打印log信息。
+-m mode     : 选择debug或release模式，默认为debug模式
+--source-map: 生成source-map文件。（仅限Web平台）
+--advanced  : 使用Closure Compiler高级模式压缩脚本。（仅限Web平台）
+
+
+* MAC 下 app 转 ipa：
+xcrun -sdk iphoneos PackageApplication /Users/baijunjie/Desktop/MyJSGame/publish/ios/MyJSGame\ iOS.app
+ls -l

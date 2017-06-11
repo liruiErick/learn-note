@@ -1,0 +1,15 @@
+# 生命周期过程中依次执行的钩子函数
+
+Awake() // 唤醒时。此时很多对象的参数可能还没有初始化完成，因此一般只用于获取场景中的对象。
+
+Start() // 初始化时。此时所有对象的参数都一已经初始化完成。这时可以初始化程序的数据。
+
+Update() // 每帧更新。
+
+FixedUpdate() // 固定时间间隔更新。更新物理引擎中的刚体数据必须在该方法中执行。
+
+LateUpdate() // 每帧更新。在 Update 之后，一般用于跟相机有关的更新。
+
+
+Awake 在创建 MonoBehavior 后就立刻调用。
+Start 将在创建 MonoBehavior 后在该帧 Update 之前，在该 MonoBehavior.enabled == true 的情况下执行。

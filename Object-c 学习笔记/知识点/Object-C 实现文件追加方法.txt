@@ -1,0 +1,47 @@
+将一个文件的内容附加到另一个文件中。通过打开另一个文件用于写入的文件，然后定位到该文件的结尾，最后将第一个文件的内容写入第二个文件中来实现
+
+代码如下：
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])  
+{  
+    @autoreleasepool {  
+       
+        NSFileHandle *inFile, *outFile;  
+        NSData *buffer;  
+          
+        //打开fileA用于读操作  
+        inFile = [NSFileHandle fileHandleForReadingAtPath:@"fileA.txt"];  
+          
+        if(inFile == nil)  
+        {  
+            NSLog(@"Open of fileA.txt reading failed");  
+            return 1;  
+        }  
+          
+        //打开fileB用于更新操作  
+        outFile = [NSFileHandle fileHandleForWritingAtPath:@"fileB.txt"];  
+          
+        if(outFile == nil)  
+        {  
+            NSLog(@"Open of fileB for writing failed");  
+            return  2;  
+        }  
+          
+        //找到并定位到outFile的末尾位置(在此后追加文件)  
+        [outFile seekToEndOfFile];  
+          
+        //读取inFile并且将其内容写到outFile中  
+        buffer = [inFile readDataToEndOfFile];  
+        [outFile writeData:buffer];  
+         
+        //关闭读写文件  
+        [inFile closeFile];  
+        [outFile closeFile];  
+    }  
+    return 0;  
+}  
+
+
+在搜索操作执行完毕之后，seekToEndOfFile返回当前文件的偏移量。选择忽略这个值，如果需要，可以使用这个信息来获得程序中文件的大小

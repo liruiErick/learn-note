@@ -1,0 +1,15 @@
+﻿// 自定义UIStepper对象的减号按钮对应状态的图片
+[UIStepper对象 setDecrementImage:[UIImage imageNamed:@"图片路径"]
+	forState:UIControlStateNormal];
+
+// 自定义UIStepper对象的加号按钮对应状态的图片
+[UIStepper对象 setIncrementImage:[UIImage imageNamed:@"图片路径"]
+	forState:UIControlStateNormal];
+
+// UIStepper对象可为Value Changed事件绑定处理方法
+-(IBAction) backChange:(UIStepper *)sender
+{
+	// 获取UIStepper对象的当前值
+	sender.value;
+
+}

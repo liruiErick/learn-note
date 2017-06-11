@@ -1,0 +1,164 @@
+*NSDictionary 字典
+
+// 以下类方法均有对应的init实例方法
+
+
+NSDictionary* dic = [NSDictionary dictionary];//创建一个不包含任何key-value对的字典
+
+
+NSDictionary* dic = [NSDictionary dictionaryWithObjectsAndKeys:值1, 健1, 值2, 健2, 值3, 健3, nil];
+NSDictionary* dic = [NSDictionary dictionaryWithDictionary:字典对象];//使用已有字典对象的key-value对来初始化字典
+NSDictionary* dic = [NSDictionary dictionaryWithContentsOfFile:@"文件名"];//读取指定文件内容，该文件通常由NSDictionary自己输出生成
+NSDictionary* dic = [NSDictionary dictionaryWithObjects:值数组 forKeys:健数组];
+
+
+
+NSDictionary* dic = [NSDictionary dictionaryWithObject:值 forKey:健];//使用单个key-value对来初始化字典
+
+
+
+NSDictionary* dic = @{健1:值1,健2:值2,健3:值3};//快速创建字典，类似AS3的object
+
+
+
+[dic count];//返回该字典包含的key-value对个数
+
+[dic allKeys];//返回该字典所包含的全部key
+
+[dic allKeysForObject:值];//返回所指定value对应的全部key
+
+[dic allValues];//返回该字典所包含的全部value
+
+[dic objectForKey:健];//返回该key对应的值
+
+[dic valueForKey:健];//返回该key对应的值
+
+
+
+dic[健];//返回该健对应的值，底层调用的时objectForKeyedSubscript:方法
+
+[dic writeToFile:@"文件名" atomically:NO];//将该字典写入指定文件
+
+
+
+
+
+
+*NSMutableDictionary 可变字典
+
+
+
+NSMutableDictionary* mutDic = [NSMutableDictionary dictionary];//创建一个可变字典
+
+
+
+[mutDic setObject:值 forKey:健];//创建key-value对
+
+
+
+mutDic[健] ＝ 值;//创建key-value对，底层调用的时setObject:forKeyedSubscript:方法
+
+
+
+[mutDic removeObjectForKey:健];//移除key-value对
+
+[mutDic removeObjectsForKeys:健数组];//使用key所组成的NSArray做参数，同时移除多个key-value对
+
+[mutDic removeAllObjects];//移除所有key-value对
+
+[mutDic addEntriesFromDictionary:字典对象];//将指定字典对象中的所有key-value对添加入当前字典
+
+[mutDic setDictionary:字典对象];//用指定字典对象中的所有key-value对替换当前字典中的所有key-value对
+
+
+
+
+*遍历字典
+
+[dic keyEnumerator];//返回字典所有key的枚举
+
+[dic objectEnumerator];//返回字典所有value的枚举
+
+// 使用指定代码块来迭代该字典中的key-value对
+[dic enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop){}];
+
+// 使用指定代码块来迭代该字典中的key-value对
+// options参数穿入一个NSEnumerationOptions枚举常量
+// NSEnumerationConcurrent 表示正序，值为1
+// NSEnumerationReverse 表示倒序，值为2
+[dic enumerateKeysAndObjectsWithOptions:1
+	UsingBlock:^(id key, id value, BOOL *stop){}];
+
+
+
+
+*字典排序
+
+// 直接使用多个value,key的形式创建NSDictionary对象
+NSDictionary* dic = [NSDictionary dictionaryWithObjectsAndKeys:
+						@"Objective-C" , @"one",
+						@"Ruby" , @"two",
+						@"Python" , @"three",
+						@"Perl" , @"four", nil];
+
+// 返回根据value排好序的所有key组成的NSArray。
+// 方法有两个参数A和B,让A在B前返回-1,让A在B后返回1,A=B返回0
+
+// NSOrderedAscending 升序，值为-1
+
+// NSOrderedDescending 降序，值为1
+
+// NSOrderedSame 相同，值为0
+
+
+// 使用数组元素的compare:方法执行排序
+
+// 经测试，此方法是按照A-Z-a-z顺序排序
+NSArray* keyArr = [dic keysSortedByValueUsingSelector:@selector(compare:)];
+
+// 对NSDictionary的value进行比较，字符串越长，即可认为该value越大
+NSArray* keyArr = [dic keysSortedByValueUsingComparator:
+			^(id value1, id value2)
+			{
+				// 下面定义比较大小的标准：字符串越长，即可认为value越大
+				if([value1 length] > [value2 length])
+				{
+					return NSOrderedDescending;
+				}
+				if([value1 length] < [value2 length])
+				{
+					return NSOrderedAscending;
+				}
+				return NSOrderedSame;
+			}];
+
+// 使用指定代码块来迭代该字典中的key-value对，并返回根据value排好序的所有key组成的NSArray。
+// options参数穿入一个NSEnumerationOptions枚举常量
+// NSEnumerationConcurrent 表示正序，值为1
+// NSEnumerationReverse 表示倒序，值为2
+NSArray* keyArr = [dic keysSortedByValueWithOptions:1
+					UsingComparator:^(id value1, id value2){}];
+
+
+
+*字典过滤
+
+// 使用代码块对字典元素进行过滤，返回一个包含所有满足该条件元素的key的NSSet
+NSSet* keySet = [dict keysOfEntriesPassingTest:
+			^(id key, id value, BOOL* stop)
+			{
+				return (BOOL)([value intValue] > 80);
+			}];
+
+// 使用代码块对字典元素进行过滤，返回一个包含所有满足该条件元素的key的NSSet
+// options参数穿入一个NSEnumerationOptions枚举常量
+// NSEnumerationConcurrent 表示正序，值为1
+// NSEnumerationReverse 表示倒序，值为2
+NSSet* keySet = [dic keysOfEntriesWithOptions:1
+			PassingTest:^(id key, id value, BOOL* stop){}];
+
+
+
+*使用自定义类作为字典的key
+1).该类必须正确重写 isEqual: 和 hash 方法。
+2).必须实现 copyWithZone: 方法，该方法最好返回对象的不可变副本。因为字典是调用key的copy方法来复制该key的不可变副本作为key的

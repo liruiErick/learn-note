@@ -1,0 +1,29 @@
+# 常用方法
+
+## log 输出
+
+Console.WriteLine('hello'); // 写入一行信息
+Console.ReadKey(); // 输出已写入信息
+
+
+## 创建数组
+
+int[] arr = new int[3];
+int[] arr = new int[] { 1, 2, 3 };
+int[] arr = { 1, 2, 3 };
+
+
+## 创建 List
+
+List<int> list = new List<int>();
+list.Add(2); // 添加一个值
+list.Sort(); // 排序
+
+
+
+## 循环数组
+
+foreach (int value in arr) {
+	// ...
+}
+

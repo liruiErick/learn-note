@@ -1,0 +1,25 @@
+﻿安装模块
+
+npm install html2jade -g
+
+注意要全局安装，否则无法使用命令行
+
+使用方法：
+
+命令行编译
+html2jade index.html > index.jade
+
+还可以直接将域名下的网页变为jade
+html2jade http://www.baidu.com > baidu.jade
+
+nodejs 环境中编译
+var html2jade = require('html2jade');
+html2jade.convertDocument(document, function(err, jade) {
+	// jade 表示被反编译后的jade文件
+});
+
+
+
+
+
+

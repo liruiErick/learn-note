@@ -1,0 +1,86 @@
+﻿* 简化 createjs 的命名空间
+var cjs = createjs;
+
+
+* 委托函数
+cjs.proxy(method, scope);
+// 第一个参数为调用的方法，第二个参数为该方法调用时 this 的引用对象。
+
+
+* 创建舞台，将 Canvas 元素封装成舞台对象
+var stage = new cjs.Stage(document.getElementById("canvas"));
+stage.update(); //刷新舞台
+
+cjs.Ticker.setFPS(lib.properties.fps); //设置舞台帧频率
+cjs.Ticker.addEventListener("tick", stage); //设置舞台每帧刷新，即每帧执行一次 stage.update() 方法
+
+
+* 创建一个root，引用一个fla文件发布出来的js文件，里面储存这所有的库原件
+// 例如 main.fla 发布了一个 main.js 文件
+var root = new lib.main();
+stage.addChild(root);
+
+
+* 创建一个元件，并添加进root
+// 例如 main.fla 的库中有一个元件的AS链接名称为 body
+// 可以在 main.fla 中的元件最后一帧上写入 this.stop() 以达到 AS3.0 中 stop() 的作用
+var sprite = new lib.body();
+root.addChild(sprite);
+
+
+* 创建一个文本
+// 初始化时可直接指定文本的内容、字体样式、字体颜色
+var text = new cjs.Text("Hello World", "20px Arial", "#ff7700");
+// 定义文本宽高
+text.lineWidth = 100;
+text.lineHeight = 30;
+// 指定文本的水平对齐方式（相当于定位注册点的位置），值有"start"、"end"、"left"、"right"、"center"，默认为"left"。
+text.textAlign = "center";
+root.addChild(text);
+
+
+* 创建一个位图
+// 例如图片存放在相对路径下的 images/1.jpg
+var bitmap = new cjs.Bitmap("images/1.jpg");
+root.addChild(bitmap);
+
+
+* 创建一个图形
+var shape = new cjs.Shape();
+with(shape.graphics)
+{
+	beginFill('#FF0000'); //开始填充，并设置填充颜色
+	beginStroke('#0000FF'); //开始画线，并设置线条颜色
+	setStrokeStyle(3); //设置线条粗细，第一个参数后面有2个常用可选参数，分别为端点样式和连接线样式
+	rect(0,0,100,100); //设置一个矩形路径
+	arc(0,0,20,0,Math.PI*2); //设置一个圆型路径
+	endFill(); //填充结束
+	endStroke(); //画线结束
+}
+root.addChild(shape);
+
+
+
+
+>>>>>>>>>> Ticker 扩展自 EventDispatcher <<<<<<<<<<
+
+* 关于 createjs.Ticker 的静态方法
+
+setFPS(value); //设置舞台的刷新频率（xxx帧/每秒）
+getFPS(); //返回舞台刷新频率的设定值（xxx帧/每秒）
+setInterval(value); //设置舞台每帧刷新的毫秒数，作用等同于 setFPS()。
+getInterval(); //返回舞台每帧刷新毫秒数的设定值，作用等同于 getFPS()。
+getMeasuredFPS(); //返回舞台的实际刷新频率（可用于监测舞台的实时帧频）。
+getMeasuredTickTime(); //返回舞台每帧的实际刷新毫秒数（可用于监测舞台的实时刷新率）。
+
+setPaused(Boolean); //一个布尔值参数，设置是否暂停 tick 计数和毫秒计数，默认为 false。
+getPaused(); //返回是否已暂停 tick 计数和毫秒计数。
+getTicks(); //返回从舞台建立开始到现在所触发的 tick 数。一个布尔值的可选参数，若传入 true，则返回 setPaused(false) 期间所触发的 tick 数。
+getTime(); //返回从舞台建立开始到现在所经过的毫秒数。一个布尔值的可选参数，若传入 true，则返回 setPaused(false) 期间所经过的毫秒数。
+getEventTime(); //作用和 getTime() 类似，详见官方文档。
+
+reset(); //停止 tick，并移除 createjs.Ticker 上注册的 tick 事件，一旦停止，无法恢复。
+init(); //开始 tick，当第一次执行 createjs.Ticker.addEventListener() 方法时自动执行，且只会执行一次。
+
+
+

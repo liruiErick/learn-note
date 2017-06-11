@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>html5 video</title>
+</head>
+<body>
+<h2>video 1</h2>
+<!--每个video都需要有一个单独的parentNode，即每个video外面都有个div或者p等等。为了兼容IE876-->
+<!--如果视频源是本地路径，flash会加载不到-->
+<div>
+        <video controls width="640" height="352" poster="http://www.laikabase.de/cp_view/images/userfiles/slideshows/19_thumb_Shift_Image1.jpg" autoplay>
+                <source src="http://www.laikabase.de/videos/Shift.mp4" type="video/mp4" />
+        </video>
+</div>
+<h2>video 2</h2>
+<div>
+        <video controls width="500" height="500" poster="http://i782.photobucket.com/albums/yy104/stevenk0519/th_cow.jpg">
+                <source src="http://i782.photobucket.com/albums/yy104/stevenk0519/cow.mp4" type="video/mp4" />
+        </video>
+</div>
+
+
+<script src="video.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+// 创建NSURL
+NSURL* url = [NSURL URLWithString:@"http://www.google.com/index.php"];
+
+NSLog(@"url的scheme为：%@", [url scheme]);//协议名：http
+
+NSLog(@"url的host为：%@", [url host]);//主机：www.google.com
+
+NSLog(@"url的port为：%@", [url port]);//端口：(null)
+
+NSLog(@"url的path为：%@", [url path]);//资源路径：index.php
+
+
+
+// 创建一个请求
+NSURLRequest* request = [NSURLRequest requestWithURL:url];

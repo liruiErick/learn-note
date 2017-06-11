@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>3D透视图</title>
+<style>
+#stage {
+	margin:auto;
+	width:1000px;
+	height:800px;
+}
+</style>
+</head>
+
+<body>
+<div id="stage">
+	<div id="npc1"><img src="images/npc1.png" /></div>
+	<div id="npc2"><img src="images/npc2.png" /></div>
+	<div id="tree1"><img src="images/tree1.png" /></div>
+	<div id="tree2"><img src="images/tree2.png" /></div>
+	<div id="tree3"><img src="images/tree3.png" /></div>
+	<div id="tree4"><img src="images/tree4.png" /></div>
+    <div id="bg"><img src="images/bg.jpg" width="1000px" /></div>
+</div>
+<script src="3Dperspective.js"></script>
+<script>
+	var stage = document.getElementById("stage");
+	stage.style.backgroundPosition = "-200px -200px";
+	var w = stage.clientWidth*.5;
+	var h = stage.clientWidth*.5;
+	followMouse("npc1",300,300,w,h,2,true,1);
+	followMouse("npc2",400,300,w,h,0,true,1);
+	followMouse("tree2",600,200,w,h,-2,false);
+	followMouse("tree3",80,220,w,h,-4,false);
+	followMouse("tree4",400,180,w,h,-6,false);
+	followMouse("tree1",180,250,w,h,-8,false);
+	followMouse("bg",0,100,w,h,-10,true);
+</script>
+
+</body>
+</html>

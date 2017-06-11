@@ -1,0 +1,22 @@
+// 创建一个圆角矩形按钮
+UIButton* btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+
+btn.frame = CGRect(30,30,60,40);//设置按钮位置和大小
+
+// 按钮的4个状态枚举：
+UIControlStateNormal  正常状态
+UIControlStateHighlighted  高亮状态
+UIControlStateSelected  选中状态
+UIControlStateDisabled  禁用状态
+
+[btn setTitle:@"按钮名称" forState:UIControlStateNormal];//设置按钮对应状态的名称
+
+[btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];//设置按钮对应状态的名称颜色
+
+[btn setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];//设置按钮对应状态的名称的阴影颜色
+
+[btn setBackgroundImage:[UIImage imageNamed:@"图片文件名"] forState:UIControlStateNormal];//设置按钮对应状态的背景图片
+
+[btn setImage:[UIImage imageNamed:@"图片文件名"] forState:UIControlStateNormal];//设置按钮对应状态的图片，会使title失效
+
+[btn titleForState:UIControlStateNormal];//返回按钮对应状态下的名称

@@ -1,0 +1,15 @@
+URL对象是硬盘（SD卡等）指向文件的一个路径，
+
+如果我们做文件上传的时候，想在没有上传服务器端的情况下看到上传图片的效果图
+
+可以通过
+
+var url = window.URL.createObjectURL(obj.files[0]);
+
+获得一个 http 格式的 url 路径，这个时候就可以设置到 <img> 的 src 中显示了。
+
+URL.revokeObjectURL() 静态方法用来释放一个之前通过调用 URL.createObjectURL() 创建的已经存在的 URL 对象。
+
+当你结束使用某个 URL 对象时，应该通过调用这个方法来让浏览器知道不再需要保持这个文件的引用了。
+
+window.webkitURL 是 webkit 内核的实现

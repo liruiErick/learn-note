@@ -1,0 +1,159 @@
+﻿jQuery Mobile 通过为元素定义 HTML5 data-* 属性，来为元素定义适应于移动设备的交互外观
+
+以下属性用于定义一个整体页面框架：
+data-role="page" 是显示在浏览器中的页面
+data-role="header" 创建页面上方的工具栏（常用于标题和搜索按钮）
+data-role="content" 定义页面的内容，比如文本、图像、表单和按钮，等等
+data-role="footer" 创建页面底部的工具栏
+
+例如：
+<body>
+<div data-role="page">
+
+  <div data-role="header">
+    <h1>欢迎访问我的主页</h1>
+  </div>
+
+  <div data-role="content">
+    <p>我是一名移动开发者！</p>
+  </div>
+
+  <div data-role="footer">
+    <h1>页脚文本</h1>
+  </div>
+
+</div>
+</body>
+
+
+
+
+* 页面跳转
+在 jQuery Mobile，可以在单一 HTML 文件中创建多个页面。程序将会通过检查 data-role="page" 来区分每一个页面。
+通过唯一的 id 来分隔每张页面，并使用 href 属性来连接彼此：
+
+<div data-role="page" id="page1">
+  <div data-role="content">
+    <a href="#page2">转到页面二</a>
+  </div>
+</div>
+
+<div data-role="page" id="page2">
+  <div data-role="content">
+    <a href="#page1">转到页面一</a>
+  </div>
+</div>
+
+如果在 <a> 链接中加入 data-rel="dialog" 属性，那么该链接页面将以对话框的形式显示：
+<a href="#page2" data-rel="dialog">转到页面二</a>
+
+也可以直接将页面声明为对话框：
+<div data-role="dialog" id="page2"></div>
+
+以对话框显示的页面元素容器还可以设置如下属性：
+data-close-btn-text	sometext	规定仅用于对话框的关闭按钮的文本。（测试无效）
+data-title		sometext	规定对话页的标签标题。
+
+jQuery Mobile 拥有一系列关于如何从一页过渡到下一页的效果（如需实现过渡效果，浏览器必须支持 CSS3 3D 转换）。
+
+过渡效果可应用于任意链接或通过使用 data-transition 属性进行的表单提交：
+<a href="#anylink" data-transition="slide">滑动到页面二</a>
+
+fade		默认。淡入淡出到下一页。
+flip		从后向前翻动到下一页。
+flow		抛出当前页面，引入下一页。
+pop		像弹出窗口那样转到下一页。
+slide		从右向左滑动到下一页。
+slidefade	从右向左滑动并淡入到下一页。
+slideup		从下到上滑动到下一页。
+slidedown	从上到下滑动到下一页。
+turn		转向下一页。
+none		无过渡效果。
+
+以上所有效果同时支持反向动作，例如，如果希望页面从左向右滑动，而不是从右向左，请使用值为 "reverse" 的 data-direction 属性。在后退按钮上是默认的。
+<a href="#page2" data-transition="slide" data-direction="reverse">滑动</a>
+
+
+
+
+* 多列布局
+在 jQuery Mobile，可以定义多列布局，不过，一般不推荐在移动设备上使用列布局，这是由于移动设备的屏幕宽度所限。
+
+可使用的布局网格有四种：
+网格类		列	列宽度				对应
+ui-grid-a	2	50% / 50%			ui-block-a|b
+ui-grid-b	3	33% / 33% / 33%			ui-block-a|b|c
+ui-grid-c	4	25% / 25% / 25% / 25%		ui-block-a|b|c|d
+ui-grid-d	5	20% / 20% / 20% / 20% / 20%	ui-block-a|b|c|d|e
+
+例如：
+<div class="ui-grid-b">
+  <div class="ui-block-a"><span>Some Text</span></div>
+  <div class="ui-block-b"><span>Some Text</span></div>
+  <div class="ui-block-c"><span>Some Text</span></div>
+  <div class="ui-block-a"><span>Some Text</span></div>
+  <div class="ui-block-b"><span>Some Text</span></div>
+  <div class="ui-block-c"><span>Some Text</span></div>
+</div>
+
+注释：ui-block-a 将始终创建新行
+
+
+
+
+* 主题颜色
+jQuery Mobile 提供了五种不同的样式主题，从 "a" 到 "e" - 每种主题带有不同颜色的按钮、栏、内容块，等等。jQuery Mobile 中的一种主题由多种可见的效果和颜色构成。
+
+如需定制应用程序的外观，可以使用 data-theme 属性，并为该属性分配一个字母：
+<div data-role="page" data-theme="a|b|c">
+
+a	默认。页眉页脚为灰色背景黑色文本，内容为白色背景黑色文本。
+b	黑色背景白色文本。
+c	页眉页脚为灰色背景黑色文本+上下黑色边框，内容为白色背景黑色文本。
+
+同时也可以单独为某一个元素定义主题：
+<a href="#" data-role="button" data-theme="b">Button</a>主题化的按钮
+<a href="#" data-role="button" data-icon="plus" data-theme="b">Plus</a>主题化的图标
+<ul data-role="listview" data-theme="b"></ul>主题化的列表
+<input type="text" name="text" id="name" data-theme="b">主题化的表单
+
+如需定制弹出对话框时的背景蒙版颜色，可以使用 data-overlay-theme 属性，并为该属性分配一个字母：
+<div data-role="page" data-overlay-theme="a|b|c"></div>
+
+如需主题化页眉的返回按钮，可以使用 data-back-btn-theme 属性，并为该属性分配一个字母：
+<div data-role="header" data-add-back-btn="true" data-back-btn-theme="b"></div>
+
+如需主题化的收缩内容块的内容部分，可以使用 data-content-theme 属性，并为该属性分配一个字母：
+<div data-role="collapsible" data-theme="b" data-content-theme="b">
+  <h1>点击我 - 我是可折叠的！</h1>
+  <p>我是可折叠内容。</p>
+</div>
+
+如需主题化拆分按钮的右侧部分，可以使用 data-split-theme 属性，并为该属性分配一个字母：
+<ul data-role="listview" data-split-theme="b"></ul>
+
+如需主题化滑动开关或者 Range 控件的默认轨道颜色，可以使用 data-track-theme 属性，并为该属性分配一个字母：
+<select name="switch" id="switch" data-role="slider" data-track-theme="b"></select>
+<input type="range" name="points" id="points" value="50" min="0" max="100" data-track-theme="b">
+
+
+
+
+* 清除页面缓存
+jQuery Mobile 默认会缓存每一个链接或者页面，可以通过 data-dom-cache 属性规定是否为页面或者链接清除缓存（如果设置 true，则表示该页面或者链接不会被缓存）。
+<a href="#anylink" data-dom-cache="true">滑动到页面二</a>
+<div data-role="page" id="page2" data-dom-cache="true"></div>
+
+
+
+
+* 启用忽视内容选项
+$(document).bind("pagebeforecreate", function() {
+	$.mobile.ignoreContentEnabled = true;
+});
+
+然后在不想使用 jQuery Mobile 特有样式的元素或容器上添加 data-enhance="false" 属性。
+
+jQuery Mobile 默认全部外部链接页面都是通过 ajax 加载，如果容器中的任何链接或表单元素添加了 data-ajax="false" 属性，将被框架的导航功能忽略。
+
+

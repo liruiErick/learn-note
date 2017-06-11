@@ -1,0 +1,64 @@
+﻿### 安装
+
+```shell
+$ npn i moment -S
+```
+
+### node 环境下设置中文语言
+
+```js
+import moment from 'moment'
+moment.locale('zh-cn')
+```
+如果无效，则手动引入中文语言包
+```js
+import moment from 'moment'
+import 'moment/locale/zh-cn.js'
+```
+
+### 获取相对时间
+
+```js
+moment("20111031", "YYYYMMDD").fromNow(); // 6 年前
+moment(1495121132167).fromNow();          // 21分钟前
+```
+
+### 设置一个时间点
+
+```js
+moment().startOf('day');  // 设置时间为今天的开始时间，即 0：00
+moment().endOf('day');    // 设置时间为今天的结束时间，即 23：59
+moment().startOf('hour'); // 设置时间为当前小时的开始时间
+```
+
+### 获取日历时间
+
+```js
+moment().subtract(10, 'days').calendar(); // 2017年5月9日
+moment().subtract(6, 'days').calendar();  // 上周六凌晨12点34
+moment().subtract(3, 'days').calendar();  // 本周二凌晨12点34
+moment().subtract(1, 'days').calendar();  // 昨天凌晨12点34分
+moment().calendar();                      // 今天凌晨12点34分
+moment().add(1, 'days').calendar();       // 明天凌晨12点34分
+moment().add(3, 'days').calendar();       // 下周一凌晨12点34
+moment().add(10, 'days').calendar();      // 2017年5月29日
+```
+
+### 格式化
+
+```js
+moment().format('MMMM Do YYYY, h:mm:ss a'); // 五月 19日 2017, 12:38:11 凌晨
+moment().format('dddd');                    // 星期五
+moment().format("MMM Do YY");               // 5月 19日 17
+moment().format('YYYY [escaped] YYYY');     // 2017 escaped 2017
+moment().format();                          // 2017-05-19T00:38:11+08:00
+
+moment().format('L');    // 2017-05-19
+moment().format('l');    // 2017-05-19
+moment().format('LL');   // 2017年5月19日
+moment().format('ll');   // 2017年5月19日
+moment().format('LLL');  // 2017年5月19日凌晨12点35分
+moment().format('lll');  // 2017年5月19日凌晨12点35分
+moment().format('LLLL'); // 2017年5月19日星期五凌晨12点35分
+moment().format('llll'); // 2017年5月19日星期五凌晨12点35分
+```

@@ -1,0 +1,71 @@
+若不想写繁琐的网络状况判断代码，并且应用程序能自动在无网络时弹出可跳转到系统设置页面的对话框，那么可以考虑这么做。
+在项目中相应的**info.plist文件中增加一个关键字:
+<key>SBUsesNetwork</key>
+<true/>
+应用程序就会自动检测网络状况，在网络异常的情况下，会弹出网络设置对话框提醒用户是否进行网络设置，并且可以跳转至系统设置中进行昂立设置。
+
+
+
+其实在IOS5.1+之后，苹果就删除了程序跳转至设置界面的功能了，不知道为什么。。。
+
+所以自己写代码也是不可能实现的，只能够对网络进行监听，然后提醒用户网络链接异常而已。
+
+下面是监听网络改变的代码，可以参考一下：
+
+在AppDelegate.m中写如下代码：
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions  
+{  
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];  
+      
+    //开启网络状况的监听  
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];  
+      
+    self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;  
+    [self.hostReach startNotifier];  //开始监听，会启动一个run loop  
+  
+    self.window.rootViewController = self.tabBarController;  
+    [self.window makeKeyAndVisible];  
+    return YES;  
+}  
+  
+//网络链接改变时会调用的方法  
+-(void)reachabilityChanged:(NSNotification *)note  
+{  
+    Reachability *currReach = [note object];  
+    NSParameterAssert([currReach isKindOfClass:[Reachability class]]);  
+      
+    //对连接改变做出响应处理动作  
+    NetworkStatus status = [currReach currentReachabilityStatus];  
+    //如果没有连接到网络就弹出提醒实况  
+    self.isReachable = YES;  
+    if(status == NotReachable)  
+    {  
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接异常" message:@"暂无法访问书城信息" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];  
+        [alert show];  
+        [alert release];  
+        self.isReachable = NO;  
+    }  
+    else  
+    {  
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接信息" message:@"网络连接正常" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];  
+        [alert show];  
+        [alert release];  
+        self.isReachable = YES;  
+    }  
+}  
+
+通过如上代码，在应用程序的任何一个界面都可以使用下面的单例来判断网络是否连接
+
+AppDelegate *appDlg = (AppDelegate *)[[UIApplication sharedApplication] delegate];  
+if(appDlg.isReachable)  
+{  
+    NSLog(@"网络已连接");//执行网络正常时的代码  
+}  
+else  
+{  
+    NSLog(@"网络连接异常");//执行网络异常时的代码  
+}  
+
+然后就可以执行响应的操作了，这样使用监听的好处就是，不必在每一个需要检测网络链接情况的地方都写一大堆代码，只需要上面的监听，网络改变的时候，在任何一个地方都可以自定提醒用户。
+监听就是这样滴好用，(*^__^*) 嘻嘻……任何对象都可以接收。

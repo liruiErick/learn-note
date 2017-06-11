@@ -1,0 +1,183 @@
+﻿通过对选择器的各种语法的性能分析进行测试后发现：
+最快的选择器是id选择器和元素标签选择器；
+较慢的选择器是class选择器；
+最慢的选择器是伪类选择器和属性选择器。
+所以在对DOM操作的时候一定要选择最快的id或者标签选择器。
+
+Chris Coyier曾在《Efficiently Rendering CSS》一文中说过“浏览器读取你的选择器，遵循的原则是从选择器的右边到左边读取。换句话说，浏览器读取选择器的顺序是由右到左进行”
+选择器的最右边（在这个例子中就是a[title]部分）部分被称为“关键选择器”
+“越具体的关键选择器，其性能越高”
+
+选择器有一个固有的效率，我们来看Steve Souders给排的一个顺序：
+id选择器（#myid）
+类选择器（.myclassname）
+标签选择器（div,h1,p）
+相邻选择器（h1+p）
+子选择器（ul < li）
+后代选择器（li a）
+通配符选择器（*）
+属性选择器（a[rel="external"]）
+伪类选择器（a:hover,li:nth-child）
+
+
+
+
+
+
+
+
+
+* CSS选择器
+
+*（星号）用于匹配任何节点  * {color:red;}
+ （空格）用于匹配被前一个节点包含的指定节点  div p {color:red;}
+// 以下选择器IE6不支持
+>（大于号）用于匹配严格遵循父子节点顺序的指定节点  div>p {color:red;}
++（加号）用于匹配同一级别下与加号前的节点为同级节点，且在其后的相邻指定节点  div+div {color:red;}
+~（连接号）用于匹配同一级别下与连接号前的节点为同级节点的节点，且在其后的所有指定节点 div~div {color:red;}
+
+// 以上选择器可以组合使用，例如 AAA ~ * 表示凡是与AAA同级且在AAA节点之后的任何节点都匹配
+
+
+
+
+* 属性选择器（IE6不支持）
+// 若省略节点，则匹配所有满足该表达式的节点元素
+节点[表达式]  用于匹配该表达式为"true"的节点
+节点:not([表达式])  用于匹配该表达式为"false"的节点
+
+节点[属性]  用于匹配定义了该属性的节点（属性也可以为任意自定义属性）
+节点[属性 = "value"]  用于匹配属性值为该指定值的节点
+节点[属性 ~= "value"]  用于匹配属性值中任意一个被空格符分隔的值为该指定值的节点
+节点[属性 |= "value"]  用于匹配属性值中包含该指定值，且值后有一个“-”连字符的节点
+// 以下三个选择器可以完全替代上面两个选择器
+节点[属性 ^= "value"]  用于匹配属性值前缀为该指定值的节点
+节点[属性 $= "value"]  用于匹配属性值后缀为该指定值的节点
+节点[属性 *= "value"]  用于匹配属性值中包含该指定值的节点
+ 
+示例：
+div[required] {}
+<input type=text required />  匹配
+div[class="header"] {}
+<div class="header"></div>  匹配
+<div class="header footer"></div>  不匹配
+div:not([class="header"]) {}
+<div class="header"></div>  不匹配
+<div class="header footer"></div>  匹配
+div:not(.header) {}
+<div class="header"></div>  不匹配
+<div class="header footer"></div>  不匹配
+<div class="footer"></div>  匹配
+div:not(#header) {}
+<div id="header"></div>  不匹配
+<div id="footer"></div>  匹配
+div[class~="header"] {}
+<div class="header footer"></div>  匹配
+<div class="headerfooter"></div>  不匹配
+div[lang|="en"] {}
+<body lang="en-us"></body>  匹配
+a[href^="http:"] {}
+<a href="http://www.baidu.com/name.pdf">PDF文件</a>  匹配
+a[href$="jpg"] {}
+<a href="http://www.baidu.com/name.jpg">JPG文件</a>  匹配
+
+
+
+
+* 结构伪类选择器（包含通过树状结构过滤元素的伪类，大部分IE8及以下不支持）
+// 以下表达式中，n可以是实数
+// 也可以是关键字odd（表示奇数）、even（表示偶数）
+// 也可以是公式2n+1（表示奇数）、2n（表示偶数）
+
+:root  用于匹配文档的根元素，通常为html。（貌似只有html:root有效，因此除了作为非IE8及以下浏览器的hack以外，似乎没有其他意义）
+节点:nth-child(n)  用于匹配同级节点中第n个节点，且类型相同的节点
+节点:nth-last-child(n)  用于匹配同级节点中倒数第n个节点，且类型相同的节点
+节点:nth-of-type(n)  用于匹配同级相同类型的节点中第n个节点
+节点:nth-last-type(n)  用于匹配同级相同类型的节点中倒数第n个节点
+节点:first-child  用于匹配同级节点中第一个节点，且类型相同的节点（仅IE6不支持）
+节点:last-child  用于匹配同级节点中最后一个节点，且类型相同的节点
+节点:first-of-type  用于匹配同级相同类型的节点中第一个节点
+节点:last-of-type  用于匹配同级相同类型的节点中最后一个节点
+节点:only-child  用于匹配父节点中仅包含一个节点，且类型相同的节点
+节点:only-of-type  用于匹配父节点中仅包含一个相同类型的节点
+节点:empty  用于匹配不包含任何子节点（包括文本节点）的节点
+
+
+
+
+* UI伪类选择器（包含与用户交互的伪类，大部分IE8及以下不支持）
+
+节点:hover  用于匹配鼠标悬停在其上的节点（IE6及以下只支持<a>元素）
+节点:active  用于匹配鼠标单击的节点（IE6及以下只支持<a>元素）
+节点:foucs  用于匹配文档焦点的节点（IE7及以下不支持）
+节点:lang(zh)  用于匹配属性 lang 的值为 "zh" 的节点（IE7及以下不支持）
+节点:enabled  用于匹配所有非disabled属性为"false"的节点
+节点:disabled  用于匹配所有disabled属性为"true"的节点
+节点:checked  用于匹配所有checked属性为"true"的节点
+input:indeterminate  用于匹配所有处于还未选择时的单选或者复选按钮(即该DOM元素的 indeterminate 属性为 true 时的对应状态)
+节点:target  用于匹配当前 url 地址中井号“#”之后部分指向的 id 名（锚点）所对应的节点（一般用于单击后改变样式）
+
+.section:target {}
+<h3><a href="#one">跳转到one</a></h3>
+<h3><a href="#two">跳转到two</a></h3>
+<h3><a href="#three">跳转到three</a></h3>
+<div class="section">
+	<div id="one">默认不匹配，“跳转到one”链接被单击后，跳转到该锚点后匹配</div>
+	<div id="two">默认不匹配，“跳转到two”链接被单击后，跳转到该锚点后匹配</div>
+	<div id="three">默认不匹配，“跳转到three”链接被单击后，跳转到该锚点后匹配</div>
+</div>
+
+
+
+
+* 伪元素选择器（W3C标准使用双冒号表示伪元素，若要兼容IE6及以下的浏览器则可仍使用单冒号）
+
+节点::first-letter  用于匹配节点内的首个字符（IE6不支持）
+节点::first-line  用于匹配节点内的首行字符（IE6不支持）
+节点::selection  用于匹配节点内用鼠标选中的内容，必须为双冒号（IE8及以下不支持）
+节点::before  可以在元素的内容前面插入新内容（IE7及以下不支持）
+节点::after  可以在元素的内容之后插入新内容（IE7及以下不支持）
+
+示例：
+h1::before { content: url(logo.gif); } /* 把logo.gif放在h1内容前面 */
+h1::after { content: attr(title); } /* 把title属性值放在h1内容最后 */
+节点::-moz-selection { content: url(logo.gif); } /* firefox只支持带前缀的selection伪元素 */
+
+注意，不同前缀的selection伪元素选择器用以下写法会无效：
+节点::-moz-selection, 节点::selection {}
+必须写为：
+节点::-moz-selection {}
+节点::selection {}
+
+
+
+
+* 超链接样式
+a:link {color: #FF0000} /* 未访问的链接 */
+a:visited {color: #00FF00} /* 已访问的链接 */
+a:hover {color: #FF00FF} /* 鼠标移动到链接上 */
+a:active {color: #0000FF} /* 鼠标单击链接 */
+注意：四种状态的顺序一定不能颠倒，否则有些不生效
+
+
+
+
+* 选择器的权重
+权重记忆口诀：从0开始，一个行内样式+1000，一个id+100，一个属性选择器/class或者伪类+10，一个元素名，或者伪元素+1。
+通常情况下，一个更加具体的选择器往往会比一个笼统选择器获得更大的权重。
+相同的选择器中，位于后面的选择器要比前面的选择器权重更大。
+一个选择器中相同的属性中，位于后面的属性要比前面的属性权重更大。
+!important 用于声明一个CSS样式选择器中某属性拥有最高的权重，且该属性的子属性也继承该属性的权重值。
+
+例如：
+background: red !important;
+
+
+
+
+
+
+
+
+
+

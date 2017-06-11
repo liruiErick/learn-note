@@ -1,0 +1,178 @@
+1
+trace("输出文字")
+i++指i+1反之亦然
+Mouse.hide()隐藏鼠标
+Mouse.show()恢复显示
+int()取整数
+
+
+2
+if....else...判断语句的格式：（如果……否则……）
+
+  if( 条件 )
+     { 语句 1
+      }
+  else{ 语句 2 }
+
+如果条件成立就执行语句 1，否则就执行语句 2.
+
+
+3
+随机函数 random(13) 
+
+从0-12到的13个数  
+
+由于没有0帧，需要在后面+1
+
+random(13)+1
+
+
+4
+fscommand("allowscale","true")函数
+fullscreen全屏
+  true真
+  false假
+quit退出
+showmenu显示菜单
+allowscale画面缩放
+
+Stage.scaleMode="scale";禁止缩放
+Stage.showMenu=false;禁止右键菜单
+
+
+5
+loadMovie 载入swf或影片文件
+loadVanables  载入外部文件
+载入的文字与原文件要在同一目录
+变量名称=文本内容
+scroll 表示行号
+on (release){
+    动态文本变量名.scroll-=1
+}
+   
+length 字符串中的字符数
+substring (起始数，截取字符数) 截取字符串中的字符数
+if(i<动态文本变量名.length){
+   i++
+   显示效果的动态文本变量名=动态文本变量名.substring(1,i)
+}
+   else
+   stop();
+动态文本变量名.length
+
+
+6
+绝对路径
+_root.指主场景
+_root.实例名.实例名中包含的实例名.play();
+相对路径
+_this.实例名.play();  同按钮一个场景
+
+
+7
+startDrag  开始拖动
+stopDrag   停止拖动
+
+影片剪辑实例名.onMouseMove = function() {
+this._x = this._parent._xmouse+5;
+this._y = this._parent._ymouse+30;
+updateAfterEvent();}
+影片剪辑跟随鼠标，可以设定坐标
+
+8
+getProperty  获取影片剪辑属性
+getProperty(目标，属性)=目标.属性
+x=getProperty
+x=_root.实例名._x  获取X坐标
+updateAfterEvent  更新舞台（必须重新建帧）
+setProperty(目标，属性，值)  设置影片剪辑属性
+alpha-=20  表示不透明度一次减20
+_root.实例名._x+=10   X坐标加10
+_root.实例名._visible=true\false  可见性（真可见\假不可见）
+
+
+9
+onClipEvent 影片剪辑控制项
+duplicateMovieClip(“目标”，“新名称”，图层位置) 复制影片剪辑
+复制的同时可以设置影片剪辑属性setProperty(目标，属性，值)random()随机值
+
+with(影片剪辑名称){执行语句}
+
+
+10
+自定义函数
+function 自定义函数名（参数）{
+              执行的一系列语句
+}
+setInterval(函数名，间隔时间单位毫秒) 定时更新函数
+文本框实例名.text=要赋予的值
+return 用来返回自定义函数的值
+on(release){
+function 自定义函数名,比如mm (取一个名，代表文本框内输入的值，比如参数cs){
+      return(Math.PI代表圆周率*cs*cs)
+}
+      显示文本框实例名.text=mm(输入文本框实例名.text)
+}
+      文本框实例名.text=mm(半径.text)
+
+onClipEvent (keyDown){
+    sz=chr(Key.getAscii())
+    sm=_root["mc"+sz]
+    with(sm){
+        gotoAndPlay(2):
+         }
+}
+
+11
+if(账号框实例名.text=="账号"&(并且)密码框实例名.text=="密码")
+
+
+12
+Number ()  将括号内的参数转换成数值
+_droptarget 表示返回自己重叠在一起下面影片剪辑的名称，名称带反斜杠
+eval() 将带反斜杠的影片剪辑名称转化为标准格式
+eq 表示等于  用于字符等于字符
+
+on (press){
+    if (eval(_root.tp1._droptarget)<>_root.fg1){
+         _root.tp1.startDrag(true);
+      }
+}
+on (release){
+    stopDrag();
+}
+
+
+
+
+x=getProperty(_root.tp1,_droptarget)
+if(x eq "/fg1"){
+    setProperty(_root.tp1,_x,getProperty(_root.fg1,_x));
+    setProperty(_root.tp1,_y,getProperty(_root.fg1,_y));
+gotoAndStop()
+
+
+13
+_rotation 角度
+onEnterFrame   表示进入帧时（每一帧都执行）
+for 循环语句的基本格式
+   for (初始变量；条件语句；语句2){
+                    语句1}
+sum=0
+_root.onEnterFrame=function(){
+    num=6+random(10)
+    for(i=0;i<num;i++){
+          tmp=sum+i
+            a1._rotation=random(40)*9
+            a1.duplicateMovieClip("a1"+tmp,tmp);
+          }
+         sum=sum+num
+}
+
+14
+加载动画很容易，第一，用一个循环语句，第二，制作一个影片剪辑。第三，由于我们的电脑速度快，所以我们是不可能看到加载动画的，必须通过网络才可以。 
+不管你如何作加载动画基本思路都一样，在桢上写一个脚本语言即。首先制作一个滚动条的元件，（命名为mc)注意这个共有100桢。是变形东画。 
+然后通过脚本， 
+aa=getBytesLoaded();bb=getBytesTotal();loaded=(aa/bb)*100; 
+_root.mc.gotoAndStop( loaded ); 
+若漂亮就加好多修饰即可。

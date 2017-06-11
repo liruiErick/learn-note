@@ -1,0 +1,73 @@
+﻿页面资源预加载(Link prefetch)是浏览器提供的一个技巧，目的是让浏览器在空闲时间下载或预读取一些文档资源，用户在将来将会访问这些资源。
+一个Web页面可以对浏览器设置一系列的预加载指示，当浏览器加载完当前页面后，它会在后台静悄悄的加载指定的文档，并把它们存储在缓存里。
+当用户访问到这些预加载的文档后，浏览器能快速的从缓存里提取给用户。
+
+
+HTML5页面资源预加载(Link prefetch)写法
+
+<!-- 预加载整个页面 -->
+<link rel="prefetch" href="photo.html" />
+
+<!-- 预加载一个图片 -->
+<link rel="prefetch" href="../img/photo.jpg " />
+
+HTML5页面资源预加载/预读取(Link prefetch)功能是通过Link标记实现的，将rel属性指定为“prefetch”，在href属性里指定要加载资源的地址。
+
+火狐浏览器里还提供了一种额外的属性支持：
+<link rel="prefetch alternate stylesheet" title="Designed for Mozilla" href="mozspecific.css" />
+<link rel="next" href="2.html" />
+HTTPS协议资源下也可以使用prefetch。
+
+
+什么情况下应该预加载页面资源
+
+在你的页面里加载什么样的资源，什么时候加载，这完全取决于你。下面是一些建议：
+1、当页面有幻灯片类似的服务时，预加载/预读取接下来的1-3页和之前的1-3页。
+2、预加载那些整个网站通用的图片。
+3、预加载网站上搜索结果的下一页。
+
+
+火狐浏览器里有一个选项可以禁止任何的页面资源预加载(Link prefetch)功能，你可以这样设置：
+user_pref("network.prefetch-next", false);
+
+
+下面是一些关于页面资源预加载(Link prefetch)的注意事项：
+1、预加载(Link prefetch)不能跨域工作，包括跨域拉取cookies。
+2、预加载(Link prefetch)会污染你的网站访问量统计，因为有些预加载到浏览器的页面用户可能并未真正访问。
+3、火狐浏览器从2003年开始就已经提供了对这项预加载(Link prefetch)技术的支持。
+
+
+
+* DNS预获取
+
+什么是 DNS Prefetch ? 
+
+DNS Prefetch 是一种 DNS 预解析技术。
+当你浏览网页时，浏览器会在加载网页时对网页中的域名进行解析缓存，这样在你单击当前网页中的连接时就无需进行 DNS 的解析，减少用户等待时间，提高用户体验。
+
+目前每次DNS解析，通常在200ms以下。针对DNS解析耗时问题，一些浏览器通过DNS Prefetch 来提高访问的流畅性。
+
+默认情况下浏览器会对页面中和当前域名（正在浏览网页的域名）不在同一个域的域名进行预获取，并且缓存结果，这就是隐式的 DNS Prefetch。
+如果想对页面中没有出现的域进行预获取，那么就要使用显示的 DNS Prefetch 了，也就是使用link标签：
+
+<link rel="dns-prefetch" href="http://api.twitter.com"/>
+
+DNS Prefetch应该尽量的放在网页的前面，推荐放在<meta charset="" />后面。
+
+PS:可以通过下面的标签禁止或开启隐式的DNS Prefetch。
+<meta http-equiv="x-dns-prefetch-control" content="off" />
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+
+另外，还可以通过设置 Http header 的 x-dns-prefetch-control 属性为 on 进行控制。
+
+
+
+浏览器支持情况：
+Firefox: 3.5+
+Chrome: Supported
+Safari 5+
+Opera: Unknown
+IE: 9
+
+
+

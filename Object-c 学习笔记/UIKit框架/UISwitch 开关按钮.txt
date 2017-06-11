@@ -1,0 +1,22 @@
+﻿// 创建一个开关
+UISwitch* switch = [[UISwitch alloc] initWithFrame:CGRectMake(50, 0, 80, 27)];
+
+// 设置开关为打开
+[switch setOn:YES];
+
+// 获取开关对象的当前状态，为一个布尔值YES/NO
+[UISwitch对象 isOn];
+UISwitch对象.on;
+
+// UISwitch对象可为Value Changed事件绑定处理方法
+-(IBAction) backChange:(id)sender
+{
+	if (sender.on == YES)
+	{
+		// 开关已经打开
+	}
+	else
+	{
+		// 开关关闭
+	}
+}

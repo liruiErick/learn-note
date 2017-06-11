@@ -1,0 +1,279 @@
+UICollectionView控件控件包含多少分区，各分区包含多少单元格则是由UICollectionViewDataSource对象负责。
+必须为UICollectionView设置实现了UICollectionViewDataSource协议的对象：
+
+UICollectionView对象.dataSource = UICollectionViewDataSource对象;
+
+并根据需要实现如下方法：
+
+// 必需方法，该方法返回UICollectionViewCell对象，将作为指定的IndexPath对应表格的控件
+// NSIndexPath封装了一个单元格的核心信息，包含单元格所在的分区号和行号
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+	cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// 必需方法，该方法返回一个NSInteger值，将决定指定分区包含的单元格数
+-(NSInteger)collectionView:(UICollectionView *)collectionView
+	numberOfItemsInSection:(NSInteger)section;
+
+// 可选方法，该方法返回一个NSInteger值，将决定表格所包含的分区数量，如果不实现该方法，该表格默认只包含一个分区
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+
+// 该方法的返回值将作为指定分区的页眉控件和页脚控件
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+	viewForSupplementaryElementOfKind:(NSString *)kind
+	atIndexPath:(NSIndexPath *)indexPath;
+
+
+应用示例：
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+	viewForSupplementaryElementOfKind:(NSString *)kind
+	atIndexPath:(NSIndexPath *)indexPath
+{
+	// 为表格行定义一个静态字符串作为标示符
+	static NSString* headerId = @"headerId";  // ①
+	static NSString* supplyId = @"supplyId";  // ②
+	NSInteger sectionNo = indexPath.section;
+	NSString* author = [authors objectAtIndex:sectionNo];
+	UICollectionReusableView* view;
+	// 如果正在处理页眉控件
+	if (kind == UICollectionElementKindSectionHeader)
+	{
+		// 从可重用队列中取出一个UICollectionReusableView
+		view = [collectionView dequeueReusableSupplementaryViewOfKind:kind
+			withReuseIdentifier:headerId forIndexPath:indexPath];
+		// 取出页眉控件中Tag为1的UIImageView控件
+		UIImageView* iv = (UIImageView*)[view viewWithTag:1];
+		// 为页眉控件中的图片控件设置图片
+		iv.image = [UIImage imageNamed:[headers objectForKey:author]];
+	}
+	// 如果正在处理页脚控件
+	if (kind == UICollectionElementKindSectionFooter)
+	{
+		// 从可重用队列中取出一个UICollectionReusableView
+		view = [collectionView dequeueReusableSupplementaryViewOfKind:kind
+			withReuseIdentifier:supplyId forIndexPath:indexPath];
+		// 取出页脚控件中Tag为1的UILabel控件
+		UILabel* label = (UILabel*)[view viewWithTag:1];
+		// 为页脚控件中的UILabel设置文本
+		label.text = [NSString stringWithFormat:@"%@一共有[%d]本图书" , author ,
+			[[books objectForKey:author] count]];
+	}
+	return view;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+	cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 为单元格定义一个静态字符串作为标示符，bookCell为动态单元格原型的标识符
+	static NSString* cellId = @"bookCell";
+	// 从可重用单元格的队列中取出一个单元格
+	UICollectionViewCell* cell = [collectionView
+		dequeueReusableCellWithReuseIdentifier:cellId
+		forIndexPath:indexPath];
+	// 设置圆角
+	cell.layer.cornerRadius = 8;
+	cell.layer.masksToBounds = YES;
+	NSInteger rowNo = indexPath.row;
+	// 通过tag属性获取单元格内的UIImageView控件
+	UIImageView* iv = (UIImageView*)[cell viewWithTag:1];
+	// 为单元格内图片控件设置图片，covers为图片数组
+	iv.image = [UIImage imageNamed:[covers objectAtIndex:rowNo]];
+	// 通过tag属性获取单元格内的UILabel控件
+	UILabel* label = (UILabel*)[cell viewWithTag:2];
+	// 为单元格内UILabel控件设置文本，covers为书名数组
+	label.text = [books objectAtIndex:rowNo];
+	return cell;
+}
+
+// Storyboard通过segue链接视图后
+// 当用户单击单元格跳转到下一个视图控制器时激发该方法。
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	// 获取激发该跳转的单元格
+	UICollectionViewCell* cell = (UICollectionViewCell*)sender;
+	// 获取该单元格所在的NSIndexPath
+	NSIndexPath* indexPath = [self.grid indexPathForCell:cell];
+	NSInteger rowNo = indexPath.row;
+	// 获取跳转的目标视图控制器
+	id *detailController = segue.destinationViewController;
+	// 将选中单元格内的数据传给目标视图控制器，imageName和bookNo为目标视图控制器的自定义属性
+	detailController.imageName = [covers objectAtIndex:rowNo];
+	detailController.bookNo = rowNo;
+}
+
+// 获取点击点所在的NSIndexPath（可用于获取被点击的单元格）
+NSIndexPath* tappedCellPath = [UICollectionView对象 indexPathForItemAtPoint:CGPoint对象];
+
+// 删除被点击的单元格
+[UICollectionView对象 deleteItemsAtIndexPaths:
+				[NSArray arrayWithObject:tappedCellPath]];
+
+// 在UICollectionView的开始处添加一个单元格
+[UICollectionView对象 insertItemsAtIndexPaths:
+			 	[NSArray arrayWithObject:
+				[NSIndexPath indexPathForItem:0 inSection:0]]];
+
+
+
+
+*UICollectionViewFlowLayout 网格流布局对象
+
+// 创建UICollectionViewFlowLayout布局对象
+UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+// 设置UICollectionView中各单元格的大小
+flowLayout.itemSize = CGSizeMake(120, 160);
+// 设置该UICollectionView只支持水平滚动
+flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+// 设置各分区上、下、左、右空白的大小。
+flowLayout.sectionInset = UIEdgeInsetsMake(0, 2, 0, 0);
+// 为UICollectionView设置布局对象
+UICollectionView对象.collectionViewLayout = flowLayout;
+
+
+如果程序需要让UICollectionView中各控件各自显示不同大小，则需要实现UICollectionViewDelegateFlowLayout协议，实现了该协议的对象可以当成UICollectionView的委托对象来使用：
+
+UICollectionView对象.delegate = UICollectionViewDelegateFlowLayout对象;
+
+UICollectionViewDelegateFlowLayout协议定义了如下常用方法：
+
+// 该方法返回的CGSize对象将控制指定NSIndexPath对应单元格的大小
+-(CGSize)collectionView:(UICollectionView *)collectionView
+    layout:(UICollectionViewLayout*)collectionViewLayout
+  	sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法返回的UIEdgeInsets对象将控制指定分区上、下、左、右空白区域的大小
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+	layout:(UICollectionViewLayout *)collectionViewLayout
+	insetForSectionAtIndex:(NSInteger)section;
+
+// 该方法返回的长度值将控制指定分区内最小的行间距
+-(CGFloat)collectionView:(UICollectionView *)collectionView
+	layout:(UICollectionViewLayout *)collectionViewLayout
+	minimumLineSpacingForSectionAtIndex:(NSInteger)section;
+
+// 该方法返回的长度值将控制指定分区内最小的列间距
+-(CGFloat)collectionView:(UICollectionView *)collectionView
+	layout:(UICollectionViewLayout *)collectionViewLayout
+	minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
+
+// 该方法返回的CGSize对象将控制指分区的页眉控件大小
+-(CGSize)collectionView:(UICollectionView *)collectionView
+	layout:(UICollectionViewLayout *)collectionViewLayout
+	referenceSizeForHeaderInSection:(NSInteger)section;
+
+// 该方法返回的CGSize对象将控制指分区的页脚控件大小
+-(CGSize)collectionView:(UICollectionView *)collectionView
+	layout:(UICollectionViewLayout *)collectionViewLayout
+	referenceSizeForFooterInSection:(NSInteger)section;
+
+
+应用示例：
+- (CGSize)collectionView:(UICollectionView *)collectionView
+    layout:(UICollectionViewLayout*)collectionViewLayout
+  	sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 控制该单元格的大小
+	return CGSizeMake(width, height);
+}
+
+
+
+
+*UICollectionViewLayout 网格布局对象
+
+如果程序希望UICollectionView以更复杂、更灵活的方式对单元格进行布局，可以继承UICollectionViewLayout，并重写以下方法：
+
+@interface FKCircleLayout : UICollectionViewLayout
+@property (nonatomic, assign) CGPoint center;
+@property (nonatomic, assign) CGFloat radius;
+@property (nonatomic, assign) NSInteger cellCount;
+@end
+
+#define ITEM_SIZE 72
+@implementation FKCircleLayout
+// 开始执行的方法
+-(void)prepareLayout
+{
+	[super prepareLayout];
+	
+	CGSize size = self.collectionView.frame.size;
+	// 计算需要包含多少个单元格
+	_cellCount = [[self collectionView] numberOfItemsInSection:0];
+	// 计算环的圆心
+	_center = CGPointMake(size.width / 2.0, size.height / 2.0);
+	// 计算环的半径（以宽、高中较小值的2.5分之一作为半径）
+	_radius = MIN(size.width, size.height) / 2.5;
+}
+// 该方法的返回值决定UICollectionView所包含控件的大小
+-(CGSize)collectionViewContentSize
+{
+	return [self collectionView].frame.size;
+}
+// 该方法返回的UICollectionViewLayoutAttributes控制指定单元格的大小和位置
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)path
+{
+	// 创建一个UICollectionViewLayoutAttributes对象
+	UICollectionViewLayoutAttributes* attributes =
+		[UICollectionViewLayoutAttributes
+		layoutAttributesForCellWithIndexPath:path];
+	// 设置各单元格的大小
+	attributes.size = CGSizeMake(ITEM_SIZE, ITEM_SIZE);
+	// 设置该单元格的中心点坐标，
+	// 由于程序需要控制各单元格绕城一个圆圈，因此此处使用了三角函数进行计算。
+	attributes.center = CGPointMake(_center.x + _radius * cosf(2 * M_PI * path.item / _cellCount),
+		_center.y + _radius * sinf(2 * M_PI * path.item / _cellCount));
+	return attributes;
+}
+// 该方法的返回值控制UICollectionViewLayoutAttributes集合依次控制
+// 指定CGRect范围内各单元格的大小和位置
+-(NSArray*)layoutAttributesForElementsInRect:(CGRect)rect
+{
+	NSMutableArray* attributes = [NSMutableArray array];
+	// 将控制每个单元格大小和位置的UICollectionViewLayoutAttributes
+	// 添加到NSArray中
+	for (NSInteger i=0 ; i < _cellCount; i++)
+	{
+		NSIndexPath* indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+		[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+	}
+	return attributes;
+}
+// 每当单元格动态显示时自动调用该方法
+- (UICollectionViewLayoutAttributes *)
+	initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+	UICollectionViewLayoutAttributes* attributes = [self
+		layoutAttributesForItemAtIndexPath:itemIndexPath];
+	attributes.alpha = 0.0;
+	attributes.center = CGPointMake(_center.x, _center.y);
+	return attributes;
+}
+// 每当单元格动态消失时自动调用该方法
+- (UICollectionViewLayoutAttributes *)
+	finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+	UICollectionViewLayoutAttributes* attributes = [self
+		layoutAttributesForItemAtIndexPath:itemIndexPath];
+	attributes.alpha = 0.0;
+	attributes.center = CGPointMake(_center.x, _center.y);
+	attributes.transform3D = CATransform3DMakeScale(0.1, 0.1, 1.0);
+	return attributes;
+}
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

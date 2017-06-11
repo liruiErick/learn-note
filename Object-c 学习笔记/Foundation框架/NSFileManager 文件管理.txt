@@ -1,0 +1,357 @@
+对于NSFileManager，文件或目录是使用文件的路径名唯一标识的。每一个路径名都是一个NSString对象，它可以是相对路径名，也可以是完整路径名。
+
+相对路径名是相对于当前目录的路径名。所以，文件名file.m意味着当前目录中的file.m。斜线字符用于隔开路径中的目录列表。
+
+完整路径名，也称绝对路径名，以斜线“/”开头，斜线实际上就是一个目录，称为 根目录。
+
+// 这个特殊字符“~“用作当前用户主目录的缩写，如”/User/当前用户名“，”~指定用户名“指的是”/User/指定用户名“。
+// 一点“.”表示当前目录。
+// 两点“..”表示父目录。
+
+下面是常见的NSFileManager文件方法：
+
+// 从一个文件中读取数据
+-(BOOL)contentsAtPath:path;
+
+// 删除一个文件?
+-(BOOL)remvoeFileAtPath:path
+	handler:handler;
+
+// 重命名或者移动一个文件（to可能是已存在的）?
+-(BOOL)movePath:from
+	toPath:to
+	handler:handler;
+
+// 复制文件（to不能是已存在的）?
+-(BOOL)copyPath:from
+	toPath:to
+	handler:handler;
+
+// 比较两个文件的内容
+-(BOOL)contentsEqualAtPath:path1
+	andPath:path2;
+
+// 测试文件是否存在
+-(BOOL)fileExistsAtPath:path;
+
+// 测试文件是否存在，并且是否能执行读操作
+-(BOOL)isReadableFileAtPath:path;
+
+// 测试文件是否存在，并且是否能执行写操作
+-(BOOL)isWritableFileAtPath:path;
+
+// 测试文件是否存在，并且是否可执行
+-(BOOL)isExecutableFileAtPath:path;
+
+// 测试文件是否存在，并且是否可删除
+-(BOOL)isDeletableFileAtPath:path;
+
+// 获取指定文件所在路径的各个路径组件
+-(NSArray *)componentsToDisplayForPath:path;
+
+// 获取指定文件名对应文件的简单文件名？
+-(NSString *)componentsToDisplayForPath:path;
+
+// 更改文件属性
+-(BOOL)changeFileAttributes:attr
+	atPath:path;
+-(BOOL)setAttributes:attr
+	ofItemAtPath:path;
+
+// 获取文件属性
+-(NSDictionary *)fileAttributesAtPath:path
+	traverseLink:(BOOL)flag;
+-(NSDictionary *)attributesOfItemAtPath:path
+	error:(NSError *__autoreleasing *)error;
+	
+// 获取文件所在文件系统的属性
+-(NSDictionary *)attributesOfFileSystemForPath:path
+	error:(NSError *__autoreleasing *)error;
+
+下面是一些基本的文件操作的代码示例：
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])  
+{ 
+    @autoreleasepool {
+          
+        NSString* fName = @"testfile.txt";
+        NSFileManager* fm;
+        NSDictionary* attr;
+          
+        //创建文件管理对象
+        fm = [NSFileManager defaultManager];
+          
+        //判断文件是否存在
+        if([fm fileExistsAtPath:fName] == NO)
+        {
+            NSLog(@"File doesn't exist!");
+            return 1;
+        }
+        
+        //将 testfile.txt 文件拷贝出一个新的文件 newfile.txt
+        if([fm copyPath:fName toPath:@"newfile.txt" handler:nil] == NO)
+        {
+            NSLog(@"File copy failed!");
+            return 2;
+        }
+          
+        //判断两个文件内容是否相等
+        if([fm contentsEqualAtPath:fName andPath:@"newfile.txt"] == NO)
+        {
+            NSLog(@"File are not equal!");
+            return 3;
+        }
+                  
+        //将文件 newfile.txt 重命名为 newfile2.txt  
+        if([fm movePath:@"newfile.txt" toPath:@"newfile2.txt" handler:nil] == NO)  
+        {
+            NSLog(@"File rename failed!");
+            return 4;
+        }
+
+        //获取文件 newfile2.txt 的大小，并输出
+        if((attr = [fm fileAttributesAtPath:@"newfile2.txt" traverseLink:NO]) == nil)  
+        {
+            NSLog(@"Couldn't get file attributes!");
+            return 5;
+        }
+        //创建时间：[attr fileCreationDate];
+        //主账户名：[attr fileOwnerAccountName];
+        //文件大小：[attr fileSize];
+        NSLog(@"File size is %i bytes",[[attr objectForKey:NSFileSize] intValue]);
+        
+        //移出原始文件testfile.txt
+        if([fm removeFileAtPath:fName handler:nil] == NO)
+        {
+            NSLog(@"File removal failed!");
+            return 6;
+        }
+        
+        NSLog(@"All operations were successful!");
+        //输出文件内容
+        NSLog(@"%@",[NSString stringWithContentsOfFile:@"newfile2.txt" encoding:NSUTF8StringEncoding error:nil]);
+
+    }
+    return 0;
+}
+
+下面总结了NSFileManager处理目录（文件夹）的一些方法，大多数方法和用于普通文件的方法相同，如下所示：
+
+// 获取当前目录
+-(NSString *)currentDirectoryPath;
+
+// 更改当前目录
+-(BOOL)changeCurrentDirectoryPath:path;
+
+// 测试该文件或目录是否存在（flag中存储结果YES/NO，表示是否为目录）
+-(BOOL)fileExistsAtPath:path
+	isDirectory:(BOOL *)flag;
+
+// 创建一个新目录，第二个参数如果为真，就表示如果父目录不存在，则一同创建父目录
+-(BOOL)createDirectoryAtURL:url
+	withIntermediateDirectories:(BOOL)
+	attributes:(NSDictionary *)attr
+	error:(NSError *__autoreleasing *)error;
+-(BOOL)createDirectoryAtPath:path
+	withIntermediateDirectories:(BOOL)
+	attributes:(NSDictionary *)attr
+	error:(NSError *__autoreleasing *)error;
+
+// 根据指定的文件路径、文件内容创建一个文件
+-(BOOL)createFileAtPath:path
+	contents:(NSData *)content
+	attributes:(NSDictionary *)attr;
+
+// 复制文件或目录结构（to不能是已存在的）
+-(BOOL)copyItemAtPath:from
+	toPath:to
+	error:(NSError *__autoreleasing *)error;
+-(BOOL)copyItemAtURL:from
+	toURL:to
+	error:(NSError *__autoreleasing *)error;
+
+// 删除文件或目录
+-(BOOL)removeItemAtPath:path
+	error:(NSError *__autoreleasing *)error;
+-(BOOL)removeItemAtURL:url
+	error:(NSError *__autoreleasing *)error;
+
+// 重命名或者移动一个文件或目录（to可能是已存在的）
+-(BOOL)moveItemAtPath:from
+	toPath:to
+	error:(NSError *__autoreleasing *)error;
+-(BOOL)moveItemAtURL:from
+	toURL:to
+	error:(NSError *__autoreleasing *)error;
+
+下面是代码示例。出于获得信息的目的，首先获得当前的目录路径，然后，在当前的目录中创建一个名为testdir的新目录（文件夹）。然后使用movePath:toPath:handler:方法将新目录testdir重命名为newdir。另外，这个方法还可以用来将整个目录结构（这就意味着包括目录中的内容）从文件系统的一个位置移动到另一个位置。
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])  
+{  
+    @autoreleasepool {
+           
+        NSString *dirName = @"testdir";  
+        NSString *path;  
+        NSFileManager *fm;  
+          
+        fm = [NSFileManager defaultManager];  
+          
+        //获取当前目录（directory）既 文件夹  
+        path = [fm currentDirectoryPath];  
+        NSLog(@"Current directory path is: %@",path);  
+          
+        //创建一个新的目录  
+        if([fm createDirectoryAtPath:dirName attributes:nil] == NO)  
+        {  
+            NSLog(@"Couldn't create directory!");  
+            return 1;  
+        }  
+          
+        //重命名这个新创建的目录  
+        if([fm movePath:dirName toPath:@"newdir" handler:nil] == NO)  
+        {  
+            NSLog(@"Directory rename faild!");  
+            return 2;  
+        }  
+          
+        //改变目录到这个新的目录中  
+        if([fm changeCurrentDirectoryPath:@"newdir"] == NO)  
+        {  
+            NSLog(@"Change directory failed!");  
+            return 3;  
+        }  
+          
+        //重新获取当前的工作目录  
+        path = [fm currentDirectoryPath];  
+        NSLog(@"Current directory path is: %@", path);  
+          
+        NSLog(@"All operations were successful!");  
+    }  
+    return 0;  
+}  
+
+重命名新目录之后，程序使用changeCurrentDirectoryPath：方法将这个新目录设置为当前目录。然后显示当前目录路径，以验证修改是否成功。
+
+
+*枚举目录（文件夹）
+
+// 递归枚举指定目录下的所有文件
+-(NSDirectoryEnumerator *)enumeratorAtPath:path;
+
+// 获取指定目录下的所有文件
+-(NSArray *)directoryContentsAtPath:path;
+
+// 获取指定目录下所有的文件和子目录
+-(NSArray *)contentsOfDirectoryAtPath:path
+	error:(NSError *__autoreleasing *)error;
+
+// 递归获取指定目录下的所有目录以及子目录
+-(NSArray *)subpathsOfDirectoryAtPath:path
+	error:(NSError *__autoreleasing *)error;
+-(NSArray *)subpathsAtPath:path
+
+需要获得目录的内容列表，使用enumeratorAtPath：方法或者directoryContentsAtPath：方法，可以完成枚举过程。
+
+如果使用第一种enumeratorAtPath:方法，一次可以枚举指定目录中的每个文件。默认情况下，如果其中一个文件为目录，那么也会递归枚举它的内容。在这个过程中，通过向枚举对象发送一条skipDescendants消息，可以动态地阻止递归过程，从而不再枚举目录中的内容。
+
+对于directoryContentsAtPath：方法，使用这个方法，可以枚举指定目录的内容，并在一个数组中返回文件列表。如果这个目录中的任何文件本身是个目录，这个方法并不递归枚举它的内容。
+
+代码如下：
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])
+{
+    @autoreleasepool {
+          
+        NSString *path;
+        NSFileManager *fm;
+        NSDirectoryEnumerator *dirEnum;
+        NSArray *dirArray;
+          
+        fm = [NSFileManager defaultManager];
+          
+        //获取当前的工作目录的路径
+        path = [fm currentDirectoryPath];
+          
+        //遍历这个目录的第一种方法：（深度遍历，会递归枚举它的内容）
+        dirEnum = [fm enumeratorAtPath:path];
+          
+        NSLog(@"1.Contents of %@:",path);
+        while ((path = [dirEnum nextObject]) != nil)
+        {
+            NSLog(@"%@",path);
+        }
+        
+        //遍历目录的另一种方法：（不递归枚举文件夹种的内容）
+        dirArray = [fm directoryContentsAtPath:[fm currentDirectoryPath]];
+        NSLog(@"2.Contents using directoryContentsAtPath：");
+          
+        NSLog(@"%@",dirArray);
+    }  
+    return 0;
+}  
+
+如果对上述代码while循环做如下修改，可以阻止任何子目录中的枚举：
+
+while ((path = [dirEnum nextObject]) != nil)  
+{   
+    NSLog(@"%@",path);  
+      
+    BOOL flag;  
+    [fm fileExistsAtPath:path isDirectory:&flag];  
+    if(flag == YES)  
+        [dirEnum skipDescendants];  
+}
+这里flag是一个BOOL类型的变量。如果指定的路径是目录，则fileExistsAtPath：在flag中存储YES，否则存储NO。
+
+
+
+
+*NSFileManager利用NSData实现文件的复制
+
+NSFileManager的contentsAtPath：方法仅仅是接受一个路径名，并将指定文件的内容读入该方法创建的存储区；如果读取成功，这个方法将返回存储区对象作为结果，否则（例如该文件不存在或者不能读取），将返回nil
+
+方法createFileAtPath:contents:attributes:创建了一个具有特定属性（或者如果attributes参数提供为nil，则采用默认的属性值）的文件。然后，将指定的NSData对象内容写入这个文件中。
+
+例如下面的例子，数据区包含前面读取的文件内容，实现了文件的复制操作：
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])  
+{  
+    @autoreleasepool {  
+          
+        NSFileManager * fm;  
+        NSData *fileData;  
+          
+        fm = [NSFileManager defaultManager];  
+          
+        //读取文件testfile.txt  
+        fileData = [fm contentsAtPath:@"testfile.txt"];  
+          
+        if(fileData == nil)  
+        {  
+            NSLog(@"File read failed!");  
+            return 1;  
+        }  
+          
+        //将数据写到 newfile.txt  （相当于拷贝文件）  
+        if ([fm createFileAtPath:@"newfile.txt" contents:fileData attributes:nil] == NO)  
+        {  
+            NSLog(@"Couldn't create the copy!");  
+            return 2;  
+        }  
+          
+        NSLog(@"File copy was successful!");  
+          
+        //读取拷贝后的文件 newfile.txt中的数据  
+        NSLog(@"%@",[NSString stringWithContentsOfFile:@"newfile.txt" encoding:NSUTF8StringEncoding error:nil]);  
+    }  
+    return 0;  
+}
+ 

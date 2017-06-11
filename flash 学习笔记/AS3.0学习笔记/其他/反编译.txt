@@ -1,0 +1,31 @@
+防止flash被反编译 
+
+通常我们制作的flash，一般都可以通过SWFDecompiler这些反编译工具获取到里面的素材，如果想防止被轻易的破解掉。可以加上url的判断
+
+public function checkSecurity(url:String):Boolean
+{
+    var domainArr:Array = [];//允许执行swf的调用url正则
+    var bool:Boolean;
+    for (var i:int = 0, len:int = domainArr.length; i < len; i++)
+    {
+        //ExternalInterface.call('alert', domainArr[i].test(url) + '-' + url + '-' + domainArr[i]);
+        if (domainArr[i].test(url))
+        {
+            bool = true;
+            break;
+        }
+    }
+    //不符合预期的swf
+    if (bool === false)
+    { 
+        while (true)
+        {
+            setInterval(openURL, 1);
+        }
+        return false;
+    }
+    return true;
+}
+checkSecurity(this.loaderInfo.loaderURL);
+
+

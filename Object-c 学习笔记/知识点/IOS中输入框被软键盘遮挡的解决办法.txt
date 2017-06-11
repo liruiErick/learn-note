@@ -1,0 +1,53 @@
+原文地址：http://blog.csdn.net/enuola/article/details/7917221
+
+做IOS开发时，难免会遇到输入框被键盘遮掩的问题。上网上搜索了很多相关的解决方案，看了很多，但是由衷的觉得太麻烦了。
+
+有的解决方案是将视图上的所有的东西都添加到一个滚动视图对象（ UIScrollView ）中，然后滚动视图实现输入框不被软键盘覆盖，个人觉得此方案好是好，但是太过麻烦。
+
+有的解决方案是通过一个通知 UIKeyboardDidShowNotification 去实现的，需要用到事件监听，而且需要自己定义并实现“将要开始编辑”与“结束编辑”这两个监听事件中的方法。本人也觉得很麻烦。
+
+参考了很多方法，都不是太理想。自己研究了一下，既然软键盘（Keyboard）出现与否是跟输入框（UITextField）紧密关联的。所以自己找到一个解决方案，没有上述两种方案那么麻烦，只需实现代理UITextFieldDelegate中的三个方法即可。
+
+实现方法：
+
+1）将输入框的代理设置为self
+
+	在lb文件中将输入框的delegate设置为File’s Owner 。或者使用代码textField.delegate = self;
+
+2）将输入框所对应的ViewController.h设置实现了UITextFieldDelegate协议
+
+	在ViewController.m文件中实现UITextFieldDelegate的三个方法即可：
+
+
+[cpp] view plaincopy
+//开始编辑输入框的时候，软键盘出现，执行此事件  
+-(void)textFieldDidBeginEditing:(UITextField *)textField  
+{  
+    CGRect frame = textField.frame;  
+    int offset = frame.origin.y + 32 - (self.view.frame.size.height - 216.0);//键盘高度216  
+      
+    NSTimeInterval animationDuration = 0.30f;  
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];  
+    [UIView setAnimationDuration:animationDuration];  
+      
+    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示  
+    if(offset > 0)  
+        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);  
+      
+    [UIView commitAnimations];  
+}  
+  
+//当用户按下return键或者按回车键，keyboard消失  
+-(BOOL)textFieldShouldReturn:(UITextField *)textField  
+{  
+    [textField resignFirstResponder];  
+    return YES;  
+}  
+  
+//输入框编辑完成以后，将视图恢复到原始状态  
+-(void)textFieldDidEndEditing:(UITextField *)textField  
+{  
+    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);  
+}  
+
+方法很简单吧？请注意一定不要忘记设置输入框的代理delegate哦

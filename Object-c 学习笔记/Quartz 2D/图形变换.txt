@@ -1,0 +1,94 @@
+// 坐标系统在之前基础上平移tx、ty点
+void CGContextTranslateCTM(CGContextRef c, CGFloat tx, CGFloat ty);
+
+// 坐标系统在之前基础上缩放sx、sy倍
+void CGContextScaleCTM(CGContextRef c, CGFloat sx, CGFloat sy);
+
+// 坐标系统在之前基础上旋转angle弧度
+void CGContextRotateCTM(CGContextRef c, CGFloat angle);
+
+// 保存当前绘图状态，包括平移、缩放、旋转等
+void CGContextSaveGState(CGContextRef c);
+
+// 恢复绘图状态，包括平移、缩放、旋转等
+void CGContextRestoreGState(CGContextRef c);
+
+
+应用示例：
+
+// 获取当前绘图工具
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+// 设置使用半透明的填充颜色
+CGContextSetRGBFillColor(ctx, 1, 0, 0, 0.3);
+// 保存当前绘图状态
+CGContextSaveGState(ctx);
+// 坐标系统平移到-40、200点
+CGContextTranslateCTM(ctx, -40, 200);
+// 坐标系统再平移到50、50点，此时实际坐标系统处于10，250
+CGContextTranslateCTM(ctx, 50, 50);
+// 坐标系统缩放0.93倍
+CGContextScaleCTM(ctx, 0.93, 0.93);
+// 坐标系统旋转-M_PI / 10弧度
+CGContextRotateCTM(ctx, -M_PI / 10);
+// 相当于在10，250位置填充矩形
+CGContextFillRect(ctx, CGRectMake(0 , 0 , 150 , 75));
+// 恢复绘图状态
+CGContextRestoreGState(ctx);
+
+
+
+*变换矩阵
+
+公式：
+(x,y)*(a b)=(xa+yc,xb+yd);
+	  (c d)
+
+// 使用变换矩阵transform对CGContextRef的坐标系执行变换
+void CGContextConcatCTM(CGContextRef c, CGAffineTransform transform);
+
+// 获取CGContextRef坐标系的变换矩阵
+CGAffineTransform CGContextGetCTM(CGContextRef c);
+
+// 创建一个变换矩阵
+CGAffineTransform CGAffineTransformMake(CGFloat a, CGFloat b, CGFloat c, CGFloat d, CGFloat tx, CGFloat ty);
+CGAffineTransform CGAffineTransformMakeRotation(CGFloat angle);
+CGAffineTransform CGAffineTransformMakeScale(CGFloat sx, CGFloat sy);
+CGAffineTransform CGAffineTransformMakeTranslation(CGFloat tx, CGFloat ty);
+
+// 在原有变换矩阵基础上改变变换状态
+CGAffineTransform CGAffineTransformRotate(CGAffineTransform t, CGFloat angle);
+CGAffineTransform CGAffineTransformScale(CGAffineTransform t, CGFloat sx, CGFloat sy);
+CGAffineTransform CGAffineTransformTranslate(CGAffineTransform t, CGFloat tx, CGFloat ty);
+CGAffineTransform CGAffineTransformInvert(CGAffineTransform t);//对变换矩阵进行翻转
+CGAffineTransform CGAffineTransformConcat(CGAffineTransform t1, CGAffineTransform t2);//将两个变换矩阵进行叠加
+
+// 对指定的CGPoint、CGSize、CGRect进行变换
+CGPoint CGPointApplyAffineTransform(CGPoint point, CGAffineTransform t);
+CGSize CGSizeApplyAffineTransform(CGSize size, CGAffineTransform t);
+CGRect CGRectApplyAffineTransform(CGRect rect, CGAffineTransform t);
+
+
+应用示例：
+
+// 创建水平镜像
+CGAffineTransform transform = CGAffineTransformMake(-1, 0, 0, 1, 0, 0);
+// 创建垂直镜像
+CGAffineTransform transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+// 创建相对于x=y轴的对称变换
+CGAffineTransform transform = CGAffineTransformMake(0, 1, 1, 0, 0, 0);
+// 创建相对于x=-y轴的对称变换
+CGAffineTransform transform = CGAffineTransformMake(0, -1, -1, 0, 0, 0);
+// 创建水平倾斜变换
+CGAffineTransform transform = CGAffineTransformMake(1, 0, tanf(angle), 1, 0, 0);
+// 创建垂直倾斜变换
+CGAffineTransform transform = CGAffineTransformMake(1, tanf(angle), 0, 1, 0, 0);
+// 应用变换
+CGContextConcatCTM(ctx, transform);
+
+
+
+
+
+
+
+

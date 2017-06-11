@@ -1,0 +1,102 @@
+﻿* 碰撞检测
+
+在chipmunk中有两种设定碰撞回调函数的方法，一种是setDefaultCollisionHandler，另一种是addCollisionHandler。
+
+// setDefaultCollisionHandler是为物理空间设定默认的碰撞回调函数，它的设置是针对全局的，也就是物理空间里任何对象的碰撞都会执行设定的回调函数：
+this.space.setDefaultCollisionHandler(
+    cpCollisionBeginFunc begin,
+    cpCollisionPreSolveFunc preSolve,
+    cpCollisionPostSolveFunc postSolve,
+    cpCollisionSeparateFunc separate,
+    void *data
+);
+
+addCollisionHandler用来设定自定义的碰撞回调规则，比上面多出了两个参数，用来指定物理空间中哪类对象碰撞时执行回调函数：
+首先为需要检测碰撞的形状对象设置碰撞类型，有两种设置方法：
+shape1.setCollisionType(1);
+或者
+shape2.collision_type = 2;
+然后监听两个形状类型间的碰撞
+this.space.addCollisionHandler(1, 2,
+	this.collisionBegin.bind(this), // 碰撞开始时的回调
+	this.collisionPre.bind(this), // 单次碰撞准备结束时的回调
+	this.collisionPost.bind(this), // 单次碰撞结束时的回调
+	this.collisionSeparate.bind(this) // 碰撞对象分离后的回调
+);
+
+// 移除碰撞检测
+cp.spaceRemoveCollisionHandler(this.space, 1, 2);
+
+
+// 开始碰撞
+// arbiter 裁判
+// space 发生碰撞的物理空间对象
+collisionBegin : function (arbiter, space) {
+	var shapeA = arbiter.a; // 获取创建监听时，第一个碰撞类型参数对应的形状
+	var shapeB = arbiter.b; // 获取创建监听时，第二个碰撞类型参数对应的形状
+
+	var bodyA = arbiter.body_a; // 获取创建监听时，第一个碰撞类型参数对应的刚体
+	var bodyB = arbiter.body_b; // 获取创建监听时，第二个碰撞类型参数对应的刚体
+
+	var collisionPoint = arbiter.getPoint(0); //获取两个形状的碰撞点
+
+	return true; // 这里返回值必须为true，两个相交的形状才会被引擎分开
+}
+
+
+
+
+* 线段查询
+
+// 沿着线段的 start 到 end 使用给定的 layers 和 groups 来查询交点，返回第一个遇到的形状对象，如果没有发现形状则返回 NULL 。
+var shape = this.space.segmentQueryFirst(start, end, cp.ALL_LAYERS, cp.NO_GROUP);
+// 参数1：表示起始点
+// 参数2：表示结束点
+// 参数3：层范围
+// 参数4：组范围
+
+var point = shape.hitPoint(start, end); // 返回该线段与形状的第一个交点
+
+
+// 以下为C++中的API，暂未验证
+this.space.segmentQuery(shape, start, end, cpSegmentQueryInfo info); // 返回线段是否与形状相交
+this.space.segmentQueryHitPoint(start, end, cpSegmentQueryInfo info); // 返回线段与形状的第一个交点
+this.space.segmentQueryHitDist(cpVect start, cpVect end, cpSegmentQueryInfo info); // 返回线段与形状的第一个交点之间的绝对距离
+
+// C++ 中 cpSegmentQueryInfo 的定义
+typedef struct cpSegmentQueryInfo {
+	//碰撞的形状，如果没有碰撞发生则为NULL
+	cpShape *shape;
+
+	// 线段查询的归一化距离，在[0,1]范围内
+	cpFloat t;
+
+	// 表面命中点的法向量
+	cpVect n;
+} cpSegmentQueryInfo;
+
+
+// 返回该点半径范围内最近的对象信息 NearestPointQueryInfo
+var nearestInfo = this.space.nearestPointQueryNearest(point, radius, cp.ALL_LAYERS, cp.NO_GROUP);
+
+// C++ 中 cpNearestPointQueryInfo 的定义
+typedef struct cpNearestPointQueryInfo {
+	// 最近的形状。如果在范围内没有形状返回NULL。
+	cpShape *shape;
+
+	// 形状表面上最近点（世界坐标系）
+	cpVect p;
+
+	// 离给定点的距离。如果点在形状内部距离则为负值
+	cpFloat d;
+
+	// 距离函数的梯度
+	// 和info.p/info.d相同，即使当info.d是非常小的值时，仍然精确
+	cpVect g;
+} cpNearestPointQueryInfo;
+
+// 因此可以得到以下属性值
+nearestInfo.shape; // 表示最近的形状
+nearestInfo.p; // 表示最近的形状上最近的点
+nearestInfo.d; // 表示与最近的形状上最近的点之间的距离
+nearestInfo.g; // 暂不清楚用途

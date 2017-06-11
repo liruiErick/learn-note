@@ -1,0 +1,135 @@
+1、数组索引
+
+让我们先通过一个简单的循环数组中的项目：
+
+for(var i:Number=0; i<testArray.length; i++)
+
+通过这种方法给出了一个50次循环的平均时间53.34毫秒。 现在，让我们改变了我的迭代变量的类型为int的数：
+
+for(var i:int=0; i<testArray.length; i++)
+
+在一个平均时间35.58毫秒这样的结果。 这是因为数组索引是整数更快。 我们还可以加快通过存储在一个外部循环变量数组的长度环：
+
+var l:int = testArray.length; for(var i:int=0; i<l; i++)
+
+所需时间：21.6毫秒！
+
+2、优化细节代码 
+
+针对细节总是好的，有一些小技巧比如： 
+
+用 var obj:Object={};比 var obj:Object = new Object();要快 
+
+用 var arr:Array=[];比 var arr:Array = new Array();要快
+
+如果不是为了保存颜色值请不要适用uint这个类型，他的速度比起 int要慢多了 
+
+Array的遍历要比Object或者Dictionary的枚举要快得多。 
+
+if (myObj != null) 要比 if (myObj) 的速度要慢，for (var i:* in myObj) 比 for (var i:String in myObj) 要快
+
+Dictionary当 weak key设置为 true 的时候要比 false 慢 
+
+var myText:String = "a" + "b" + "c"; 
+
+var myText2:String = [ "a", "b", "c" ].join(""); 
+
+在JavaScript里面在IE下后者要更快，但是在AS里面，前者更快！ 
+
+在循环体内声明变量和在循环体外声明变量其实速度上不会有太大的区别。
+
+3、int,uint,Number效率
+
+在for循环中
+用i++遍历
+int:515 毫秒
+Number:575 毫秒
+uint:1631 毫秒
+int>Number>uint
+
+在for循环中
+用i+=1遍历
+int:350 毫秒 (+=1比++提升很多)
+Number:575 毫秒 (完全没有变化)
+uint:339 毫秒 (看到结果的时候我很无语，咸鱼翻身。其实这个状态下int和uint差距很微小。)
+uint>int>Number>
+
+for循环Number数据类型++和+=1速度相当。
+for循环int和uint数据类型+=1比++快很多。
+
+除非万不得已千万别拿uint做参数做运算对象，即便保存类型也是uint。
+
+
+
+
+(1) 节约内存
+
+	1.sprite 对象与MovieClip 对象
+		i.如果sprite 可以满足需求就不要用movieclip。
+		ii.如果shape可以满足需求就不要用sprite。
+
+	1. 如果管理两显示对象就不要用集合去管理。
+
+	2.Number 类型如果不指定值占8byte，当被赋值，如值为0时，点4byte。
+
+	3.BitmapData 
+		i.BitmapData与Bitmap一起用时，Bitmapdata是一个引用，当BitmapData变化时，屏幕也相应的更新，无须在创建Bitmapdata和Bitmap
+
+(2) 内存释放
+
+	1.Array数组
+		i.清空数组。
+		?Array.splice(0,array.length);删除所有的项。
+		ii.置null，在创建这一块内存，代价比清空数组来得大。
+
+	2.XML
+		i.一个包含XML节点的字符转成XML对象时，大小增加了原来的20.3倍。
+		ii.System.disposeXML(xml)来释放内存，值得注意的是:
+		?释放后的xml还占着相当大的体积，disposeXML只删除节点中的内容，但不删除属性值。xml被释放后属性还占相当大的体积，XML配制文件是用属性名来存还是放在节点内容里呢？
+ 
+	3.BitmapData对象
+		i.api中提供dispose()方法在释放，并置null
+		ii.BitmapData中每个像素点占4个字节，一张1024*768的BitmapData 占3M，BitMapData 的大小跟其尺寸有关，与其所draw 的内容无关。
+
+	4.Loader对象
+		i.loader.unload()来卸载内容，但在内容中包含了声音，视频，动画等,Timer。这个unload()是不适用的。应采用loader.unloadAndStop(true)，可以卸载上述内容，这个方法有点像我们针对MovieClip 做释放的手段。
+
+	5.Object与Dictionary
+		i.Object 键只能是字符类型，dictionary 键可以非字符
+		ii.通delect 来删除项，如：
+		for (var i in Object)
+		{
+			delete Object[i];
+		}
+
+(3) 性能优化
+
+	1.将不需要鼠标交互的显示对象禁用鼠标事件。mouseEnable=mouseChildren=false
+
+	2.对执行非动画内容的优先采用计时器（Timer），而不是enter_frame。
+		i.在不需要高峰的帧频时，通过计时器可以得到高峰的帧频。
+		ii.TimerEvent 包含一个updateAfterEvent()，可以为动画提高更新速率。
+
+	3.当MovieClip不可见时，MovieClip应该被停止，在程序中，如果一个对象是一个带动画的MovieClip.在做内存释放时，先停止movieClip动画，然后置null,这与移除removeEventListener(Event.ENTER_FRAME,onEnterframe)是一样的。MovieClip如果一直处于重绘的状态时，这个对象是不会被释放的。即使是null,removeChild()。
+
+	4.当考虑到用数组时，首选Vector，它比array要来得快，但是它们的元素只能是同一类型的。
+
+	5.在处理多个对象的鼠标事件时，尽量使用冒泡事件，而不是对每个对象添加侦听事件。
+
+	6.使用内联代码，减少代码调用次数。
+
+	*.关于第3点，做实验亲测，使用的是强制启动System.gc()，查看垃圾回收情况，在不移除监听和不停止MovieClip的情况下，是可以被垃圾回收的，其中MovieClip的实例名，实际上属于该MovieClip的内部变量，必须要赋予null，并把该MovieClip移除舞台，才可以被正常垃圾回收。关于监听，如果有外部对象注册的监听执行函数，也就是监听器，是本对象中的方法，那么就会算作是对本对象的一次引用（如果注册监听时没有设置弱引用），是会导致本对象不会被垃圾回收，需要及时移除。但是注册监听的对象如果是本对象或者是本对象的子级，那么会正常被垃圾回收。
+
+
+
+
+*灵活使用CacheAsBitmap
+    在显示对象中，不论是Sprite，MovieClip还是Loader都不及Bitmap的渲染效率高。
+“为包含复杂的矢量图形（例如文本或渐变）的动画对象打开位图缓存可提高性能。但是，如果在显示对象（如播放其时间轴的影片剪辑）中启用了位图缓存，您将获得相反的效果。”
+这句话的意思是说，对于一个无动画的静态对象，如背景图，静态文本还有一些只可能改变x，y位置而不改变外观的显示对象等设置CacheAsBitmap属性为true后可明显减小CPU负荷，在每一帧都来后FP不会渲染那些设置了CacheAsBitmap的静态图像（除非它的外形发生了改变，改变rotation、scaleX、scaleY等属性也等同于改变了外形），但是会增加内存的占用量，不过这绝对是一个划算的买卖。上面这句话的后半句意思是不要为一个频繁改变外形的显示对象设置CacheAsBitmap属性，否则将会让CPU使用量不降反升。
+
+误区：不在屏幕上显示的对象也会一直消耗CPU
+    为一个比屏幕尺寸大的容器(如Sprite或MovieClip等)增加多个子显示对象，比如屏幕大小500 * 500，我为它addChild一个2000 * 2000的Spirte，这个Sprite中存在多个DisplayObject并分布于各个位置。有人认为那些不在屏幕上显示的对象也会消耗CPU，降低性能，所以想把超出屏幕范围的显示对象removeChild掉，不过经实验证明这是多此一举，FP只渲染屏幕可见的区域，即使你移除了屏幕外的显示对象，CPU消耗率也不会下降。
+
+避免大材小用
+    像Sprite，MovieClip，Loader这些类属于比较高等的显示对象，其中会包含更多的信息占用更多的内存和CPU使用量。如果Shape类足矣满足需求就不要用Sprite，如果Bitmap类足矣满足需求就不要用MovieClip，如果Loader加载完毕请不要直接把Loader加入到显示列表中而是把LoderInfo中的信息content取出，加载的是图片就存储成Bitmap，是声音就存储成Sound，是动画就存储成MovieClip，是简单图像就存储成Shape，之后把存储的对象添加到显示列表中去。如果一定要用到这些高等显示对象，也请在可能的情况下设置CacheAsBitmap。

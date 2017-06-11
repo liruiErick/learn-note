@@ -1,0 +1,131 @@
+﻿* 创建精灵帧动画
+
+// 加载 plist 文件
+// 读取精灵表的配置文件
+cc.spriteFrameCache.addSpriteFrames(res.runner_plist);
+
+// 创建精灵帧数组
+var animFrames = [];
+for (var i = 0; i < 8; i++) {
+	var str = "runner" + i + ".png";
+	var frame = cc.spriteFrameCache.getSpriteFrame(str);
+	animFrames.push(frame);
+}
+
+// 用动画帧数组和表示每两个精灵帧之间的时间间隔（单位秒）来创建一个cc.Animation的对象。
+var animation = new cc.Animation(animFrames, 0.1);
+
+// 用一个重复持续动作封装这个精灵动作
+var action = cc.animate(animation);
+this.runAction = new cc.RepeatForever(action);
+
+// 创建一个精灵，运行该动画即可
+this.sprite = new cc.Sprite();
+this.sprite.attr({x: 80, y: 85});
+this.sprite.runAction(this.runAction);
+this.addChild(this.sprite);
+
+// 加载序列图
+var animation = new cc.Animation();
+for (var i = 1; i < 15; i++) {
+    var frameName = "res/Images/grossini_dance_" + ((i < 10) ? ("0" + i) : i) + ".png";
+    animation.addSpriteFrameWithFile(frameName);
+}
+animation.setDelayPerUnit(0.2);
+animation.setRestoreOriginalFrame(true);
+
+var action = cc.animate(animation).repeatForever();
+this.sprite.runAction(action);
+
+
+
+
+* 创建骨骼精灵帧动画
+
+// 读取 .ExportJson 资源文件
+ccs.armatureDataManager.addArmatureFileInfo(people_json);
+
+// 卸载 .ExportJson 资源文件
+ccs.armatureDataManager.removeArmatureFileInfo(people_json);
+
+// 创建动画纹理
+var armature = new ccs.Armature("people");
+// 参数1：表示json资源文件中定义的资源名称
+
+// 返回动画纹理的边框盒矩形对象
+armature.getBoundingBox();
+
+// 获取动画纹理对应的动画对象
+var animation = armature.getAnimation();
+
+// 返回动画的所有动作动画信息
+animation.getAnimationData();
+
+// 返回动画的所有动作的数量
+animation.getMovementCount();
+
+// 播放名称对应的动作动画
+animation.play("Fire");
+
+// 播放第一个动作动画
+animation.playWithIndex(0);
+
+// 根据动作名称播放一组动作动画
+animation.playWithNames(["Walk", "FireMax", "Fire"]);
+
+// 设置播放速度，1为正常速度
+animation.setSpeedScale(0.4);
+
+// 设置动画的帧事件回调函数
+animation.setFrameEventCallFunc(function(bone, evt, originFrameIndex, currentFrameIndex) {
+	bone.getName(); // 获取触发事件的骨骼名称
+	evt; // 事件类型
+	originFrameIndex; // 当前帧在动作编辑器中的整数索引
+	currentFrameIndex; // 当前帧在实际播放中的实际索引，有小数
+	
+});
+
+// 设置动画的移动事件回调函数
+animation.setMovementEventCallFunc(funciton(armature, movementType, movementID) {
+	if (movementType == ccs.MovementEventType.loopComplete) {
+		if (movementID == "Fire") {
+			
+		}
+	}
+});
+
+// 设置动画是否忽略帧事件
+animation.setIgnoreFrameEvent(true);
+
+
+// 创建一段新骨骼
+var bone = new ccs.Bone("p1");
+armature.addBone(bone, "bady-a3"); // 将骨骼加入到动画的指定关节点上
+
+// 获取一段骨骼
+var bone = armature.getBone("weapon");
+
+// 为骨骼加入一个显示对象，并将该对象显示出来
+bone.addDisplay(p1, 0); // 加入一个显示对象，并指定索引，如果这个索引已有对应的显示对象，那么替换它。
+bone.changeDisplayWithIndex(0, true); // 改变骨骼显示指定索引对应的显示对象，
+// 参数二是确定是否一直使用此对象，如果为false的话则可能会在动作播放过程中将此index切换掉。
+
+// 播放动作时会判断这个Bone是否有动作编辑数据，如果没有则隐藏掉，对于手动创建的Bone是没有动作编辑数据的，如果要一直显示则要设置为true
+bone.setIgnoreMovementBoneData(true);
+
+// 获取骨骼的子动画纹理
+bone.getChildArmature();
+
+// 获取骨骼的节点对象
+bone.getDisplayRenderNode();
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+﻿* 首先，在需要使用 cc.pool 来管理的类中实现 reuse 和 unuse 方法
+
+cc.pool; // cocos2d-js 回收池的引用
+
+pool.hasObject(object); // 判断该对象是否存在于回收池中
+
+pool.getFromPool(object, arg1, arg2, arg3); // 从回收池中获取该对象。arg1、arg2、arg3 为 reuse 方法中的参数，cc.pool将自动调用 reuse 方法。
+
+cc.pool.putInPool(object); // 调用此方法将调用对象的 unuse 的方法，并将对象放入回收池。
+
+cc.pool.removeObject(object); // 将你要删除的对象传入，该对象将会从回收池删除。
+
+cc.pool.drainAllPools(); // 当需要清除所有回收池中的对象，例如完成游戏要进入其他页面，旧页面中的可回收对象不再有用了，为避免不必要的内存占用，可以使用该方法删除所有的可回收对象。

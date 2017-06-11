@@ -1,0 +1,48 @@
+﻿* cc 顶级方法
+
+cc.defineGetterSetter(object, "propertyName", getterFunc, setterFunc); // 为一个对象设置geter/setter
+
+cc.random0To1(); // 创建一个0~1的随机数
+
+cc.randomMinus1To1(); // 创建一个-1~1的随机数
+
+cc.degreesToRadians(); // 角度转弧度
+
+cc.radiansToDegrees(); // 弧度转角度
+
+cc.rectContainsPoint(rect, point); // 检测该点是否与矩形相交
+
+cc.rectIntersectsRect(rect, rect); // 检查两个矩形是否相交
+
+cc.rectGetMaxX(rect); // 返回矩形起始点的X坐标与宽度相加的值
+
+cc.rectGetMaxY(rect); // 返回矩形起始点的Y坐标与高度相加的值
+
+cc.pNormalize(cc.p(x, y)); // 将一个向量，标准化为0~1范围内的向量
+
+cc.pDistance(point, point); // 返回两点之间的距离
+
+
+
+
+* cc 顶级属性
+
+cc.winSize; // 返回游戏预设的分辨率大小。相当于 cc.director.getWinSize()
+
+cc.visibleRect; // 返回canvas在浏览器去可见区域的大小。相当于 cc.director.getVisibleSize()
+// 因为在 NO_BORDER 模式中，canvas溢出部分会被裁减掉，该返回对象包含8个点，分别为：
+width		宽
+height		高
+left		左侧中点
+right		右侧中点
+top		顶部中点
+bottom		底部中点
+center		中心点
+topLeft		左上角
+topRight	右上角
+bottomLeft	左下角
+bottomRight	右下角
+
+
+cc.SPRITE_DEBUG_DRAW = 1; // 开启精灵的 Debug 模式。开启后所有的节点都会有一个白色的矩形边框，赋值为0则关闭
+

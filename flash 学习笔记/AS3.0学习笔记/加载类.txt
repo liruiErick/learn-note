@@ -1,0 +1,206 @@
+*加载类
+
+import flash.display.Loader;加入读取对象类,加载可视对象如:图片,音乐,SWF使用的类
+
+import flash.display.LoaderInfo;加入读取对象信息类
+
+import flash.net.URLRequest;加入RUL请求类
+
+var loader:Loader=new Loader();
+
+var request:URLRequest=new URLRequest("myimage.jpg");
+
+loader.load(request);开始加载
+
+loader.unload();卸载对象
+
+loader.unloadAndStop(gc:Boolean);完全卸载对象,对loader内的内容彻底释放,传入true直接启动GC垃圾回收
+
+loader.width;加载对象的实际宽度
+
+loader.width;加载对象的实际高度
+
+addChild(loader);加入外部图片
+
+loader.contentLoaderInfo.addEventListener(Event.COMPLETE,函数);读取完成后运行函数,loader.contentLoaderInfo返回与正在加载的对象相对应的LoaderInfo对象
+
+//以上监听在完成函数里移除时，可以直接在event.target上移除，也可以在event.target.loader.contentLoaderInfo上移除，但是不能在event.target.loader.loaderInfo上移除，loader.loaderInfo始终返回的是一个Null值。
+
+import flash.display.LoaderInfo;加入读取对象信息类
+
+//Loader 对象的 contentLoaderInfo 属性提供有关 Loader 对象正在加载的内容的信息，而所有 DisplayObject 的 loaderInfo 属性提供有关该显示对象的根 SWF 文件的信息。
+
+var loader:Loader=LoaderInfo(event.target).loader;获取加载对象
+
+var loaderInfo:LoaderInfo=LoaderInfo(event.target);获取加载对象信息
+
+*以下方法都可以将loaderInfo替换成loader.contentLoaderInfo或者event.target,效果相同
+
+loaderInfo.bytesLoaded;读取对象已读取的字节
+
+loaderInfo.bytesTotal;读取对象的总字节
+
+loaderInfo.width;加载对象的宽度,如果是SWF,则是舞台的宽度
+
+loaderInfo.height;加载对象的高度,如果是SWF,则是舞台的高度
+
+loaderInfo.contentType;加载对象的类型,如果没有加载到足够多的信息,则值为null
+
+loaderInfo.content;加载到的实际对象
+
+loaderInfo.frameRate;SWF专用,获取加载SWF的帧频率
+
+loaderInfo.parameters;SWF专用,储存一个Object,包含命名属性,FlashVars和浏览器传递进来的URL参数
+
+var class:Class=loaderInfo.applicationDomain.getDefinition("类名");获取加载对象的相关类
+
+其它事件
+
+Event.OPEN 开始加载时
+
+Event.UNLOAD 开始卸载时
+
+ProgressEvent.PROGRESS 每次读取到数据时
+
+IOErrorEvent.IO_ERROR 发生网络错误导致加载失败时
+
+SecurityErrorEvent.SECURITY_ERROR 因加载文件违反安全策略导致加载失败时
+
+HTTPStatusEvent.HTTP_STATUS 每收到一个HTTP响应时触发,event.status包含当前HTTP状态码
+
+*网络加载类
+
+import flash.net.URLLoader;加入读取网络对象类,加载txt,xml使用的类
+
+var URLloader:Loader=new URLLoader();
+
+URLloader.load(new URLRequest("myXML.xml"));开始加载
+
+在加载时设置读取对象的data类型:
+
+URLloader.dataFormat=URLLoaderDataFormat.TEXT;默认值,data属性的类型为String
+
+URLloader.dataFormat=URLLoaderDataFormat.BINART;将读取到的数据解析成二进制数据,data属性的类型为ByteArray
+
+URLloader.dataFormat=URLLoaderDataFormat.VARIABLES;将读取到的数据解析成URL编码的变量,data属性的类型为URLVariables
+
+URLloader.close();停止加载
+
+URLloader.addEventListener(Event.COMPLETE,函数);读取完成后运行函数
+
+var xml:XML=new XML(event.target.data);获取读取的XML文件
+
+xml文件:
+<order>
+  <item id="1">
+    <menuName>burger</menuName>
+    <price>3.95</price>
+  </item>
+  <item id="2">
+    <menuName>fries</menuName>
+    <price>1.45</price>
+  </item>
+</order>
+
+trace(xml.item[0].menuName);//输出:burger
+trace(xml.item.(@id==2).menuName);//输出:fries
+trace(xml.item.(menuName=="burger").price;//输出:3.95
+
+*向asp传递变量
+
+发布设置设置为“只访问网络”
+
+import flash.net.URLLoader;
+import flash.net.URLRequest;
+import flash.net.URLVariables;加入RUL变量类
+
+var request:URLRequest=new URLRequest();
+var vars:URLVariables=new URLVariables();
+var URLloader:Loader=new URLLoader();
+
+request.url="myASP.asp";设置加载路径
+vars.变量=值;
+request.data=vars;设置传递信息
+request.method=URLRequestMethod.GET;设置请求方法为GET
+request.method=URLRequestMethod.POST;设置请求方法为POST
+URLloader.dataFormat=URLLoaderDataFormat.VARIABLES;设置为变量格式
+URLloader.load(request);发送变量
+trace(event.target.data.变量);输出变量的值
+
+其它事件:
+
+Event.OPEN 开始加载时
+
+ProgressEvent.PROGRESS 每次读取到数据时
+
+IOErrorEvent.IO_ERROR 发生网络错误导致加载失败时
+
+SecurityErrorEvent.SECURITY_ERROR 因加载文件违反安全策略导致加载失败时
+
+HTTPStatusEvent.HTTP_STATUS 每收到一个HTTP响应时触发,event.status包含当前HTTP状态码
+
+*其它类
+
+import flash.net.navigateToURL;加入导航类
+
+navigateToURL(new URLRequest("网址"),"打开方式");第二个参数默认为_blank
+
+import flash.net.sendToURL;加入发送类
+
+sendToURL(new URLRequest("网址"));只对该地址发送数据,且不接收任何数据
+
+*Flash的安全设置
+
+import flash.system.Security;加入安全类
+
+默认安全配置文件名crossdomain.xml 
+<?xml version="1.0"?>
+<cross-domain-policy>
+	<allow-access-from domain="*"/>  // "*"为允许所有域访问,不添加本行内容为阻止任何域访问
+</cross-domain-policy>
+
+Security.loadPolicyFile("安全配置文件网址");手动加载安全配置文件,写在文档类的构造函数中
+
+Security.allowDomain("授权的域地址");授权该域中的SWF可以调用自身的对象与类,写在被加载SWF文档类的构造函数中
+
+Security.sandboxType;返回当前SWF的安全设置,返回结果如下:
+
+Security.REMOTE;远程,SWF文件来自互联网的URL,并遵循基于域的沙箱
+
+Security.LOCAL_WITH_FILE;文件运行在本地,不需要用户信任,且可以读取本地数据,但不允许访问网络
+
+Security.LOCAL_WITH_NETWORK;文件运行在本地,不需要用户信任,且可以与网络通信,但不可以读取本地数据
+
+Security.LOCAL_TRUSTED;本地受信任,既可以与网络通信,又可以读取本地数据
+
+import flash.system.LoaderContext;加入读取对象上下文菜单类
+
+import flash.system.SecurityDomain;加入安全域类
+
+import flash.system.ApplicationDomain;加入应用程序域类
+
+var loaderContext:LoaderContext=mew LoaderContext(checkPolicyFile,applicationDomain,securityDomain);
+
+loaderContext.checkPolicyFile=true;开启检查策略文件
+
+loaderContext.applicationDomain=ApplicationDomain.currentDomain;将被加载SWF的应用程序域与当前SWF的应用程序域合并,从而可以访问被加载SWF中的所有对象与类,如果遇到同名类,则会被被加载SWF的类替换
+
+loaderContext.securityDomain=SecurityDomain.currentDomain;设置被加载SWF的安全域为当前SWF的安全域
+
+loader.load(new URLRequest("网址"),loaderContext);加载时应用以上设置
+
+*元数据加载方法,适用FLEX
+
+[Embed(source="picture.jpg")];
+private var Image:Class; 
+
+现在可以使用这个变量创建一个新的资源实例，如下：
+ 
+var img:Bitmap = new Image();
+img.smoothing=true;位图平滑
+
+注意创建的这个对象是 Bitmap 类型的,如果嵌入一个外部 SWF 文件,创建的这个对象应该是 Sprite 类型的,如下： 
+
+[Embed(source="animation.swf")];
+private var Anim:Class; 
+var anim:Sprite = new Anim();

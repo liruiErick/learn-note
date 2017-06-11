@@ -1,0 +1,75 @@
+滤镜类
+
+import flash.filters.* 加入所有滤镜类
+
+BitmapFilterQuality 滤镜质量类
+
+DropShadowFilter 投影滤镜类
+
+BlurFilter 模糊滤镜类
+
+BevelFilter 斜角滤镜类
+
+GlowFilter 发光滤镜类
+
+GradientBevelFilter 渐变斜角滤镜类
+
+GradientGlowFilter 渐变发光滤镜类
+
+DropShadowFilter(distance,angle,color,alpha,blurX,blurY,strength,quality,inner,knockout,hideObject)
+
+BlurFilter(blurX,blurY,quality)
+
+GlowFilter(color,alpha,blurX,blurY,strength,quality,inner,knockout)
+
+GradientBevelFilter(distance,angle,colors,alphas,ratios,blurX,blurY,strength,quality,type,knockout)
+
+GradientGlowFilter(distance,angle,colors,alphas,ratios,blurX,blurY,strength,quality,type,knockout)
+
+distance:表示光晕或阴影的偏移距离,以像素为单位,默认值为4
+
+angle:表示光晕或阴影的倾斜角度,用0到360度的浮点数表示,默认值为45
+
+color:表示光晕或阴影颜色,采用十六进制格式0xRRGGBB.默认值为0x000000黑色,同时分为shadowColor,highlightColor
+
+ratios:渐变颜色分布比例的数组;有效值为0到255
+
+alpha:表示阴影颜色的Alpha透明度值,有效值为0到1.0,默认值为1,同时分为shadowAlpha,highlightAlpha
+
+blurX:水平模糊偏移量,有效值为0到255的浮点数,默认值为4
+
+blurY:垂直模糊偏移量,有效值为0到255的浮点数,默认值为4
+
+strength:印记或跨页的强度,该值越高,压印的颜色越深,而且阴影与背景之间的对比度也越强,有效值为0到255,默认值为1
+
+quality:滤镜的品质,通过赋予BitmapFilterQuality常数来设置品质低,中,高:BitmapFilterQuality.LOW,BitmapFilterQuality.MEDIUM和BitmapFilterQuality.HIGH,分别对应1,2,3
+
+type:斜角效果的放置,可以赋予BitmapFilterType常数:BitmapFilterType.OUTER便是对象外缘上的斜角:BitmapFilterType.INNER表示对象内缘上的斜角:BitmapFilterType.FULL表示对象顶部的斜角
+
+inner:表示光晕或阴影是否为内侧,值true指定内侧.值false指定外侧
+
+knockout:表示是否应用挖空效果,true为应用,将有效地使对象的填色变为透明,并显示文档的背景颜色
+
+hideObject:表示是否隐藏对象本身.如果值为true,则表示没有绘制对象本身,只有阴影是可见的
+
+var filter:变量类型=new 变量类型();
+
+filter.参数名=值 进行设置
+
+A.filters=[filter] 将设定好的滤镜变量赋予A对象的滤镜属性,此属性为数组形势,可如此赋予多个滤镜:A.filters=[滤镜变量1,滤镜变量2,滤镜变量3]
+
+A.filters=null 清除A对象上的滤镜
+
+*黑白效果滤镜
+import flash.filters.ColorMatrixFilter;
+import fl.motion.AdjustColor;
+private var _bwFilter:Array;//黑白色滤镜
+//变为灰白特效
+var adjustColor:AdjustColor=new AdjustColor();//高级调色板
+adjustColor.brightness=20;//亮度
+adjustColor.contrast=20;//对比度
+adjustColor.hue=0;//色调
+adjustColor.saturation=-100;//饱合度
+var matrix:Array=adjustColor.CalculateFinalFlatArray();
+var colorMatrix:ColorMatrixFilter=new ColorMatrixFilter(matrix);
+_bwFilter=[colorMatrix];

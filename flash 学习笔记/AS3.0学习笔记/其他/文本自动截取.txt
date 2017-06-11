@@ -1,0 +1,24 @@
+//txt：传入需要截取的文本
+//txt：传入文本需要限制的最大像素宽度
+
+		private function autoCut(txt:TextField,maxWidth:Number):void
+		{
+			//文本必须为自动调整长短，且不自动换行
+			txt.autoSize = TextFieldAutoSize.LEFT;
+			txt.wordWrap = false;
+			
+			var str:String = txt.text;
+			var n:uint = str.length;
+			var len:uint;
+			for(var i=1;i<=n;i++)
+			{
+				txt.text = str.substr(0,i);
+				if (txt.textWidth>=maxWidth)
+				{
+					if(str.charCodeAt(i-1)<256) len = 2
+					else len = 1
+					if (i>=len) txt.text = str.substr(0,i-len)+"...";
+					break;
+				}
+			}
+		}

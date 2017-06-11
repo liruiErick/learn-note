@@ -1,0 +1,33 @@
+Mac OSX
+
+1. 删除/usr/local/lib中的所有node和node_modules
+2. 删除/usr/local/lib中的所有node和node_modules的文件夹
+3. 如果是从brew安装的, 运行brew uninstall node
+4. 检查~/中所有的local, lib或者include文件夹, 删除里面所有node和node_modules
+5. 在/usr/local/bin中, 删除所有node的可执行文件
+6. 最后运行以下代码:
+
+sudo rm /usr/local/bin/npm
+sudo rm /usr/local/share/man/man1/node.1
+sudo rm /usr/local/lib/dtrace/node.d
+sudo rm -rf ~/.npm
+sudo rm -rf ~/.node-gyp
+sudo rm /opt/local/bin/node
+sudo rm /opt/local/include/node
+sudo rm -rf /opt/local/lib/node_modules
+
+
+
+
+
+MAC环境下 nodejs 4.5.0 卸载
+
+MAC 环境下,我之前的删除 node 环境如果是用brew 安装的 node.js 4.4 之前的版本。可以网上参考其他方法，我之前的帖子也有之前的删除方法。参考帖子：
+
+http://www.cnblogs.com/wjw-blog/p/4840727.html
+
+另外，只要是在 node 官网上下载的安装包，用安装包安装的node.应该可以用一下命令行卸载：
+
+在终端输入以下命令：
+
+sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}

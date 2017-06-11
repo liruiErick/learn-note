@@ -1,0 +1,57 @@
+对象字典类
+
+var object:Object=new Object();新建一个对象,可以为对象添加任意属性
+
+delete object.XXX;删除对象的某个属相
+
+objectA=objectB;将B对象赋予A对象,此时AB对象关联,修改A对象后,B对象随之改变,反之亦然(但直接赋值null或{}不会改变关联对象)
+
+*克隆对象
+import flash.utils.ByteArray;加入字节数组类
+
+var byteArray:ByteArray=new ByteArry();
+
+byteArray.writeObject(objectA);写入对象
+
+byteArray.position=0;设定读取对象的起始位置为第1位
+
+objectB=byteArray.readObject();读取对象
+
+字节数组的其他方法:
+
+byteArray.clear();清空字节数组
+
+byteArray.length;以字节为单位表示字节数组的总大小
+
+byteArray.bytesAvailable;从position位置到字节数组结尾所具有的字节数
+
+byteArray.deflate();压缩字节数组
+
+byteArray.inflate();解压字节数组
+
+import flash.utils.Dictionary;加入字典类
+
+var dic:Dictionary=new Dictionary(true);传递参数true,可以使字典实例引用的对象为弱引用,方便垃圾回收,但会降低效率
+
+dis[对象]=值;为对象添加一个属性值
+
+delete dis[对象];删除对应键值
+
+for (var i in dis)
+{
+	trace(dis[i]);遍历字典
+}
+
+*关于字典类，如果将字典的键值对象赋予null，则该键对应的值会变为undefined，但是该键值依然存在于字典对象中，只是没有对应的引用可以读取到它，只有 delete 对应对象的键值，或者直接给字典对象赋予null，相应的对象才会被垃圾回收。
+
+import flash.utils.getDefinitionByName;加入获取定义名称类
+
+getDefinitionByName(字符) as Class;将字符转换成Object对象,再将该对象转换成类
+
+import flash.utils.getQualifiedClassName;加入获取类名类
+
+getQualifiedClassName(对象);返回该对象的类名
+
+import flash.utils.getQualifiedSuperclassName;加入获取超类名类
+
+getQualifiedSuperclassName(对象);返回该对象所继承的父类名

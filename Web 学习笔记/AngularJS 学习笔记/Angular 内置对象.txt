@@ -1,0 +1,23 @@
+﻿## $scope
+$scope.$digest(); // 脏值检查
+
+
+## $q
+var defer = $q.defer(); // 创建一个延时对象。暴露出三个主要的方法，resolve() reject() 和 notify();
+
+### defer 对象的方法
+resolve(value); // 在声明resolve()处，表明promise对象由pending状态转变为resolve。
+reject(reason); // 在声明resolve()处，表明promise对象由pending状态转变为rejected。
+notify(value); // 在声明notify()处，表明promise对象unfulfilled状态，在resolve或reject之前可以被多次调用。
+
+### deffer 对象属性
+promise; // 返回的是 defer 对象的 promise 属性，而不是原来的 defer 对象。这个新的 Promise 对象只能观察原来 defer 对象的状态，而无法修改 defer 对象的内在状态，可以防止任务状态被外部修改。
+
+### promise 对象的方法
+then(errorHandler, fulfilledHandler, progressHandler); // then方法用来监听一个Promise的不同状态。errorHandler监听failed状态，fulfilledHandler监听fulfilled状态，progressHandler监听unfulfilled（未完成）状态。此外,notify 回调可能被调用 0到多次，提供一个进度指示在解决或拒绝（resolve和rejected）之前。
+catch(errorCallback); // promise.then(null, errorCallback) 的快捷方式
+finally(callback); // 不论被解决还是被拒绝，总是会执行。 这可以用来做一些释放资源或者清理无用对象的工作。
+
+### $q的其他方法
+$q.when(value)：传递变量值，promise.then()执行成功回调
+$q.all(promises)：多个promise必须执行成功，才能执行成功回调，传递值为数组或哈希值，数组中每个值为与Index对应的promise对象。

@@ -1,0 +1,7 @@
+﻿* canvas在部分Android初始化后不再刷新的BUG解决方案：
+
+强制浏览器重新渲染canvas。目前使用的方法为：
+
+var w = canvas.width;
+canvas.width = 0;
+canvas.width = w;

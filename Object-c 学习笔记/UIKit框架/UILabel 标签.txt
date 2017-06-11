@@ -1,0 +1,14 @@
+// 创建一个UILabel控件
+UILabel* label= [[UILable alloc] initWithFrame:CGRectMake(80,80,160,30)];
+
+label.text = @"标签名";//为标签命名
+
+label.textAlignment = NSTextAlignmentRight;//设置右对齐
+		
+label.font = [UIFont boldSystemFontOfSize:17];//设置字体大小
+
+label.numberOfLines = 2;
+
+label.textColor = [UIColor blueColor];//设置文字颜色
+		
+label.backgroundColor = [UIColor clearColor];//设置无背景色

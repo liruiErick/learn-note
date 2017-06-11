@@ -1,0 +1,14 @@
+﻿<!--{eval}-->
+function fore($arr, $p) {
+	foreach ($arr as $key => $value) {
+		$path = $p ? $p." => ".$key : $key;
+		if (is_array($value)) {
+			fore($value, $path);
+		} else if (stripos($value, '管理员') !== false) {
+			echo "\r\n\r\n".$path." => ".$value;
+		}
+	}
+}
+
+fore($_G);
+<!--{/eval}-->

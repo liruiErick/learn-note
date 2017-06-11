@@ -1,0 +1,86 @@
+*NSData 数据类
+
+// 以下类方法均有对应的init实例方法
+
+
+NSData* data = [
+
+NSData data];//创建一个不包含任何数据的空NSData
+// 复制C数组所包含的数据来初始化
+
+NSData
+
+
+NSData* data = [
+
+NSData dataWithBytes:C数组 length:数组长度];
+// 直接利用C数组所包含的数据来初始化
+
+NSData，当
+
+NSData对象销毁自己时，程序会释放该C数组
+
+
+NSData* data = [
+
+NSData dataWithBytesNoCopy:C数组 length:数组长度];
+// 直接利用C数组所包含的数据来初始化
+
+NSData，当最后一个参数为YES，且
+
+NSData对象销毁自己时，程序会释放该C数组
+
+
+NSData* data = [
+
+NSData dataWithBytesNoCopy:C数组 length:数组长度 freeWhenDone:YES];
+
+
+NSData* data = [
+
+NSData dataWithContentsOfFile:@"文件名"];//直接读取文件内容，并利用文件内容初始化
+
+NSData
+
+
+NSData* data = [
+
+NSData dataWithContentsOfURL:
+				[NSURL URLWithString:@"网址"]];//直接读取URL关联内容，并利用该文件内容初始化
+
+NSData
+
+
+NSData* data = [
+
+NSData dataWithData:数据对象];//直接使用另一个
+
+NSData对象所包含的数据来初始化
+
+NSData
+
+[data bytes];//返回
+
+NSData对象所包含的数据
+
+[data getBytes:C数组 length:长度];//获取
+
+NSData对象所包含的指定长度的数据，C数组为char[]
+
+[data getBytes:C数组 range:NSMakeRange(0,100)];//获取
+
+NSData对象所包含的指定范围的数据，C数组为char[]
+
+[data subdataWithRange:NSMakeRange(0,100)];//返回
+
+NSData对象所包含的指定范围的数据组成的
+
+NSData对象
+
+[data writeToFlie:@"文件名" atomically:NO];//将
+
+NSData对象的数据写入指定文件，第二个参数为是否开启线程保护
+
+[data writeToURL:@"文件名" atomically:NO];//将
+
+NSData对象的数据写入指定URL，第二个参数为是否开启线程保护

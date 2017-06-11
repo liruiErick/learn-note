@@ -1,0 +1,470 @@
+UITableView对象的常用属性与方法：
+
+// 只读属性，用于返回该表格的样式，该属性返回两个枚举值：
+// UITableViewStylePlain  普通
+// UITableViewStyleGrouped  分组
+UITableView对象.style;
+
+// 该属性用于返回或设置表格的行高
+// 通常来说，建议实现表格对应的委托对象的-tableView:heightForRowAtIndexPath:方法来设置行高
+UITableView对象.rowHeight;
+
+// 该属性用于返回或设置表格的分隔条样式，该属性支持三个枚举值：
+// UITableViewCellSeparatorStyleNone  无分隔条
+// UITableViewCellSeparatorStyleSingleLine  单线分隔条
+// UITableViewCellSeparatorStyleSingleLineEtched  被蚀刻单线分隔条
+UITableView对象.separatorStyle;
+
+UITableView对象.separatorStyle;//该属性用于返回或设置分隔条颜色
+
+UITableView对象.backgroundView;//该属性用于返回或设置表格的背景视图，背景视图会被自动缩放到匹配表格
+
+UITableView对象.tableHeaderView;//该属性用于返回或设置表格的页眉视图
+
+UITableView对象.tableFooterView;//该属性用于返回或设置表格的页脚视图
+
+[UITableView对象 reloadData];//控制表格重新加载数据
+
+-numberOfRowsInSection;//该方法返回指定分区包含的行数
+
+-numberOfSection;//该方法返回表格包含的所有分区数
+
+
+
+UITableView控件只是负责控件的通用行为，而该控件包含多少分区，各分区包含多少表格行则是由UITableViewDataSource对象负责。
+必须为UITableView设置实现了UITableViewDataSource协议的对象：
+
+UITableView对象.dataSource = UITableViewDataSource对象;
+
+并根据需要实现如下方法：
+
+// 必需方法，该方法返回UITableViewCell对象，将作为指定的IndexPath对应表格的控件
+// NSIndexPath封装了一个表格行的核心信息，包含表格行所在的分区号和行号
+-(UITableViewCell *)tableView:(UITableView *)tableView
+	cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 必需方法，该方法返回一个NSInteger值，将决定指定分区包含的表格行数
+-(NSInteger)tableView:(UITableView *)tableView
+	numberOfRowsAtInSection:(NSInteger)section;
+
+// 可选方法，该方法返回一个NSInteger值，将决定表格所包含的分区数量，如果不实现该方法，该表格默认只包含一个分区
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+
+// 可选方法，该方法返回值用于在表格右边建立一列浮动的索引
+-(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;
+
+// 可选方法，该方法返回值决定指定分区的页眉
+-(NSString*)tableView:(UITableView *)tableView
+	titleForHeaderInSection:(NSInteger)section;
+
+// 可选方法，该方法返回值决定指定分区的页脚
+-(NSString*)tableView:(UITableView *)tableView
+	titleForFooterInSection:(NSInteger)section;
+
+
+如果程序需要控制UITableView中各行的宽度，以及各行外观，则需要委托对象来实现，UITableView的委托对象必须实现UITableViewDelegate协议：
+
+UITableView对象.delegate = UITableViewDelegate对象;
+
+该协议定义了如下方法：
+
+// 该方法的返回值将作为表格行的高度
+-(CGFloat)tableView:(UITableView *)tableView
+	heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 每当UITableView将要显示某个列表行时将会激发该方法
+-(void)tableView: (UITableView*)tableView
+	willDisplayCell:(UITableViewCell*)cell
+	forRowAtIndexPath: (NSIndexPath*)indexPath;
+
+
+
+
+*UITableViewCell 表格行
+
+// 该方法返回值决定各表格行的控件。
+- (UITableViewCell *)tableView:(UITableView *)tableView
+	cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 为表格行定义一个静态字符串作为标示符
+	static NSString* cellId = @"cellId";
+	
+	// 从可重用表格行的队列中取出一个表格行
+	UITableViewCell* cell = [tableView
+		dequeueReusableCellWithIdentifier:cellId];
+		
+	// 如果取出的表格行为nil
+	if(cell == nil)
+	{
+		// 创建一个UITableViewCell对象，包含四种风格
+		// UITableViewCellStyleDefault  默认风格，只显示textLable，不显示detailTextLabel
+		// UITableViewCellStyleSubtitle  副标题风格，detailTextLabel字体略小，显示在textLabel下方
+		// UITableViewCellStyleValue1  detailTextLabel以浅蓝色显示在textLabel右边
+		// UITableViewCellStyleValue2  不显示image控件，textLabel以浅蓝色略小字体显示，detailTextLabel显示在右边
+		cell = [[UITableViewCell alloc]
+			initWithStyle:UITableViewCellStyleSubtitle
+			reuseIdentifier:cellId];
+	}
+	
+	// 从IndexPath参数中获取当前行的行号
+	NSUInteger rowNo = indexPath.row;
+	
+	// 取出books中索引为rowNo的元素作为UITableViewCell的文本标题
+	cell.textLabel.text = [标题数组对象 objectAtIndex:rowNo];
+	
+	// 将单元格的边框设置为圆角
+	cell.layer.cornerRadius = 12;
+	cell.layer.masksToBounds = YES;
+	
+	// 定义表格行右侧的附件类型
+	// UITableViewCellAccessoryDetailDisclosureButton  一个圆形+(>)号图标按钮
+	// UITableViewCellAccessoryCheckmark  一个复选框
+	// UITableViewCellAccessoryDisclosureIndicator  (>)号图标按钮
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+	
+	// 为UITableViewCell的左端设置图片
+	cell.imageView.image = [UIImage imageNamed:@"ic_gray.png"];
+	
+	// 为UITableViewCell的左端设置高亮状态视时的图片
+	cell.imageView.highlightedImage = [UIImage imageNamed:
+		@"ic_highlight.png"];
+	
+	// 取出details中索引为rowNo的元素作为UITableViewCell的详细内容
+	cell.detailTextLabel.text = [详细内容数组对象 objectAtIndex:rowNo];
+	return cell;
+}
+
+获取UITableView控件后，可以通过如下方法访问该控件的表格行和分区：
+
+-(UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;//返回该表格中指定NSIndexPath对应的表格行
+
+-(NSIndexPath *)indexPathForCell:(UITableViewCell *)tableViewCell;//获取该表格中指定表格行对应的NSIndexPath
+
+-(NSIndexPath *)indexPathForRowAtPoint:(CGPoint);//返回该表格中指定点所在的NSIndexPath
+
+-(NSArray *)indexPathsForRowsInRect:(CGRect);//返回该表格中指定区域内所有NSIndexPath组成的数组
+
+-(NSArray *)visibleCells;//返回该表格中所有可见区域内的表格行组成的数组
+
+-(NSArray *)indexPathsForVisibleRows;//返回该表格中所有可见区域内的表格行对应的NSIndexPath组成的数组
+
+也可以通过如下方法来控制表格控件的滚动：
+
+// 控制该表格滚动到指定NSIndexPath对应的表格行的顶端、中间或下方
+-(void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+	atScrollPosition:(UITableViewScrollPosition)
+	animated:(BOOL);
+
+// 控制该表格滚动到选中表格行的顶端、中间或下方
+-(void)scrollToNearestSelectedRowAtScrollPosition:(UITableViewScrollPosition)
+	animated:(BOOL);
+
+
+
+*处理表格行的选中
+
+UITableView控件提供如下属性来配置表格的选中状态：
+
+allowsSelection;//该属性控制该表格是否允许被选中
+
+allowsMultipleSelection;//该属性控制表格是否允许多选
+
+allowsSelectionDuringEditing;//该属性控制该表格处于编辑状态时是否允许被选中
+
+allowsMultipleSelectionDuringEditing;//该属性控制该表格处于编辑状态时是否允许多选
+
+UITableView控件提供如下方法来操作表格中被选中的行：
+
+-(NSIndexPath *)indexPathForSelectedRow;//获取选中表格行对应的NSIndexPath
+
+-(NSArray *)indexPathsForSelectedRows;//获取所有被选中的表格行对应的NSIndexPath组成的数组
+
+// 控制该表格中指定NSIndexPath对应的表格行，最后一个参数控制是否滚动到被选中表格行的顶端、中间或下方
+-(void)selectRowAtIndexPath:(NSIndexPath *)indexPath
+	animated:(BOOL)
+	scrollPosition:(UITableViewScrollPosition);
+
+// 控制取消选中该表格中指定NSIndexPath对应的表格行
+-(void)deselectRowAtIndexPath:(NSIndexPath *)indexPath
+	animated:(BOOL);
+
+程序需要为表格行的选中事件提供相应，则需要委托对象来实现，UITableView的委托对象必须实现UITableViewDelegate协议，该协议定义了如下方法：
+
+// 当用户将要选中表格中的某行时激发该事件
+-(void)tableView:(UITableView *)tableView
+	willSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当用户完成选中表格中的某行时激发该事件
+-(void)tableView:(UITableView *)tableView
+	didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当用户将要取消选中表格中的某行时激发该事件
+-(void)tableView:(UITableView *)tableView
+	willDeselectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当用户完成取消选中表格中的某行时激发该事件
+-(void)tableView:(UITableView *)tableView
+	didDeselectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当表格行右边的附件按钮被单击时激发该方法
+-(void)tableView:(UITableView *)tableView
+	accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+
+应用示例：
+- (void)tableView:(UITableView *)tableView
+	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 获取该应用的应用程序委托对象
+	FKAppDelegate* appDelegate = [UIApplication
+		sharedApplication].delegate;
+	// 获取Storyboard文件中ID为detail的视图控制器
+	FKDetailViewController* detailController = [self.storyboard
+		instantiateViewControllerWithIdentifier:@"detail"];
+	// 保存用户正在编辑的表格行对应的NSIndexPath，editingIndexPath为一个自定义属性
+	detailController.editingIndexPath = indexPath;
+	// 让应用程序的窗口显示detailViewController
+	appDelegate.window.rootViewController = detailController;
+}
+
+
+
+*编辑表格
+
+UITableView对象.editing;//返回表格控件是否处于编辑状态
+
+[UITableView对象 setEditing:YES animated:YES];//将表格切换到编辑状态
+
+UITableView提供如下方法来插入、删除和移动表格行：
+
+-beginUpdates:;//对表格控件执行多个连续的插入、删除和移动操作之前，先调用该方法开始更新
+
+-endUpdates:;//当对表格控件执行多个连续的插入、删除和移动操作之后，调用该方法结束并提交更新
+
+// 在一个或者多个NSIndexPath处插入表格行
+-(void)insertRowsAtIndexPaths:(NSArray *)indexPaths
+	withRowAnimation:(UITableViewRowAnimation);
+
+// 删除一个或者多个NSIndexPath处的表格行
+-(void)deleteRowsAtIndexPaths:(NSArray *)indexPaths
+	withRowAnimation:(UITableViewRowAnimation);
+
+// 将指定NSIndexPath处的表格行移动到另一个NSIndexPath处
+-(void)moveRowAtIndexPath:(NSIndexPath *)indexPath
+	toIndexPath:(NSIndexPath *)indexPath;
+
+// 在指定NSIndexSet所包含的一个或多个分区号对应的位置插入分区
+-(void)insertSections:(NSIndexSet *)indexSet
+	withRowAnimation:(UITableViewRowAnimation)
+
+// 删除指定NSIndexSet所包含的一个或多个分区号对应位置的分区
+-(void)deleteSections:(NSIndexSet *)indexSet
+	withRowAnimation:(UITableViewRowAnimation)
+
+// 将指定分区移动到另一个位置
+-(void)moveSection:(NSInteger)integer
+	toSection:(NSInteger)integer
+
+为了动态编辑表格，必须为UITableView设置实现了UITableViewDataSource协议的对象，并根据必须实现如下方法：
+
+// 该方法的返回值决定指定NSIndexPath对应的表格行是否可编辑
+-(BOOL)tableView:(UITableView *)tableView
+	canEditRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法的返回值决定指定NSIndexPath对应的表格行是否可移动
+-(BOOL)tableView:(UITableView *)tableView
+	canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当用户对指定表格行编辑完成时激发该方法
+-(void)tableView:(UITableView *)tableView
+	commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+	forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法告诉DataSource将指定NSIndexPath处的表格行移动到另一个NSIndexPath处
+-(void)tableView:(UITableView *)tableView
+	moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+	toIndexPath:(NSIndexPath *)destinationIndexPath;
+
+除此之外，UITableViewDelegate协议也为编辑表格定义了如下方法
+
+// 开始编辑某个表格行时激发该方法
+-(void)tableView:(UITableView *)tableView
+	willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 当编辑完某个表格行时激发该方法
+-(void)tableView:(UITableView *)tableView
+	didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法的返回一个枚举值，决定了该表格的编辑状态
+// UITableViewCellEditingStyleNone  无状态
+// UITableViewCellEditingStyleDelete  删除状态
+// UITableViewCellEditingStyleInsert  插入状态
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView
+	editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法返回的NSString将作为删除指定表格行时确定按钮的文本
+-(NSString *)tableView:(UITableView *)tableView
+	titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+// 该方法返回的BOOL值决定表格处于编辑状态时，该表格行是否应该缩进。如果没有重写该方法，则默认所有表格行处于编辑状态时都缩进
+-(BOOL)tableView:(UITableView *)tableView
+	shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath;
+
+
+应用示例：
+
+NSMutableArray* list;
+// 记录当前正在执行的操作，0代表删除，1代表插入
+NSUInteger action;
+
+// UITableViewDelegate协议中定义的方法。该方法的返回值决定单元格的编辑状态
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView
+	editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 如果action的值为0，代表将要删除
+	return action == 0 ? UITableViewCellEditingStyleDelete:
+		UITableViewCellEditingStyleInsert;
+}
+
+// UITableViewDelegate协议中定义的方法。
+// 该方法的返回值作为删除指定表格行时确定按钮的文本
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:
+	(NSIndexPath *)indexPath
+{
+	return @"确认删除";
+}
+
+// UITableViewDataSource协议中定义的方法。该方法的返回值决定某行是否可编辑
+- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:
+	(NSIndexPath *)indexPath
+{
+	// 如果该表格行的数据为孙悟空，返回NO——代表这行数据不能编辑
+	if ([[list objectAtIndex:[indexPath row]] isEqualToString:@"孙悟空"])
+	{
+		return NO;
+	}
+	// 除了第2个表格行的数据不能编辑
+	if (indexPath.row == 1) {
+		return NO;
+	}
+	return YES;
+}
+
+// UITableViewDataSource协议中定义的方法。移动完成时激发该方法
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:
+	(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)
+	destinationIndexPath
+{
+	NSInteger sourceRowNo = [sourceIndexPath row];
+	NSInteger destRowNo = [destinationIndexPath row];
+	// 获取将要移动的数据
+	id targetObj = [list objectAtIndex:sourceRowNo];
+	// 从底层数组中删除指定数据项
+	[list removeObjectAtIndex: sourceRowNo];
+	// 将移动的数据项插入到指定位置。
+	[list insertObject:targetObj atIndex:destRowNo];
+}
+
+// UITableViewDataSource协议中定义的方法。
+// 编辑（包括删除或插入）完成时激发该方法
+- (void) tableView:(UITableView *)tableView commitEditingStyle:
+	(UITableViewCellEditingStyle)editingStyle
+ 	forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// 如果正在提交删除操作
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSInteger rowNo = [indexPath row];		
+		// 从底层NSArray集合中删除指定数据项
+		[list removeObjectAtIndex: rowNo];
+		// 从UITable程序界面上删除指定表格行。
+		[tableView deleteRowsAtIndexPaths:[NSArray
+			arrayWithObject:indexPath]
+			withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
+	// 如果正在提交插入操作	
+	if(editingStyle == UITableViewCellEditingStyleInsert)
+	{
+		// 将当前行的数据插入到底层NSArray集合中
+		[list insertObject:[list objectAtIndex:indexPath.row]
+			atIndex:indexPath.row + 1];
+		// 为UITableView控件的界面上插入一行
+		[tableView insertRowsAtIndexPaths:[NSArray
+			arrayWithObject:indexPath]
+			withRowAnimation:UITableViewRowAnimationFade];
+	}
+}
+
+// 单击添加、删除、完成按钮的事件处理方法
+- (IBAction) toggleEdit:(id)sender
+{
+	// 如果用户单击了“删除”按钮，action设为0（代表删除），否则action设为1（代表添加）
+	if([[sender title] isEqualToString:@"删除"])
+	{
+		action = 0;
+	}
+	else
+	{
+		action = 1;
+	}
+	// 使用动画切换表格的编辑状态
+	[self.table setEditing: !self.table.editing animated:YES] ;
+	
+	// 如果当前处于编辑状态
+	if (self.table.editing)
+	{
+		// 修改工具条上2个按钮的文本
+		self.addBn.title = @"完成";
+		self.deleteBn.title = @"完成";
+	}
+	// 如果当前没有处于编辑状态
+	else
+	{
+		// 修改工具条上2个按钮的文本	
+		self.addBn.title = @"添加";
+		self.deleteBn.title	 = @"删除";
+	}
+}
+
+
+
+
+*UITableViewController 表格视图控制器
+
+只要视图控制器直接继承UITableViewController，则无需再扩展任何表格视图协议，因为UITableViewController已经实现了UITableViewDataSource和UITableViewDelegate协议
+
+// 清楚该控制器的选择状态
+UITableViewController对象.clearsSelectionOnViewWillAppear = NO;
+
+// 设置该控制器作为浮动窗口时显示的大小
+UITableViewController对象.preferredContentSize = CGSizeMake(320.0, 600.0);
+
+
+同时UITableViewController可以使用UIRefreshControl控件刷新表格：
+
+// self为UITableViewController对象
+// 设置refreshControl属性，该属性值应该是UIRefreshControl控件
+self.refreshControl = [[UIRefreshControl alloc]init];
+// 设置UIRefreshControl控件的颜色
+self.refreshControl.tintColor = [UIColor grayColor];
+// 设置该控件的提示标题
+self.refreshControl.attributedTitle = [[NSAttributedString alloc]
+		initWithString:@"下拉刷新"];
+// 为UIRefreshControl控件的刷新事件设置事件处理方法
+[self.refreshControl addTarget:self action:@selector(refreshData)
+		forControlEvents:UIControlEventValueChanged];
+
+// 刷新数据的方法
+- (void) refreshData
+{
+	// 获取一个随机数字符串
+	NSString* str = 获取到的新数据;
+	// 将随机数字符串添加list集合中，list为内容数组
+	[list addObject:randStr];
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc]
+		initWithString:@"正在刷新..."];
+	// 停止刷新
+	[self.refreshControl endRefreshing];
+	// 控制表格重新加载数据
+	[self.tableView reloadData];
+}
+
+

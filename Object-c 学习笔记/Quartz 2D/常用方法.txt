@@ -1,0 +1,4 @@
+// 比较两个CGRect是否相等
+CGRectEqualToRect(CGRect rect1, CGRect rect2);
+// 比较两个CGSize是否相等
+CGSizeEqualToSize(CGSize size1, CGSize size2);

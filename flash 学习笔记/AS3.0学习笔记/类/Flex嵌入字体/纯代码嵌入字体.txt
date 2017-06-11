@@ -1,0 +1,57 @@
+﻿在项目中用纯代码嵌入字体
+
+1、首先在本地开建一个新的字体文件夹，以备后用。举例的时候我是用fontlib。以后这个名字要作为包路径使用。
+
+2、把你准备嵌入的字体文件拷贝到这个文件夹下，如果有不同的样式，则需要全部拷贝（比如粗体或斜体等，例子仅使用了正常体），例子中使用“微软雅黑”——msyh.ttc。
+
+3、在这个文件夹里建立一个新的类文件，名称自己定，这里使用ZWFontLib。需要注意的是：该类不继承自Font类，而是继承Sprite类。
+
+4、建立一个类变量（静态变量），名称也可以自由设定，主要是为了程序注册字体的时候需要。例子中使用yhRegular：
+                public static const yhRegular:Class;
+
+5、下面是关键：
+        A、在这个变量代码的前一行设定下面的属性（需要使用的内嵌资源），代码如下：
+                [Embed(source='msyh.ttc',
+                fontFamily  ='swollen',
+                fontStyle   ='italic' // normal|italic,
+                fontWeight  ='normal' // normal|bold,
+                unicodeRange='U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,
+U+005B-U+0060,U+0061-U+007A,U+007B-U+007E',
+                embedAsCFF='false')]
+
+重要参数说明：
+        source：指定系统中原字体文件的路径与名称，名称不能自定义，只能选取系统中字体文件的名称。例子中因为前面已经将该字体文件拷贝到本地，所以直接使用字体名称了（参见第2步）。
+        fontFamily：自定义的字体名称（这个名称就是将来在程序代码中调用字体时你将要使用的名称）。同一种字体要使用相同的名称，如：雅黑。例子中使用swollen。
+        fontStyle与fontWeight：区别同一种字体中不同样式的参数，如：雅黑斜体、雅黑粗体等。
+        unicodeRange：指定字体中包含的字符范围；如果将来影片中使用的字符没有在包含的范围内，将不能显示该字符。对于中文字符最好设定范围，不然编译后的影片将很大。一般字符，可以只设定拉丁范围，详细的范围在本文后面附上。
+        embedAsCFF：对于一般Flash影片，没有作用，可不必理会。该参数仅对flex项目起作用。
+
+6、在类构造方法中注册你的字体。
+        public function ZFontLib() {
+                Font.registerFont(yhRegular);
+        }
+
+7、好了:一个内嵌的字体类就搞定了，现在就可以在代码中使用这个字体了。
+
+8、需要特别说明的是：
+        A、内嵌参数中区别大小写，不要搞错。
+        B、参数的顺序不得搞错。
+        C、在项目中使用字体前，必须先建立一个刚才创建的字体类的实例，否则前面做的工作都是无用功，文字不能正常显示。
+
+9、完整的例子与代码请下载附带的文件。
+
+10、字符范围说明：
+                Uppercase   : U+0020,U+0041-U+005A
+                Lowercase   : U+0020,U+0061-U+007A
+                Numerals    : U+0030-U+0039,U+002E
+                Punctuation : U+0020-U+002F,U+003A-U+0040,U+005B-U+0060,U+007B-U+007E
+                Basic Latin : U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E
+                Latin I     : U+0020,U+00A1-U+00FF,U+2000-U+206F,U+20A0-U+20CF,U+2100-U+2183
+                Latin Ext. A: U+0100-U+01FF,U+2000-U+206F,U+20A0-U+20CF,U+2100-U+2183
+                Latin Ext. B: U+0180-U+024F,U+2000-U+206F,U+20A0-U+20CF,U+2100-U+2183
+                Greek       : U+0374-U+03F2,U+1F00-U+1FFE,U+2000-U+206f,U+20A0-U+20CF,U+2100-U+2183
+                Cyrillic    : U+0400-U+04CE,U+2000-U+206F,U+20A0-U+20CF,U+2100-U+2183
+                Armenian    : U+0530-U+058F,U+FB13-U+FB17
+                Arabic      : U+0600-U+06FF,U+FB50-U+FDFF,U+FE70-U+FEFF
+                Hebrew      : U+05B0-U+05FF,U+FB1D-U+FB4F,U+2000-U+206f,U+20A0-U+20CF,U+2100-U+2183
+                chinese     : U+4E00-U+9FA5

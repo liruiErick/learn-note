@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body">
+    <h2>HTML5自动完成功能示例</h2>
+    输入你最喜欢的城市名称<br><br>
+<form autocompelete="on">
+    <input type="text" id="city" list="cityList" />
+    <datalist id="cityList">
+        <option value="BeiJing" label="北京">
+        <option value="QingDao" label="青岛">
+        <option value="QingZhou">青州</option>
+        <option value="QingHai">青海</option>
+	</datalist>
+    <input type="submit" value="提交信息" />
+</form>
+</body>
+</html>
+<!-- datalist元素为带自动检索功能的选择列表，与list属性配合使用 -->

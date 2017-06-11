@@ -1,0 +1,658 @@
+﻿* 单位换算，默认情况下
+16px = 1em = 1rem = 12pt
+1px = 0.75pt
+12px = 0.75em
+10px = 0.625em
+
+PX特点
+1. IE无法调整那些使用px作为单位的字体大小；
+2. 国外的大部分网站能够调整的原因在于其使用了em或rem作为字体单位；
+3. Firefox能够调整px和em，rem，但是96%以上的中国网民使用IE浏览器(或内核)。
+
+EM特点
+1. em的值并不是固定的；
+2. em会继承父级元素的字体大小。
+
+实际上 1em 就是是相对于父级容器字体大小的百分之百，所以我们在写 CSS 的时候，需要注意两点：
+1. body 选择器中声明 Font-size=62.5%，使 em 值变为 16px*62.5%=10px，这样12px=1.2em，10px=1em； 
+2. 将你的原来的px数值除以10，然后换上em作为单位；
+3. 那些被改变字体大小的元素中的子元素的em数值需要重新计算。
+
+REM特点
+rem是CSS3新增的一个相对单位（root em，根em），1rem永久等于16px，且不会受到父容器定义字体大小的影响，IE9以下浏览器不支持该单位。
+
+PT特点
+pt即point，是一个标准的长度单位，1pt＝1/72英寸，多用于印刷业。
+px和pt的使用区别，只有当用户改变默认的 96DPI（即 1px=1/96英寸，1pt＝1/72英寸）下才会产生：
+使用px定义文字，无论用户怎么设置，都不会改变大小；
+使用pt定义文字，当用户设置超过96DPI的值，数值越大，字体就越大。
+
+VW、VH
+vw、vh这两个单位分别表示宽高的百分比，只不过是基于浏览器窗口的的百分比，而非父级元素的，相当于具体值中的rem。
+IE9+局部支持，chrome/firefox/safari/opera支持，iOS safari 8+支持，Android browser4.4+支持，chrome for android39支持
+
+
+/* 初始化元素的属性为默认值（非浏览器预设值）（CSS3新增） */
+property: initial;
+property: -moz-initial;
+
+
+/* 设置宽高 */
+/* 设置了 absolute 或者 fixed 的元素 width 百分比值是基于它们的定位父元素 内容+内边距 的宽度 */
+width: 100px; /* 是指元素的内容宽度，不包括边框和内边距 */
+height: 300px; /* 是指元素的内容高度，不包括边框和内边距 */
+
+
+/* 设置外边距 */
+margin: 5px;
+/* margin-top/bottom 的百分比值是相对于父容器的 width，而非 height */
+/* margin-top/bottom 对非浮动或非绝对定位的行内元素无效 */
+/* 行内元素和行内块元素的 margin-top/bottom 为负值时，会变成相反方向的正值效果 */
+/* 非浮动或非绝对定位的块元素的 margin-top/bottom 会穿过未定义边框的父级元素，且与父元素的 margin-top/bottom 重叠（IE6-7却不存在这个问题） */
+/* 非浮动或非绝对定位的块元素的 margin 会与相邻元素的 margin 重叠，间距取最长的那个 margin 值 */
+/* 浮动或绝对定位的块元素的 margin 会与相邻元素的 margin 叠加，间距为两个元素 margin 之和 */
+
+
+/* 设置内边距 */
+padding: 15px;
+/* padding-top/bottom 的百分比值是相对于父容器的 width，而非 height */
+/* padding-top/bottom 对非浮动或非绝对定位的行内元素无效 */
+
+
+/* 三种自定义颜色值，适用于所有color属性 */
+color:
+	rgb(255, 0, 0); /* 红、绿、蓝 */
+	rgba(255, 0, 0, 1.0); /* 红、绿、蓝、不透明度，IE9以下浏览器不支持 */
+
+	/* 色调-360~360、饱和度0%~100%、亮度0%~100% */
+	hsl(<length>, <percentage>, <percentage>);
+	/* 色调-360~360、饱和度0%~100%、亮度0%~100%、不透明度0.0~1.0，IE9以下浏览器不支持 */
+	hsla(<length>, <percentage>, <percentage>, <opacity>);
+
+	transparent; /* 完全透明 */
+
+/* 设置不透明度 */
+opacity:0.5;
+filter:Alpha(opacity=50); /* IE8 以及更早的浏览器设置不透明度 */
+
+
+/* 设置元素的隐藏与显示 */
+/* 和 opacity 不同的是，当父元素使用 visibility: hidden 隐藏以后，子元素可以通过设置 visibility: visible 来显示 */
+visibility:
+	visible; /* 默认值，元素是可见的 */
+	hidden; /* 元素是不可见的，并且不会响应交互事件，但是依然占用原有位置 */
+	collapse; /* 当在表格元素中使用时，此值可删除一行或一列，但是它不会影响表格的布局。如果此值被用在其他的元素上，会呈现为 "hidden" */
+	inherit; /* 规定应该从父元素继承 visibility 属性的值 */
+	
+
+/* 设置字体 */
+font: italic bold 12px/30px arial, sans-serif; /* 所有字体属性在一个声明之内，12px/30px为字号和行高的缩写 */
+/* 字体子属性 */
+font-style: /* 默认正常normal、斜体italic、倾斜oblique */
+font-variant: /* 默认正常normal、小型大写字母small-caps */
+font-weight: /* 默认正常normal、粗体bold、更粗bolder、更细lighter、100～900的整百数值，400等同于normal，而700等同于bold */ */
+font-size: 12px; /* 字体大小 */
+line-height: 200%; /* 行高，各浏览器默认值不一，chrome 约等于 1.17，firefox 约等于 1.1。行高可以是比配字体大小的百分比或者行数，也可以是具体像素值 */
+font-family: /* 设置字体，多个字体逗号隔开，如果无法找到前一种字体，则显示下一种，依次类推 */
+caption: /* 定义被标题控件（比如按钮、下拉列表等）使用的字体 */
+icon: /* 定义被图标标记使用的字体 */
+menu: /* 定义被下拉列表使用的字体 */
+message-box: /* 定义被对话框使用的字体 */
+small-caption: /* caption 字体的小型版本 */
+status-bar: /* 定义被窗口状态栏使用的字体 */
+
+
+/* 设置文本字符之间的间距 */
+letter-spacing: 0.1em;
+
+
+/* 设置单词之间的间距 */
+word-spacing: 0.1em;
+
+
+/* 文本装饰 */
+text-decoration:
+	none; /* 默认。定义标准的文本 */
+	underline; /* 定义文本下的一条线 */
+	overline; /* 定义文本上的一条线 */
+	line-through; /* 定义穿过文本的一条线 */
+	blink; /* 定义闪烁的文本，IE、Chrome、Safari 都不支持 */
+
+
+/* 文本缩进 */
+/* 文本缩进属性实际上是在文本前添加指定宽度的“空白”字符。因此，单行文本如果设置了右对齐，将看不到任何效果 */
+/* 文本缩进属也看可以设置负值。样，单行文本如果设置了右对齐，将看不到任何效果 */
+text-indent: 2em; /* 将文本第一行缩进2个字 */
+
+
+/* 控制文本中的字母 */
+text-transform:
+	none; /* 默认，不修改文本的大小写 */
+	capitalize; /* 文本中的每个单词以大写字母开头 */
+	uppercase; /* 定义单词全部显示为大写字母 */
+	lowercase; /* 定义单词全部显示为小写字母 */
+
+
+/* 控制文本的方向 */
+direction:
+	ltr; /* 默认，文本方向从左到右 */
+	rtl; /* 文本方向从右到左 */
+
+
+/* 空白和换行处理 */
+white-space:
+	normal; /* 默认值，空白会被浏览器忽略 */
+	pre; /* 空白会被浏览器保留 */
+	nowrap; /* 强制不换行，直到遇到 <br> 标签为止 */
+	pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
+	pre-line; /* 合并空白符序列，但是保留换行符 */
+	inherit; /* 规定应该从父元素继承 white-space 属性的值 */
+/* 单词换行规则 */
+word-break:
+	normal; /* 使用浏览器默认的换行规则，即如果本行剩余空间不足以容纳这个单词，则该单词另起一行显示 */
+	break-all; /* 无视默认换行规则，只在英文单词到达行尾处强行截断并换行 */
+	keep-all; /* 只能在半角空格或连字符处换行（似乎 webkit 浏览器不支持） */
+/* 长单词截断 */
+word-wrap:
+	normal; /* 默认值，只在允许的断字点换行 */
+	break-word; /* 保证浏览器默认的换行规则，但当一个单词长度超过容器宽度时，强行截断使其换行 */
+
+
+/* 溢出处理 */
+/* CSS3中还可以单独处理水平或垂直方向的溢出，overflow-x、overflow-y（IE8及以下浏览器如果出现问题，则需要将容器设置为定位元素） */
+/* 注意，overflow-x、overflow-y 无论设置了什么值，获取到的 overflow 属性值都为 auto */
+overflow:
+	visible; /* 默认值，溢出内容不会被隐藏，会呈现在元素框之外 */
+	hidden; /* 溢出内容会被隐藏，并且其余内容是不可见的（注意，absolute元素只能被设置了relative的容器隐藏） */
+	scroll; /* 溢出内容会被隐藏，且无论内容是否溢出，浏览器都会显示滚动条 */
+	auto; /* 溢出内容会被隐藏，只有内容溢出时，浏览器才会显示滚动条 */
+
+
+/* 超长文本的溢出处理 */
+/* 必须与 overflow:hidden 以及 white-space:nowrap 配合使用 */
+text-overflow:
+	clip; /* 不显示省略标记，而简单裁剪（似乎是默认值） */
+	ellipsis; /* 在被裁剪的文本最后一个字符位置显示省略标记 */
+	ellipsis-word; /* 在被裁剪的文本最后一个词位置显示省略标记（实际测试谷歌和火狐浏览器都不支持） */
+	string; /* 使用给定的字符串来代表被修剪的文本（实际测试谷歌和火狐浏览器都不支持） */
+
+
+/* 元素中子元素的水平对齐方式 */
+/* 只对为行内元素或者行内块元素的子元素有效 */
+text-align:
+	left; /* 左对齐。默认值：由浏览器决定 */
+	right; /* 右对齐 */
+	center; /* 居中对齐 */
+	justify; /* 多行子元素两端对齐，对最后一行子元素或者单行子元素是无效的 */
+	inherit; /* 规定应该从父元素继承 text-align 属性的值（IE8及以下浏览器不支持，而且会导致IE6报错） */
+
+
+/* 行内元素（包括 inline-block）的垂直对齐方式 */
+/* 如果该属性应用到一个block元素上时，大多数浏览器会依照继承的原则，将所有它的inline子元素（inline-block 除外）也应用这个属性 */
+vertical-align:
+	baseline; /* 默认。元素放置在父元素的基线上 */
+	sub; /* 垂直对齐文本的下标 */
+	super; /* 垂直对齐文本的上标 */
+	top; /* 把元素的顶端与行中最高元素的顶端对齐 */
+	text-top; /* 把元素的顶端与父元素字体的顶端对齐 */
+	middle; /* 把此元素放置在父元素的中部 */
+	bottom; /* 把元素的顶端与行中最低的元素的顶端对齐 */
+	text-bottom; /* 把元素的底端与父元素字体的底端对齐 */
+	length; /* 设置行内元素底部相对于基线的像素距离。正值比基线高，负值则不基线底 */	 
+	xxx%; /* 使用 "line-height" 属性的百分比值来排列此元素。允许使用负值 */
+
+
+/* 自定义 li 列表类型 */
+list-style-type:
+	none; /* 无标记 */
+	disc; /* 默认。标记是实心圆 */
+	circle; /* 标记是空心圆 */
+	square; /* 标记是实心方块 */
+	decimal; /* 标记是数字 */
+/* 自定义 li 列表标记 */
+/* 自定义 li 列表的标记并不是垂直居中的，且IE6和其他浏览器的显示位置也不相同，所以尽量使用 background-image 来实现自定义列表图标 */
+list-style-image: url(images/bg.gif);
+/* 定义 li 列表标记位置 */
+list-style-position:
+	outside; /* 默认值，标记在li框架以外 */
+	inside; /* 标记在li框架以内 */
+
+
+/* 定位方式 */
+/* top、bottom、left、right 规定元素外边距边缘与定位父元素边框内侧的距离，默认值为 auto，位置为定位父元素的内容区域左上角  */
+position:
+	static; /* 默认值，没有定位，忽略 top、bottom、left、right 以及 z-index 声明 */
+	relative; /* 相对定位，top、bottom、left、right 相对于前自身在文档树中的原有位置进行定位。但如果是行内元素和行内块元素，那么 top、bottom 无效 */
+	absolute; /* 绝对定位，top、bottom、left、right 相对于除 static 定位以外的第一个定位父元素的边框内侧进行定位，如果没有则相对于 html 进行定位 */
+	fixed; /* 绝对定位，相对于浏览器窗口进行定位 */
+/* 设置了 absolute 或者 fixed 的元素 width 百分比值是基于它们的定位父元素 内容+内边距 的宽度 */
+/* 如果绝对定位元素设定宽高为 auto 的情况下，同时设置了 left 和 right 或者 top 和 bottom，那么该元素将会按照左右或上下定位距离计算自身的宽高（但是IE6不支持这种方法） */
+/* 如果绝对定位元素设定宽高不为 auto 的情况下，同时设置了 left 和 right 或者 top 和 bottom，那么该元素的 right 和 bottom 将会失效 */
+/* 注意！在分别设置了四个方向的定位后，生效的一个方向的定位会使相反方向的 margin 失效 */
+
+/* 当 position 值为 absolute 或者 fixed 时，可裁剪元素，rect参数分别为上、右、下、左的相对位置 */
+clip: rect(20px 100px 100px 20px);
+
+/* 当 position 值不为 static 时，可设置元素层级，默认为 auto，取值为整数 */
+z-index: 1;
+/* 值大的元素显示在值小的元素之上 */
+/* 如果值大于0，那么该元素将显示在值为auto的元素之上 */
+/* 如果值小于0，那么该元素将显示在值为auto的元素之下 */
+/* 如果值等于0，那么该元素将以正常的元素层级显示 */
+/* 如果元素有某个祖先容器的值不等于auto，那么该元素无论z-index的值为多少，都将首先以该祖先元素的层级关系来显示，然后在这个祖先元素内部再以自身的层级关系来显示 */
+
+
+
+/* 浮动 */
+/* 设置了该属性的元素相当于脱离了原文档结构，非绝对定位或浮动的父元素不会被其撑起，但可以被浮动子元素撑起 */
+/* 如果是行内元素浮动，则可以设定高宽。特性类似 inline-block 元素，只是相邻浮动元素为顶部对齐 */
+/* 同时不会出现与子元素 margin-top/bottom 重叠的 bug */
+float:
+	none; /* 默认值，不浮动 */
+	left; /* 左浮动 */
+	right; /* 右浮动 */
+
+
+/* 清除浮动 */
+/* 设置了该属性的元素用于放置在浮动元素之后，可以帮助父容器确定浮动元素整体高度 */
+clear:
+	none; /* 默认值，允许两侧跟随浮动元素 */
+	left; /* 左侧不允许跟随浮动元素 */
+	right; /* 右侧不允许跟随浮动元素 */
+	both; /* 左右两侧均不允许跟随浮动元素 */
+
+
+/* 规定元素的显示类型 */
+/* IE6-7只支持 inline、block、none 这三个值 */
+display:
+	inline; /* 行内元素，此元素前后没有换行符 */
+		/* 会受到父容器的 text-align、line-height、vertical-align 属性的影响，且自身可设置 vertical-align */
+		/* 不能设置宽高，宽高随内容宽高变化，且不会与任何元素重叠显示 */
+		/* 副作用为 margin-top/bottom 和 padding-top/bottom 不会使自身产生垂直方向上的位移 */
+	block; /* 块级元素，此元素前后会带有换行符 */
+		/* 不会受到父容器的 text-align、line-height、vertical-align 属性的影响，且自身设置 vertical-align 无效 */
+		/* 宽高默认auto时，宽度自适应父级元素宽度，且宽度不会被子元素撑大超过父元素宽度。高度自适应子元素，但浮动子元素不计算在内。可以设置宽高 */
+	inline-block; /* 行内块元素，此元素前后没有换行符 */
+		/* 会受到父容器的 text-align、line-height 属性的影响，且自身可设置 vertical-align */
+		/* 默认宽高自适应子元素，且宽度会被子元素撑大超过父元素宽度。浮动元素也计算在内。可以设置宽高，且没有行内元素和块级元素的副作用 */
+		/* 特性类似浮动元素，只是相邻行内块元素为底部对齐 */
+	none; /* 此元素不会被显示，并且宽高会被其他元素忽略，不再占用位置 */
+	list-item; /* 此元素会作为列表显示（类似 <li>）*/
+	run-in; /* 此元素会根据上下文作为块级元素或内联元素显示 */
+	table; /* 此元素会作为块级表格来显示（类似 <table>），表格前后带有换行符 */
+	inline-table; /* 此元素会作为内联表格来显示（类似 <table>），表格前后没有换行符 */
+	table-row-group; /* 此元素会作为一个或多个行的分组来显示（类似 <tbody>） */
+	table-header-group; /* 此元素会作为一个或多个行的分组来显示（类似 <thead>） */
+	table-footer-group; /* 此元素会作为一个或多个行的分组来显示（类似 <tfoot>） */
+	table-row; /* 此元素会作为一个表格行显示（类似 <tr>） */
+	table-column-group; /* 此元素会作为一个或多个列的分组来显示（类似 <colgroup>） */
+	table-column; /* 此元素会作为一个单元格列显示（类似 <col>） */
+	table-cell; /* 此元素会作为一个表格单元格显示（类似 <td> 和 <th>） */
+	table-caption; /* 此元素会作为一个表格标题显示（类似 <caption>） */
+	inherit; /* 规定应该从父元素继承 display 属性的值 */
+
+
+/* 鼠标事件（CSS3属性） */
+pointer-events:
+	auto; /* 默认值，使元素响应鼠标事件 */
+	none; /* 使元素不响应鼠标事件 */
+
+
+/* 生成内容属性 */
+/* 与 :before 及 :after 伪元素配合使用，来插入生成内容 */
+content:
+	none; /* 无内容 */
+	string; /* 定义文本内容 */
+	url(地址); /* 定义一个url地址指向的内容，比如图片 */
+	attr(属性名); /* 定义内容为该元素的指定属性值 */
+	counter(变量名); /* 定义内容为计数器指定变量的值。与字符串配合使用 content:"Section " counter(section) ". "; */
+			/* 它还有第二个参数，参数值选择一个 list-style-type，就可以类似控制列表一样控制其项目符号。 */
+/* 计数器 */
+/* 如果使用了 "display: none"，则无法增加计数。如使用 "visibility: hidden"，则可增加计数 */
+counter-reset: 变量名 初始值; /* 在容器元素声明一个变量，可以设置初始值，可正可负，默认为0 */
+counter-increment: 变量名 增量值; /* 在子元素上使变量增加指定的增量值，可以设置增量，可正可负，默认为1 */
+/* 例如 */
+ul { counter-reset: num 0; }
+ul li { counter-increment: num 1; }
+ul li:before { content: counter(num); }
+
+
+/* 表格布局属性 */
+table-layout:
+	auto; /* 默认值，列宽度由单元格中最宽的内容设定 */
+	fixed; /* 列宽由表格宽度和列宽度设定 */
+
+
+/* 使元素可调整尺寸（IE9及以下浏览器不支持） */
+/* 该元素 overflow 属性必须不是 visible 才会有效 */
+/* 调整的最小尺寸为该元素的宽高值，调整的最大尺寸为无限大或者该元素的 max-width/height */
+resize:
+	none; /* 默认值，用户无法调整元素的尺寸 */
+	both; /* 用户可调整元素的高度和宽度 */
+	horizontal; /* 用户可调整元素的宽度 */
+	vertical; /* 用户可调整元素的高度 */
+
+
+/* 盒模型定义设置，定义了 width、height 值所控制的范围（IE7及以下浏览器不支持） */
+box-sizing:
+	content-box; /* 默认值，W3C的标准，width、height 仅表示内容区域的宽高 */
+	border-box; /* width、height 表示 边框+内边距+内容区域 的宽高 */
+
+
+
+
+
+
+
+* 各浏览器均支持的私有属性，必须加入各浏览器的私有前缀
+Gecko内核（火狐浏览器）  -moz-
+Webkit内核（苹果、谷歌浏览器）  -webkit-
+Presto内核（Opera浏览器）  -o-
+IE8内核  -ms-
+
+/* 禁止用户选择（IE9及以下浏览器不支持） */
+-webkit-user-select:
+-moz-user-select:
+	auto; /* 默认值，用户可以选中元素中的内容 */
+	none; /* 用户不能选择元素中的任何内容 */
+	text; /* 用户可以选择元素中的文本 */
+	element; /* 文本可选，但仅限元素的边界内(只有IE和FF支持) */
+	all; /* 在编辑器内，如果 双击/上下文点击 发生在子元素上，该元素的最高级祖先元素将被选中 */
+	-moz-none; /* firefox私有，元素和子元素的文本将不可选，但是，子元素可以通过text重设回可选 */
+
+/* IE9及以下浏览器如果需要禁止选择可以使用如下标签属性来设置 */
+<div unselectable="on" onselectstart="return false;"></div>
+
+
+/* 改变文档的书写方向（IE6-7不支持） */
+/* 当文档的书写方向改为垂直时，子元素的margin、padding的百分比将基于他们父容器的高度 */
+writing-mode:
+	horizontal-tb; /* 默认值，水平排列，由上至下 */
+	vertical-lr; /* 垂直排列，由左至右（英文和数字将会向右侧旋转90度） */
+	vertical-rl; /* 垂直排列，由右至左（英文和数字将会向右侧旋转90度） */
+	/* 以下是火狐专有的属性值 */
+	sideways-lr; /* 所有文本向左侧旋转90度效果 */
+	sideways-rl; /* 所有文本向右侧旋转90度效果 */
+
+/* 兼容写法 */
+-webkit-writing-mode: vertical-lr;
+   -mor-writing-mode: vertical-lr;
+	    writing-mode: vertical-lr;
+
+
+
+/* 旧弹性容器（设置在父元素上） */
+/* 设置了弹性盒后，CSS的columns在弹性容器上没有效果 */
+/* 设置了弹性盒后，float、clear和vertical-align在子元素上没有效果 */
+display: box; /* 设置了盒模型的父元素可以按比例排列子元素，默认为水平方向平均排列，且该父元素会变为内联元素 */
+
+/* 兼容模式，所有子属性同样要加上对应前缀（IE浏览器与opera浏览器都不支持） */
+display:
+	-webkit-box; /* old - iOS 6-, Safari 3.1-6 */
+	-moz-box; /* old - Firefox 19- */
+
+/* 设置盒模型容器内元素的排列方式（设置在父元素上） */
+box-orient:
+	horizontal; /* 在水平行中从左向右排列子元素 */
+		/* 此时如果父元素定义了高度值，其子元素的高度值设置则无效状态，所有子元素的高度等于父元素的高度值；如果父元素不设置高度值，其子元素的高度值才有效并且取最大高度值的子元素的高度 */
+	vertical; /* 从上向下垂直排列子元素 */
+		/* 此时如果父元素定义了宽度值，其子元素的宽度值设置则无效状态，所有子元素的宽度等于父元素的宽度值；如果父元素不设置宽度值，其子元素的宽度值才有效并且取最大宽度值的子元素的宽度 */
+	inline-axis; /* 沿着行内轴来排列子元素（映射为 horizontal） */
+	block-axis; /* 沿着块轴来排列子元素（映射为 vertical） */
+	inherit; /* 应该从父元素继承 box-orient 属性的值 */
+
+/* 设置盒模型容器内元素的反方向显示元素内容（设置在父元素上） */
+box-direction:
+	normal; /* 默认不改变方向 */
+	reverse;  /* 反向排列 */
+
+/* 设置子元素与排列方向同方向的对齐方式（设置在父元素上） */
+box-pack:
+	start; /* 默认值，根据子元素排列方向，整体向起始位置对齐 */
+	end; /* 根据子元素排列方向，整体向结位束置对齐 */
+	center; /* 根据子元素排列方向，贴紧居中对齐，如果剩余空间是负数，则保持两端溢出的长度相等 */
+	justify; /* 根据子元素排列方向，贴紧两端平均分布 */
+
+/* 设置每行中的子元素与排列方向垂直方向的对齐方式（设置在父元素上） */
+box-align:
+	start; /* 根据子元素排列方向的垂直方向，每行中的子元素向起始位置对齐 */
+	end; /* 根据子元素排列方向的垂直方向，每行中的子元素向结束位置对齐 */
+	center; /* 根据子元素排列方向的垂直方向，每行中的子元素向居中位置对齐 */
+	baseline; /* 根据子元素排列方向的垂直方向，每行中的子元素延基线对齐 */
+	stretch; /* 默认值，每行中的子元素拉伸填充整个伸缩容器。此值会使项目的外边距盒的尺寸在遵照「min/max-width/height」属性的限制下尽可能接近所在行的尺寸 */
+
+/* 设置子元素在父元素中的显示顺序（设置在子元素上） */
+box-ordinal-group: 1; /* 一个整数，指示子元素的显示次序，1为最小值 */
+
+/* 设置子元素在父元素中所占用的比例（设置在子元素上） */
+box-flex: 1; /* 计算方式是将同一行内所有子元素的该属性值相加，然会算出自己所占的比 */
+/* 子元素如果设置了固定宽度值，该子元素则直接应用设置的宽度值，其它没有设置的则在父元素的宽度基础上减去子元素的固定宽度后剩下的宽度基础上按比例进行划分分配 */
+
+
+
+
+/* 新弹性容器（设置在父元素上） */
+/* 移动设备上，只有Safari6.1+ Android4.4+ 支持 */
+/* 设置了弹性盒后，CSS的columns在弹性容器上没有效果 */
+/* 设置了弹性盒后，float、clear和vertical-align在子元素上没有效果 */
+display:
+	flex; /* 块级弹性容器，如果子元素溢出，可以平均调整子元素宽高来适应自身的宽高，收缩内容防止内容溢出 */
+	inline-flex; /* 行内弹性容器，可以与其他行内元素并列于同一行 */
+
+/* 兼容模式，所有子属性同样要加上对应前缀 */
+display:
+	-webkit-flex; /* new - Chrome */
+	-webkit-inline-flex;
+	-ms-flexbox; /* IE 10+ */
+	-ms-inline-flexbox;
+	flex; /* new, Spec - Opera 12.1, Firefox 20+ */
+	inline-flex;
+
+/* 设置容器内元素的排列方向（设置在父元素上） */
+flex-direction:
+	row; /* 横向排列（默认左对齐） */
+	row-reverse; /* 横向反向排列（默认右对齐） */
+	column;  /* 纵向排列（默认顶对齐） */
+	column-reverse;  /* 纵向反向排列（默认底对齐） */
+
+/* 设置容器内元素的换行方式（设置在父元素上） */
+flex-wrap:
+	nowrap; /* 默认值，子元素不换行，如果子元素的设置宽度之和超过父元素，那么子元素的实际宽度会被适当的减小，以适应一行内显示 */
+	wrap; /* 子元素超出后换行 */
+	wrap-reverse; /* 子元素超出后换行。如果是水平排列，则第一行从底部开始。如果是垂直排列，则第一行从右侧开始 */
+
+/* “flex-direction”和“flex-wrap”属性的缩写版本 */
+flex-flow: <flex-direction> || <flex-wrap>;
+
+/* 设置子元素与排列方向同方向的对齐方式（设置在父元素上） */
+justify-content:
+	flex-start; /* 默认值，根据子元素排列方向，整体向起始位置对齐 */
+	flex-end; /* 根据子元素排列方向，整体向结位束置对齐 */
+	center; /* 根据子元素排列方向，贴紧居中对齐，如果剩余空间是负数，则保持两端溢出的长度相等 */
+	space-between; /* 根据子元素排列方向，贴紧两端平均分布 */
+	space-around; /* 根据子元素排列方向，子元素在弹性容器中平均分布，在两边各有一半的空间 */
+/* IE 10+ */
+-ms-flex-pack:
+	start; /* 默认值，根据子元素排列方向，整体向起始位置对齐 */
+	end; /* 根据子元素排列方向，整体向结位束置对齐 */
+	center; /* 根据子元素排列方向，贴紧居中对齐，如果剩余空间是负数，则保持两端溢出的长度相等 */
+	justify; /* 根据子元素排列方向，贴紧两端平均分布 */
+	distribute; /* 根据子元素排列方向，子元素在弹性容器中平均分布，在两边各有一半的空间 */
+
+/* 设置各行与子元素排列方向垂直方向的对齐方式（子元素排列超过1行时才会有效，设置在父元素上） */
+align-content:
+	flex-start; /* 根据子元素排列方向的垂直方向，各行向起始位置对齐 */
+	flex-end; /* 根据子元素排列方向的垂直方向，各行向结束位置对齐 */
+	center; /* 根据子元素排列方向的垂直方向，各行向居中位置对齐 */
+	space-between; /* 根据子元素排列方向的垂直方向，各行贴紧两端平均分布 */
+	space-around; /* 根据子元素排列方向的垂直方向，各行在弹性容器中平均分布，在两边各有一半的空间 */
+	stretch; /* 默认值，各行将会伸展以占用剩余的空间 */
+/* IE 10+ */
+-ms-flex-line-pack:
+	start; /* 根据子元素排列方向的垂直方向，各行向起始位置对齐 */
+	end; /* 根据子元素排列方向的垂直方向，各行向结束位置对齐 */
+	center; /* 根据子元素排列方向的垂直方向，各行向居中位置对齐 */
+	justify; /* 根据子元素排列方向的垂直方向，各行贴紧两端平均分布 */
+	distribute; /* 根据子元素排列方向的垂直方向，各行在弹性容器中平均分布，在两边各有一半的空间 */
+	stretch; /* 默认值，各行将会伸展以占用剩余的空间 */
+
+/* 设置每行中的子元素与排列方向垂直方向的对齐方式（align-content的值为 stretch 时才有效，设置在父元素上） */
+align-item:
+	flex-start; /* 根据子元素排列方向的垂直方向，每行中的子元素向起始位置对齐 */
+	flex-end; /* 根据子元素排列方向的垂直方向，每行中的子元素向结束位置对齐 */
+	center; /* 根据子元素排列方向的垂直方向，每行中的子元素向居中位置对齐 */
+	baseline; /* 根据子元素排列方向的垂直方向，每行中的子元素延基线对齐 */
+	stretch; /* 默认值，每行中的子元素拉伸填充整个伸缩容器。此值会使项目的外边距盒的尺寸在遵照「min/max-width/height」属性的限制下尽可能接近所在行的尺寸 */
+/* IE 10+ */
+-ms-flex-align:
+	start; /* 根据子元素排列方向的垂直方向，每行中的子元素向起始位置对齐 */
+	end; /* 根据子元素排列方向的垂直方向，每行中的子元素向结束位置对齐 */
+	center; /* 根据子元素排列方向的垂直方向，每行中的子元素向居中位置对齐 */
+	baseline; /* 根据子元素排列方向的垂直方向，每行中的子元素延基线对齐 */
+	stretch; /* 默认值，每行中的子元素拉伸填充整个伸缩容器。此值会使项目的外边距盒的尺寸在遵照「min/max-width/height」属性的限制下尽可能接近所在行的尺寸 */
+
+/* 设置单个子元素所在行中的对齐方式，取值与 align-item 相同（align-content的值为 stretch 时才有效，设置在子元素上） */
+-webkit-align-self: auto;
+-ms-flex-item-align: auto;
+align-self: auto;
+
+/* 设置子元素在父元素中的显示顺序（设置在子元素上） */
+order: 0; /* 一个整数，指示子元素的显示次序，0为最小值 */
+-ms-flex-order: 0; /* IE 10+ */
+
+/* 符合属性，设置子元素在父元素中所占用的比例（设置在子元素上） */
+flex: 1; /* 计算方式是将同一行内所有子元素的该属性值相加，然会算出自己所占的比 */
+/* 子元素如果设置了固定宽度值，该子元素则直接应用设置的宽度值，其它没有设置的则在父元素的宽度基础上减去子元素的固定宽度后剩下的宽度基础上按比例进行划分分配 */
+/* 可以拆分成三个子属性 */
+flex-grow: <number>; /* 默认值为 0，设置子元素在父元素中所占用的比例 */
+flex-shrink: <number>; /* 默认值为 1，根据需要用来定义伸缩项目收缩的能力 */
+flex-basis: <length> | auto; /* 默认值为 auto，用来设置伸缩基准值，剩余的空间按比率进行伸缩 */
+
+	
+
+
+
+
+/* 可将元素内容用竖线分割成若干竖列的栏目 */
+-webkit-column-count: 3; /* 栏总数 */
+-webkit-column-width: 10px; /* 栏宽，如果设定了栏总数则无效 */
+-webkit-column-gap: 1.5em; /* 栏之间的间距 */
+-webkit-column-rule: 1px solid #F00; /* 分隔线 */
+/* 设置填充模式，之前版本的默认值是auto，最新版本的chrome默认值为 balance */
+/* 注意，设置该属性的容器一定要确定高度，如果高度为auto，则该属性无效 */
+-webkit-column-fill:
+	auto; /* 列高度自适应内容 */
+	balance; /* 所有列的高度以其中最高的一列统一 */
+
+
+
+
+/* 给元素增加触控效果 */
+/* IE11、Edge、Chrome 36、Opera 26 */
+/* Firefox、Safari 暂不支持 */
+/* IE10 需要加 -ms- 前缀 */
+touch-action:
+	auto; /* 默认值，允许浏览器给元素添加touch行为 */
+	none; /* 不允许默认的touch行为 */
+	pan-x; /* 允许水平轴触摸驱动的平移 */
+	pan-left;
+	pan-right;
+	pan-y; /* 允许垂直轴触摸驱动的平移 */
+	pan-up;
+	pan-down;
+	pinch-zoom; /* 允许拖拽缩放 */
+	manipulation; /* 允许触摸驱动的平移和拖拽缩放 */
+	double-tap-zoom; /* 允许整个页面双击缩放指定元素 */
+	inherit; /* 继承父元素的值 */
+	
+	
+
+
+/* 改变浏览器对元素的默认渲染风格 */
+/* IOS设备按钮会具有默认样式，且这种样式无法被CSS修改，因此需要重置它的风格为none */
+-webkit-appearance:
+	none
+	checkbox
+	radio
+	push-button
+	square-button
+	button
+	button-bevel
+	listbox
+	listitem
+	menulist
+	menulist-button
+	menulist-text
+	menulist-textfield
+	scrollbarbutton-up
+	scrollbarbutton-down
+	scrollbarbutton-left
+	scrollbarbutton-right
+	scrollbartrack-horizontal
+	scrollbartrack-vertical
+	scrollbarthumb-horizontal
+	scrollbarthumb-vertical
+	scrollbargripper-horizontal
+	scrollbargripper-vertical
+	slider-horizontal
+	slider-vertical
+	sliderthumb-horizontal
+	sliderthumb-vertical
+	caret
+	searchfield
+	searchfield-decoration
+	searchfield-results-decoration
+	searchfield-results-button
+	searchfield-cancel-button
+	textfield
+	textarea
+
+-moz-appearance:
+	none
+	button
+	checkbox
+	checkbox-container
+	checkbox-small
+	dialog
+	listbox
+	menuitem
+	menulist
+	menulist-button
+	menulist-textfield
+	menupopup
+	progressbar
+	radio
+	radio-container
+	radio-small
+	resizer
+	scrollbar
+	scrollbarbutton-down
+	scrollbarbutton-left
+	scrollbarbutton-right
+	scrollbarbutton-up
+	scrollbartrack-horizontal
+	scrollbartrack-vertical
+	separator
+	statusbar
+	tab
+	tab-left-edge Obsolete
+	tabpanels
+	textfield
+	textfield-multiline
+	toolbar
+	toolbarbutton
+	toolbox
+	-moz-mac-unified-toolbar
+	-moz-win-borderless-glass
+	-moz-win-browsertabbar-toolbox
+	-moz-win-communications-toolbox
+	-moz-win-glass
+	-moz-win-media-toolbox
+	tooltip
+	treeheadercell
+	treeheadersortarrow
+	treeitem
+	treetwisty
+	treetwistyopen
+	treeview
+	window

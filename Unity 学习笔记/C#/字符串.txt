@@ -1,0 +1,38 @@
+# 字符串
+
+## String 对象的静态方法
+
+// 比较两个字符串，返回相对位置的整数。
+// 第三个参数表示是否忽略大小写。
+public static int Compare(string str1, string str2, bool ignoreCase);
+
+public static string Concat(string str1, string str2, ...); // 将若干个字符串合并。
+public static string Copy(string str); // 拷贝字符串。
+public static string Format(string temp, Object arg); // 类似于模板字符串的替换。
+public static string Join(string separator, string[] strArr, int startIndex, int count); // 使用分隔符将字符串数组连接成字符串
+public static bool Equals(string str1, string str2); // 判断两个字符串是否相等。
+public static bool IsNullOrEmpty(string str); // 判断指定字符串是否为 null 或者为一个空字符串。
+
+
+## String 对象的实例方法
+
+public int IndexOf(string str, int startIndex); // 返回指定字符串在当前字符串中第一次出现的位置索引。
+public int LastIndexOf(string str); // 返回指定字符串在当前字符串中最后一次出现的位置索引。
+public int IndexOfAny(char[] strArr, int startIndex); // 返回指定字符串数组中任意字符在当前字符串中第一次出现的索引。
+public bool Contains(string str); // 判断当前字符串是否包含给定字符串。
+public bool Equals(string str); // 判断当前字符串是否与给定字符串相等。
+public bool StartsWith(string str); // 判断当前字符串的开头是否匹配给定字符串。
+public bool EndsWith(string str); // 判断当前字符串的结尾是否匹配给定字符串。
+public string Insert(int startIndex, string str); // 将指定字符串插入到当前字符串的指定位置，并返回一个新字符串。
+public string Remove(int startIndex, int count); // 移除当前字符串中指定位置开始指定数量的字符串，并返回一个新字符串。
+public string Replace(string oldStr, string newStr); // 将旧字符串替换为新字符串。
+public string ToLower(); // 转小写，并返回。
+public string ToUpper(); // 转大写，并返回。
+public string Trim(); // 移除字符串两端的空格，并返回。
+public string[] Split(string separator, int limitCount); // 将当前字符串用分隔符分隔为字符串数组。
+public char[] ToCharArray(int startIndex, int length); // 返回一个当前字符串转换成的字符数组，参数可以控制起始字符的位置和长度。
+
+// 从 str 对象的指定位置开始复制指定数量的字符到 Unicode 字符数组中的指定位置。
+public void CopyTo(int sourceIndex, char[] destiation, int destination, int destinationIndex, int count);
+
+

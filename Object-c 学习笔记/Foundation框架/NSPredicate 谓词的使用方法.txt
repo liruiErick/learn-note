@@ -1,0 +1,48 @@
+*NSPredicate 谓词
+
+// NSArray方法，使用指定谓词过滤数组，返回该数组中符合谓词条件元素组成的新数组
+-(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate
+
+// NSMutableArray方法，使用指定谓词过滤数组，剔除该数组中不符合谓词条件的元素
+-(void)filterUsingPredicate:(NSPredicate *)predicate
+
+// NSSet方法，使用指定谓词过滤数组，返回该数组中符合谓词条件元素组成的新数组
+-(NSSet *)filteredSetUsingPredicate:(NSPredicate *)predicate
+
+// NSMutableSet方法，使用指定谓词过滤数组，剔除该数组中不符合谓词条件的元素
+-(void)filterUsingPredicate:(NSPredicate *)predicate
+
+
+NSSet* set = [NSSet setWithObjects:
+			[[FKUser alloc] initWithName:@"孙悟空"
+				 pass:@"343"],
+			[[FKUser alloc] initWithName:@"金角大王"
+				 pass:@"231"],
+			[[FKUser alloc] initWithName:@"猪八戒"
+				 pass:@"659"],
+			[[FKUser alloc] initWithName:@"太上老君"
+				 pass:@"743"],
+			[[FKUser alloc] initWithName:@"银角大王"
+				 pass:@"598"], nil];
+
+
+// 创建谓词，要求该对象自身的值大于50
+NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF > 50"];
+// 创建谓词，要求该对象的name值中包含'大王'
+NSPredicate* pred = [NSPredicate predicateWithFormat:@"name CONTAINS '大王'"];
+
+// 创建谓词，该谓词中包含了2个占位符
+// 后面的2个变量用于为占位符设置参数值
+NSString* propPath = @"name";
+NSString* value = @"大王";
+NSPredicate* pred = [NSPredicate predicateWithFormat:@"%K CONTAINS %@" , propPath , value];
+
+// 创建谓词，该谓词表达式中使用%K占位符，该占位符使用pass代替
+// 要求被比较对象的pass包含$SUBSTR子串。
+NSPredicate* predTemplate = [NSPredicate predicateWithFormat:@"%K CONTAINS $SUBSTR" , @"pass"];
+// 使用NDDictionary指定SUBSTR的值为'43'
+NSPredicate* pred = [predTemplate predicateWithSubstitutionVariables:
+					[NSDictionary dictionaryWithObjectsAndKeys:@"43" , @"SUBSTR", nil]];
+
+// 使用谓词执行过滤，过滤后集合只剩下pass值包含43的两个元素
+set = [set filteredSetUsingPredicate:pred];

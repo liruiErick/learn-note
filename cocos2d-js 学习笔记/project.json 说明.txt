@@ -1,0 +1,33 @@
+﻿project_type : 工程类型
+
+debugMode : debug模式。0表示关闭调试模式，1表示log，2表示warn，3表示error，5表示logForWebPage，6表示warnForWebPage，7表示errorForWebPage。
+
+renderMode : 渲染模式。0为默认，1为canvas，2为webgl。
+
+showFPS : 是否显示FPS,就是左下角的那三行数据，第一个是渲染的调用次数，第二个是每帧的时间开销，第三个是帧率
+
+frameRate : 帧率。默认为60。
+
+engineDir : 引擎路径
+
+id : 用于指定canvas的id。
+
+modules : 加载模块，默认只加载["cocos2d"]，那比如你想用chipmunk物理引擎,就需要再加载external模块。也就是modules : ["cocos2d","external"]，最后项目打包的时候，只打包有加载进来的模块，所以，没用到的不要加载进来。
+
+jsList : 自定义JS源文件的一个集合，类似Java、OC中的#import或者C、C++中的#include。
+
+
+
+要获取配置文件的值，可以这么使用：cc.game.config[cc.game.CONFIG_KEY.showFPS]。
+
+
+* debugMode 常量
+对应于project.json中的debugMode字段的配置：
+
+DEBUG_MODE_NONE : 0                     //都不开启
+DEBUG_MODE_INFO : 1                     //用控制台输出INFO、WARN、ERROR级别日志
+DEBUG_MODE_WARN : 2                     //用控制台输出WARN、ERROR级别日志
+DEBUG_MODE_ERROR : 3                    //用控制台输出ERROR级别日志
+DEBUG_MODE_INFO_FOR_WEB_PAGE : 4        //用HTML界面（jsb为控制台）输出INFO、WARN、ERROR级别日志
+DEBUG_MODE_WARN_FOR_WEB_PAGE : 5        //用HTML界面（jsb为控制台）输出WARN、ERROR级别日志
+DEBUG_MODE_ERROR_FOR_WEB_PAGE : 6       //用HTML界面（jsb为控制台）输出ERROR级别日志

@@ -1,0 +1,36 @@
+// 创建UIImagePickerController对象，用于选取照片库的照片
+UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+
+// 将UIImage图片保存到照片库
+UIImageWriteToSavedPhotosAlbum(UIImage对象, nil, nil, nil);
+
+// 打开照片库
+[self presentViewController:imagePicker
+	animated:YES completion:nil];
+
+打开照片库后，程序需要对用户操作做出响应，则需要委托对象来实现
+
+UIImagePickerController的委托对象必须实现UIImagePickerControllerDelegate、UINavigationControllerDelegate两个协议：
+
+imagePicker.delegate = 委托对象;
+
+委托对象实现如下方法：
+
+// 当用户选中照片的某个方法时激发该方法
+-(void)imagePickerController:(UIImagePickerController *)picker
+	didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+	// 隐藏照片库、退回原来界面
+	[self dismissViewControllerAnimated:YES completion:nil];
+	// 获取用户选中的照片
+	UIImage *selectedImage = [info objectForKey:
+		UIImagePickerControllerOriginalImage];
+	// 显示用户选中的照片
+	UIImageView对象.image = selectedImage;
+}
+// 当用户单击照片库的取消按钮时激发该方法
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+	// 隐藏照片库、退回原来界面
+	[self dismissViewControllerAnimated:YES completion:nil];
+}

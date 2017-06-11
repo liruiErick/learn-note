@@ -1,0 +1,37 @@
+*适用于  NSString类型的物件，下面的表格总结了比较常用的一些：
+
++(id)stringWithContentsOfFile:path encoding:enc error:err	//用文件path的内容和字符编码enc创建一个新的字符串，err存储错误信息
++(id)stringWithContentsOfURL:url encoding:enc error:err	//用位置url的内容和字符编码enc创建一个新的字符串，err存储错误信息
++(id)string	//创建一个新的空字符串
++(id)stringWithString:nsstring	//用字符串nsstring的内容创建一个新的字符串
+-(id)initWithContentsOfFile:Path encoding:enc error:err	//将实施对象的内容设定为文件Path的内容，字符编码为enc，err存储错误信息
+-(id)initWithContentsOfURL:url encoding:enc error:err	//将实施对象的内容设定为位置url中的内容，字符编码为enc，err存储错误信息
+-(NSUInteger)length	//产生的结果为实施对象的长度，结果的类型为无标记整数类型
+-(unichar)characterAtIndex:i	//产生的结果为实施对象中第i个字符，结果的类型为unicode字符
+-(NSString *)substringFromIndex:i	//产生的结果为实施对象中第i个字符到最后一个字符的字符串，结果类型为字符串物件
+-(NSString *)substringWithRange:range	//产生的结果为实施对象中范围range所指定的字符串，结果类型为字符串物件
+-(NSString *)substringToIndex:i	//产生的结果为实施对象中第0个字符到第i个字符的字符串，结果类型为字符串物件
+-(NSComparator *)caseInsensitiveCompare:nsstring	//比较实施对象和字符串nsstring，并且忽略大小写
+-(NSComparator *)compare:nsstring	//比较实施对象和字符串nsstring
+-(BOOL)hasPrefix:nsstring	//检查实施对象是否以字符串nsstring开头，结果为0或者1,分别代别是和否
+-(BOOL)hasSuffix:nsstring	//检查实施对象是否以字符串nsstring结尾
+-(BOOL)isEqualToString:nsstring	//检查实施对象和字符串nsstring是否完全一致
+-(NSString *)capitalizedString	//将实施对象中每个单词的首字母转换成大写字母，其余的字母转换成小写字母
+-(NSString *)lowercaseString	//将实施对象中的所有字母转换成小写字母
+-(NSString *)uppercaseString	//将实施对象中的所有字母转换成大写字母
+-(const char *)UTF8String	//将实施对象转换成c语言字符串
+-(double)doubleValue	//将实施对象转换成双精度数值
+-(float)floatValue	//将实施对象转换成浮点数值
+-(NSInteger)integerValue	//将实施对象转换成NSInteger类型的整数值
+-(int)intValue	//将实施对象转换成整数值
+
+*接下来的表格  列举了  适用于NSMutableString这类物件，也就是  可修改字符串，的措施：
+
++(id)stringWithCapacity:size	//创建尺寸为size的字符串
+-(id)stringWithCapacity:size	//将实施对象变为尺寸为size的字符串
+-(void)setString:nsstring	//将实施对象的内容设定为字符串nsstring的内容
+-(void)appendString:nsstring	//将字符串nsstring的内容附带在实施对象的内容后面
+-(void)deleteCharatersInRange:range	//将范围range所指定的字符删除
+-(void)insertString:nsstring atIndex:i	//将字符串nsstring的内容插入实施对象中位置i处
+-(void)replaceCharactersInRange:range withString:nsstring	//将实施对象中范围range指定的字符替换成字符串nsstring的内容
+-(void)replaceOccurrencesOfString:nsstring withString:nsstring2 options:opts range:range	//将实施对象中范围range所指定的部分里所有的字符串nsstring替换成字符串nsstring2

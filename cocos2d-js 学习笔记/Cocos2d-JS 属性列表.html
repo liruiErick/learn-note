@@ -1,0 +1,2987 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cocos2d-JS 属性列表</title>
+<style>
+table {
+	width: 100%;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-collapse: collapse;
+}
+td, th {
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	padding: .5em;
+}
+thead {
+	background-color: #eee;
+}
+tbody tr:nth-child(2n) {
+	background-color: #eee;
+}
+
+h3 {
+	margin-top: 40px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="content-body">
+	<div id="content">
+		<div id="docs_content">
+			<div class="markdown-body">
+				<h1 id="properties-list">Properties list</h1>
+				<h3 id="ccnode">cc.Node</h3>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">x</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPositionX, setPositionX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">y</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPositionY, setPositionY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">width</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getWidth, _setWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">height</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getHeight, _setHeight</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">anchorX</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getAnchorX, _setAnchorX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">anchorY</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getAnchorY, _setAnchorY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">skewX</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSkewX, setSkewX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">skewY</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSkewY, setSkewY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">zIndex</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getLocalZOrder, setLocalZOrder</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">vertexZ</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getVertexZ, setVertexZ</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotation</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotation, setRotation</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotationX</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotationX, setRotationX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotationY</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotationY, setRotationY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">scale</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getScale, setScale</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">scaleX</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getScaleX, setScaleX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">scaleY</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getScaleY, setScaleY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">opacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getOpacity, setOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">opacityModifyRGB</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isOpacityModifyRGB, setOpacityModifyRGB</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeOpacity</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeOpacityEnabled, setCascadeOpacityEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">color</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getColor, setColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeColor</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeColorEnabled, setCascadeColorEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">children</td>
+							<td align="center">Array</td>
+							<td align="center">readonly</td>
+							<td align="center">getChildren</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">childrenCount</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getChildrenCount</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">parent</td>
+							<td align="center">cc.Node</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getParent, setParent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">visible</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isVisible, setVisible</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">running</td>
+							<td align="center">Boolean</td>
+							<td align="center">readonly</td>
+							<td align="center">isRunning</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">ignoreAnchor</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isIgnoreAnchorPointForPosition, ignoreAnchorPointForPosition</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">tag</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">userData</td>
+							<td align="center">Object</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">userObject</td>
+							<td align="center">Object</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">arrivalOrder</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">actionManager</td>
+							<td align="center">cc.ActionManager</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getActionManager, setActionManager</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">scheduler</td>
+							<td align="center">cc.Scheduler</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getScheduler, setScheduler</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">grid</td>
+							<td align="center">cc.GridBase</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">shaderProgram</td>
+							<td align="center">cc.GLProgram</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getShaderProgram, setShaderProgram</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cctexture2d">cc.Texture2D</h3>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">name</td>
+							<td align="center">WebGLTexture</td>
+							<td align="center">readonly</td>
+							<td align="center">getName</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">pixelFormat</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getPixelFormat</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">pixelsWidth</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getPixelsWide</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">pixelsHeight</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getPixelsHigh</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">width</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getWidth, _setWidth</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">height</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getHeight, _setHeight</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">shaderProgram</td>
+							<td align="center">cc.GLProgram</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">maxS</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">maxT</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cctextureatlas">cc.TextureAtlas</h3>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">dirty</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">texture</td>
+							<td align="center">Image</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">capacity</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getCapacity</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">totalQuads</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getTotalQuads</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">quads</td>
+							<td align="center">Array</td>
+							<td align="center">readonly</td>
+							<td align="center">getQuads, setQuads</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccatlasnode">cc.AtlasNode</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">texture</td>
+							<td align="center">cc.Texture2D</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTexture, setTexture</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textureAtlas</td>
+							<td align="center">cc.TextureAtlas</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">quadsToDraw</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cclayerrgba">cc.LayerRGBA</h3>
+				<p>继承自 cc.Layer</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">opacityModifyRGB</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isOpacityModifyRGB, setOpacityModifyRGB</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">opacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getOpacity, setOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeOpacity</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeOpacityEnabled, setCascadeOpacityEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">color</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getColor, setColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeColor</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeColorEnabled, setCascadeColorEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cclayergradient">cc.LayerGradient</h3>
+				<p>继承自 cc.LayerColor</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">startColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartColor, setStartColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndColor, setEndColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startOpacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartOpacity, setStartOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endOpacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndOpacity, setEndOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">vector</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getVector, setVector</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">compresseInterpolation</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccclippingnode">cc.ClippingNode</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">alphaThreshold</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">inverted</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">stencil</td>
+							<td align="center">cc.Node</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStencil, setStencil</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccspritebatchnode">cc.SpriteBatchNode</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">textureAtlas</td>
+							<td align="center">cc.TextureAtlas</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">descendants</td>
+							<td align="center">Array</td>
+							<td align="center">readonly</td>
+							<td align="center">getDescendants</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccsprite">cc.Sprite</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">dirty</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">flippedX</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isFlippedX, setFlippedX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">flippedY</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isFlippedY, setFlippedY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">offsetX</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">_getOffsetX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">offsetY</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">_getOffsetY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">atlasIndex</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">texture</td>
+							<td align="center">cc.Texture2D</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTexture, setTexture</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textureRectRotated</td>
+							<td align="center">Boolean</td>
+							<td align="center">readonly</td>
+							<td align="center">isTextureRectRotated</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textureAtlas</td>
+							<td align="center">cc.TextureAtlas</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">batchNode</td>
+							<td align="center">cc.SpriteBatchNode</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getBatchNode, setBatchNode</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">quad</td>
+							<td align="center">cc.V3F_C4B_T2F_Quad</td>
+							<td align="center">readonly</td>
+							<td align="center">getQuad</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cclabelttf">cc.LabelTTF</h3>
+				<p>继承自 cc.Sprite</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getString, setString</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textAlign</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getHorizontalAlignment, setHorizontalAlignment</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">verticalAlign</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getVerticalAlignment, setVerticalAlignment</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontSize, setFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontName, setFontName</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">font</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getFont, _setFont</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">boundingWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getBoundingWidth, _setBoundingWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">boundingHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getBoundingHeight, _setBoundingHeight</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fillStyle</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getFillStyle, setFontFillColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">strokeStyle</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getStrokeStyle, _setStrokeStyle</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">lineWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getLineWidth, _setLineWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shadowOffsetX</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getShadowOffsetX, _setShadowOffsetX</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shadowOffsetY</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getShadowOffsetY, _setShadowOffsetY</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shadowOpacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getShadowOpacity, _setShadowOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shadowBlur</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getShadowBlur, _setShadowBlur</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cclabelatlas">cc.LabelAtlas</h3>
+				<p>继承自 cc.AtlasNode</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getString, setString</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cclabelbmfont">cc.LabelBMFont</h3>
+				<p>继承自 cc.SpriteBatchNode</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getString, _setStringForSetter</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textAlign</td>
+							<td align="center">enum</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getAlignment, setAlignment</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">boundingWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getBoundingWidth, setBoundingWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">opacityModifyRGB</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isOpacityModifyRGB, setOpacityModifyRGB</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">opacity</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getOpacity, setOpacity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeOpacity</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeOpacityEnabled, setCascadeOpacityEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">color</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getColor, setColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">cascadeColor</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isCascadeColorEnabled, setCascadeColorEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccmenu">cc.Menu</h3>
+				<p>继承自 cc.LayerRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">enabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccmenuitem">cc.MenuItem</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">enabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isEnabled, setEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccmenuitemlabel">cc.MenuItemLabel</h3>
+				<p>继承自 cc.MenuItem</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getString, setString</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">label</td>
+							<td align="center">cc.Node</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getLabel, setLabel</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">disabledColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getDisabledColor, setDisabledColor</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccmenuitemfont">cc.MenuItemFont</h3>
+				<p>继承自 cc.MenuItemLabel</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">fontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontSize, setFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontName, setFontName</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccmenuitemsprite">cc.MenuItemSprite</h3>
+				<p>继承自 cc.MenuItem</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">normalImage</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getNormalImage, setNormalImage</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">selectedImage</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSelectedImage, setSelectedImage</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">disabledImage</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getDisabledImage, setDisabledImage</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccnodegrid">cc.NodeGrid</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">grid</td>
+							<td align="center">cc.GridBase</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">target</td>
+							<td align="center">cc.Node</td>
+							<td align="center">writeonly</td>
+							<td align="center">setTarget</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccparticlebatchnode">cc.ParticleBatchNode</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">textureAtlas</td>
+							<td align="center">cc.TextureAtlas</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">texture</td>
+							<td align="center">cc.Texture2D</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTexture, setTexture</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccparticlesystem">cc.ParticleSystem</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">opacityModifyRGB</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isOpacityModifyRGB, setOpacityModifyRGB</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">batchNode</td>
+							<td align="center">cc.SpriteBatchNode</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getBatchNode, setBatchNode</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">active</td>
+							<td align="center">Boolean</td>
+							<td align="center">readonly</td>
+							<td align="center">isActive</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shapeType</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">atlasIndex</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">particleCount</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">duration</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">sourcePos</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSourcePosition, setSourcePosition</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">posVar</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPosVar, setPosVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">life</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">lifeVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">angle</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">angleVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">startSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">startSizeVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">endSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">endSizeVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">startSpin</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">startSpinVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">endSpin</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">endSpinVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">gravity</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getGravity, setGravity</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">speed</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSpeed, setSpeed</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">speedVar</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSpeedVar, setSpeedVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">tangentialAccel</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tangentialAccelVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tangentialAccel</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTangentialAccel, setTangentialAccel</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">tangentialAccelVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTangentialAccelVar, setTangentialAccelVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotationIsDir</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotationIsDir, setRotationIsDir</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startRadius</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartRadius, setStartRadius</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startRadiusVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartRadiusVar, setStartRadiusVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endRadius</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndRadius, setEndRadius</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endRadiusVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndRadiusVar, setEndRadiusVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotatePerS</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotatePerSecond, setRotatePerSecond</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">rotatePerSVar</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getRotatePerSecondVar, setRotatePerSecondVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartColor, setStartColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startColorVar</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStartColorVar, setStartColorVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndColor, setEndColor</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">endColorVar</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getEndColorVar, setEndColorVar</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">emissionRate</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">emitterMode</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">positionType</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">totalParticles</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTotalParticles, setTotalParticles</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">autoRemoveOnFinish</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">texture</td>
+							<td align="center">cc.Texture2D</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTexture, setTexture</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccprogresstimer">cc.ProgressTimer</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">midPoint</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMidpoint, setMidpoint</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">barChangeRate</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getBarChangeRate, setBarChangeRate</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">类型</td>
+							<td align="center">enum</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getType, setType</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">percentage</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPercentage, setPercentage</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">sprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSprite, setSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">reverseDir</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isReverseDirection, setReverseDirection</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccrendertexture">cc.RenderTexture</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">sprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">clearFlags</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">clearDepthVal</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">clearStencilVal</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">clearColorVal</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getClearColor, setClearColor</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">autoDraw</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cctmxlayer">cc.TMXLayer</h3>
+				<p>继承自 cc.SpriteBatchNode</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">tiles</td>
+							<td align="center">Array</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tileset</td>
+							<td align="center">cc.TMXTilesetInfo</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">layerOrientation</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">properties</td>
+							<td align="center">Array</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">layerName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">layerWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getLayerWidth, _setLayerWidth</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">layerHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getLayerHeight, _setLayerHeight</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tileWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getTileWidth, _setTileWidth</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tileHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getTileHeight, _setTileHeight</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cctmxtiledmap">cc.TMXTiledMap</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">properties</td>
+							<td align="center">Array</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">mapOrientation</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">objectGroups</td>
+							<td align="center">Array</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">mapWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getMapWidth, _setMapWidth</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">mapHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getMapHeight, _setMapHeight</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tileWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getTileWidth, _setTileWidth</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">tileHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getTileHeight, _setTileHeight</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuiwidget">ccui.Widget</h3>
+				<p>继承自 ccui.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">xPercent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getXPercent, _setXPercent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">yPercent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getYPercent, _setYPercent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">widthPercent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getWidthPercent, _setWidthPercent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">heightPercent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getHeightPercent, _setHeightPercent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">widgetParent</td>
+							<td align="center">ccui.Widget</td>
+							<td align="center">readonly</td>
+							<td align="center">getWidgetParent</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">enabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isEnabled, setEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">focused</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isFocused, setFocused</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">touchEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isTouchEnabled, setTouchEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">updateEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isUpdateEnabled, setUpdateEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">bright</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isBright, setBright</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">name</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getName, setName</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">actionTag</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getActionTag, setActionTag</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuilayout">ccui.Layout</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">clippingEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isClippingEnabled, setClippingEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuibutton">ccui.Button</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">titleText</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTitleText, setTitleText</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">titleFont</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getTitleFont, _setTitleFont</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">titleFontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTitleFontSize, setTitleFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">titleFontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTitleFontName, setTitleFontName</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">titleFontColor</td>
+							<td align="center">cc.Color</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">pressedActionEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuicheckbox">ccui.CheckBox</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">selected</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSelectedState, setSelectedState</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuiloadingbar">ccui.LoadingBar</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">percent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPercent, setPercent</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuislider">ccui.Slider</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">percent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPercent, setPercent</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuitext">ccui.Text</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">boundingWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getBoundingWidth, _setBoundingWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">boundingHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getBoundingHeight, _setBoundingHeight</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStringValue, setText</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">stringLength</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getStringLength</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">font</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getFont, _setFont</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontName, setFontName</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontSize, setFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">textAlign</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTextHorizontalAlignment, setTextHorizontalAlignment</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">verticalAlign</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getTextVerticalAlignment, setTextVerticalAlignment</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">touchScaleEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuitextatlas">ccui.TextAtlas</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStringValue, setStringValue</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuitextbmfont">ccui.TextBMFont</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStringValue, setStringValue</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuitextfield">ccui.TextField</h3>
+				<p>继承自 ccui.Widget</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">maxLengthEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isMaxLengthEnabled, setMaxLengthEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxLength</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaxLength, setMaxLength</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">passwordEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isPasswordEnabled, setPasswordEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStringValue, setText</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">font</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getFont, _setFont</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontSize, setFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getFontName, setFontName</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccuiscrollview">ccui.ScrollView</h3>
+				<p>继承自 ccui.Layout</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">innerWidth</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getInnerWidth, _setInnerWidth</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">innerHeight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_getInnerHeight, _setInnerHeight</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">bounceEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">inertiaScrollEnabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccsarmature">ccs.Armature</h3>
+				<p>继承自 ccs.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">parentBone</td>
+							<td align="center">ccs.Bone</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getParentBone, setParentBone</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">animation</td>
+							<td align="center">ccs.ArmatureAnimation</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">armatureData</td>
+							<td align="center">ccs.ArmatureData</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">name</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">batchNode</td>
+							<td align="center">cc.SpriteBatchNode</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">version</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">body</td>
+							<td align="center">Object</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getBody, setBody</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">colliderFilter</td>
+							<td align="center">ccs.ColliderFilter</td>
+							<td align="center">writeonly</td>
+							<td align="center">setColliderFilter</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccsbone">ccs.Bone</h3>
+				<p>继承自 ccs.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">boneData</td>
+							<td align="center">ccs.BoneData</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getBoneData, setBoneData</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">armature</td>
+							<td align="center">ccs.Armature</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getArmature, setArmature</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">parentBone</td>
+							<td align="center">ccs.Bone</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">childArmature</td>
+							<td align="center">ccs.Armature</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getChildArmature, setChildArmature</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">childrenBone</td>
+							<td align="center">Array</td>
+							<td align="center">readonly</td>
+							<td align="center">getChildrenBone</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">tween</td>
+							<td align="center">ccs.Tween</td>
+							<td align="center">readonly</td>
+							<td align="center">getTween</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">tweenData</td>
+							<td align="center">ccs.FrameData</td>
+							<td align="center">readonly</td>
+							<td align="center">getTweenData</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">transformDirty</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">colliderFilter</td>
+							<td align="center">ccs.ColliderFilter</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getColliderFilter, setColliderFilter</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">displayManager</td>
+							<td align="center">ccs.DisplayManager</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">ignoreMovementBoneData</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">name</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">blendDirty</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccsskin">ccs.Skin</h3>
+				<p>继承自 ccs.Sprite</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">skinData</td>
+							<td align="center">Object</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getSkinData, setSkinData</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">bone</td>
+							<td align="center">ccs.Bone</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">displayName</td>
+							<td align="center">String</td>
+							<td align="center">readonly</td>
+							<td align="center">getDisplayName</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cceditbox">cc.EditBox</h3>
+				<p>继承自 cc.ControlButton</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">font</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">_setFont</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontName</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">setFontName</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">fontSize</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">setFontSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">string</td>
+							<td align="center">String</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getText, setText</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxLength</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaxLength, setMaxLength</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrol">cc.Control</h3>
+				<p>继承自 cc.LayerRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">state</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getState</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">enabled</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isEnabled, setEnabled</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">selected</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isSelected, setSelected</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">highlighted</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">isHighlighted, setHighlighted</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolbutton">cc.ControlButton</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">adjustBackgroundImage</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">zoomOnTouchDown</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+						<tr>
+							<td align="center">preferredSize</td>
+							<td align="center">cc.Size</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPreferredSize, setPreferredSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">labelAnchor</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getLabelAnchorPoint, setLabelAnchorPoint</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolcolourpicker">cc.ControlColourPicker</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">background</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getBackground</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolhuepicker">cc.ControlHuePicker</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">hue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getHue, setHue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">huePercent</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getHuePercentage, setHuePercentage</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">background</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getBackground</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">slider</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getSlider</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startPos</td>
+							<td align="center">cc.Point</td>
+							<td align="center">readonly</td>
+							<td align="center">getStartPos</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolpotentiometer">cc.ControlPotentiometer</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">value</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getValue, setValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinimumValue, setMinimumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaximumValue, setMaximumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">progressTimer</td>
+							<td align="center">cc.ProgressTimer</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getProgressTimer, setProgressTimer</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">thumbSprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getThumbSprite, setThumbSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">prevLocation</td>
+							<td align="center">cc.Point</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPreviousLocation, setPreviousLocation</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolsaturationbrightnesspicker">cc.ControlSaturationBrightnessPicker</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">saturation</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getSaturation</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">brightness</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getBrightness</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">background</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getBackground</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">overlay</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getOverlay</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">shadow</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getShadow</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">slider</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getSlider</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">startPos</td>
+							<td align="center">cc.Point</td>
+							<td align="center">readonly</td>
+							<td align="center">getStartPos</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolslider">cc.ControlSlider</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">value</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getValue, setValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinimumValue, setMinimumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaximumValue, setMaximumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minAllowedValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinimumAllowedValue, setMinimumAllowedValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxAllowedValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaximumAllowedValue, setMaximumAllowedValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">thumbSprite</td>
+							<td align="center">Number</td>
+							<td align="center">readonly</td>
+							<td align="center">getThumbSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">progressSprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getProgressSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">backgroundSprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">readonly</td>
+							<td align="center">getBackgroundSprite</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cccontrolstepper">cc.ControlStepper</h3>
+				<p>继承自 cc.Control</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">wraps</td>
+							<td align="center">Boolean</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getWraps, setWraps</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">value</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getValue, setValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinimumValue, setMinimumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">maxValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMaximumValue, setMaximumValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">stepValue</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getStepValue, setStepValue</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">continuous</td>
+							<td align="center">Boolean</td>
+							<td align="center">readonly</td>
+							<td align="center">isContinuous</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minusSprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinusSprite, setMinusSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">plusSprite</td>
+							<td align="center">cc.Sprite</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPlusSprite, setPlusSprite</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">minusLabel</td>
+							<td align="center">cc.LabelTTF</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getMinusLabel, setMinusLabel</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">plusSLabel</td>
+							<td align="center">cc.LabelTTF</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">None</td>
+							<td align="center">NO</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ccscale9sprite">cc.Scale9Sprite</h3>
+				<p>继承自 cc.NodeRGBA</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">preferredSize</td>
+							<td align="center">cc.Size</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getPreferredSize, setPreferredSize</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">capInsets</td>
+							<td align="center">cc.Rect</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getCapInsets, setCapInsets</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">insetLeft</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getInsetLeft, setInsetLeft</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">insetTop</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getInsetTop, setInsetTop</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">insetRight</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getInsetRight, setInsetRight</td>
+							<td align="center">YES</td>
+						</tr>
+						<tr>
+							<td align="center">insetBottom</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getInsetBottom, setInsetBottom</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="cctableviewcell">cc.TableViewCell</h3>
+				<p>继承自 cc.Node</p>
+				<table>
+					<thead>
+						<tr>
+							<th align="center">属性</th>
+							<th align="center">类型</th>
+							<th align="center">可读写</th>
+							<th align="center">Getter/Setter 方法</th>
+							<th align="center">先进的压缩准备</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">objectId</td>
+							<td align="center">Number</td>
+							<td align="center">R&amp;W</td>
+							<td align="center">getObjectID, setObjectID</td>
+							<td align="center">YES</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

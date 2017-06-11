@@ -1,0 +1,223 @@
+通常情况下UIPageControl控件都与UIScrollView控件结合使用
+
+NSUInteger numberPages = 信息数组.count;//获取页数
+// 程序将会采用延迟加载的方式来创建FKPageController控制器
+// 因此此处只向数组中添加一些null作为占位符，
+// 等到程序需要时才真正创建FKPageController
+viewControllers = [[NSMutableArray alloc] init];
+for (NSUInteger i = 0; i < numberPages; i++)
+{
+	[viewControllers addObject:[NSNull null]];
+}
+
+
+// 创建UIScrollView对象，并初始化为全屏大小
+UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+scrollView.backgroundColor = [UIColor grayColor];//设置背景色
+
+scrollView.pagingEnabled = YES;//设置滚动视图每次至少滚动一页
+
+// 设置它可滚动区域的大小，CGRectGetWidth(scrollView.frame)等同于scrollView.frame.size.width
+scrollView.contentSize = CGSizeMake(CGRectGetWidth(scrollView.frame) * numberPages,
+							CGRectGetHeight(scrollView.frame));
+
+scrollView.showsHorizontalScrollIndicator = NO;//不显示水平滚动指标
+
+scrollView.showsVerticalScrollIndicator = NO;//不显示垂直滚动指标
+
+scrollView.scrollsToTop = NO;//未知
+
+[self.view addSubview:scrollView];//将滚动视图添加进父视图
+
+
+// 创建UIPageControl控件
+UIPageControl* pageControl = [[UIPageControl alloc] init];
+
+// 设置UIPageControl的大小和位置，
+pageControl.frame = CGRectMake(0, CGRectGetHeight(scrollView.frame) - 80,
+								CGRectGetWidth(scrollView.frame), 80);
+								
+pageControl.pageIndicatorTintColor = [UIColor grayColor];//设置UIPageControl的圆点的颜色
+
+pageControl.currentPageIndicatorTintColor = [UIColor redColor];//设置UIPageControl的高亮圆点的颜色
+
+pageControl.currentPage = 0;//设置UIPageControl控件当前显示第几页
+
+pageControl.numberOfPages = numberPages;//设置UIPageControl控件总共包含多少页
+
+pageControl.hidesForSinglePage = YES;//隐藏单页
+
+// 为pageControl的Value Changed事件绑定事件处理方法
+[pageControl addTarget:self
+	action:@selector(changePage:)
+	forControlEvents:UIControlEventValueChanged];
+
+[self.view addSubview:pageControl];//将页控件添加进父视图
+	
+[self loadScrollViewWithPage:0];//自定义方法，初始化时默认只需加载、显示第一页的View。
+
+[self loadScrollViewWithPage:1];//自定义方法，为了避免“翻页”时才加载下一页导致闪烁，同时把下一页的View也加载出来
+
+pageControl.defersCurrentPageDisplay = YES;//延迟显示当前页
+以上属性的意思是：当用户单击该控件，使该控件跳转到某个新页时，该控件必须等到updatePageIndicator方法执行完成后，才会执行更新控件界面
+
+// 自定义方法，用于加载UIScrollPage的指定页对应的控制器
+- (void) loadScrollViewWithPage:(NSUInteger)page
+{
+	// 如果超出总页数，方法直接返回
+	if (page >= contentList.count)
+		return;
+	// 获取page索引处的控制器
+	FKPageController *controller = [viewControllers objectAtIndex:page];
+	// 如果page索引处的控制器还没有初始化
+	if ((NSNull *)controller == [NSNull null])
+	{
+		// 创建FKPageController对象
+		controller = [[FKPageController alloc] initWithPageNumber:page];
+		// 用FKPageController对象替换page索引处原来的对象
+		[viewControllers replaceObjectAtIndex:page withObject:controller];
+	}
+	// 将controller控制器对应View添加到UIScrollView中
+	if (controller.view.superview == nil)
+	{
+		CGRect frame = scrollView.frame;
+		frame.origin.x = CGRectGetWidth(frame) * page;
+		frame.origin.y = 0;
+		// 设置该控制器对应的View的大小和位置
+		controller.view.frame = frame;
+		// 设置controller控制器的bookLabel控件的文本，bookLabel、bookImage为该控件的自定义属性
+		controller.bookLabel.text = [信息数组 objectAtIndex:page];
+		controller.bookImage.image = [UIImage imageNamed:[图片数组 objectAtIndex:page]];
+		// 将controller控制器添加为当前控制器的子控制器。(即使不添加也不影响正常运行)
+		//[self addChildViewController:controller];
+		// 将controller控制器对应的View添加到UIScrollView中
+		[scrollView addSubview:controller.view];
+	}
+}
+
+如果UIScrollView需要响应用户的动作，则需要委托对象来实现，UIScrollView的委托对象必须实现UIScrollViewDelegate协议：
+scrollView.delegate = self;//这里让父级视图控制器实现了UIScrollViewDelegate协议
+
+并实现下方法：
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+	// 获取UIScrollView控件的宽度，也就是页面的宽度
+	CGFloat pageWidth = CGRectGetWidth(scrollView.frame);
+	// 用UIScrollView水平滚动的距离减去页面宽度的一半，除以页面宽度的结果再加1，即可得到当前处于第几页
+	NSUInteger page = floor((scrollView.contentOffset.x
+		- pageWidth / 2) / pageWidth) + 1;
+	// 控制UIPageControl显示当前处于第page页
+	pageControl.currentPage = page;
+	// 为了避免“翻页”时才加载上一页、下一页导致闪烁，
+	// 因此加载当前页的View时，也把上一页、下一页的View也加载出来
+	[self loadScrollViewWithPage:page - 1];
+	[self loadScrollViewWithPage:page];
+	[self loadScrollViewWithPage:page + 1];
+}
+
+UIPageControl对象继承了UIControl基类，默认属于活动控件，它可以与用户交互，并可为Value Changed事件绑定处理方法：
+// 以下方法用于当用户点击UIPageControl导致控件的当前页发生变化时，该方法控制UIScrollView滚动到该页面对应的区域
+// 即可实现UIPageControl与UIScrollView的交互式影响
+- (void) changePage:(id)sender
+{
+	// 获取UIPageControl控件当前处于第几页
+	NSInteger page = [sender currentPage];
+	// 创建一个CGRect对象，该CGRect区域代表了该UIScrollView将要显示的页
+	CGRect bounds = scrollView.bounds;
+	bounds.origin.x = CGRectGetWidth(bounds) * page;
+	bounds.origin.y = 0;
+	// 控制UIScrollView滚动到指定区域
+	[scrollView scrollRectToVisible:bounds animated:YES];
+	// 为了避免“翻页”时才加载上一页、下一页导致闪烁，
+	// 因此加载当前页的View时，也把上一页、下一页的View也加载出来
+	[self loadScrollViewWithPage:page - 1];
+	[self loadScrollViewWithPage:page];
+	[self loadScrollViewWithPage:page + 1];
+}
+
+
+
+
+*UIPageViewController 页控制器
+
+UIPageViewController页控制器支持模拟书页翻动效果，必须为UIPageViewController设置实现了UIPageViewControllerDataSource协议的对象：
+
+UIPageViewController对象.dataSource = UIPageViewControllerDataSource对象;
+
+并根据需要实现如下方法：
+
+// 当向前翻页时，程序将会把该方法返回的UIViewController作为前一个页面的视图控制器
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController
+	viewControllerBeforeViewController:(UIViewController *)viewController;
+
+// 当向后翻页时，程序将会把该方法返回的UIViewController作为后一个页面的视图控制器 
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController
+	viewControllerAfterViewController:(UIViewController *)viewController;
+
+
+实现方法：
+// 创建一个NSDictionary对象，作为创建UIPageViewController的选项。
+// 该选项只支持2个key：
+// UIPageViewControllerOptionSpineLocationKey：指定翻页效果中“书脊”的位置
+// UIPageViewControllerOptionInterPageSpacingKey：指定2个页面之间间距
+NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
+	[NSNumber numberWithInt:UIPageViewControllerSpineLocationMin],
+	UIPageViewControllerOptionSpineLocationKey,
+	[NSNumber numberWithFloat:0],
+	UIPageViewControllerOptionInterPageSpacingKey, nil];
+
+// 创建UIPageViewController，并初始化
+// 第一个参数指定翻页过度效果样式为书页卷动的翻页效果
+// 第二个参数指定水平翻页，还是垂直翻页
+UIPageViewController *pageViewController = [[UIPageViewController alloc]
+		initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl
+		navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+		options:options];
+
+// 设置使用支持双面
+pageViewController.doubleSided = YES;
+
+// 为UIPageViewController设置dataSource
+pageViewController.dataSource = self;
+
+// 设置UIPageViewController管理的视图控制器
+// 第一个参数为设置初始页面，接受一个NSArray，如果“书脊”位置在视图中间，那么该数组必须包含两个页面
+// 第二个参数指定向前翻页，还是向后翻页
+[pageViewController setViewControllers:@[初始页面控制器对象]
+	direction:UIPageViewControllerNavigationDirectionForward
+	animated:YES
+	completion:nil];
+
+
+// 当用户控制UIPageViewController向前翻页时调用该方法
+- (UIViewController *)pageViewController:(UIPageViewController *)pvc
+	viewControllerBeforeViewController:(UIViewController *)vc
+{
+	// pageIndex为页面视图控制器记录自身页号的自定义属性
+	// 如果当前pageIndex大于0，将pageIndex-1作为参数创建新的页面视图控制器
+	if (vc.pageIndex > 0)
+	{
+
+		NSUInteger index = vc.pageIndex - 1;
+		return 创建页号为index的视图控制器;
+	}
+	return nil;
+}
+// 当用户控制UIPageViewController向后翻页时调用该方法
+- (UIViewController *)pageViewController:(UIPageViewController *)pvc
+	viewControllerAfterViewController:(UIViewController *)vc
+{
+	// pageIndex为页面视图控制器记录自身页号的自定义属性
+	// 如果当前pageIndex小于总页数，将pageIndex+1作为参数创建新的页面视图控制器
+	if (vc.pageIndex < 总页数)
+	{
+
+		NSUInteger index = vc.pageIndex + 1;
+		return 创建页号为index的视图控制器;
+	}
+	return nil;
+}
+
+
+

@@ -1,0 +1,42 @@
+﻿由于UITextView没有继承UIControl基类，因此不支持为触摸动作绑定事件处理，只能交给委托对象处理。
+
+// 设置默认不允许编辑
+UITextView对象.editable = NO;
+
+// 设置边框
+UITextView对象.layer.borderWidth = 1.5;
+UITextView对象.layer.borderColor = [[UIColor grayColor] CGColor];
+
+// 设置圆角
+UITextView对象.layer.cornerRadius = 4.0f;
+UITextView对象.layer.masksToBounds = YES;
+
+// 实现委托的方法：
+UITextView对象.delegate = 委托对象;
+
+UITextView的委托对象必须实现UITextViewDelegate协议，该协议定义了如下方法：
+
+// 用户将要开始编辑UITextView的内容时会激发该方法
+-(void) textViewShouldBeginEditing:(UITextView *)textView;
+
+// 用户开始编辑UITextView的内容时会激发该方法
+-(void) textViewDidBeginEditing:(UITextView *)textView;
+
+// 用户将要结束编辑UITextView的内容时会激发该方法
+-(void) textViewShouldEndEditing:(UITextView *)textView;
+
+// 用户结束编辑UITextView的内容时会激发该方法
+-(void) textViewDidEndEditing:(UITextView *)textView;
+
+// 该UITextView内指定范围内的文本内容将要被替换时会激发该方法
+-(BOOL) textView:(UITextView *)textView
+	shouldChangeTextInRange:(NSRange)range
+	replacementText:(NSString *)text;
+
+// 该UITextView内的文本内容发生改变时会激发该方法
+-(void) textViewDidChange:(UITextView *)textView;
+
+// 当用户选中该UITextView内某些文本时会激发该方法
+-(void) textViewDidChangeSelection:(UITextView *)textView;
+
+

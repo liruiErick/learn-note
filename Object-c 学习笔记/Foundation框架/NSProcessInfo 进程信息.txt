@@ -1,0 +1,33 @@
+当一个程序运行起来以后就变成了一个进程，NSProcessInfo对象则用于获取对象的相关信息
+
+// 获取当前进程对应的ProcessInfo对象
+NSProcessInfo* proInfo = [NSProcessInfo processInfo];
+
+
+NSArray* arr = [proInfo arguments];//获取运行该程序所指定的参数
+
+NSDictionary* dic = [proInfo environment];//获取系统内所有环境变量名和值的字典对象
+
+[proInfo processIdentifier];//获取进程标识符
+
+[proInfo globallyUniqueString];//返回一个全局的、唯一的字符串
+
+[proInfo processName];//获取进程名
+
+[proInfo setProcessName:进程名];//设置进程名
+
+[proInfo hostName];//获取进程所在系统的主机名
+
+[proInfo operatingSystem];//获取进程所在系统的操作系统
+
+[proInfo operatingSystemName];//获取进程所在系统的操作系统名
+
+[proInfo operatingSystemVersionString];//获取进程所在系统的操作系统版本字符串
+
+[proInfo physicalMemory];//获取系统的物理内存
+
+[proInfo processorCount];//获取系统的处理器数量
+
+[proInfo activeProcessorCount];//获取系统激活状态的处理器数量
+
+[proInfo systemUptime]//获取系统的运行时间

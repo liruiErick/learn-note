@@ -1,0 +1,9 @@
+﻿Fullscreen API是浏览器允许Web页面在获得用户全屏幕的一个新的制定中的API。
+
+Cocos2d-JS在移动端浏览器中会尝试自动进入全屏幕来给用户更好的游戏体验（需要指出并不是所有浏览器都支持这个API）。
+
+另一方面，桌面端几乎所有现代浏览器都支持Fullscreen API，如果你希望使用这个API，Cocos2d-JS也简化了它的使用方式：
+
+尝试进入全屏模式（需要用户交互）: cc.screen.requestFullScreen(targetElement, onFullScreenCallback);
+检测是否处于全屏模式: cc.screen.fullScreen();
+退出全屏模式: cc.screen.exitFullScreen();

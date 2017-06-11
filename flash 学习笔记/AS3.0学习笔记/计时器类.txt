@@ -1,0 +1,41 @@
+计时器类
+
+import flash.events.TimerEvent;加入计时器事件类
+
+import flash.utils.Timer;加入计时器类
+
+timer.addEventListener(TimerEvent.TIMER,onTimer);注册计时器监听,每计时一次触发一下onTimer
+
+timer.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerComplete);注册计时器监听,计时循环结束时触发onTimerComplete
+
+var timer:Timer=new Timer(1000,5);创建一个计时器,1000为1秒(1000毫秒),5为循环次数(不填为无限循环)
+
+timer.start();开始计时
+
+timer.stop();停止计时
+
+timer.reset();停止计时,并重置循环次数
+
+timer.delay=500;设置计时器的频率为500毫秒,更改后会重置计时器
+
+timer.repeatCount=3;设置循环次数为3次
+
+timer.currentCount;显示当前计时器循环次数
+
+timer.running;检测计时器是否运行,true运行,false不运行
+
+import flash.utils.getTimer;加入获取时间类
+
+getTimer();获取当前flash运行时间(毫秒),除以1000,用Math.floor()方法获取秒
+
+String(秒变量+100).substr(1,2);从秒数的第二位开始(1为第二位,0为第一位),截取2位,达到可以显示01-09的目的
+
+import flash.utils.*;加入utils类
+
+setTimeout(自定义函数,1000,自定义函数的参数);1000毫秒后调用函数,无参数可不填,该方法返回一个uint类型的ID
+
+clearTimeout(ID);清除对应ID的计时器
+
+setInterval(自定义函数,1000,自定义函数的参数);每1000毫秒调用一次函数,无参数可不填,该方法返回一个uint类型的ID
+
+clearInterval(ID);清除对应ID的计时器

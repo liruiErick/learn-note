@@ -1,0 +1,103 @@
+﻿*常用方法
+
+(视图类型 *)[view viewWithTag:1];//获取tag为1的视图
+
+[view addSubview:子视图];//将子视图加入到view中
+
+[子视图 removeFromSuperview];//将子视图从其父view中移除
+
+view.superview;//返回view的父视图
+
+view.subviews;//返回包含该视图内所有子视图的NSArray
+
+view.frame;//返回一个CGRect，包含CGPoint位置和CGSize大小
+
+view.frame.origin;//返回一个CGPoint，包含x和y属性
+
+view.frame.size;//返回一个CGSize，包含width和height属性
+
+view.center;//返回或设置一个CGPoint，包含x和y属性，表示视图中心的坐标
+
+view.userInteractionEnabled = NO;//禁止用户交互
+
+view.contentMode = UIViewContentModeScaleAspectFit;//保证纵横比例缩放图片，保证图片可以适应该视图大小
+
+[view setNeedsDisplay];//通知该控件执行drawRect方法重绘自己
+
+
+*当定义一个继承UIView基类的子类时，可以重写一下方法来完成自定义行为
+
+// 创建实例时，初始化方法
+initWithFrame:
+
+// 程序通过在nib文件中加载完成视图后会自动调用该方法执行初始化
+initWithCoder:
+
+// 绘制视图内容
+-(void) drawRect:(CGRect)rect;
+
+// 对所包含字视图的布局进行控制
+layoutSubviews:
+
+// 当添加子视图完成时，系统会自动调用该方法
+didAddSubview:
+
+// 当将要删除子视图时，系统会自动调用该方法
+willRemoveSubview:
+
+// 当将要被添加到其父视图中时，系统会自动调用该方法
+willMoveToSuperview:
+
+// 当被添加到其父视图中完成时，系统会自动调用该方法
+didMoveToSuperview:
+
+// 当将要被添加到窗口中时，系统会自动调用该方法
+willMoveToWindow:
+
+// 当被添加到窗口中完成时，系统会自动调用该方法
+didMoveToWindow:
+
+// 当用户手指开始触碰视图时，系统会自动调用该方法
+-(void)touchesBegan:(NSSet *)touches
+	withEvent:(UIEvent *)event;
+
+// 当用户手指在视图上移动时，系统会自动调用该方法
+-(void)touchesMoved:(NSSet *)touches
+	withEvent:(UIEvent *)event;
+
+// 当用户手指结束触碰视图时，系统会自动调用该方法
+-(void)touchesEnded:(NSSet *)touches
+	withEvent:(UIEvent *)event;
+
+// 当用户手指取消触碰视图时，系统会自动调用该方法
+-(void)touchesCancelled:(NSSet *)touches
+	withEvent:(UIEvent *)event;
+
+*使用方法举例：
+
+// 定义两个变量记录当前触碰点的坐标
+int curX;
+int curY;
+- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	// 获取触碰事件的UITouch事件
+	UITouch *touch = [touches anyObject];
+	// 得到触碰事件在当前组件上的触碰点
+	CGPoint lastTouch = [touch locationInView:self];
+	// 获取触碰点的坐标
+	curX = lastTouch.x;
+	curY = lastTouch.y;
+	// 通知该组件重绘。
+	[self setNeedsDisplay];
+}
+// 重写该方法来绘制该UI控件
+- (void)drawRect:(CGRect)rect
+{
+	// 获取绘图上下文
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	// 设置填充颜色
+	CGContextSetFillColorWithColor(ctx, [[UIColor redColor] CGColor]);
+	// 以触碰点为圆心，绘制一个圆形
+	CGContextFillEllipseInRect(ctx, CGRectMake(curX - 10
+		, curY - 10 , 20 , 20));
+}

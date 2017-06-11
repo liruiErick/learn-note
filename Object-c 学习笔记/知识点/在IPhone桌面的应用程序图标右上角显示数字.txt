@@ -1,0 +1,9 @@
+能够在ios桌面的程序icon右上角显示数字（badge number）的方法：
+
+在ViewController中的viewDidLoad方法中添加如下代码即可：
+
+- (void)viewDidLoad  
+{
+    [super viewDidLoad];      
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 2;  
+}

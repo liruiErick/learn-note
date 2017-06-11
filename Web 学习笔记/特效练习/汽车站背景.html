@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+
+<head>
+<meta charset="utf-8" />
+<title>山寨首页背景</title>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+</style>
+</head>
+<body>
+<p>
+  <canvas id="canvas"></canvas>
+</p>
+
+<script type="text/javascript">
+window.onload = function(){
+	var canvas = document.getElementById("canvas");
+	canvas.style.background = "black";
+	canvas.style.backgroundImage = "-webkit-gradient(radial,\
+	50% 500, 1,\
+	50% 500, 400,\
+	from(rgba(255, 255, 255, 0.3)),\
+	to(rgba(255, 255, 255, 0)))";
+	var W, H ;
+	onresize();
+	addEventListener("resize",onresize);
+	function onresize(event)
+	{
+		W = window.innerWidth;
+		H = window.innerHeight;
+		canvas.width = W;
+		canvas.height = H;
+	}
+	//获取鼠标坐标
+	var mouse = {};
+	canvas.addEventListener('mousemove', track_mouse, false);
+	function track_mouse(e)
+	{
+		mouse.x = e.clientX;
+		mouse.y = e.clientY;
+	}
+	
+	//绘制
+	var ctx = canvas.getContext("2d");
+	function draw()
+	{
+		ctx.clearRect(0, 0, W, H);
+		// 绘制网格
+		drawGridlines(ctx);
+		// 绘制泡泡
+		drawPopos(ctx);
+		// 绘制圆
+		drawCircle(ctx);
+		// 绘制漂浮物
+		drawFlotages(ctx);
+	}
+	// 绘制网格
+	var col = 10;
+	var interval = W/col;
+	var row = H/interval;
+	function drawGridlines(ctx)
+	{
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "#333";
+		ctx.globalAlpha = 0.5;
+		ctx.beginPath();
+		for(var i = 1; i < col; i++)
+		{
+			ctx.moveTo(i*interval,0);
+			ctx.lineTo(i*interval,H);
+		}
+		for(var j = 1; j < row; j++)
+		{
+			ctx.moveTo(0,j*interval);
+			ctx.lineTo(W,j*interval);
+		}
+		ctx.stroke();
+		// 绘制网格点
+		for (var k in points)
+		{
+			var point = points[k];
+			ctx.fillStyle = "#333";
+			ctx.beginPath();
+			ctx.arc(point.x,point.y,2,0,Math.PI*2);
+			ctx.fill();
+		}
+	}
+	// 创建网格点
+	var points = [];
+	(function createPoints()
+	{
+		for(var i = 1; i < col; i++)
+		{
+			for(var j = 1; j < row; j++)
+			{
+				var point = {x:i*interval, y:j*interval};
+				points.push(point);
+			}
+		}
+	})();
+	// 绘制圆
+	var angle = 270;
+	var radius, radius1 = W/3, radius2 = W/4;
+	function drawCircle(ctx)
+	{
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "#333";
+		ctx.globalAlpha = 0.5;
+		
+		ctx.beginPath();
+		ctx.arc(W/2,H/2,radius1,0,Math.PI*2);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(W/2,H/2,radius2,0,Math.PI*2);
+		ctx.stroke();
+		
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = "#666";
+		ctx.globalAlpha = 0.3;
+		
+		ctx.beginPath();
+		ctx.arc(W/2,H/2,radius1,angle*Math.PI/180,270*Math.PI/180,false);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(W/2,H/2,radius2,270*Math.PI/180,angle*Math.PI/180,false);
+		ctx.stroke();
+		
+		angle = (angle+2)%360;
+		if (angle == 270)
+		{
+			radius = radius1
+			radius1 = radius2;
+			radius2 = radius;
+			angle = 272;
+		}
+	}
+	//创建一些粒子
+	var flotages = [];
+	var flotage_count = 100;
+	for(var i = 0; i < flotage_count; i++)
+	{
+		flotages.push(new flotage());
+	}
+	var popos = [];
+	var popo_count = 20;
+	for(var i = 0; i < popo_count; i++)
+	{
+		popos.push(new popo());
+	}
+	// 漂浮物粒子
+	function flotage()
+	{
+		//随机起始速度
+		this.vx = Math.random()*10-5;
+		this.vy = Math.random()*10-15;
+		//随机位置
+		this.x = Math.random()*W*0.5+W*0.25;
+		this.y = H+Math.random()*H;
+		//随机缩放比例
+		this.scale = Math.random()*2+1;
+		this.scaleX = Math.random()*this.scale;
+		this.scaleY = Math.random()*this.scale;
+		this.sx = 0.01;
+		this.sy = 0.01;
+		//随机起始旋转方向
+		this.rz = Math.random()*360;
+	}
+	// 泡泡粒子
+	function popo()
+	{
+		//随机一个类型
+		this.type = Math.random();
+		//随机透明度
+		this.maxAlpha = Math.random()*0.5+0.4;
+		this.alpha = 0;
+		this.da = 0.01;
+		//随机半径
+		this.radius = Math.random()*3+7;
+		this.dr = 0.1;
+		//最大半径
+		this.maxRadius = this.radius*1.5;
+		//随机偏斜
+		var dx = Math.random()*this.radius*2-this.radius;
+		var dy = Math.random()*this.radius*2-this.radius;
+		//随机位置
+		var point = points[Math.floor(Math.random()*points.length)];
+		this.x = point.x+dx;
+		this.y = point.y+dy;
+		//目标偏斜
+		this.tx = point.x-Math.random()*dx;
+		this.ty = point.y-Math.random()*dy;
+		//计算步长
+		this.sx = (this.tx-this.x)*0.01;
+		this.sy = (this.ty-this.y)*0.01;
+	}
+	// 绘制漂浮物
+	var img = new Image();
+	img.src = "images/sparkle.png";
+	img.onload = function(){setInterval(draw,40);};
+	function drawFlotages(ctx)
+	{
+		ctx.globalAlpha = 0.5;
+		for(var i = 0; i < flotage_count; i++)
+		{
+			var p = flotages[i];
+			ctx.save();
+			ctx.translate(p.x,p.y);
+			ctx.rotate(p.rz*Math.PI/180);
+			ctx.scale(p.scaleX,p.scaleY);
+			ctx.drawImage(img,-img.width*0.5,-img.height*0.5);
+			ctx.restore();
+			
+			p.rz = (p.rz+1)%360;
+			
+			if (p.scaleX>p.scale || p.scaleX<-p.scale) p.sx*=-1;
+			p.scaleX += p.sx*p.scale;
+			if (p.scaleY>p.scale || p.scaleY<-p.scale) p.sy*=-1;
+			p.scaleY += p.sy*p.scale;
+			
+			p.vx += Math.random()*4-2;
+			p.vy += Math.random()*2-1;
+			p.vy = Math.min(-5, p.vy);
+			p.x += p.vx;
+			p.y += p.vy;
+			
+			if(p.y<-10 || p.x<-10 || p.x>W+10)
+			{
+				flotages[i] = new flotage();
+			}
+		}
+	}
+	// 绘制泡泡
+	function drawPopos(ctx)
+	{
+		ctx.lineWidth = 3;
+		ctx.strokeStyle = "#333";
+		ctx.fillStyle = "#333";
+		for(var i = 0; i < popo_count; i++)
+		{
+			var p = popos[i];
+			ctx.globalAlpha = p.alpha;
+			ctx.beginPath();
+			ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+			if (p.type>0.3) ctx.fill();
+			else ctx.stroke();
+			
+			if (Math.abs(p.tx-p.x)>0.1) p.x += p.sx;
+			if (Math.abs(p.ty-p.y)>0.1) p.y += p.sy;
+			
+			if (p.radius>p.maxRadius) p.dr = -p.dr;
+			p.radius += p.dr;
+			
+			if (p.alpha>p.maxAlpha) p.da = -p.da;
+			p.alpha += p.da;
+			
+			if(p.radius<0 || p.alpha<0)
+			{
+				popos[i] = new popo();
+			}
+		}
+	}
+}
+</script>
+</body>
+</html>

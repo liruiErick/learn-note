@@ -1,0 +1,91 @@
+//首先在接口中定义类
+@interface 类名 : 父类名
+{
+	数据类型 变量名;
+}
+
+//实例方法
+-(返回类型) 方法名;//无参数没有冒号
+
+//类方法
++(返回类型) 方法名:(参数类型)参数变量名 参数2名称:(参数类型)参数变量名;
+@end
+
+
+
+//类的实现
+@implementation 类名
+
+//初始化方法
+-(id) init{ //和构造函数作用类似 }
+
+//实例方法
+-(返回类型) 方法名{ }
+
+//类方法
++(返回类型) 方法名:(参数类型)参数变量名 参数2名称:(参数类型)参数变量名{ }
+@end
+
+
+
+////////////Swfdong.h中的代码////////////
+----------------------------------------
+#import <Foundation/Foundation.h>
+//使用#import关键字导入Foundation头文件，Foundation里包含了Cocoa中一些基本类，这些类在iOS应用程序中通常负责对象管理、内存管理、容器等相关数据结构的操作。
+
+//使用@interface关键字定义了一个名为Swfdong的类（的接口），并且该类继承自NSObject类（一般来说，在Objective-C中，我们都使用NSObject作为根类）
+@interface Swfdong: NSObject
+{
+	float height;
+	float age;
+	//对象变量（AS3中又称实例变量）的定义。
+}
+//这里需要注意，@interface后面是有花括号的，括号中包含的就是所有对象内变量的定义。而方法的定义则放到括号外，如下：
+
+-(void) eat:(id)target;
+//对象方法（AS3中又称实例方法）eat的定义，有一个任意类型的参数target；在Obj-C中，我们使用“-”减号声明实例方法。
+
++(id) removeAll;
+//类方法（AS3中又称静态方法）removeAll的定义，在Obj-C中，我们使用“+”加号声明类方法。
+
+@end 对应第二行的@interface，表明类的接口声明部分结束。
+
+
+
+
+////////////Swfdong.m中的代码///////////
+----------------------------------------
+#import <Swfdong.h>
+//导入了刚刚写好的、名为“Swfdong.h”的头文件。
+
+@implementation Swfdong
+//使用@implementation关键字开始对Swfdong类的实现。
+
+//init方法十分关键，其作用基本等于AS3中的构造函数（Constractor），减号表明init是一个实例方法。
+//而括号中的id则表明可以返回任意类型（实际上是返回一个指针，等同于AS3中的*）。
+-(id) init
+{
+	//这是Obj-C中几乎所有类的init方法中都有的一句，作用是调用父类的init方法。
+	if (self=[super init])
+	{
+		//为变量赋初始值
+		age=1;
+		height=120;
+	}
+}
+
+//实例方法eat的实现
+-(void) eat:(id)target
+{
+	//每次吃东西都增加0.1的年龄和0.5的身高，当然，这是典型的酒囊饭袋
+	age+=0.1;
+	height+=0.5;
+}
+
++(id) removeAll
+{
+	//类方法removeAll的实现
+}
+@end 
+
+

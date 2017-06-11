@@ -1,0 +1,167 @@
+﻿* cocos2d-js 中所有的对象就继承子 cc.Node
+
+// 设置属性
+node.attr({
+	x: 20,
+	y: 20,
+	anchorX: 0.5,
+	anchorY: 0.5,
+	width: 400,
+	height: 300,
+	scale: 2
+});
+
+由于attr函数使用键值对来配置节点，当我们使用Closure Compiler的高级模式来混淆时，这可能会引起一些意想不到的错误。
+简单来说，键值对中的键实质上是String类型，混淆过程中它并不会被压缩，而与之相对应的属性名却会被压缩，这导致了两者命名的不匹配。
+所幸，在引擎中我们保障了常用的属性不会被压缩，至于其他的属性和用户自定义属性，可以使用Closure Compiler的expose声明来避免出现问题。
+需要注意的是这个问题只有在开发者尝试使用attr函数来配置属性的时候才会出现，如果没有使用attr函数就不需要做任何额外的处理。
+
+例如：
+node.shaderProgram;
+
+node.customProperty;
+
+node.attr({
+    shaderProgram: program,
+    customProperty: 0
+});
+
+
+
+
+* 节点的常用重写方法
+
+ctor: function(){ this._super(); }; // cc.Node的构造函数
+
+onEnter: function(){ this._super(); }; // 当节点进入场景时调用，或在Layer可见时被调用，在后台运行重新返回前台时也会被调用。相当于 AS3 中的 ADDED_TO_STAGE
+
+onEnterTransitionDidFinish: function(){ this._super(); }; // 当节点进入场景完成时调用
+
+onExitTransitionDidStart: function(){ this._super(); }; // 准备退出场景时调用（注意，这里的this._super要在方法的最后执行）
+
+onExit: function(){ this._super(); }; // 当节点退出场景完成时调用（注意，这里的this._super要在方法的最后执行）。相当于 AS3 中的 REMOVED_FROM_STAGE
+
+update: function(dt){}; // 当执行 this.scheduleUpdate() 方法后会每帧调用一次，第一个获得的参数为当前与上一帧的时间差，单位秒。相当于 AS3 中的 ENTER_FRAME
+
+
+
+
+* 节点的添加与删除
+
+// 将一个节点加入到该层中
+this.gameLayer.addChild(new BackgroundLayer(), 0, TagOfLayer.background);
+// 第一个参数为 cc.Node 对象
+// 第二个参数为被加入对象在该层中的显示层级
+// 第三个参数为被加入对象的标签，便于在该层中调用 getChildByTag(tag) 进行查找
+
+// 将子节点从该父节点中移除
+node.removeChild(child, cleanup);
+node.removeChildByTag(3, cleanup); // 移除该父节点中指定标签对应的子节点
+node.removeAllChildren(cleanup); // 将该父节点中所有的子节点移除
+node.removeFromParent(cleanu); // 将该节点从其父节点中移除
+// cleanup 表示是否【清除】节点中【所有】的【动作】和【定时器】。默认为true
+
+node.parent; // 获取该节点的父节点
+node.children; // 获取该层内所有子节点所组成的数组
+node.childrenCount; // 获取该层内所有子节点的数量
+
+node.getChildByTag(tag); // 获取指定标签对应的节点
+node.getChildByName(name); // 获取指定名称对应的节点
+
+node.reorderChild(node, value); // 更改指定节点的显示层级为指定值
+
+node.running; // 返回节点是否在场景中
+// onEnter() 之后返回 true
+// onExit() 之后返回 false
+
+
+
+* 节点的操作
+
+node.tag; // 设置或返回对象的标签
+node.name; // 设置或返回对象的name名称
+node.userData; // 设置或返回对象的自定义数据对象
+node.userObject; // 设置或返回对象的绑定cocos2d对象（比如用该属性去绑定其他cocos2d的节点对象）
+
+node.x; // 设置或返回对象的X坐标
+node.y; // 设置或返回对象的Y坐标
+node.vertexZ; // 设置或返回对象的Z坐标
+node.width; // 设置或返回对象的宽度
+node.height; // 设置或返回对象的高度
+node.visible; // 设置或返回对象是否可见
+node.zIndex // 设置或返回对象的显示层级
+
+node.rotation; // 设置或返回对象的Z轴旋转角度
+node.rotationX; // 设置或返回对象的X轴旋转角度
+node.rotationY; // 设置或返回对象的Y轴旋转角度
+node.scale; // 设置或返回对象的XY轴缩放比例
+node.scaleX; // 设置或返回对象的X轴缩放比例
+node.scaleY; // 设置或返回对象的Y轴缩放比例
+node.skewX; // 设置或返回对象的X轴倾斜角度
+node.skewY; // 设置或返回对象的Y轴倾斜角度
+
+// 透明度
+node.opacity; // 设置或返回对象的透明度，取值0~255
+node.cascadeOpacityEnabled; // 设置或返回是否开启级联透明度。默认为否，如果开启，则子节点会继承父节点的透明度
+
+// 颜色
+node.color; // 设置或返回对象的颜色。设置的节点颜色会和节点本身的颜色进行混合
+node.cascadeColorEnabled; // 设置或返回是否开启级联颜色。默认为否，如果开启，则子节点会继承父节点的颜色
+
+// 锚点
+// cc.Node的默认锚点是(0, 0)
+// cc.Scene、cc.Layer、cc.Sprite的默认锚点是(0.5, 0.5)
+node.anchorX; // 设置或返回对象的X锚点
+node.anchorY; // 设置或返回对象的Y锚点
+node.ignoreAnchor; // 设置或返回对象是否忽略锚点。cc.Scene、cc.Layer默认为忽略锚点
+// 如果忽略锚点，则相当于锚点始终为左下角(0,0)位置
+
+node.flippedX; // 返回一个布尔值，设置或返回对象是否延X轴翻转（注意，这个翻转指的是纹理翻转，是不受锚点影响的）
+node.flippedY; // 返回一个布尔值，设置或返回对象是否延Y轴翻转（注意，这个翻转指的是纹理翻转，是不受锚点影响的）
+
+
+
+* 节点常用方法
+
+node.getContentSize(); // 获取一个节点的大小，包含两个属性 width 和 height
+
+node.getBoundingBox(); // 获取节点的边框盒。返回值包含x、y、width、height四个值，其中x、y为节点的左下角在父节点中的坐标
+
+node.getBoundingBoxToWorld(); // 获取节点的边框盒。返回值包含x、y、width、height四个值，其中x、y为节点的左下角在全局中的坐标
+
+node.getAnchorPointInPoints(); // 获取锚点在当前节点上以左下角为参考点的绝对坐标
+
+node.convertToWorldSpace(point); // 将该节点内的局部坐标点转换为全局坐标，该方法不使用该节点的锚点作为局部坐标系的零点，而是将左下角作为局部坐标系的零点
+
+node.convertToWorldSpaceAR(point); // 将该节点内的局部坐标点转换为全局坐标，该方法使用该节点的锚点作为局部坐标系的零点
+
+node.convertToNodeSpace(point); // 将全局坐标点转换为该节点内的局部坐标，该方法不使用该节点的锚点作为局部坐标系的零点，而是将左下角作为局部坐标系的零点
+
+node.convertToNodeSpaceAR(point); // 将全局坐标点转换为该节点内的局部坐标，该方法使用该节点的锚点作为局部坐标系的零点
+
+node.setNormalizedPosition(0.5, 0.5); // 按0~1的比率设置节点在容器中的位置。
+// 有一点需要注意，如果通过该方法设置了节点的位置，那么再通过x、y来设置具体位置将会无效，此时必须使用setPosition()方法来设置具体位置
+
+node.getNormalizedPosition(); // 返回节点在容器中按0~1的比率换算的位置。默认为(0, 0)
+
+
+
+
+* 【属性 VS 函数】方式
+
+cocos2d 3.0 后重写了大量的API，其中的大部分函数都用属性风格来实现，同时也保留了原先的函数风格API
+
+那么使用属性风格还是原先的函数风格，可以参考以下三点：
+1. 属性风格使用起来比较方便
+2. 属性风格用到 ECMAScript 的 getter 和 setter 的特性，这个特性在部分浏览器上还是比函数要慢
+3. 所以，如果是非常要求性能的操作，比如碰撞检测，最好还是使用函数
+
+
+
+* ARC自动引用技术
+
+// JS中仅仅是定义了这两个方法，并没有具体实现，目的是为了代码可以兼容JSB
+node.retain(); // 增加一次引用计数
+node.release(); // 释放一次引用计数
+
+

@@ -1,0 +1,184 @@
+@charset "UTF-8";
+
+/////////////////////////////////// 自定义样式工具 ///////////////////////////////////
+
+// 三角小箭头
+.arr-init(@position, @margin, @pseudo_elements) {
+	@select: ~":@{pseudo_elements}";
+	&@{select} {
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		position: absolute;
+		top: extract(@position, 1);
+		right: extract(@position, 2);
+		bottom: extract(@position, 3);
+		left: extract(@position, 4);
+		margin: @margin;
+	}
+}
+.larr(@color, @pseudo_elements: before) { //仅用于改变箭头颜色
+	@select: ~":@{pseudo_elements}";
+	&@{select} {
+		border-right-color: extract(@color, 1);
+		_border-top-color: extract(@color, 2); //为了兼容 IE6，可以将其设置为与背景颜色相同
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.larr(@color, @width, @height, @pseudo_elements: before) {
+	@select: ~":@{pseudo_elements}";
+	@height_half: @height / 2;
+	.arr-init(50% 100% auto auto, -@height_half 0 0, @pseudo_elements);
+	&@{select} {
+		.tbd(transparent, @height_half);
+		.bbd(transparent, @height_half);
+		.rbd(extract(@color, 1), @width);
+		_border-top-color: extract(@color, 2);
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.larr(@color, @width, @height, @position, @margin: 0, @pseudo_elements: before) when not (iskeyword(@position)) {
+	@select: ~":@{pseudo_elements}";
+	@height_half: @height / 2;
+	.arr-init(@position, @margin, @pseudo_elements);
+	&@{select} {
+		.tbd(transparent, @height_half);
+		.bbd(transparent, @height_half);
+		.rbd(extract(@color, 1), @width);
+		_border-top-color: extract(@color, 2);
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.rarr(@color, @pseudo_elements: before) { //仅用于改变箭头颜色
+	@select: ~":@{pseudo_elements}";
+	&@{select} {
+		border-left-color: extract(@color, 1);
+		_border-top-color: extract(@color, 2);
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.rarr(@color, @width, @height, @pseudo_elements: before) {
+	@select: ~":@{pseudo_elements}";
+	@height_half: @height / 2;
+	.arr-init(50% auto auto 100%, -@height_half 0 0, @pseudo_elements);
+	&@{select} {
+		.tbd(transparent, @height_half);
+		.bbd(transparent, @height_half);
+		.lbd(extract(@color, 1), @width);
+		_border-top-color: extract(@color, 2);
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.rarr(@color, @width, @height, @position, @margin: 0, @pseudo_elements: before) when not (iskeyword(@position)) {
+	@select: ~":@{pseudo_elements}";
+	@height_half: @height / 2;
+	.arr-init(@position, @margin, @pseudo_elements);
+	&@{select} {
+		.tbd(transparent, @height_half);
+		.bbd(transparent, @height_half);
+		.lbd(extract(@color, 1), @width);
+		_border-top-color: extract(@color, 2);
+		_border-bottom-color: extract(@color, 2);
+	}
+}
+.tarr(@color, @pseudo_elements: before) { //仅用于改变箭头颜色
+	@select: ~":@{pseudo_elements}";
+	&@{select} {
+		border-bottom-color: extract(@color, 1);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+.tarr(@color, @width, @height, @pseudo_elements: before) {
+	@select: ~":@{pseudo_elements}";
+	@width_half: @width / 2;
+	.arr-init(auto auto 100% 50%, 0 0 0 -@width_half, @pseudo_elements);
+	&@{select} {
+		.lbd(transparent, @width_half);
+		.rbd(transparent, @width_half);
+		.bbd(extract(@color, 1), @height);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+.tarr(@color, @width, @height, @position, @margin: 0, @pseudo_elements: before) when not (iskeyword(@position)) {
+	@select: ~":@{pseudo_elements}";
+	@width_half: @width / 2;
+	.arr-init(@position, @margin, @pseudo_elements);
+	&@{select} {
+		.lbd(transparent, @width_half);
+		.rbd(transparent, @width_half);
+		.bbd(extract(@color, 1), @height);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+.barr(@color, @pseudo_elements: before) { //仅用于改变箭头颜色
+	@select: ~":@{pseudo_elements}";
+	&@{select} {
+		border-top-color: extract(@color, 1);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+.barr(@color, @width, @height, @pseudo_elements: before) {
+	@select: ~":@{pseudo_elements}";
+	@width_half: @width / 2;
+	.arr-init(100% auto auto 50%, 0 0 0 -@width_half, @pseudo_elements);
+	&@{select} {
+		.lbd(transparent, @width_half);
+		.rbd(transparent, @width_half);
+		.tbd(extract(@color, 1), @height);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+.barr(@color, @width, @height, @position, @margin: 0, @pseudo_elements: before) when not (iskeyword(@position)) {
+	@select: ~":@{pseudo_elements}";
+	@width_half: @width / 2;
+	.arr-init(@position, @margin, @pseudo_elements);
+	&@{select} {
+		.lbd(transparent, @width_half);
+		.rbd(transparent, @width_half);
+		.tbd(extract(@color, 1), @height);
+		_border-left-color: extract(@color, 2);
+		_border-right-color: extract(@color, 2);
+	}
+}
+
+
+// 镂空小箭头（IE8及以下浏览器不支持）
+.arr2-init(@color, @size, @width) {
+	.sz(@size);
+	.tbd(@color, @width);
+	.lbd(@color, @width);
+}
+.larr2(@color) { //仅用于改变箭头颜色
+	border-color: @color;
+}
+.larr2(@color, @size, @width: 2px) {
+	.arr2-init(@color, @size, @width);
+	.rotate(-45deg);
+}
+.rarr2(@color) { //仅用于改变箭头颜色
+	border-color: @color;
+}
+.rarr2(@color, @size, @width: 2px) {
+	.arr2-init(@color, @size, @width);
+	.rotate(135deg);
+}
+.tarr2(@color) { //仅用于改变箭头颜色
+	border-color: @color;
+}
+.tarr2(@color, @size, @width: 2px) {
+	.arr2-init(@color, @size, @width);
+	.rotate(45deg);
+}
+.barr2(@color) { //仅用于改变箭头颜色
+	border-color: @color;
+}
+.barr2(@color, @size, @width: 2px) {
+	.arr2-init(@color, @size, @width);
+	.rotate(-135deg);
+}

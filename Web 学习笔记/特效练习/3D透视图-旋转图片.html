@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>3D透视图</title>
+<style>
+body {
+	background: #000;
+}
+#stage {
+	margin:auto;
+	width:1000px;
+	height:800px;
+}
+</style>
+</head>
+
+<body>
+<div id="stage">
+	<div id="pic1"><img src="images/pic1.jpg" /></div>
+	<div id="pic2"><img src="images/pic2.jpg" /></div>
+	<div id="pic3"><img src="images/pic3.jpg" />
+
+    </div>
+	<div id="pic4"><img src="images/pic4.jpg" /></div>
+	<div id="pic5"><img src="images/pic5.jpg" /></div>
+	<div id="pic6"><img src="images/pic6.jpg" /></div>
+    <div id="pic7"><img src="images/pic7.jpg" /></div>
+    <div id="pic8"><img src="images/pic8.jpg" /></div>
+    <div id="pic9"><img src="images/pic9.jpg" /></div>
+    <div id="pic10"><img src="images/pic10.jpg" /></div>
+</div>
+
+<script>
+	var stage = document.getElementById("stage");
+	stage.style.position = "relative";
+	stage.parentNode.style.webkitPerspective = "2000px";
+	//stage.style.webkitPerspective = "2000px";
+	stage.style.transformStyle = "preserve-3d";
+	stage.style.webkitTransformStyle = "preserve-3d";
+	stage.style.webkitTransition = "-webkit-transform .3s ease-out";
+	stage.ry = 0;
+
+	var stageHalfWidth = stage.clientWidth*.5;
+	var stageHalfHeight = stage.clientHeight*.5;
+
+	//把图片排列成原型
+	var w=300;//图片宽度的
+	var h=200;//图片高度的
+	var d=20;//图片间距的
+	var dist=w+d;//图片占用宽度的
+	var count=10;//图片数量
+	//计算每张图片之间的角度
+	var angle=360/count;
+	//求出圆的最短半径
+	var radius=dist*0.5/Math.tan(angle*0.5*Math.PI/180);
+	for (var i=0;i<count;i++)
+	{
+		var pic = document.getElementById("pic"+(i+1));
+		pic.firstChild.width = w;
+		pic.firstChild.height = h;
+		pic.style.padding = "5px";
+		pic.style.border = "2px solid #CCC";
+		pic.style.backgroundColor = "#FFF";
+		pic.style.cursor = "pointer";
+		pic.style.webkitBoxReflect = "below 2px\
+		-webkit-gradient(linear,\
+		left top,\
+		left bottom,\
+		from(transparent),\
+		color-stop(0.5, transparent),\
+		to(rgba(255, 255, 255, 0.5)))";
+		pic.style.position = "absolute";
+		pic.style.left = stageHalfWidth-w*0.5+"px";
+		pic.style.top = stageHalfHeight-h*0.5+"px";
+		pic.ry = i*angle;
+		pic.z = radius;
+		pic.style.webkitTransform = "rotateY("+pic.ry+"deg) translateZ("+pic.z+"px)";
+		pic.style.webkitTransition = "-webkit-transform .3s ease-out";
+		pic.addEventListener("mouseover", onmouseover);
+		pic.addEventListener("mouseout", onmouseout);
+		pic.addEventListener("click", onclick);
+	}
+
+	var selected;//用于判断当前是否已有选中目标，用于停止图片旋转
+	function onmouseover(e)
+	{
+		selected = true;
+		var target = e.currentTarget;
+		target.z = radius+100;
+		target.style.webkitTransform = "rotateY("+target.ry+"deg) translateZ("+target.z+"px)";
+	}
+	function onmouseout(e)
+	{
+		selected = false;
+		var target = e.currentTarget;
+		target.z = radius;
+		target.style.webkitTransform = "rotateY("+target.ry+"deg) translateZ("+target.z+"px)";
+	}
+	function onclick(e)
+	{
+		stage.ry += angleTo180(-e.currentTarget.ry-stage.ry);
+		stage.style.webkitTransform = "rotateY("+stage.ry+"deg)";
+	}
+	//将角度换算成正负180度以内的角
+	function angleTo180(angle)
+	{
+		if (angle>180) angle-=360;
+		else if (angle<-180) angle+=360;
+		if (angle>180 || angle<-180) angle = angleTo180(angle);
+		return angle;
+	}
+	var winWidth, winHeight, leftBounds, rightBounds;
+	onresize();
+	addEventListener("resize",onresize);
+	function onresize()
+	{
+		winWidth = window.innerWidth
+		|| document.documentElement.clientWidth
+		|| document.body.clientWidth;
+		winHeight=window.innerHeight
+		|| document.documentElement.clientHeight
+		|| document.body.clientHeight;
+		leftBounds = winWidth*0.25;
+		rightBounds = winWidth*0.75;
+	}
+
+	// 定义鼠标在指定点时图片旋转
+	var timerId;
+	var leftTimer, rightTimer;
+	addEventListener("mousemove",onmousemove);
+	function onmousemove(e)
+	{
+		if (e.clientX<leftBounds && !selected)
+		{
+			if (leftTimer) return;
+			leftTimer = true;
+			rightTimer = false;
+			clearInterval(timerId);
+			timerId = setInterval(leftRotate,40);
+			function leftRotate()
+			{
+				stage.ry -= 1;
+				stage.style.webkitTransform = "rotateY("+stage.ry+"deg)";
+			}
+		}
+		else if (e.clientX>rightBounds && !selected)
+		{
+			if (rightTimer) return;
+			leftTimer = false;
+			rightTimer = true;
+			clearInterval(timerId);
+			timerId = setInterval(rightRotate,40);
+			function rightRotate()
+			{
+				stage.ry += 1;
+				stage.style.webkitTransform = "rotateY("+stage.ry+"deg)";
+			}
+		}
+		else
+		{
+			leftTimer = rightTimer = false;
+			clearInterval(timerId);
+		}
+	}
+
+</script>
+
+</body>
+</html>

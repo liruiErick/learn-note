@@ -1,0 +1,48 @@
+﻿UIWebView可配置的属性如下：
+
+scalesPageToFit;//是否缩放网页以使用该控件大小
+
+dataDetectorTypes;//该属性支持如下枚举：
+// UIDataDetectorTypePhoneNumbe  自动检测网页上的电话号码，点击该号码就会拨号
+// UIDataDetectorTypeLink  自动检测网页上的超链接，点击该该链接就会导航到对应页面
+// UIDataDetectorTypeAddress  自定检测网页上的地址
+// UIDataDetectorTypeCalendarEvent  自动检测网页上的日历事件
+// UIDataDetectorTypeNone  不检测网页上的任何内容
+// UIDataDetectorTypeAll  自动检测网页上的所有特殊内容
+
+
+UIWebView可调用的方法如下：
+
+-loadHTMLString:(NSString *)str
+	baseURL:(NSURL *)url;//加载并显示HTML字符串
+
+-loadRequest:(NSURLRequest *)request;//加载并显示指定URL对应的网页
+
+-stringByEvaluatingJavaScriptFromString:;//执行指定的JavaScript字符串，并返回执行结果
+
+-goBack;//后退
+
+-goForward;//前进
+
+-reload;//重新加载页面
+
+-stopLoading;//停止加载页面
+
+
+当UIWebView加载页面时，程序可为UIWebView设置一个委托，该委托必须实现UIWebViewDelegate协议，该协议中包含如下方法：
+
+// 将要开始装载指定URL对应的网页时激发该方法
+-(BOOL)webView:(UIWebView *)webView
+	shouldStartLoadWithRequest:(NSURLRequest *)request
+	navigationType:UIWebViewNavigationType)navigationType;
+
+// 开始装载时激发该方法
+-(void)webViewDidStartLoad:(UIWebView *)webView;
+
+// 装载完成时激发该方法
+-(void)webViewDidFinishLoad:(UIWebView *)webView;
+
+// 装载相应出现错误时激发该方法
+-(void)webView:(UIWebView *)webView
+	didFailLoadWithError:(NSError *)error;
+

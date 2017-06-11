@@ -1,0 +1,68 @@
+*UISplitViewController 分离视图控制器
+
+// 创建UISplitViewController分离视图控制器
+UISplitViewController* splitViewController = [[UISplitViewController alloc] init];
+
+// 设置UISplitViewController所管理的左、右两个UIViewController
+splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
+
+// 将UISplitViewController作为窗口根视图显示出来
+self.window.rootViewController = splitViewController;
+[self.window makeKeyAndVisible];
+
+用UISplitViewController管理左右两个浮动视图时，则需要委托对象来实现，UISplitViewController的委托对象必须实现UISplitViewControllerDelegate协议：
+
+UISplitViewController对象.delegate = UISplitViewControllerDelegate对象;
+
+当IPad纵横向切换时会激发委托的以下两个方法：
+
+// 当左侧导航栏将要隐藏时激发该方法
+-(void)splitViewController:(UISplitViewController *)svc
+	willHideViewController:(UIViewController *)aViewController
+	withBarButtonItem:(UIBarButtonItem *)barButtonItem
+	forPopoverController:(UIPopoverController *)pc;
+
+// 当左侧导航栏将要显示时激发该方法
+-(void)splitViewController:(UISplitViewController *)svc
+	willShowViewController:(UIViewController *)aViewController
+	invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+
+
+
+*UIPopoverController 浮动窗口控制器
+
+UIPopoverController的作用时包装一个UIViewController，使之成为浮动窗口
+
+使用方法：
+// 创建自定义的UIPopoverController
+UIPopoverController* popoverController = [[UIPopoverController alloc]
+			initWithContentViewController: 视图控制器对象];
+
+// 指定从bookButton导航按钮上弹出该浮动窗口
+[popoverController presentPopoverFromBarButtonItem:bookButton
+		permittedArrowDirections:UIPopoverArrowDirectionAny
+		animated:YES];
+
+// 设置浮动窗口大小
+bookPopoverController.popoverContentSize = CGSizeMake(320.0, 600.0);
+
+// 关闭浮动窗口
+[popoverController dismissPopoverAnimated:YES];
+
+
+
+
+*UIDevice
+
+// UIDevice对象的userInterfaceIdiom返回以下两个枚举值
+// UIUserInterfaceIdiomPhone  代表iPhone设备
+// UIUserInterfaceIdiomPad  代表iPad设备
+if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+{
+	NSLog(@"此设备为iPhone");
+}
+else
+{
+	NSLog(@"此设备为iPad");
+}
+

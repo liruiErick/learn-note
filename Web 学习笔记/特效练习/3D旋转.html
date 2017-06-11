@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+<title>3D旋转</title>
+<meta charset="utf-8">
+<style type="text/css">
+#stage {
+	margin: 150px auto;
+	width: 600px;
+	height: 400px;
+	/* 设置舞台的透视距离 */
+	-webkit-perspective: 2000;
+}
+#rotate {
+	margin: 0 auto;
+	width: 600px;
+	height: 400px;
+	/* 设置三维空间 */
+	-webkit-transform-style: preserve-3d;
+	/* 使整个组行使用x轴旋转的动画连续7秒的持续时间,无限和线性 */
+	-webkit-animation-name: x-spin;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+.loop {
+	margin: 0 auto;
+	height: 110px;
+	width: 600px;
+	-webkit-transform-style: preserve-3d;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+.loop > :nth-child(odd) {
+	background-color: #AFAFAF;
+}
+.loop > :nth-child(even) {
+	background-color: #343434;
+}
+.block {
+	position: absolute;
+	left: 250px;
+	width: 100px;
+	height: 100px;
+	opacity: 0.7;
+	cursor: pointer;
+	-webkit-border-radius: 10px;
+}
+.block > p {
+	color: #FFF;
+	font-size: 36px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 28px;
+}
+/* 设置每一行有不同的动画持续时间和交替y轴旋转方向 */
+#loop-1 {
+	-webkit-animation-name: y-spin;
+	-webkit-animation-duration: 5s;
+}
+#loop-2 {
+	-webkit-animation-name: back-y-spin;
+	-webkit-animation-duration: 4s;
+}
+#loop-3 {
+	-webkit-animation-name: y-spin;
+	-webkit-animation-duration: 3s;
+}
+ @-webkit-keyframes x-spin {
+ 0% {
+-webkit-transform: rotateX(0deg);
+}
+ 50% {
+-webkit-transform: rotateX(180deg);
+}
+ 100% {
+-webkit-transform: rotateX(360deg);
+}
+}
+@-webkit-keyframes y-spin {
+ 0% {
+-webkit-transform: rotateY(0deg);
+}
+ 50% {
+-webkit-transform: rotateY(180deg);
+}
+ 100% {
+-webkit-transform: rotateY(360deg);
+}
+}
+@-webkit-keyframes back-y-spin {
+ 0% {
+-webkit-transform: rotateY(360deg);
+}
+ 50% {
+-webkit-transform: rotateY(180deg);
+}
+ 100% {
+-webkit-transform: rotateY(0deg);
+}
+}
+</style>
+<script type="text/javascript">
+	const count = 12;
+	const loop_radius = 200;
+	var blockAngle = 360 / count;
+	
+	function setup_loop(loop)
+	{
+		for (var i = 0; i < count; i ++) {
+			// 创建块
+			var block = document.createElement('div');
+			block.className = 'block';
+			loop.appendChild(block);
+			// 计算和分配每个块的转换
+			var transform = 'rotateY(' + (blockAngle * i) + 'deg) translateZ(' + loop_radius + 'px)';
+			block.style.webkitTransform = transform;
+			// 设置块编号
+			var p = block.appendChild(document.createElement('p'));
+			p.innerHTML = i;
+		}
+	}
+
+	function init()
+	{
+		var rotate =  document.getElementById('rotate');
+		var loop1 = document.getElementById('loop-1');
+		var loop2 = document.getElementById('loop-2');
+		var loop3 = document.getElementById('loop-3');
+		setup_loop(loop1);
+		setup_loop(loop2);
+		setup_loop(loop3);
+		
+		rotate.addEventListener('mouseover', onmouseover);
+		rotate.addEventListener('mouseout', onmouseout);
+		function onmouseover()
+		{
+			rotate.style.webkitAnimationPlayState = "paused";
+			loop1.style.webkitAnimationPlayState = "paused";
+			loop2.style.webkitAnimationPlayState = "paused";
+			loop3.style.webkitAnimationPlayState = "paused";
+		}
+		function onmouseout()
+		{
+			rotate.style.webkitAnimationPlayState = "running";
+			loop1.style.webkitAnimationPlayState = "running";
+			loop2.style.webkitAnimationPlayState = "running";
+			loop3.style.webkitAnimationPlayState = "running";
+		}
+	}
+
+	// 一旦文档是满载调用init
+	window.addEventListener('load', init);
+	
+	
+
+</script>
+</head>
+
+<body>
+<div id="stage">
+  <div id="rotate">
+    <div id="loop-1" class="loop"></div>
+    <div id="loop-2" class="loop"></div>
+    <div id="loop-3" class="loop"></div>
+  </div>
+</div>
+</body>
+</html>

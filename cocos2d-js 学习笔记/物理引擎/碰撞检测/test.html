@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>未知宽高div在页面内水平垂直居中</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+	<div class="box1"></div>
+	<div class="box2"></div>
+</body>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/jquery.requestAnimationFrame.min.js"></script>
+<script src="js/SAT.min.js"></script>
+<script>
+// Alias a few things in SAT.js to make the code shorter
+var V = function (x, y) { return new SAT.Vector(x, y); };
+var P = function (pos, points) { return new SAT.Polygon(pos, points); };
+var C = function (pos, r) { return new SAT.Circle(pos, r); };
+var B = function (pos, w, h) { return new SAT.Box(pos, w, h); };
+
+
+var idCounter = 0;
+function noop() {}
+
+function Entity(data, display, options) {
+	options = $.extend({
+		solid: false, // 这个对象是否为固体，也就是说是否参与碰撞
+		heavy: false, // 这个对象是否沉重，也就是说发生碰撞后是否不可以被其他物体移动
+		displayAttrs: {}, // Raphael attrs to set on the display object
+		onCollide: noop, // 两个实体碰撞时调用的方法 - arguments are (otherEntity, response)
+		onTick: noop // 每个模拟循环调用的方法 - no arguments
+	}, options || {});
+	this.vy = 0;
+	this.id = idCounter++;
+	this.data = data;
+	this.display = display;
+	this.displayAttrs = options.displayAttrs;
+	this.isSolid = options.solid;
+	this.isHeavy = options.heavy;
+	this.onCollide = options.onCollide;
+	this.onTick = options.onTick;
+}
+Entity.prototype = {
+	remove: function () {
+		if (this.display) this.display.remove();
+	},
+
+	// Call this to update the display after changing the underlying data.
+	updateDisplay: function () {
+		if (this.data instanceof SAT.Circle) {
+			var radius = this.data.r;
+			this.displayAttrs.left = this.data.pos.x - radius;
+			this.displayAttrs.top = this.data.pos.y - radius;
+		} else {
+			this.displayAttrs.left = this.data.pos.x;
+			this.displayAttrs.top = this.data.pos.y;
+		}
+		if (this.display) this.display.css(this.displayAttrs);
+	},
+
+	tick: function () {
+		this.onTick();
+	},
+
+	respondToCollision: function (other, response) {if (!isCollision) console.log(response)
+		this.onCollide(other, response);
+		// Collisions between "ghostly" objects don't matter, and
+		// two "heavy" objects will just remain where they are.
+		if (this.isSolid && other.isSolid &&
+		!(this.isHeavy && other.isHeavy)) {
+			if (this.isHeavy) {
+				// Move the other object out of us
+				other.data.pos.x += response.overlapV.x;
+				other.data.pos.y += response.overlapV.y;
+			} else if (other.isHeavy) {
+				// Move us out of the other object
+				this.data.pos.x -= response.overlapV.x;
+				this.data.pos.y -= response.overlapV.y;
+			} else {
+				// Move equally out of each other
+				response.overlapV.scale(0.5);
+				this.data.pos.x -= response.overlapV.x;
+				this.data.pos.y -= response.overlapV.y;
+				other.data.pos.x += response.overlapV.x;
+				other.data.pos.y += response.overlapV.y;
+			}
+		}
+	}
+};
+</script>
+
+<script>
+var $body = $("body");
+var bb = {x: 0, y: 0, width: $body.width(), height: $body.height()};
+var $box1 = $(".box1");
+var $box2 = $(".box2");
+var gravity = 1;
+var pos1 = getPos($box1);
+var pos2 = getPos($box2);
+var isCollision = false;
+
+
+function displayCollision(other, response) {
+	if (!other.display) this.vy = 0;
+	if (!this.display) other.vy = 0;
+	isCollision = true;
+}
+function restoreNoCollisionColors() {
+	this.displayAttrs.backgroundColor = '#000';
+}
+var defaultEntityOptions = {
+	solid: false,
+	onCollide: displayCollision,
+	onTick: restoreNoCollisionColors
+};
+var entity1 = new Entity(
+	C(V(pos1.x+$box1.width()/2, pos1.y+$box1.width()/2), $box1.width()/2),
+	//P(pos1, [V(0,0), V($box1.width(), 0), V($box1.width(), $box1.height()), V(0, $box1.height())]),
+	$box1,
+	{solid: true, heavy: !true, onCollide: displayCollision}
+);
+entity1.updateDisplay();
+var entity2 = new Entity(
+	P(pos2, [V(0,0), V($box2.width(), 0), V($box2.width(), $box2.height()), V(0, $box2.height())]),
+	$box2,
+	{solid: true, heavy: !true, onCollide: displayCollision}
+);
+entity2.updateDisplay();
+
+var $win = $(window);
+var winW = $win.width();
+var winH = $win.height();
+var wall = new Entity(
+	P(V(0,winH-20), [V(0,0), V(winW, -500), V(winW, 10), V(0, 10)]),
+	null,
+	{solid: true, heavy: true, onCollide: displayCollision}
+);
+
+var entities = [entity1, entity2, wall];
+var entitiesLen = entities.length;
+var response = new SAT.Response();
+
+function simulate() {
+	// 碰撞检测，更新 response 数据
+	var loopCount = 1;
+	for (var i = 0; i < loopCount; i++) {
+		// Naively check for collision between all pairs of entities
+		// E.g if there are 4 entities: (0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)
+		for (var aCount = 0; aCount < entitiesLen; aCount++) {
+			var a = entities[aCount];
+			for (var bCount = aCount + 1; bCount < entitiesLen; bCount++) {
+				var b = entities[bCount];
+				response.clear();
+				var collided;
+				var aData = a.data;
+				var bData = b.data;
+				if (aData instanceof SAT.Circle) {
+					if (bData instanceof SAT.Circle) {
+						collided = SAT.testCircleCircle(aData, bData, response);
+					} else {
+						collided = SAT.testCirclePolygon(aData, bData, response);
+					}
+				} else {
+					if (bData instanceof SAT.Circle) {
+						collided = SAT.testPolygonCircle(aData, bData, response);
+					} else {
+						collided = SAT.testPolygonPolygon(aData, bData, response);
+					}
+				}
+				if (collided) {
+					a.respondToCollision(b, response);
+				}
+			}
+		}
+	}
+
+	$.each(entities, function (i, entity) {
+		entity.updateDisplay();
+    });
+}
+
+
+window.requestAnimationFrame(function(time){
+	entity1.vy += gravity;
+	entity2.vy += gravity;
+	entity1.data.pos.y += entity1.vy;
+	entity2.data.pos.y += entity2.vy;
+
+	//setPos(entity1);
+	//setPos(entity2);
+	entity1.tick();
+	entity2.tick();
+	simulate();
+	window.requestAnimationFrame(arguments.callee);
+});
+
+
+function getPos($obj) {
+	return V(parseFloat($obj.css("left")), parseFloat($obj.css("top")));
+}
+</script>
+</html>

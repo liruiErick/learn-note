@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script language="javascript">
+function draw() {
+	// 创建用于图案的新image对象。
+	var img = document.getElementById('npc1').firstChild;
+	document.getElementById('myCanvas').parentNode.style.webkitPerspective = "600px";
+	
+	var ctx = document.getElementById('myCanvas').getContext('2d');
+	// 设置阴影。
+	ctx.shadowOffsetX = 10;
+	ctx.shadowOffsetY = 10;
+	ctx.shadowBlur = 10;  
+	ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+    //img = new Image();
+    //img.src = 'images/npc1.png';\
+	ctx.drawImage(img, 0, 0);
+	document.getElementById('myCanvas').style.webkitTransform = "rotateX(10deg) rotateY(20deg)";
+	//var ptn = ctx.createPattern(img,"repeat");
+	//ctx.fillStyle = ptn;
+	//ctx.fillRect(0,0,600,600);
+}
+window.onload=function(){
+	draw();
+}
+
+</script>
+</head>
+<body>
+<div id="npc1"><img src="images/npc1.png" /></div>
+<canvas id="myCanvas" width="600" height="800"></canvas>
+</body>
+</html>

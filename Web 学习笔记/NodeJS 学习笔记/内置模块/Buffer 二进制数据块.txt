@@ -1,0 +1,71 @@
+﻿# 二进制数据类型 Buffer 
+
+Buffer 与字符串类似，除了可以用.length 属性得到字节长度外，还可以用[index]方式读取指定位置的字节
+
+Buffer 与字符串能够互相转化，例如可以使用指定编码将二进制数据转化为字符串：
+var str = bin.toString('utf-8'); // => "hello"
+
+或者反过来，将字符串转换为指定编码下的二进制数据：
+var bin = new Buffer('hello', 'utf-8'); // => <Buffer 68 65 6c 6c 6f>
+
+
+Buffer 与字符串有一个重要区别。字符串是只读的，并且对字符串的任何修改得到的都是一个新字符串，原字符串保持不变。
+至于Buffer，更像是可以做指针操作的C 语言数组。例如，可以用[index]方式直接修改某个位置的字节。
+而.slice 方法也不是返回一个新的Buffer，而更像是返回了指向原Buffer 中间的某个位置的指针，因此对.slice 方法返回的Buffer 的修改会作用于原Buffer。
+
+
+
+Buffer的静态方法与属性
+
+poolSize;  表示内存容量
+
+byteLength;  表示字节长度
+
+isBuffer(buf);  判断一个对象是不是Buffer对象
+
+compare(buf1, buf2);  判断两个Buffer对象的相对位置，如果buf1位于buf2之前，则返回小于0的数。如果buf1位于buf2之后，则返回大于0的数。如果两个buf相等，则返回0。
+
+concat(buf1, buf2);  拼接两个Buffer对象
+
+isEncoding();  判断node是否支持某种编码
+
+
+
+Buffer的实例方法与属性
+
+new Buffer(data, encoding='utf8');  创建一个buffer实例
+
+buf[index];  直接通过下标访问数据
+
+buf.length;  获取buf的长度
+
+buf.write(string, offset=0, length, encoding='utf8');  将字符串写入buffer对象
+// string  表示写入的字符串
+// offset  表示写入的位置
+// length  表示写入的长度
+// encoding  表示写入的编码格式
+
+buf.toString(encoding, start=0, end=buffer.length);  将buffer对象转化为字符串
+
+buf.copy(target, tStart=0, sStart=0, sEnd=buffer.length);  复制当前buffer对象到目标buffer对象上
+// target  表示复制生成出的目标buffer对象
+// tStart  表示复制生成出的目标buffer对象的写入起始位置
+// sStart  表示复制源buffer对象的读取的起始位置
+// sEnd  表示复制源buffer对象的读取的结束位置
+
+buf.slice(index, endIndex);  返回从index开始（包括第index）到endIndex结束（不包括endIndex）的buffer数据对象，不改变原对象，参数可为负数，能够从倒数开始截取。
+
+buf.compare(otherBuffer);  比较两个buffer对象的位置
+
+buf.equals(otherBuffer);  判断两个buffer对象是否相等
+
+buf.fill(value, offset, end);
+
+
+
+
+
+
+
+
+

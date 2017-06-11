@@ -1,0 +1,87 @@
+﻿* 场景
+
+// 定义一个场景
+var HelloWorldScene = cc.Scene.extend({
+	onEnter:function () {
+		this._super();
+		var layer = new HelloWorldLayer();
+		this.addChild(layer);
+    }
+});﻿
+
+// 创建一个场景
+var scene = new HelloWorldScene();
+
+
+
+* 导演概念
+
+Director负责控制游戏场景的切换。在Director中常用的替换场景的方法有三个：
+
+pushScene 终止正在运行的场景，把它放到暂停场景的堆栈（内存）中去，新的场景将被执行。由于将场景放置内存中，场景并没有release。
+popScene 将经过pushScene的场景从堆栈（内存）中pop出来执行（前提是堆栈内存中存在场景），而当前执行的场景将被删除。
+replaceScene 用一个新的场景去替换掉正在运行的场景，正在运行的场景将被终止。
+
+pushScene和popScene这两个方法用来在不释放旧场景内存下运行新的场景，它旨在加快场景交替的速度。不过这里有个令人头疼的问题：如果新、旧场景对内存的需求都不大，可以共享内存，那么无论如何它们切换起来都很快;但如果这两个场景都非常复杂，加载起来很慢，那么使用pushScene和popScene以后，这两个场景会互相争夺宝贵的内存资源，内存使用很快就会达到一个非常危险的级别。
+
+所以这里需要注意的就是，使用pushScene()时，我们应尽量避免将一个大的场景压入堆栈以减少内存的占用。通常情况下常使用的是replaceScene()方法。
+
+cc.director.runScene(scene); // 直接运行该场景
+
+cc.director.pushScene(scene); // 将场景压入场景栈的末尾，作为当前场景运行（一般只会将一些资源占用量小的场景压入场景栈，比如设置界面）
+
+cc.director.popScene(); // 将当前运行的场景从场景栈的末尾推出，此时场景栈中的倒数第二个场景开始运行
+
+cc.director.popToRootScene(); // 回到根场景
+
+cc.director.getRunningScene(); // 获取当前正在运行的场景
+
+
+
+
+* 导演类的常用方法
+
+cc.director.getWinSize(); // 获取canvas的设计大小
+
+cc.director.getWinSizeInPixels(); // 获取canvas的实际像素大小
+
+cc.director.getVisibleOrigin(); // 获取canvas在浏览器去可见区域的原点
+
+cc.director.getVisibleSize(); // 获取canvas在浏览器去可见区域的大小
+
+cc.director.pause(); // 场景暂停
+
+cc.director.resume(); // 场景恢复
+
+cc.director.isPaused(); // 获取当前场景是否被暂停
+
+cc.director.getAnimationInterval(); // 获取当前的帧率
+
+cc.director.setAnimationInterval(value); // 设置当前的帧率
+
+cc.director.getContentScaleFactor(); // 获取内容缩放比
+
+cc.director.setContentScaleFactor(scaleFactor); // 设置内容缩放比
+
+cc.director.isDisplayStats(); // 获取当前是否正在显示游戏的调试信息
+
+cc.director.setDisplayStats(displayStats); // 设置当前是否显示游戏的调试信息
+
+cc.director.getOpenGLView(); // 获取OpenGL的视图信息
+
+cc.director.setOpenGLView(openGLView); // 设置OpenGL的视图信息
+
+cc.director.getProjection(); // 获取WebGL/OpenGL的投影信息
+
+cc.director.setProjection(projection); // 设置WebGL/OpenGL的投影信息，设置值如下：
+// cc.Director.PROJECTION_2D
+// cc.Director.PROJECTION_3D
+// cc.Director.PROJECTION_CUSTOM
+
+
+
+
+
+
+
+

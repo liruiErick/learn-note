@@ -1,0 +1,10 @@
+﻿// 调用非常简单
+var bakeLayer = cc.Layer.create();    
+this.addChild(bakeLayer);
+bakeLayer.bake(); // 开启静态缓存
+bakeLayer.unbake(); // 取消静态缓存
+
+
+注意事项：
+1、对于子节点经常会变的层， 启用bake功能，会给游戏性能带来额外的开销，建议对于不常修改子节点的层才开启该功能。
+2、该功能仅在Canvas渲染模式下有效, 在JSB与WebGL渲染模式下调用bake函数，不会产生效果。

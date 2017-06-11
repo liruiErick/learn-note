@@ -1,0 +1,115 @@
+﻿*UIAlertView 屏幕中央弹出式警告框
+
+由于UIAlertView没有继承UIControl基类，因此不支持为触摸动作绑定事件处理，只能交给委托对象处理。
+
+UIAlertView的委托对象必须实现UIAlertViewDelegate协议，该协议定义了如下方法（按触发顺序依次排列）：
+
+// 当警告框中第一个非Cancel按钮被启用时激发该方法
+-(BOOL) alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView;
+
+// 当该警告框将要显示出来时激发该方法
+-(void) willPresentAlertView:(UIAlertView *)alertView;
+
+// 当该警告框完全显示出来后激发该方法
+-(void) didPresentAlertView:(UIAlertView *)alertView;
+
+// 当用户单击警告框中某个按钮时激发该方法，其中buttonIndex参数代表用户单击按钮的索引
+-(void) alertView:(UIAlertView *)alertView
+	clickButtonAtIndex:(NSInteger)buttonIndex;
+
+// 当警告框被取消时，或者用户点击了Home键时，激发该方法
+-(void) alertViewCancel:(UIAlertView *)alertView;
+
+// 当用户单击某个按钮后，警告框将要隐藏时激发该方法
+-(void) alertViewCancel:(UIAlertView *)alertView
+	willDismissWithButtonIndex:(NSInteger)buttonIndex;
+
+// 当用户单击某个按钮后，警告框完全隐藏时激发该方法
+-(void) alertViewCancel:(UIAlertView *)alertView
+	didDismissWithButtonIndex:(NSInteger)buttonIndex;
+
+
+用法举例：
+
+// 创建一个警告框，在委托事件buttonIndex参数中，cancelButtonTitle索引为0，otherButtonTitles索引由1开始
+UIAlertView* alert = [[UIAlertView alloc]
+	initWithTitle:@"标题"
+	message:@"内容"
+	delegate:委托对象
+	cancelButtonTitle:@"取消"
+	otherButtonTitles:@"按钮1",@"按钮2",@"按钮3",nil];
+
+// 通过设置alertViewStyle属性，可实现警告框带输入框，该属性支持一下枚举值：
+// UIAlertViewStyleDefault  默认样式
+// UIAlertViewStyleSecureTextInput  包含一个密码输入框
+// UIAlertViewStylePlainTextInput  包含一个普通输入框
+// UIAlertViewStyleLoginAndPassWordInput  包含一个普通输入框和一个密码输入框
+alert.alertViewStyle = UIAlertViewStyleLoginAndPassWordInput;
+
+UITextField* tf = [alert textFieldAtIndex:1];//获取警告框内对应下标的文本对象，第二个为密码输入框
+
+tf.keyboardType = UIKeyboardTypeNumberPad;//将密码输入文本对象的关联键盘改为数字键盘
+
+[alert show];//显示警告框
+
+
+
+
+
+*UIActionSheet 屏幕底部按钮列表
+
+由于UIActionSheet没有继承UIControl基类，因此不支持为触摸动作绑定事件处理，只能交给委托对象处理。
+
+UIActionSheet的委托对象必须实现UIActionSheetDelegate协议，该协议定义了如下方法（按触发顺序依次排列）：
+
+// 当按钮列表中第一个非Cancel按钮被启用时激发该方法
+-(BOOL) actionSheetShouldEnableFirstOtherButton:(UIActionSheet *)actionSheet;
+
+// 当该按钮列表将要显示出来时激发该方法
+-(void) willPresentActionSheet:(UIActionSheet *)actionSheet;
+
+// 当该按钮列表完全显示出来后激发该方法
+-(void) didPresentActionSheet:(UIActionSheet *)actionSheet;
+
+// 当用户单击按钮列表中某个按钮时激发该方法，其中buttonIndex参数代表用户单击按钮的索引
+-(void) actionSheet:(UIActionSheet *)actionSheet
+	clickButtonAtIndex:(NSInteger)buttonIndex;
+
+// 当按钮列表被取消时，或者用户点击了Home键时，激发该方法
+-(void) actionSheetCancel:(UIActionSheet *)actionSheet;
+
+// 当用户单击某个按钮后，按钮列表将要隐藏时激发该方法
+-(void) actionSheetCancel:(UIActionSheet *)actionSheet
+	willDismissWithButtonIndex:(NSInteger)buttonIndex;
+
+// 当用户单击某个按钮后，按钮列表完全隐藏时激发该方法
+-(void) actionSheetCancel:(UIActionSheet *)actionSheet
+	didDismissWithButtonIndex:(NSInteger)buttonIndex;
+
+
+
+用法举例：
+
+// 创建一个按钮列表，在委托事件buttonIndex参数中，destructiveButtonTitle索引为0，otherButtonTitles索引由1开始，cancelButtonTitle索引为最后一个
+UIActionSheet* sheet = [[UIActionSheet alloc]
+	initWithTitle:@"标题"
+	delegate:委托对象
+	cancelButtonTitle:@"取消"
+	destructiveButtonTitle:@"确定"
+	otherButtonTitles:@"按钮1",@"按钮2",@"按钮3",nil];
+
+// 通过设置actionSheetStyle属性，可实现按钮列表带输入框，该属性支持一下枚举值：
+// UIActionSheetStyleDefault  默认样式，灰色背景上显示白色文字
+// UIActionSheetStyleBlackTranslucent  透明黑色背景上显示白色文字
+// UIActionSheetStyleBlackOpaque  纯黑背景上显示白色文字
+sheet.actionSheetStyle = UIAlertViewStyleAutomatic;
+
+[sheet showInView:self.view];//显示按钮列表
+
+
+
+
+
+
+
+

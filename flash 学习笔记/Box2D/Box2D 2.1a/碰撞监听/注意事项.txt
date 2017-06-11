@@ -1,0 +1,22 @@
+需要注意的：如果你要想愤怒的小鸟那样，碰撞之后将某个物体消失掉，那么你最好不要在监听的处理函数中处理逻辑，
+应该在此方法中添加一个 flag，然后在render中，根据flag，来处理逻辑，
+因为handleContactStart方法执行的时候，物理世界依 然进行着计算，此时对刚体操作是会出问题的。
+
+冲量的该运用
+
+override public function PostSolve(contact:b2Contact, impulse:b2ContactImpulse):void 
+{
+	if (contact.GetFixtureA().GetBody().GetUserData() != null &&
+	contact.GetFixtureB().GetBody().GetUserData() != null)//排除于墙的碰撞
+	{
+		//impulse是个数组 里面包含了两个元素 noramalImpluses tangentImpluses
+		//都是矢量vector对象
+		//normalImpluse是普通合力的产生的冲量
+		//tangentImpluse是切线摩擦力产生的冲量
+		var collistionEvent:CollisionEvent = new CollisionEvent(CollisionEvent.POST_SOLVE);
+		collistionEvent.postImPluse = impulse;
+		eventdispatcher.dispatchEvent(collistionEvent);
+	}
+}
+
+

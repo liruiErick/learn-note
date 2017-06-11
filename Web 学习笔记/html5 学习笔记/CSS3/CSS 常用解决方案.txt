@@ -1,0 +1,225 @@
+﻿* 设置字体，后4个为标准备胎字体
+font-family: 自定义字体, Helvetica, Arial, Verdana, sans-serif;
+
+
+* 去除点击 <a> 链接后的虚线的方法（不会影响到 tab）：
+	IE8+支持 outline:none;
+	IE5+支持 的私有属性 <a href=”#” hidefocus=”true”></a>
+
+* 去掉 <a> 链接的下划线的方法：text-decoration:none;
+
+
+* 去除 li 列表符号样式：list-style:none;
+
+
+* 在 webkit 浏览器中，li 会继承 ul 的 text-align，布局时应当注意
+
+
+* 解决块元素父子间 margin-top/bottom 重叠的问题：
+1、为父元素与块元素 margin-top/bottom 重叠的方向设置边框
+2、为父元素与块元素 margin-top/bottom 重叠的方向设置 padding
+3、为父元素或者子元素设置 float
+4、为父元素或者子元素设置 display: inline-block; （推荐）
+5、为父元素或者子元素设置 display: absolute;
+
+
+* 两种元素居中方法：
+1):
+父元素 {
+	width: 100%;
+	text-align: center;
+}
+子元素 {
+	width: 固定宽度; /* 宽度必须小于父容器 */
+	display: inline-block; /* 必须为行内块元素 */
+}
+2):
+父元素 {
+	width: 100%;
+}
+子元素 {
+	width: 固定宽度; /* 宽度必须小于父容器 */
+	display: block; /* 必须为块级元素 */
+	margin: 0 auto;
+}
+
+
+* 子div超出父div范围，仍然居中，且超出部分隐藏（多用于设置背景）
+父div {
+	width: 100%;
+	height: 固定高度;
+	overflow:hidden;
+	position:relative;
+}
+子div {
+	width: 图片宽度;
+	height: 图片高度;
+	position: absolute;
+	left: 50%; /* 这个百分比是相对于父容器的宽度 */
+	top: 50%; /* 这个百分比是相对于父容器的高度 */
+	margin-left: 自身宽度/2*-1; /* 向左偏移自身宽度的一半 */
+	margin-top: 自身高度/2*-1; /* 向上偏移自身高度的一半 */
+}
+
+
+* 将多个行内元素或者行内块元素水平两端对齐，中间等距分配
+/* 子元素间必须换行书写才会生效 */
+/* 注意，在 webkit 浏览器下，父容器的结束标签必须紧跟着最后一个子元素的结尾。否则最后一行结尾会有一个空白（换行符的文本节点） */
+/* 如果需要兼容IE6-7，那么子元素必须全部为原生的行内元素或行内块元素，如：<span>、<img>等。通过 display 设置的行内元素或行内块元素无效 */
+父元素 {
+	text-align: justify; /* IE6-7下，子元素必须为原生行内元素或者行内块元素 */
+	//text-justify: inter-ideograph; /* 如果子元素为原生块元素，那么必须声明该属性后，IE6-7下的对齐方式才能生效 */
+	text-align-last: justify; /* IE下设置最后一行的对齐方式，主要为兼容IE6-7 */
+}
+父元素:after { /* 用伪元素来伪装最后一行，因为最后一行不会两端对齐 */
+	content: "";
+	display: inline-block;
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+}
+
+
+* 将多个行内元素或者行内块元素垂直居中对齐
+块级父元素 {
+	vertical-align:middle; /* 如果子元素全部为行内元素（行内块元素除外），则可以统一继承该属性 */
+}
+/* 如果子元素为行内块元素，则需要分别设置该属性 */
+行内块元素1 {
+	vertical-align:middle;
+}
+行内块元素2 {
+	vertical-align:middle;
+}
+
+
+* 让图片在容器内水平垂直居中对齐，且图片过大时高宽自适应
+图片容器 {
+	text-align:center;
+}
+图片容器 img{
+	vertical-align:middle;
+	max-width:100%;
+	max-height:100%;
+}
+图片容器:after{
+	display:inline-block;
+	width:0;
+	height:100%;
+	content:"";
+	vertical-align:middle;
+	overflow:hidden;
+}
+
+
+* CSS3 垂直居中
+.parent-element {
+	transform-style: preserve-3d; //解决元素在沿translateY移动时会损失“半个像素”导致元素变得模糊的问题
+}
+.element {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%); //这个是相对于自身高度的百分比
+}
+
+
+* 使 table 可以设置文本溢出隐藏，末尾显示三个小点
+table {
+	table-layout:fixed;
+}
+table td {
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+
+* 多行文本中限制行数，且末尾显示三个小点（仅适用于与 webkit 浏览器）
+p {
+	overflow : hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3; // 限制为三行
+	-webkit-box-orient: vertical;
+}
+
+
+* 清楚浮动
+.cf:before, .cf:after {
+	content:"";
+	display:table; //使用“table”而不是“block”是为了让子元素的 margin-top/bottom 相对与父元素生效
+}
+.cf:after{
+	clear:both;
+}
+.cf{
+	*zoom:1;
+}
+
+
+* 使与浮动元素相邻的块元素不与浮动元素重叠
+// 浮动元素的相邻块元素会与浮动元素重叠，但相邻块元素的子元素会被浮动元素顶开
+// 以下方法可以在相邻块元素不设定浮动的情况下也可被浮动元素顶开，而不是与浮动元素重叠
+相邻块元素 {
+	overflow:hidden; /* 只要该属性值不为 visible 都是可以的 */
+}
+
+
+* 两栏自适应
+左栏元素 {
+	float: left;
+	width: 200px; /* 左栏固定宽度 */
+}
+右栏元素 {
+	display: block;
+	width: auto;
+	margin-left: 200px; /* 右栏自适应 */
+}
+
+
+* 高度跟随宽度自适应
+div {
+	width: 100%;
+	height: 0;
+	padding-top: 100%; // 可以按高度与宽度的比例进行设置
+}
+这种布局方式在Android下存在一个bug，就是该元素中的子孙元素如果是<img>，那么这个<img>的高度将不能按百分比来设置
+解决方案是，将<img>设置成绝对定位即可
+
+
+* 回到顶部按钮定位在主体边缘（不用考虑按钮宽度）
+CSS如下：
+.backtop_box { text-align: right; }
+.backtop { position: fixed; left: auto; bottom: 100px; }
+HTML如下：
+<!-- 实际上对其属性对齐的是空格符，按钮是依靠着空格符定位 -->
+<div class="sina_backtop_box">
+    &nbsp;<a href="#" class="backtop">返回顶部</a>
+</div>
+
+
+* 从服务器载入字体
+@font-face {
+	font-family: 'fontName'; /* 定义字体名称 */
+	src: url('myfont.eot'); /* IE9 Compat Modes */
+	src: local('myfont.ttf'),
+		url('myfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('myfont.woff2') format('woff2'),
+		url('myfont.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		url('myfont.ttf') format('truetype'), /*  Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+		url('myfont.svg#fontName') format('svg'); /* Legacy iOS */
+	[font-weight: <weight>]; /* 定义字体粗细 */
+	[font-style: <style>]; /* 定义字体样式，如斜体 */
+}
+/* local()表示在本机（客户端）查找该字体，如果本机已经安装了，就不用下载了 */
+/* url()表示字体在服务器上的位置，format()用来说明字体格式 */
+/* url('myfont.svg#fontName') 中 #fontName 为 SVG 的 id 名  */
+
+
+* 判断浏览器是否支持某个CSS3属性
+@supports (-webkit-backdrop-filter: none) {
+  .Box-header {
+      background: rgba(255,255,255,.6);
+      -webkit-backdrop-filter: brightness(1.5) blur(4px);
+  }
+}

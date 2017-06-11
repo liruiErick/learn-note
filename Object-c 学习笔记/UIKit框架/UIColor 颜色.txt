@@ -1,0 +1,13 @@
+在IOS中RGB颜色值范围为(0.0 ~ 1.0)
+假设颜色值RGB(135,200,0)，那么在ios代码中是这样的RGB(135/255,200/255,0/255)
+
+// 创建一个颜色，并初始化四个通道的颜色值
+UIColor* color = [UIColor colorWithRed:1.0
+					green:1.0
+					blue:1.0
+					alpha:1.0];
+
+
+// 创建一个位图平铺的颜色
+bubbleColor = [UIColor colorWithPatternImage:
+			[UIImage imageNamed:@"图片文件名"]];

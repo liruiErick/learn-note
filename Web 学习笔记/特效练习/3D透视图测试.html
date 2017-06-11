@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>3D透视图</title>
+</head>
+
+<body>
+<script src="3Dperspective.js"></script>
+<script>
+	// 声明存放9个图片的数组
+	var pics = [];
+	// 获取窗口的中心位置
+	var w=window.innerWidth
+	|| document.documentElement.clientWidth
+	|| document.body.clientWidth;
+	var h=window.innerHeight
+	|| document.documentElement.clientHeight
+	|| document.body.clientHeight;
+	document.body.style.width = w+"px";
+	document.body.style.height = h+"px";
+	w/=2;
+	h/=2;
+	document.body.style.margin = "0";
+	// 创建3X3共9个图片
+	for (var i=-1;i<2;i++)
+	{
+		for (var j=-1;j<2;j++)
+		{
+			var div = document.createElement("div");
+			div.style.background = "red";
+			div.style.width = "300px";
+			div.style.height = "300px";
+			//div.style.opacity = "0.5";
+			document.body.appendChild(div);
+			pics.push(div);
+			followMouse(div,w+(300+20)*j-150,h+(300+20)*i-150,w,h,-i,true);
+		}
+	}
+	addEventListener("resize",onresize);
+	function onresize(event)
+	{
+		w=window.innerWidth
+		|| document.documentElement.clientWidth
+		|| document.body.clientWidth;
+		h=window.innerHeight
+		|| document.documentElement.clientHeight
+		|| document.body.clientHeight;
+		document.body.style.width = w+"px";
+		document.body.style.height = h+"px";
+		w/=2;
+		h/=2;
+		var k = 0;
+		var pic;
+		for (var i=-1;i<2;i++)
+		{
+			for (var j=-1;j<2;j++)
+			{
+				pic = pics[k];
+				followMouse(pic,w+(300+20)*j-150,h+(300+20)*i-150,w,h,-i,true);
+				k++;
+			}
+		}
+	}
+</script>
+
+</body>
+</html>

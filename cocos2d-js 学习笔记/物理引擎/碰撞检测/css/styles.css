@@ -1,0 +1,116 @@
+@charset "UTF-8";
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+form,
+input {
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  padding: 0;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+i,
+em {
+  font-style: normal;
+}
+a {
+  outline: none;
+  background: transparent;
+}
+a img {
+  border: 0;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+body {
+  position: relative;
+  width: 100%;
+  font-family: Microsoft YaHei, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+body:before {
+  content: "";
+  display: table;
+}
+a {
+  color: #0055aa;
+  text-decoration: none;
+}
+a:hover {
+  color: #1188ff;
+  text-decoration: underline;
+}
+/****************** index start ******************/
+html {
+  height: 100%;
+}
+body {
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  _width: expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('0')-parseInt('0'));
+  _height: expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('0')-parseInt('0'));
+  background-color: #eeeeee;
+  border: 10px solid #d9534f;
+}
+.box1 {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  width: 200px;
+  height: 200px;
+  background-color: #000000;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.box2 {
+  position: absolute;
+  top: 0;
+  left: 380px;
+  width: 100px;
+  height: 200px;
+  background-color: #5cb85c;
+}
+/****************** index end ******************/

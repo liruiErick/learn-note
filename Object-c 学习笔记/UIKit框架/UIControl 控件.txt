@@ -1,0 +1,44 @@
+*为子控件绑定事件处理方法
+
+// 添加事件监听
+-(void)addTarget:(id)target
+	action:(SEL)action
+	forControlEvents:(UIControlEvents)events;
+
+// 移除事件监听
+-(void)removeTarget:(id)target
+	action:(SEL)action
+	forControlEvents:(UIControlEvents)events;
+
+// 未知
+-(NSArray *)actionForTarget:(id)target
+	forControlEvent:(UIControlEvents)controlEvent;
+
+// 未知
+-(NSSet *)allTarget;
+
+// 未知
+-(UIControlEvents)allControlEvents;
+
+
+
+*每一个控件都有下列3个属性
+
+enabled 表示该控件是否可用
+
+selected 表示该控件是否被选中
+
+highlighted 表示该控件是否高亮
+
+
+
+*如果用户触碰控件时需要改变外观，可重写下列方法，实现自定义外观
+
+// 当用户开始触碰该控件时，将激发该方法
+- beginTrackingWithTouch:withEvent:;
+
+// 当用户继续触碰该控件时，将激发该方法
+- continueTrackingWithTouch:withEvent:;
+
+// 当用户结束触碰该控件时，将激发该方法
+- endTrackingWithTouch:withEvent:;

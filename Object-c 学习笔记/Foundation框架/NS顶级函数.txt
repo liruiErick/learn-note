@@ -1,0 +1,11 @@
+NSStringFormClass(Class); //将一个Class转换成NSString
+
+NSClassFromString(@"类名"); //将NSString转换成一个Class，如果不存在，返回一个nil。
+
+NSStringFromSelector(@selector(方法名:)); //将一个方法转换成NSString
+
+NSSelectorFromString(@"方法名:"); //将NSString转换成一个方法，如果不存在，返回一个nil。
+
+NSStringFromProtocol(@protocol(协议名)); //将一个协议转换成NSString
+
+NSProtocolFromString(@"协议名"); //将NSString转换成一个协议，如果不存在，返回一个nil。

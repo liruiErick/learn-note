@@ -1,0 +1,139 @@
+*NSKeyedArchiver 数据归档
+*NSKeyedUnarchiver 数据恢复
+
+// 直接使用多个value,key的形式创建NSDictionary对象
+NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt:89] , @"Objective-C",
+			[NSNumber numberWithInt:69] , @"Ruby",
+			[NSNumber numberWithInt:75] , @"Python",
+			[NSNumber numberWithInt:109] , @"Perl", nil];
+			
+// 对dict对象进行归档		
+[NSKeyedArchiver archiveRootObject:dict
+	toFile:@"myDict.archive"];
+
+// 从myDict.archive文件中恢复对象
+NSDictionary* dict = [NSKeyedUnarchiver unarchiveObjectWithFile:@"myDict.archive"];
+
+
+
+*自定义对象的归档与恢复
+
+// 如果要实现对自定义对象进行归档恢复操作，则对象需要实现NSCoding协议。
+// 然后为对象实现以下两个方法
+-(void)encodeWithCoder:(NSCoder *)coder;//该方法负责归档该对象
+-(id)initWithCoder:(NSCoder *)coder;//该方法负责恢复该对象
+
+// 在以上方法中，归档实或恢复例变量时，对象的实例变量为Object-C对象，并实现了NSCoding协议，则可以直接使用以下方法：
+encodeObject:forKey://归档实例变量
+decodeObjectForKey://恢复实例变量
+// 对于C语言数据类型使用下列方法进行归档恢复实例变量
+encodeBool:forKey:					decodeBoolForKey:
+encodeInt:forKey:					decodeIntForKey:
+encodeInt32:forKey:					decodeInt32ForKey:
+encodeInt64:forKey:					decodeInt64ForKey:
+encodeFloat:forKey:					decodeFloatForKey:
+encodeDouble:forKey:				decodeDoubleForKey:
+
+// 具体实现方法
+- (void) encodeWithCoder: (NSCoder*) coder
+{
+	// 调用NSCoder的方法归档该对象的每个实例变量
+	[coder encodeObject:_color forKey:@"color"];
+	[coder encodeDouble:_weight forKey:@"weight"];
+	[coder encodeInt:_size forKey:@"size"];
+}
+- (id) initWithCoder: (NSCoder*) coder
+{
+	// 使用NSCoder依次恢复color、weight、size这3个key
+	// 所对应的value，并将恢复的value赋给当前对象的3个实例变量
+	_color = [coder decodeObjectForKey:@"color"];
+	_weight = [coder decodeDoubleForKey:@"weight"];
+	_size = [coder decodeIntForKey:@"size"];
+	return self;
+}
+
+
+
+*使用NSData完成自定义多个对象的归档与恢复
+
+// 归档多个对象
+#import <Foundation/Foundation.h>
+#import "FKApple.h"
+
+int main(int argc , char * argv[])
+{
+	@autoreleasepool{
+		// 直接使用多个value,key的形式创建NSDictionary对象
+		NSDictionary* dict = [NSDictionary 
+			dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt:89] , @"Objective-C",
+			[NSNumber numberWithInt:69] , @"Ruby",
+			[NSNumber numberWithInt:75] , @"Python",
+			[NSNumber numberWithInt:109] , @"Perl", nil];
+		// 创建一个NSSet对象		
+		NSSet* set = [NSSet setWithObjects:
+			@"疯狂iOS讲义",
+			@"疯狂Android讲义",
+			@"疯狂Ajax讲义", nil];
+		// 创建FKApple对象
+		FKApple* apple = [[FKApple alloc]
+			initWithColor:@"红色"
+			weight:3.4
+			size:20];
+		// 创建一个NSMutableData对象，用于保存归档数据
+		NSMutableData* data = [NSMutableData data];
+		// 以NSMutableData对象作为参数，创建NSKeyedArchiver对象
+		NSKeyedArchiver* arch = [[NSKeyedArchiver alloc]
+			initForWritingWithMutableData:data];
+		// 重复调用encodeObject:forKey:方法归档所有需要归档的对象
+		[arch encodeObject:dict forKey:@"myDict"];
+		[arch encodeObject:set forKey:@"set"];
+		[arch encodeObject:apple forKey:@"myApp"];
+		// 结束归档
+		[arch finishEncoding];
+		// 程序将NSData缓存区保存的数据写入文件
+		if([data writeToFile:@"multi.archive" atomically:YES] == NO)
+		{
+			NSLog(@"归档失败!");
+		}
+	}
+}
+
+// 恢复多个对象
+#import <Foundation/Foundation.h>
+#import "FKApple.h"
+
+int main(int argc , char * argv[])
+{
+	@autoreleasepool{
+		// 创建一个NSData对象，用于读取指定文件中的归档数据
+		NSData* data = [NSData
+			dataWithContentsOfFile:@"multi.archive"];
+		// 以NSData对象作为参数，创建NSKeyedUnarchiver对象
+		NSKeyedUnarchiver* unarch = [[NSKeyedUnarchiver alloc]
+			initForReadingWithData:data];
+		// 重复调用decodeObjectForKey:方法恢复所有需要恢复的对象
+		NSDictionary* dict = [unarch decodeObjectForKey:@"myDict"];
+		NSSet* set = [unarch decodeObjectForKey:@"set"];
+		FKApple* myApp = [unarch decodeObjectForKey:@"myApp"];
+		// 结束恢复
+		[unarch finishDecoding];
+		// 下面代码仅仅只是验证恢复是否成功
+		NSLog(@"%@" , dict);
+		NSLog(@"%@" , set);
+		NSLog(@"%@" , myApp);
+	}
+}
+
+
+
+
+*使用归档实现深复制
+
+// 归档对象，将归档对象的数据写入NSData中
+NSData* data = [NSKeyedArchiver
+			archivedDataWithRootObject:对象];
+// 从NSData对象中恢复对象，这样即可完成深复制
+对象拷贝 = [NSKeyedUnarchiver
+			unarchiveObjectWithData:data];

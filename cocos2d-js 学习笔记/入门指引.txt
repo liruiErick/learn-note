@@ -1,0 +1,80 @@
+﻿* main.js 游戏入口
+cc.game.onStart = function(){
+	cc.view.adjustViewPort(true);
+
+	// 前两个参数是代码中使用的游戏分辨率。
+	// 第三个参数就是你选择的适配方案。引擎中内置了5种适配方案，每种都有自己独特的行为。
+	cc.view.setDesignResolutionSize(960, 640, cc.ResolutionPolicy.SHOW_ALL);
+
+	cc.view.resizeWithBrowserSize(true); // 设置舞台是否根据浏览器窗口大小自动调整自身大小
+
+	//load resources
+	cc.LoaderScene.preload(g_resources, function () {// 预加载数组 g_resources 中的资源
+		cc.director.runScene(new StartScene()); // 加载完成后创建并运行场景 StartScene
+	}, this);
+};
+cc.game.run(); //游戏开始运行
+// 如果不希望马上运行游戏，还可以通过 cc.game.prepare() 进行准备，在希望开始游戏的时候执行 cc.game.run()
+
+
+
+* 自定义一个场景
+var StartLayer = cc.Layer.extend({// 定义一个继承自 cc.Layer 的层对象
+    ctor:function () {// 重写构造方法
+        this._super(); // 初始化超类
+ 
+        var size = cc.winSize; // 获取舞台大小
+ 
+        var helloLabel = new cc.LabelTTF("Hello World", "Helvetica", 38); // 创建一个文本域，第二个参数是字体，然后第三个参数是字体尺寸
+        // 注意，这里文本域的默认锚点是其自身的中心，而非左上角，因此坐标只需要设置在舞台中央即可
+        helloLabel.x = size.width / 2;
+        helloLabel.y = size.height / 2;
+        this.addChild(helloLabel); // 加入到层中
+
+	// 加入背景
+	this.bgSprite = new cc.Sprite(res.bg_png); // 创建一个精灵
+	// 同样的，精灵的默认锚点也是其自身的中心
+	this.bgSprite.attr({
+		x: size.width / 2,
+		y: size.height / 2,
+	});
+	this.addChild(this.bgSprite, 0);
+
+	// 加入一个菜单项
+	var startItem = new cc.MenuItemImage(// 创建一个菜单项图片，类似按钮
+		res.start_N_png, // 按钮默认时的图片
+		res.start_S_png, // 按钮按下时的图片
+		function () {// 按钮单击后的回调
+			cc.log("Menu is clicked!");
+			// cc.TransitionPageTurn创建了一个翻页效果的场景切换动画，当然你也可以不使用转场动画。直接传入new SecondScene()。
+			cc.director.replaceScene(cc.TransitionPageTurn(1, new PlayScene(), false));
+		}, this);
+	// 这里，菜单项的默认锚点是其自身的左上角，因此需要设置锚点为其自身的中心
+	startItem.attr({
+		x: size.width/2,
+		y: size.height/2,
+		anchorX: 0.5,
+		anchorY: 0.5
+	});
+	// 加入一个菜单
+	var menu = new cc.Menu(startItem); // 创建一个菜单
+	// 这里，菜单的默认锚点也是其自身的左上角
+	menu.x = 0;
+	menu.y = 0;
+	this.addChild(menu, 1);
+ 
+        return true;
+    }
+});
+ 
+var StartScene = cc.Scene.extend({// 定义一个继承自 cc.Scene 的场景对象
+    onEnter:function () {
+        this._super();
+        var layer = new StartLayer(); // 创建刚刚定义的层
+        this.addChild(layer);
+    }
+});
+
+
+
+

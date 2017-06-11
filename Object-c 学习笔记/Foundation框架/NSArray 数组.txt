@@ -1,0 +1,275 @@
+*数组串常用方法
+
+
+*NSArray 固定数组
+
+
+
+NSArray* arr=[NSArray array];//创建一个不包含任何内容的固定数组
+
+
+
+// 读取文件内容，并创建数组
+
+NSArray* arr=[[NSArray alloc] initWithContentsOfFile:@"文件名.txt"];
+
+NSArray* arr=[NSArray arrayWithContentsOfFile:@"文件名.txt"];
+
+
+
+// 创建一个数组,并初始化内容,以nil结束
+
+NSArray* arr = [[NSArray alloc] initWithObjects:@"One",@"Two",@"Three",nil];
+
+NSArray* arr = [NSArray arrayWithObjects:@"One",@"Two",@"Three",nil];
+
+
+
+NSArray* arr = @[@"One",@"Two",@"Three"];//快速创建数组
+
+
+
+[arr count];//返回数组的元素个数
+
+，可简写为arr[SIZE]
+
+[arr firstObject];//返回数组的第一个元素数
+
+，可简写为arr[FIRST]
+
+[arr lastObject];//返回数组的最后一个元素数，可简写为arr[LAST]
+
+
+[arr objectAtIndex:0];//返回第一个索引位置的元素,也可以直接使用arr[0]访问
+
+
+
+// 获取索引从2~5的元素组成的新集合
+
+// NSIndexSet为一个专门用于保存索引值的集合
+
+NSArray* arr = [arr objectsAtIndexes:
+
+				[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 3)]];
+
+
+
+[arr indexOfObject:@"One"];//获取元素在数组中的索引
+
+
+
+
+// 获取元素在集合的指定范围中的位置，如果不在该范围内，则返回一个NSNotFound常量，值为9223372036854775807
+
+[arr indexOfObject:@"One"
+
+	inRange:NSMakeRange(2, 3)];
+
+
+
+// 向数组的最后追加一个元素。
+
+// 原NSArray本身并没有改变，只是将新返回的NSArray赋给arr
+arr = [arr arrayByAddingObject:@"孙悟空"];
+
+
+
+// 向数组的最后追加另一个数组的所有元素。
+
+// 原NSArray本身并没有改变，只是将新返回的NSArray赋给arr
+
+arr = [arr arrayByAddingObjectsFromArray:
+
+		NSArray arrayWithObjects:@"宝玉" , @"黛玉" , nil]];
+
+
+		
+// 获取array数组中索引为5~8处的所有元素
+
+NSArray* arr = [arr subarrayWithRange: NSMakeRange(5, 3)];
+
+
+
+// 将NSArray集合的元素写入文件
+
+[arr writeToFile:@"myFile.txt" atomically:YES];
+
+
+
+
+
+
+*NSMutableArray 可变数组
+
+
+
+NSMutableArray* mutArr=[NSMutableArray array];//创建一个不包含任何内容的可变数组
+
+
+
+// 创建一个可变数组,并初始化内容,以nil结束
+
+NSMutableArray* mutArr = [[NSMutableArray alloc] initWithObjects:@"One",@"Two",@"Three",nil];
+
+NSMutableArray* mutArr = [NSMutableArray arrayWithObjects:@"One",@"Two",@"Three",nil];
+
+
+
+[mutArr addObject:对象];//向数组最后添加一个元素
+
+
+
+// 使用NSArray向集合尾部添加多个元素
+
+[mutArr addObjectsFromArray:
+	[NSArray
+ arrayWithObjects:@"张飞" , @"关羽",nil]];
+	
+
+
+// 向数组的指定位置插入一个元素，将对象插入数组的第一索引位
+
+[mutArr insertObject:对象 atIndex:0];
+
+
+
+// 使用NSArray向集合指定位置插入多个元素
+
+[mutArr insertObjects:
+
+	[NSArray arrayWithObjects:@"武松" , @"林冲",nil]
+	atIndexes:
+	[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,2)]];
+
+
+
+[mutArr removeAllObjects];//将所有对象移出数组
+
+
+
+[mutArr removeLastObject];//将最后一个对象移出数组
+
+
+
+[mutArr removeObject:对象];//将指定对象移出数组
+
+
+
+[mutArr removeObjectAtIndex:0];//将指定索引位的对象移出数组
+
+
+
+[mutArr removeObjectsInRange:NSMakeRange(2, 3)];//删除2~5处元素
+
+
+[mutArr replaceObjectAtIndex:1 withObject:对象];//将数组中的第二个元素替换为该对象
+
+
+
+
+
+
+*数组排序
+
+
+
+// 初始化一个元素为NSString的NSArray对象
+
+NSArray* arr = [NSArray arrayWithObjects:
+				@"Objective-C" , @"C" , @"C++" 
+				, @"Ruby" , @"Perl" , @"Python" , nil];
+
+// 字符串比较方法compare:，根据字符对应的编码进行比较，返回一个枚举值，用于排序函数
+
+[str1 compare:str2];
+
+
+
+// 所有排序方法都返回一个枚举值
+
+// 方法有两个参数A和B,让A在B前返回-1,让A在B后返回1,A=B返回0
+
+// NSOrderedAscending 升序，值为-1
+
+// NSOrderedDescending 降序，值为1
+
+// NSOrderedSame 相同，值为0
+
+
+// 使用数组元素的compare:方法执行排序
+
+// 经测试，此方法是按照A-Z-a-z顺序排序
+
+arr = [arr sortedArrayUsingSelector:@selector(compare:)];
+
+
+
+// 初始化一个元素为NSNumber的NSArray对象
+
+NSArray* arr = [NSArray arrayWithObjects:
+				[NSNumber numberWithInt:20],
+
+				[NSNumber numberWithInt:12],
+
+				[NSNumber numberWithInt:-8],
+
+				[NSNumber numberWithInt:50],
+
+				[NSNumber numberWithInt:19], nil];
+
+
+
+// 使用intSort函数执行排序
+
+arr = [arr sortedArrayUsingFunction:intSort
+	context:nil];
+
+// 经测试，此方法是按照数字由小到大进行排序
+
+NSInteger intSort(id num1, id num2, void *context)
+
+{
+
+	int v1 = [num1 intValue];
+	int v2 = [num2 intValue];
+
+	if (v1 < v2)
+
+		return NSOrderedAscending;
+
+	else if (v1 > v2)
+
+		return NSOrderedDescending;
+
+	else
+
+		return NSOrderedSame;
+
+}
+
+
+
+// 使用代码块对数组元素进行排序
+
+arr = [arr sortedArrayUsingComparator:
+
+		^(id num1, id num2)
+		{
+
+			int v1 = [num1 intValue];
+
+			int v2 = [num2 intValue];
+			if (v1 < v2)
+
+				return NSOrderedAscending;
+
+			else if (v1 > v2)
+				return NSOrderedDescending;
+			else
+
+				return NSOrderedSame;
+
+		}];
+
+
+

@@ -1,0 +1,91 @@
+*遍历数组
+
+// 对数组元素整体调用方法
+[arr makeObjectsPerformSelector:@selector(方法名:)
+	withObject:方法参数];
+
+// 迭代数组内指定范围内元素，并使用该元素来执行代码块
+[arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){}];
+
+// 迭代数组内指定范围内元素，并使用该元素来执行代码块
+// options参数穿入一个NSEnumerationOptions枚举常量
+// NSEnumerationConcurrent 表示正序，值为1
+// NSEnumerationReverse 表示倒序，值为2
+[arr enumerateObjectsWithOptions:NSEnumerationConcurrent
+		usingBlock:^(id obj, NSUInteger idx, BOOL *stop){}];
+
+// 迭代数组内指定范围内元素，并使用该元素来执行代码块
+// 代码块的第一个参数代表正在遍历的数组元素
+// 代码块的第二个参数代表正在遍历的数组元素的索引
+[arr enumerateObjectsAtIndexes:
+	[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2,2)]
+	options:NSEnumerationReverse
+	usingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+	{
+		NSLog(@"正在处理第%ld个元素：%@" , idx , obj);
+		// 代码块的第三个参数设为真时，则停止遍历
+		*stop = YES;
+	}];
+
+
+
+*枚举器遍历集合
+
+// 获取NSArray的顺序枚举器
+// objectEnumerator 得到里面的对象枚举
+// keyEnumerator 得到里面的键值枚举，对于NSSet集合来说此方法无意义
+NSEnumerator* en = [arr objectEnumerator];//把objectEnumerator替换为keyEnumerator即可得到键值枚举
+id object;
+while(object = [en nextObject])
+{
+	NSLog(@"%@" , object);
+}
+
+// 获取NSArray的逆序枚举器，对于NSSet集合来说此方法无意义
+en = [array reverseObjectEnumerator];
+while(object = [en nextObject])
+{
+	NSLog(@"%@" , object);
+}
+
+
+
+*NSArray的KVC与KVO
+
+// 初始化NSArray对象
+
+NSArray* arr = [NSArray arrayWithObjects:
+		[[FKUser alloc] initWithName:@"sun" pass:@"123"],
+		[[FKUser alloc] initWithName:@"bai" pass:@"345"],
+		[[FKUser alloc] initWithName:@"zhu" pass:@"654"],
+		[[FKUser alloc] initWithName:@"tang" pass:@"178"],
+		[[FKUser alloc] initWithName:@"niu" pass:@"155"],nil];
+
+// 获取所有集合元素的name属性组成的新集合
+NSArray* newArr = [arr valueForKey:@"name"];
+
+// 对集合中所有元素整体进行KVC编程
+// 将所有集合元素的name属性改为"新名字"
+[arr setValue:@"新名字" forKey:@"name"];
+
+// 为集合中的所有元素添加KVO监听
+[arr addObserver:<#(NSObject *)#>
+	forKeyPath:<#(NSString *)#>
+	options:<#(NSKeyValueObservingOptions)#>
+	context:<#(void *)#>];
+
+// 为集合中指定索引处的元素添加KVO监
+[arr addObserver:<#(NSObject *)#>
+	toObjectsAtIndexes:<#(NSIndexSet *)#>
+	forKeyPath:<#(NSString *)#>
+	options:<#(NSKeyValueObservingOptions)#>
+	context:<#(void *)#>];
+
+// 为集合中的所有元素移除KVO监听
+[arr removeObserver:<#(NSObject *)#>
+	forKeyPath:<#(NSString *)#>];
+
+// 为集合中指定索引处的元素移除KVO监听
+[arr removeObserver:<#(NSObject *)#>
+	fromObjectsAtIndexes:<#(NSIndexSet *)#>
+	forKeyPath:<#(NSString *)#>];

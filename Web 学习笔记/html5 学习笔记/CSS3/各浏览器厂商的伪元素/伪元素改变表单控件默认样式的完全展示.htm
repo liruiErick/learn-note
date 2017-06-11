@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>伪元素改变表单控件默认样式的完全展示</title>
+<link rel="stylesheet" href="src/style.css" media="screen">
+<style>.entry .pseudo_index{overflow:hidden;_zoom:1; list-style-type:none;margin:0; padding:0;}.pseudo_index li{padding-right:30px; padding-bottom:5px; float:left;}.pseudo_index a{display:inline-block; padding:0 5px; background-color:#34538b; color:#fff; border-radius:3px; font-size:14px;}.pseudo_index a:active{color:#333;background-color:#beceeb;}.pseudo_index a:hover{text-decoration:none;}.pseudo_index a:visited{color:yellow;}</style>
+</head>
+<body>
+<div class="post-3381 post type-post status-publish format-standard hentry category-css tag-chrome tag-firefox tag-html5 tag-ie10 tag-keygen tag-meter tag-placeholder tag-progress tag-range tag-shadow-dom tag-webkit tag-823 tag-224 tag-709" id="post-3381">
+			<h2>伪元素改变表单控件默认样式的完全展示</h2>
+			<div class="entry">
+<p>本文参考自<a href="http://tjvantoll.com/">TJ VanToll</a>的<a target="_blank" href="http://tjvantoll.com/2013/04/15/list-of-pseudo-elements-to-style-form-controls/">List of Pseudo-Elements to Style Form Controls</a>.</p>
+<p>如果你想看原汁原味的译文，可以移步这里：<a href="http://www.w3cplus.com/css3/list-of-pseudo-elements-to-style-form-controls.html">伪元素控制表单样式</a>. </p>
+<p>我这里所有的效果都自己重新制作demo试验了下，辨别下真伪，看看window环境下的差异以及其他一些属性支持等，然后，补充、记录、备忘。</p>
+<p>您现在可能会觉得折腾的这些东西不实用，过个1~2年，可能就是个宝了，记住这里，适时过来瞅瞅，会有别样收获。</p>
+<p>时间流逝，浏览器们支持的伪元素势必会越来越多，因此，这里也会不定期更新，当然，频率肯定不会像大姨妈那样频繁。</p>
+<h3>一、索引</h3>
+<p>因为牵扯多个浏览器，因此，内容还算挺多，有个索引还是很有必要的；为节约高度，水平排列，希望还习惯。</p>
+
+<ul>
+<li><strong>&lt;input&gt;元素</strong>
+<ul class="pseudo_index">
+<li><a href="#input_button">button</a></li>
+<li><a href="#input_checkbox_radio">checkbox/radio</a></li>
+<li><a href="#input_color">color</a></li>
+<li><a href="#input_date">date</a></li>
+<li><a href="#input_file">file</a></li>
+<li><a href="#input_number">number</a></li>
+<li><a href="#input_password">password</a></li>
+<li><a href="#placeholder_attribute">placeholder属性</a></li>
+<li><a href="#input_range">range</a></li>
+<li><a href="#input_reset">reset</a></li>
+<li><a href="#input_search">search</a></li>
+<li><a href="#input_submit">submit</a></li>
+<li><a href="#input_text">text</a></li>
+</ul>
+</li>
+<li><strong>其他元素</strong>
+<ul class="pseudo_index">
+<li><a href="#button_element">button</a></li>
+<li><a href="#keygen_element">keygen</a></li>
+<li><a href="#meter_element">meter</a></li>
+<li><a href="#progress_element">progress</a></li>
+<li><a href="#select_element">select</a></li>
+<li><a href="#textarea_element">textarea</a></li>
+</ul>
+</li>
+<li><strong>杂项</strong>
+<ul class="pseudo_index">
+<li><a href="#form_validation_messages">表单验证提示</a></li>
+</ul>
+</li>
+</ul>
+<h3>二、&lt;input&gt;元素们</h3>
+<p><strong id="input_button">input[type=button]</strong><br>
+参见“其他元素”部分的<a href="#button_element">&lt;button&gt;元素</a></p>
+<p><strong id="input_checkbox_radio">input[type=checkbox] / input[type=radio]</strong><br>
+Trident内核，也就是我们常说的IE浏览器下（以下所有IE下的伪元素均指IE10+浏览器），使用<code>::-ms-check</code>可以更改单复选框的UI. 如下CSS代码以及HTML代码：</p>
+<div class="zxx_code">
+<pre>::-ms-check {
+    color: #34538b;
+    background: #a0b3d6;
+    padding: .5em;
+}</pre>
+</div>
+<div class="zxx_code">
+<pre>&lt;input type="radio" /&gt;
+&lt;input type="checkbox" /&gt;</pre>
+</div>
+<p>结果在window7 IE10下的效果就是这样：<br>
+<img src="src/2013-06-06_202827.png" width="288" height="159" alt="IE10下check伪元素效果截图" class="alignnone" src="src/2013-06-06_202827.png"></p>
+<p>如果您手头上有IE10+浏览器，您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-radio-checkbox.html" target="_blank" class="a_link">::check改变单复选框的默认样式demo</a></p>
+<p><strong id="input_color">input[type=color]</strong><br>
+目前IE10以及FireFox21还没有支持<code>input[type=color]</code>，自然也没有响应的伪元素支持，Chrome浏览器下可以，其提供了两个伪元素用来改变默认样式：<code>::-webkit-color-swatch-wrapper</code>以及<code>::-webkit-color-swatch</code>.</p>
+<p>一般而言，HTML5中表单的控件效果都是通过浏览器的<code>Shadow Dom</code>创建的，脱离文档主树，不受大环境CSS影响，要控制其UI只能使用浏览器开发的伪元素API接口。好比上面的<code>input[type=color]</code>在Chrome下的默认UI效果（见下）其实就是两层div，然后浏览器自带的一些CSS控制而成的效果。</p>
+<p><img src="src/2013-06-06_204021.png" width="253" height="82" alt="input[type=color]默认效果" class="alignnone" src="src/2013-06-06_204021.png"></p>
+<p>而上面的两个可使用伪元素就是指向的这两层div，我们可以借此应用部分的CSS样式进行重置，记住，只有部分的样式可以重置。而这些伪元素CSS我们是无法使用浏览器自带的开发工具查看到的，因为其并不属于文档树，只是背后的一颗子树。</p>
+<p>例如，这里，我们可以使用伪元素，应用特定样式，让两层div首尾连在一起，就像下面这个效果：<br>
+<img src="src/2013-06-06_204735.png" width="384" height="189" alt="伪元素分离" class="alignnone" src="src/2013-06-06_204735.png"></p>
+<p>CSS代码如下：</p>
+<div class="zxx_code">
+<pre>::-webkit-color-swatch-wrapper {
+    border: 1px solid #777;
+    background-image: -webkit-gradient(linear, 0 0, 100% 0, 
+        from(red), 
+        color-stop(15%, orange), 
+        color-stop(30%, yellow), 
+        color-stop(50%, green), 
+        color-stop(65%, darkcyan), 
+        color-stop(80%, blue), 
+        to(purple));
+}
+::-webkit-color-swatch { height:21px; position:relative; left: 40px; top:-5px; }</pre>
+</div>
+<div class="zxx_code">
+<pre>&lt;input type="color"&gt;</pre>
+</div>
+<p>如果使用的或者有Chrome浏览器，您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-color.html" target="_blank" class="a_link">伪元素改变color类型input框demo</a></p>
+<p><strong id="input_date">input[type=date]</strong><br>
+依旧Chrome浏览器是主角，目前WebKit下有如下8个伪元素可以改变日期控件的UI：</p>
+<ul>
+<li><code>::-webkit-datetime-edit</code> – 控制编辑区域的</li>
+<li><code>::-webkit-datetime-edit-fields-wrapper</code> – 控制年月日这个区域的</li>
+<li><code>::-webkit-datetime-edit-text</code> – 这是控制年月日之间的斜线或短横线的</li>
+<li><code>::-webkit-datetime-edit-month-field</code> – 控制月份</li>
+<li><code>::-webkit-datetime-edit-day-field</code> – 控制具体日子</li>
+<li><code>::-webkit-datetime-edit-year-field</code> – 控制年文字, 如2013四个字母占据的那片地方</li>
+<li><code>::-webkit-inner-spin-button</code> – 这是控制上下小箭头的</li>
+<li><code>::-webkit-calendar-picker-indicator</code> – 这是控制下拉小箭头的</li>
+</ul>
+<p>下图为原文作者不知从哪儿搞来的内部结构，就是上面提到的Shadow Dom:<br>
+<img src="src/webkit-input-date-shadow.png" width="686" height="241" alt="input-date shadow Dom示意" class="alignnone" style="_width:600px;" src="src/webkit-input-date-shadow.png"></p>
+<p><strong>补充于2013-06-08</strong><br>
+感谢@ethanchen提点，Shadow Dom如下几步即可查看。</p>
+<p>Chrome浏览器下，F12打开开发者工具面板，右下角有个齿轮图片，点击之：<br>
+<img src="src/2013-06-08_161935.png" width="112" height="99" class="alignnone" src="src/2013-06-08_161935.png"></p>
+<p>再展开的面板中勾选”Show Shadom DOM”即可：<br>
+<img src="src/2013-06-08_162002.png" width="433" height="235" alt="Chrome浏览器下展示Show Shadow DOM" class="alignnone" src="src/2013-06-08_162002.png"></p>
+<p><span class="s">&lt;– 更新结束 –&gt;</span></p>
+<p><img src="src/2013-06-06_210556.png" width="205" height="80" alt="date类型文本框默认效果" class="alignleft" src="src/2013-06-06_210556.png">默认左边效果的<code>date</code>类型文本框应用如下的CSS伪元素样式后，就会变成：</p>
+<div class="zxx_code">
+<pre>::-webkit-datetime-edit { padding: 1px; background: url(/study/image/selection.gif); }
+::-webkit-datetime-edit-fields-wrapper { background-color: #eee; }
+::-webkit-datetime-edit-text { color: #4D90FE; padding: 0 .3em; }
+::-webkit-datetime-edit-year-field { color: purple; }
+::-webkit-datetime-edit-month-field { color: blue; }
+::-webkit-datetime-edit-day-field { color: green; }
+::-webkit-inner-spin-button { visibility: hidden; }
+::-webkit-calendar-picker-indicator {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: inset 0 1px #fff, 0 1px #eee;
+    background-color: #eee;
+    background-image: -webkit-linear-gradient(top, #f0f0f0, #e6e6e6);
+    color: #666;
+}</pre>
+</div>
+<p><img src="src/2013-06-06_211017.png" width="362" height="129" alt="date类型input伪元素更改样式截图" class="alignnone" src="src/2013-06-06_211017.png"></p>
+<p>目前，下拉的日期选择组件的UI貌似还不能修改。您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-date.html" target="_blank" class="a_link">伪元素改变date类型input框的默认样式demo</a></p>
+<p>个人觉得8个伪类中，最实用的是使用：<code>::-webkit-inner-spin-button { visibility: hidden; }</code>去除设计师讨厌的上下小箭头。</p>
+<p><strong>补充于2013-06-27</strong><br>
+貌似date类型文本框在Chrome下现在多了个叉叉清除内容的效果，伪元素是<code>::-webkit-clear-button</code>, 若要清除，可使用如下代码：</p>
+<div class="zxx_code">
+<pre>::-webkit-clear-button {
+     -webkit-appearance: none; 
+}</pre>
+</div>
+<p><strong id="input_file">input[type=file]</strong><br>
+文件上传空间，IE10以及Chrome都有伪元素可以染指该类型控件，从哪个浏览器开始好呢？就先IE10浏览器吧（下同）。</p>
+<p>IE10+浏览器使用的是<code>::-ms-browse</code>伪元素，可以改变按钮模样部分的边框、背景色、高度啊之类的，如下一段示例CSS代码：</p>
+<div class="zxx_code">
+<pre>::-ms-browse {
+    padding: .4em;
+    line-height: 24px;    <span style="color:green;">/* 光标垂直居中 */</span>
+    border: 1px solid #a0b3d6;
+    background: #f0f3f9;
+    color: #34538b;
+}</pre>
+</div>
+<p>结果整容成下面这样子——跟郑爽一样-少女变少妇了<img src="http://mat1.gtimg.com/www/mb/images/face/98.gif" align="absmiddle" src="src/98.gif">：<br>
+<img src="src/2013-06-06_212518.png" width="414" height="176" alt="IE10 file类型控件伪元素样式重置" class="alignnone" src="src/2013-06-06_212518.png"></p>
+<p>IE浏览器一向走自己的路，让别人骂去。显然，Chrome用法与之大相径庭，伪元素为<code>::-webkit-file-upload-button</code>，类似效果CSS如下：</p>
+<div class="zxx_code">
+<pre>::-webkit-file-upload-button {
+    padding: .4em;
+    line-height: 30px;
+    border: 1px solid #a0b3d6;
+    background: #f0f3f9;
+    color: #34538b;
+}</pre>
+</div>
+<p>看看Chrome整容的模样:<br>
+<img src="src/2013-06-06_212814.png" width="309" height="147" alt="Chrome浏览器file控件UI重置" class="alignnone" src="src/2013-06-06_212814.png"></p>
+<p>这……<img src="http://mat1.gtimg.com/www/mb/images/face/64.gif" align="absmiddle" src="src/64.gif"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-file.html" target="_blank" class="a_link">伪元素改变file类型控件样式demo</a> 自己进入点评下。</p>
+<p><strong id="input_number">input[type=number]</strong><br>
+目前Webkit浏览器独掌天下，以下三个伪元素可以耍弄：</p>
+<ul>
+<li><code>::-webkit-textfield-decoration-container</code> – input内部、上下箭头以及填写数值的外部容器</li>
+<li><code>::-webkit-inner-spin-button</code> – 就是Chrome下上上下下的小小按钮</li>
+<li><code>::-webkit-outer-spin-button</code> – 测到浏览器起火都不知是干嘛的~<img src="http://mat1.gtimg.com/www/mb/images/face/193.gif" align="absmiddle" src="src/193.gif"></li>
+</ul>
+<p>从使用角度讲，下面代码是最有用的：</p>
+<div class="zxx_code">
+<pre>::-webkit-inner-spin-button {
+     -webkit-appearance: none;    <span style="color:green;">/* 上下小箭头按钮，你丫太丑了，滚粗，负分 */</span>
+}</pre>
+</div>
+<p>下图为又设置了：</p>
+<div class="zxx_code">
+<pre>::-webkit-textfield-decoration-container {
+    background-color: #f0f3f9;	
+}</pre>
+</div>
+<p>的效果与默认效果的对比：<br>
+<img src="src/2013-06-06_214226.png" width="431" height="209" alt="type=number去除上下小箭头按钮" class="alignnone" src="src/2013-06-06_214226.png"></p>
+<p>若有雅致，您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-number.html" target="_blank" class="a_link">伪元素改变number类型input框样式demo</a></p>
+<p><strong id="input_password">input[type=password]</strong><br>
+记得IE10刚出来那会儿，就有人叫嚣了：哎呀呀呀，IE10下文本框输入文字后有叉叉啊；哎呀呀呀，密码框输入后有眼睛啊；哎呀呀呀，怎么去掉啊？</p>
+<p>我个人觉得眼睛不挺好的，干嘛要抹杀掉呢？<br>
+<img src="src/2013-06-06_214811.png" width="382" height="182" alt="IE10浏览器下密码框的眼睛图标" class="alignnone" src="src/2013-06-06_214811.png"></p>
+<p>我突然想起了一首歌：“你不要这样的看着我，我的脸会变成红苹果……<img src="http://mat1.gtimg.com/www/mb/images/face/6.gif" align="absmiddle" src="src/6.gif">”。估计大家比较害羞，被IE MM的眼睛盯着看不好意思，所以才想去掉的。</p>
+<p>去除<code>password</code>类型输入框的眼睛需要使用伪元素<code>::-ms-reveal</code>，我们可以使用<code>display</code>, <code>visibility</code>控制显隐，也可以使用<code>color</code>, <code>background</code>控制样式。</p>
+<p>当我们使用<code>background</code>控制背景的时候，IE浏览器自己holder的黑色边框样式会自动瓦解，使用系统一脉相承的文本框UI，如下图所示：<br>
+<img src="src/2013-06-06_215637.png" width="407" height="176" alt="眼睛背景与边框样式" class="alignnone" src="src/2013-06-06_215637.png"></p>
+<p>如果您有IE10+浏览器，您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-password.html" target="_blank" class="a_link">伪元素改变password框的眼睛demo</a></p>
+<p>如果您没有IE10浏览器，哥，出门500米右拐就是护城河，您可以跳下去——清醒下。我今天想办法搞到了我们主站的一些访问数据，哟，IE10用户数目超过我的想象，还老多来~用上海话讲，就是“老激棍来”，不要迷糊迷糊还在折腾IE6了，拥抱未来，拥抱变化，GOGOGO!</p>
+<p><strong id="placeholder_attribute">placeholder属性</strong><br>
+哈哈，属性貌似比类型要吃香，难得百花齐放百家争鸣，FireFox浏览器这回也有得登场了！</p>
+<p>如下HTML代码：</p>
+<div class="zxx_code">
+<pre>&lt;input placeholder="占座" /&gt;</pre>
+</div>
+<p>各个浏览器轮着上~~ <img src="http://mat1.gtimg.com/www/mb/images/face/108.gif" align="absmiddle" src="src/108.gif"></p>
+<p>先看IE浏览器，<code>:-ms-input-placeholder</code>一看就是虐<code>placeholder</code>属性的，来个变色<sup>①</sup>+缩进，当当当当：</p>
+<div class="zxx_code">
+<pre>:-ms-input-placeholder {
+    color: mediumvioletred;
+    text-indent: 5px;
+}</pre>
+</div>
+<p><span class="s">//zxx: 颜色<code>mediumvioletred</code>取自“<a href="http://www.zhangxinxu.com/wordpress/?p=1064" target="_blank">CSS3下的147个颜色名称及对应颜色值</a>”一文。</span></p>
+<p>于是：<br>
+<img src="src/2013-06-06_221139.png" width="383" height="125" alt="IE10与placeholder" class="alignnone" src="src/2013-06-06_221139.png"></p>
+<p>然后Chrome浏览器，喔呵，这回亮了，IE浏览器和Chrome浏览器居然站到同一战线上了，伪元素为：<code>::-webkit-input-placeholder</code>. 活脱脱就一个私有前缀的差异，类似代码：</p>
+<div class="zxx_code">
+<pre>::-webkit-input-placeholder {
+    color: mediumvioletred;
+    text-indent: 5px;
+}</pre>
+</div>
+<p>类似效果：<br>
+<img src="src/2013-06-06_221458.png" width="390" height="137" alt="Chrome浏览器下placeholder颜色变化效果" class="alignnone" src="src/2013-06-06_221458.png"></p>
+<p>对于首次粉墨登场的FireFox浏览器，其伪元素是<code>::-moz-placeholder</code>, 据说这个伪元素是FireFox 19之后才支持的，之前是使用<code>:-moz-placeholder</code>伪类<img src="http://mat1.gtimg.com/www/mb/images/face/98.gif" align="absmiddle" src="src/98.gif">。</p>
+<p>CSS代码走起：</p>
+<div class="zxx_code">
+<pre>::-moz-placeholder {
+    color: mediumvioletred;
+    text-indent: 5px; <span style="color:green;">/* 没有用 */</span>
+    opacity: 1!important;
+}</pre>
+</div>
+<p><img src="src/2013-06-06_221936.png" width="371" height="136" alt="FireFox21下占位符变色效果" class="alignnone" src="src/2013-06-06_221936.png"></p>
+<p>FireFox浏览器下占位符文字的透明度默认是<code>0.54</code>, 至少我window7 FireFox 21下是如此，因此需要强制<code>opacity: 1</code>让<code>placeholder</code>值颜色与IE/Chrome一致。</p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-placeholder-attribute.html" target="_blank" class="a_link">伪元素改变placeholder占位符颜色缩进demo</a></p>
+<p><strong id="input_range">input[type=range]</strong><br>
+IE, Chrome, FireFox本轮均有出场。HTML测试代码都是一样的，很简单，就一个<code>range</code>控件：</p>
+<div class="zxx_code">
+<pre>&lt;input type="range" /&gt;</pre>
+</div>
+<p>IE浏览器伪元素相对复杂些：</p>
+<ul>
+<li><code>::-ms-fill-lower</code>: 已经拖拽的区域</li>
+<li><code>::-ms-fill-upper</code>: 还没有拖拽的区域</li>
+<li><code>::-ms-ticks-before</code>: 前面/上面的刻度线</li>
+<li><code>::-ms-ticks-after</code>: 后面、下面的刻度线</li>
+<li><code>::-ms-thumb</code>: 中间拖动的块块</li>
+<li><code>::-ms-track</code>: 拖动轨道</li>
+<li><code>::ms-tooltip</code>: 拖动时候显示的文字什么的。注意，这个元素只能用<code>display:none</code>等隐藏样式。</li>
+</ul>
+<p>如下设置：</p>
+<div class="zxx_code">
+<pre>::-ms-fill-lower { background: orange; }
+::-ms-fill-upper { background: green; }
+::-ms-thumb { background: red; }
+::-ms-ticks-before { display: block; color: black; }
+::-ms-ticks-after { display: block; color: blue; }
+::-ms-track { padding: 5px; }
+::-ms-tooltip { display: none; <span style="color:green;">/* 数值提示 只能是display或visibility，见截图特意标示 */</span> </pre>
+</div>
+<p><img src="src/2013-06-06_223945.png" width="543" height="262" alt="IE10下range控件大改造" class="alignnone" src="src/2013-06-06_223945.png"></p>
+<p>Webkit核心，如Chrome浏览器下，使用的伪元素为<code>::-webkit-slider-runnable-track</code>和<code>::-webkit-slider-thumb</code>. 前者指的是“跑动轨迹”，也就是那个条条元素；后者指用来拖的哪块突出的小疙瘩。应用如下CSS：</p>
+<div class="zxx_code">
+<pre>::-webkit-slider-runnable-track {
+    border: 1px solid #a0b3d6;
+    background: #f0f3f9;
+}
+::-webkit-slider-thumb {
+    outline: 1px dotted #a0b3d6;
+    background-color: #34538b;
+}</pre>
+</div>
+<p>效果如下，window 7下：<br>
+<img src="src/2013-06-06_225326.png" width="359" height="181" alt="Chrome下range控件的伪元素控制" class="alignnone" src="src/2013-06-06_225326.png"></p>
+<p>我们还可以使用<code>::-webkit-slider-runnable-track:hover</code>以及<code>::-webkit-slider-thumb:hover</code>实现鼠标经过效果(demo中有)。</p>
+<p>对于FireFox浏览器，据说在FireFox 22下才有效果，我目前是FireFox 21, 好像已经是最新版本，因此，无效果截图（个把月后查看demo可能就有效果了），代码如下：</p>
+<div class="zxx_code">
+<pre>::-moz-range-track {
+    border: 1px solid #a0b3d6;
+    height: 20px;
+    background: #f0f3f9;
+}
+::-moz-range-thumb {
+    background: #34538b;
+    height: 30px;
+}</pre>
+</div>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-range.html" target="_blank" class="a_link">伪元素改变range类型input框默认样式demo</a></p>
+<p><strong id="input_reset">input[type=reset]</strong><br>
+参见<a href="#button_element">&lt;button&gt;元素</a></p>
+<p><strong id="input_search">input[type=search]</strong><br>
+目前Chrome下小有成就，两个伪元素：<code>::-webkit-search-cancel-button</code>和<code>::-webkit-search-results-button</code>，前者控制输入文字后出现的叉叉，后者控制放大镜。下面的代码可以把它们全部干掉！</p>
+<div class="zxx_code">
+<pre><span style="color:green;">/* 去除圆角 */</span>
+input[type=search] { -webkit-appearance: none; }
+
+<span style="color:green;">/* 隐藏取消按钮 */</span>
+::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+<span style="color:green;">/* 隐藏放大镜 */</span>
+::-webkit-search-results-button { -webkit-appearance: none; }</pre>
+</div>
+<p><img src="src/2013-06-07_160510.png" width="414" height="179" alt="win7 chrome type=search类型按钮UI与伪元素控制" class="alignnone" src="src/2013-06-07_160510.png"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-type-search.html" target="_blank" class="a_link">伪元素改变search类型input框demo</a></p>
+<p><strong id="input_submit">input[type=submit]</strong><br>
+参见<a href="#button_element">&lt;button&gt;元素</a></p>
+<p><strong id="input_text">input[type=text]</strong><br>
+在IE10+浏览器下，提供了伪元素<code>::-ms-value</code>, 可以更改文本框(如<code>type=text</code>, <code>type=password</code>等)以及下拉框(<code>select</code>)的样式。例如下面的HTML代码：</p>
+<div class="zxx_code">
+<pre>&lt;input type="text" value="雅美蝶你能再深一点么"&gt;
+&lt;input type="password" value="雅美蝶你能再深一点么"&gt;
+&lt;select&gt;&lt;option selected&gt;雅美蝶你能再深一点么&lt;/option&gt;&lt;/select&gt;
+</pre>
+</div>
+<p>配合如下的CSS：</p>
+<div class="zxx_code">
+<pre>::-ms-value {
+    padding: 4px;
+    color: #34538b;
+    border: 1px solid #a0b3d6;
+    background-color: #f0f3f9;
+}</pre>
+</div>
+<p>于是，<img src="http://mat1.gtimg.com/www/mb/images/face/58.gif" align="absmiddle" src="src/58.gif"> “蝴蝶飞呀！就象童年在风里跑<br>
+感觉年少的彩虹比海更远比天还要高<br>
+蝴蝶飞呀！飞向未来的城堡<br>
+打开梦想的天窗 让那成长更快更美好……”</p>
+<p><img src="src/2013-06-07_161931.png" width="557" height="112" alt="IE10 ::ms-value使用效果截图" class="alignnone" src="src/2013-06-07_161931.png"></p>
+<p>IE10+还提供了伪元素<code>::-ms-clear</code>，可以改变或者隐藏IE10+浏览器文本框末尾的关闭小叉叉。</p>
+<p>隐藏如下：</p>
+<div class="zxx_code">
+<pre>::-ms-clear { display: none; }</pre>
+</div>
+<p>当然，我们还可以使用<code>border</code>, <code>background</code>等控制其UI，如下面这个效果：<br>
+<img src="src/2013-06-07_162518.png" width="216" height="130" alt=":ms-clear控制效果截图" class="alignnone" src="src/2013-06-07_162518.png"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.xuwanting.com/study/201306/pseudo-elements-to-style-type-text.html" target="_blank" class="a_link">IE10+伪元素控制主体及关闭小控件UI demo</a></p>
+<h3>三、其他元素们</h3>
+<p><strong id="button_element">&lt;button&gt;元素</strong><br>
+此部分，目前，貌似仅Gecko内核浏览器有相关处理，两个伪元素，<code>::-moz-focus-outer</code>和<code>::-moz-focus-inner</code>, 主要针对按钮类型的元素，包括<code>button</code>类型, <code>reset</code>类型以及<code>submit</code>类型。</p>
+<p>例如，使用<code>border</code>让这两个伪元素呈现一下：</p>
+<div class="zxx_code">
+<pre>button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 5px solid #34538b;
+}
+button::-moz-focus-outer,
+input::-moz-focus-outer {
+    border: 5px solid #cad5eb;
+}</pre>
+</div>
+<p>现形吧，为师的完全体……<br>
+<img src="src/jinjidejuren.jpg" width="350" height="193" alt="进击的巨人完全体" class="alignnone" src="src/jinjidejuren.jpg"></p>
+<p>擦，被巨人乱入了，下面这张才是~~<img src="http://mat1.gtimg.com/www/mb/images/face/79.gif" align="absmiddle" src="src/79.gif"><br>
+<img src="src/2013-06-07_164149.png" width="527" height="178" alt="FireFox 21下按钮乱入的效果" class="alignnone" src="src/2013-06-07_164149.png"></p>
+<p>FireFox浏览器，您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-button-element.html" target="_blank" class="a_link">伪元素按钮内外focus元素样式demo</a></p>
+<p>不过上面这些个人觉得没啥屌用，除了一些极客情况，有可能有用的是一些重置，如<code>border</code>与<code>padding</code>:</p>
+<div class="zxx_code">
+<pre>button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+</pre>
+</div>
+<p><strong id="keygen_element">&lt;keygen&gt;元素</strong><br>
+Webkit下有伪元素可控制，为<code>::-webkit-keygen-select</code>, 如下设置：</p>
+<div class="zxx_code">
+<pre>::-webkit-keygen-select {
+    border: 1px solid #a0b3d6;
+    background-color: #f0f3f9;
+    color: #34538b;
+}</pre>
+</div>
+<div class="zxx_code">
+<pre>&lt;keygen&gt;</pre>
+</div>
+<p><img src="src/2013-06-07_172130.png" width="248" height="136" alt="keygen元素在Chrome浏览器下" class="alignnone"></p>
+<p><strong id="meter_element">&lt;meter&gt;元素</strong><br>
+<code>&lt;meter&gt;</code>用做测量、评分等。Webkit下有如下伪元素可控：</p>
+<ul>
+<li><code>::-webkit-meter-bar</code> – 条条</li>
+<li><code>::-webkit-meter-optimum-value</code> – 得分好的时候那部分区域</li>
+<li><code>::-webkit-meter-suboptimal-value</code> – 分数凑合时候</li>
+<li><code>::-webkit-meter-even-less-good-value</code> – 分数糟糕时候区域状态</li>
+</ul>
+<p>如下HTML与CSS代码：</p>
+<div class="zxx_code">
+<pre>&lt;meter low="69" high="80" max="100" optimum="100" value="92"&gt;优&lt;/meter&gt;
+&lt;meter low="69" high="80" max="100" optimum="100" value="72"&gt;良&lt;/meter&gt;
+&lt;meter low="69" high="80" max="100" optimum="100" value="52"&gt;差&lt;/meter&gt;</pre>
+</div>
+<div class="zxx_code">
+<pre>.deal meter { -webkit-appearance: none; }
+.::-webkit-meter-bar {
+    height: 1em;
+    background: white;
+    border: 1px solid black;
+}
+::-webkit-meter-optimum-value { background: green; }	<span style="color:green;">/* 好 */</span>
+::-webkit-meter-suboptimum-value { background: orange; }	<span style="color:green;">/* 凑合 */</span>
+::-webkit-meter-even-less-good-value { background: blue; }	<span style="color:green;">/* 糟糕 */</span></pre>
+</div>
+<p><img src="src/2013-06-07_174439.png" width="433" height="168" alt="Chrome 25下meter元素对比效果截图" class="alignnone"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-meter-element.html" target="_blank" class="a_link">伪元素改变HTML5 meter元素样式demo</a></p>
+<p>实际上，FireFox下，对伪元素<code>::-moz-meter-bar</code>也是有反应的，不过貌似效果有点偏题了，如下CSS：</p>
+<div class="zxx_code">
+<pre>::-moz-meter-bar {
+    background: rgba(0,96,0,.6);
+}</pre>
+</div>
+<p>结果不是背景条变化，而是进度条变了，全部都变了，如下截图：<br>
+<img src="src/2013-06-07_174843.png" width="418" height="165" alt="FireFox21 下meter元素对比效果截图" class="alignnone"></p>
+<p><strong id="progress_element">&lt;progress&gt;元素</strong><br>
+又是一个各个浏览器都有伪元素控制的HTML5控件元素。</p>
+<p>外甥点灯笼——照旧，先看IE浏览器，伪元素为<code>::-ms-fill</code>，可以改变已完成进度条的部分样式，如背景色：</p>
+<div class="zxx_code">
+<pre>::-ms-fill { background: #34538b; }</pre>
+</div>
+<p><img src="src/2013-06-07_175507.png" width="454" height="142" class="alignnone" alt="::-ms-fill IE10"></p>
+<p>Chrome浏览器相对复杂，控制也相对精细些，其Shadow DOM如下：<br>
+<img src="src/webkit-progress-shadow.png" width="560" height="139" alt="webkit progress元素的shadow DOM" class="alignnone"></p>
+<ul>
+<li><code>::-webkit-progress-inner-element</code> – <code>progress</code>内元素</li>
+<li><code>::-webkit-progress-bar</code> – 背景进度条</li>
+<li><code>::-webkit-progress-value</code> – 完成进度条</li>
+</ul>
+<p>于是，如下CSS控制：</p>
+<div class="zxx_code">
+<pre>progress { -webkit-appearance: none; }
+::-webkit-progress-inner-element { }
+::-webkit-progress-bar { border: 1px solid black; }
+::-webkit-progress-value { background: #34538b; }</pre>
+</div>
+<p>效果如下(win7 Chrome 25)：<br>
+<img src="src/2013-06-07_180402.png" width="325" height="157" alt="Chrome下进度条设置" class="alignnone"></p>
+<p>对于FireFox浏览器，<code>::-moz-progress-bar</code>伪元素控制，如下CSS：</p>
+<div class="zxx_code">
+<pre>::-moz-progress-bar { background: #34538b; }</pre>
+</div>
+<p>效果截图如下(win7 FF21)：<br>
+<img src="src/2013-06-07_180554.png" width="317" height="146" alt="FF21下progress元素效果截图" class="alignnone"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-progress-element.html" target="_blank" class="a_link">伪元素改变HTML5 progress元素的默认样式demo</a></p>
+<p><strong id="select_element">&lt;select&gt;元素</strong><br>
+IE10浏览器下，这厮<code>::-ms-expand</code>可以改变下拉框元素的下拉按钮样式。</p>
+<div class="zxx_code">
+<pre>::-ms-expand {
+    padding: .5em;
+    color: #34538b;
+    border: 1px solid #a0b3d6;
+    background: #f0f3f9;
+}</pre>
+</div>
+<p><img src="src/2013-06-07_181458.png" width="307" height="124" alt="IE10下拉框下拉按钮伪元素改变" class="alignnone"></p>
+<p><strong id="textarea_element">&lt;textarea&gt;元素</strong><br>
+Webkit下有伪元素<code>::-webkit-resizer</code>可以改变右下角的拉伸小标记的样式。</p>
+<p>例如，我们可以隐藏之（不同于<code>resize: none</code>，仍可拉伸）或设置背景图片替换之：</p>
+<div class="zxx_code">
+<pre>::-webkit-resizer {
+    display: none;
+}</pre>
+</div>
+<div class="zxx_code">
+<pre>::-webkit-resizer {
+    background: url(/study/image/selection.gif);
+    outline: 1px dotted #000;
+}</pre>
+</div>
+<p>截图效果：<br>
+<img src="src/2013-06-07_182118.png" width="468" height="142" alt="::webkit-resizer伪类使用演示" class="alignnone"></p>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-textarea-element.html" target="_blank" class="a_link">伪元素改变HTML5 textarea resize样式demo</a></p>
+<h3>四、杂项</h3>
+<p><strong id="form_validation_messages">表单验证信息</strong><br>
+仅Webkit内核浏览器目前鸟之，改变验证提示时候bubble框的UI, 伪元素如下：</p>
+<ul>
+<li><code>::-webkit-validation-bubble</code> – 整个弹出框区域</li>
+<li><code>::-webkit-validation-bubble-arrow</code> – 弹出框的尖角</li>
+<li><code>::-webkit-validation-bubble-arrow-clipper - 弹出框尖角所在块状区域</code></li>
+<li><code>::-webkit-validation-bubble-heading</code> – 文字标题占据区域</li>
+<li><code>::-webkit-validation-bubble-message</code> – 文字提示的整个方形的信息框</li>
+<li><code>::-webkit-validation-bubble-text-block</code> – 文字所在block块区域</li>
+</ul>
+<p>实际重置样式的时候，只要使用部分就可以了，个人愚见，<code>::-webkit-validation-bubble-text-block</code>与<code>::-webkit-validation-bubble-heading</code>有功能重复之嫌，因此，一般只要设置一个就可以了！<code>::-webkit-validation-bubble-heading</code>要更加深入一些。</p>
+<p>比方说我们要得到类似下面看似不错的UI效果：<br>
+<img src=" src/2013-06-07_183500.png" width="318" height="158" alt="popup效果图" class="alignnone"></p>
+<p>我们可能需要如下一些设置：</p>
+<div class="zxx_code">
+<pre>::-webkit-validation-bubble { min-width:152px; margin-top: -1px;}
+::-webkit-validation-bubble-arrow { border: 1px solid #F7CE39; background: #FFFBC7; top: 4px; left: 0px; } <span style="color:green;">/* 你不觉得默认尖角太大了吗？这里设置小一点，默认含relative属性 */</span>
+::-webkit-validation-bubble-arrow-clipper { text-align: center; }
+::-webkit-validation-bubble-heading { color: #444; }
+::-webkit-validation-bubble-message { border: 1px solid #F7CE39; background: #FFFBC7; border-radius: 3px; } <span style="color:green;">/* 一般而言，这是重置的主体，改变边框、背景色以及圆角大小等 */</span>
+::-webkit-validation-bubble-text-block { font-size: 12px; }</pre>
+</div>
+<p>您可以狠狠地点击这里：<a href="http://www.zhangxinxu.com/study/201306/pseudo-elements-to-style-form-validation.html" target="_blank" class="a_link">伪元素改变HTML5 表单验证提示demo</a></p>
+</div>
+
+</body></html>

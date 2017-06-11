@@ -1,0 +1,119 @@
+﻿>>>>>>>>>> Sprite（位图动画，已经不是 AS3 中的 Sprite）扩展自 DisplayObject <<<<<<<<<<
+
+* Sprite 方法
+
+Sprite(spriteSheet, frameOrAnimation); //构造函数，初始化一个位图动画。第一个参数为一个精灵表对象。第二个参数指定动画的总帧数。
+advance([time]); //设置动画播放头前进多少毫秒
+play(); //播放
+stop(); //停止
+gotoAndPlay(); //跳转到指定帧或标签，然后继续播放
+gotoAndStop(); //跳转到指定帧或标签，然后停止
+
+
+
+* Sprite 属性
+
+framerate; //设置或返回 Sprite 的帧频率
+paused; //一个布尔值，设置或返回动画是否暂停，等同于 play() 与 stop()。
+currentFrame; //返回当前帧数
+currentAnimation; //返回当前动画的名称
+currentAnimationFrame; //返回当前帧的索引
+spriteSheet; //设置或返回 Sprite 的 spriteSheet 对象
+
+
+
+* Sprite 专有事件
+
+animationend; //当动画结束的时候触发该事件
+	// 动画事件专有 event 属性
+	event.name; //刚刚结束的动画名称
+	event.next; //如果是循环动画，则返回下一个动画的名称，如果不是循环动画，则返回null
+
+
+
+
+>>>>>>>>>> SpriteSheet（精灵表）扩展自 EventDispatcher <<<<<<<<<<
+
+* SpriteSheet 方法
+
+SpriteSheet(data); //构造函数，初始化一个精灵表。
+data 数据结构如下：
+data = {
+	// 设置默认帧频（xxx帧/每秒）：
+	framerate: 30,
+
+	// 设置图片：
+	// Image 对象或者图片的 url 所组成的列表
+	images: [image1, "path/to/image2.png"],
+
+	// 设置框架 1：
+	// 定义帧的宽度、高度，以及可选的帧总数和注册点的 x、y
+	// 如果count被省略，它会自动根据图像尺寸计算。
+	frames: {width:64, height:64, count:20, regX: 32, regY:64},
+
+	// 设置框架 2：
+	// 第五值是每在设置图片列表中的图像索引（默认为0）
+	frames: [
+		[0,0,64,64,0,32,64], // x, y, width, height, imageIndex, regX, regY
+		[64,0,96,64,0]
+	],
+
+	// 设置动画1：
+	// 分别为各个动作（动作名称是可以自定义的）定义开始帧、结束帧
+	// 第三个值（可选）播放完成后的下一帧
+	// 第四个值（可选）帧速度，即动画帧频的倍数
+	animations: {
+		run: [0,8],
+		jump: [9,12,"run",2]
+	}
+
+	// 设置动画2：
+	// 分别为各个动作（动作名称是可以自定义的）定义帧框架（为一个帧数组）
+	// next（可选）播放完成后的下一帧
+	// speed（可选）帧速度，即动画帧频的倍数
+	animations: {
+		run: {
+			frames: [1,2,3,3,2,1]
+		},
+		jump: {
+			frames: [1,4,5,6,1],
+			next: "run",
+			speed: 2
+		},
+		stand: { frames: [7] }
+	}
+
+	// 设置动画3：
+	// 以上两种设置动画的方法可以结合使用:
+	animations: {
+		run: [0,8,true,2],
+		jump: {
+			frames: [8,9,10,9,8],
+			next: "run",
+			speed: 2
+		},
+		stand: 7
+	}
+}		
+
+clone(); //返回一个精灵表实例的副本。
+getAnimation(animationName); //返回一个指定动作名称的动画对象，该对象包含：frames、next、speed、name（动作名称）属性。
+getAnimations(); //返回所有动作名称字符串所组成的数组。
+getFrame(frameIndex); //返回指定帧索引所对应的图像信息对象，其中包含：image（img 元素）、rect（该帧的坐标和宽高）、regX、regY。
+getFrameBounds(frameIndex, [rectangle]); //返回一个指定帧索引所对应图像的 Rectangle 对象。第二个参数表示将返回值复制到该参数，默认情况下，会创建一个新的矩形对象。
+getNumFrames(animationName); //返回指定动作名称的动画的总帧数。如果参数省略，则返回真个精灵表的总帧数。
+
+
+
+* SpriteSheet 属性
+
+complete; //返回所有图片是否已经加载完成
+framerate; //设置或返回动画的帧频率（xxx帧/每秒）
+
+
+
+* SpriteSheet 专有事件
+
+complete; //当所有图片加载完成时触发该事件
+
+

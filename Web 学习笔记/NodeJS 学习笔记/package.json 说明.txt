@@ -1,0 +1,21 @@
+﻿package.json 必须是一个严格的json文件，而不仅仅是js里边的一个对象。其中很多属性可以通过 npm-config 来生成。
+
+## 属性说明
+
+#### scripts
+scripts 属性是一个对象，里边指定了命令的 key，value 是要执行的命令。
+使用 npm run {key} 就可以执行对应的命令。
+注意，当 {key} 为 start 时，可以直接使用 npm start 来执行
+Example:
+"dev": "node build/dev-server.js",
+"build": "node build/build.js"
+
+#### main
+main 属性指定了程序的主入口文件。
+
+#### dependencies
+dependencies 属性指生产环境下依赖的模块
+
+
+#### devDependencies
+devDependencies 属性指开发环境下依赖的模块

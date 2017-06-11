@@ -1,0 +1,210 @@
+﻿# Webkit核心属性
+
+/* 设置一个渐隐倒影 */
+/* 第一个参数为倒影的方向，有上下左右四个值，分别为above、below、left、right */
+/* 第二个参数设置倒影与对象的距离，可设置百分比或者具体像素值，可为负值 */
+/* 第三个参数倒影的遮罩图像，可以指定一个url图片，也可以是一个渐变图像 */
+/* 注意，如果元素设置了 overflow: hidden; 则倒影将无法显示 */
+-webkit-box-reflect: below 2px
+		-webkit-gradient(linear,
+		left bottom,
+		left top,
+		from(rgba(0, 0, 0, 0.3)),
+		color-stop(0.5, transparent),
+		to(transparent));
+
+
+
+/* 字体遮罩（不支持按钮元素） */
+/* webkit 为 background-clip 定义了一个 text 属性值，配合以下属性可以实现字体遮罩效果 */
+-webkit-background-clip: text; /* 按字体边缘裁剪背景 */
+-webkit-text-fill-color: transparent; /* 字体填充色为透明 */
+
+/* 字体边框 */
+-webkit-text-stroke: 2px black; /* 描边的像素，也就是粗细，这里指定是2像素的黑色边框 */
+
+
+
+/* 元素遮罩 */
+/* 设置了该属性的元素可以被指定的图片或者渐变遮罩 */
+/* mask 属性和 background 基本类似也是一个复合属性，语法如下 */
+/* 注意，mask 只能遮挡该元素内的内容，无法遮挡该元素以外的其他元素 */
+-webkit-mask: attachment, clip, origin, image, repeat, composite, box-image;
+
+/* 这个属性可以分解成如下的几个属性 */
+
+/* 设置用于遮罩的图片（可以使用渐变） */
+-webkit-mask-image: url(images/a.jpg); /* mask 可以根据图片或者渐变的 alpha 通道来设置遮盖部分 */
+
+/* 设置遮罩的起始位置，参数可以时关键字、百分比、具体像素值 */
+-webkit-mask-position:
+	left center;
+	50% 0;
+	100px 200px;
+
+/* 设置遮罩起始位置的参考点 */
+-webkit-mask-origin:
+	border; /* 默认值，mask 的位置从元素的 border 的左上角开始 */
+	padding; /* mask 的位置从元素的 padding 的左上角开始 */
+	content; /* mask 的位置从元素的 content 的左上角开始 */
+
+/* 设置遮罩的绘制区域 */
+-webkit-mask-clip:
+	border-box; /* 默认值，遮罩绘制在边框外侧及以内区域 */
+	padding-box; /* 遮罩只绘制在边框内侧，即绘制在补白及以内区域 */
+	content-box; /* 遮罩只绘制在 padding 规定的框架内，即绘制在内容区域 */
+
+/* 设置遮罩大小 */
+-webkit-mask-size:
+	1024px 768px; /* 直接设置水平与垂直的缩放比例 */
+	auto; /* 默认值，原始大小 */
+	cover; /* 等比缩放遮罩图，保证填满遮罩框 */
+	contain; /* 等比缩放遮罩图，保证完全显示遮罩图 */
+
+/* 设置遮罩的重复方式 */
+-webkit-mask-repeat:
+	repeat; /* 默认值，背景图像将在垂直方向和水平方向重复 */
+	repeat-x; /* 背景图像只在水平方向重复 */
+	repeat-y; /* 背景图像只在垂直方向重复 */
+	no-repeat; /* 背景图像不重复，仅显示一次 */
+	round; /* 类似 repeat 值。如果无法完整平铺所有图像，则对图像进行缩放以适应区域 */
+
+/* 设置遮罩的混合模式（经测试没有效果，发现 Chrome 浏览器不支持该属性） */
+-webkit-mask-composite:
+	border; /* 表示背景会延伸到 border 区域 */
+	padding; /* 表示背景只会延伸到 padding 区域 */
+
+/* 设置遮罩图片是否随页面滚动（经测试没有效果，发现 Chrome 浏览器不支持该属性） */
+-webkit-mask-attachment:
+	fixed; /* 表示图片不随页面滚动 */
+	scroll; /* 表示图片随页面滚动 */
+
+
+/* 设置遮罩边框 */
+/* 该属性为一个复合属性 */
+-webkit-mask-box-image: url top right bottom left repeat;
+
+/* 这个属性也可以分解成如下的几个属性 */
+
+/* 设置使用的图片的 url */
+-webkit-mask-box-image-source: url(images/a.jpg);
+
+/* 设置遮罩边框的切线位置，可同时设置上右下左四条边，可以为像素（为像素时不能带px单位）和百分比。用法类似于 border-image-slice */
+-webkit-mask-box-image-slice: 50%;
+
+/* 设置图片的向外偏移多少像素，可同时设置上右下左四条边。用法类似于 border-image-outset */
+-webkit-mask-box-image-outset: 20px 30px 40px 50px;
+
+/* 设置遮罩边框的宽度，可同时设置上右下左四条边，该边框宽度不会影响到元素的盒模型。用法类似于 border-image--width */
+-webkit-mask-box-image-width: 20px;
+
+/* 设置图片的重复方式，值分别为 stretch、repeat、round。用法类似于 border-image-repeat */
+-webkit-mask-box-image-repeat: stretch;
+
+
+
+/* 设置页面字体抗锯齿 */
+-webkit-font-smoothing:
+	none; /* 不抗锯齿，对低像素的文本比较好 */
+	subpixel-antialiased; /* 默认值，中等抗锯齿 */
+	antialiased; /* 最大抗锯齿 */
+
+
+
+/* 设置页面字体描边 */
+-webkit-text-stroke: -webkit-text-stroke-width -webkit-text-stroke-color;
+/* 也可以拆分为以下两种子属性 */
+-webkit-text-stroke-width: 0.2px; /* 设置或检索对象中的文字的描边宽度。可取小数和medium（描边宽度中等）, thick（描边宽度粗）, thin（描边宽度细）关键字。默认值为0 */
+-webkit-text-stroke-color: #ddd; /* 设置或检索对象中的文字的描边颜色。默认值为字体颜色 */
+
+
+
+/* 字体大小自动调整 */
+/* webkit 浏览器会根据页面宽高尺寸与比例自动调整页面字体大小，以达到最佳的视觉效果 */
+/* webkit 浏览器在页面字体大小样式设定小于 12px 时，将自动调整字体大小为 12px，可设置如下样式关闭该功能 */
+-webkit-text-size-adjust:
+	none; /* 不调整。但有一个副作用，就是页面被放大时，字体不会被放大，导致页面元素与字体大小失衡 */
+	100%; /* 保持字体大小与页面元素比例一直（目前来看好像没有浏览器支持了） */
+/* Chrome27正式取消了 -webkit-text-size-adjust 属性，所有字号最小为12px */
+/* 但是 360 等国内浏览器的 webkit 核心模式的任然支持该属性 */
+
+
+
+/* 设置点击高亮色 */
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+/* 这个属性只用于iOS (iPhone和iPad)。当你点击一个链接或者通过Javascript定义的可点击元素的时候，它就会出现一个半透明的灰色背景 */
+/* 要重设这个表现，你可以设置-webkit-tap-highlight-color为任何颜色 */
+/* 想要禁用这个高亮，设置颜色的alpha值为0即可 */
+
+
+
+/* 设置空格符行为 */
+-webkit-nbsp-mode: space;
+/* 可以改变&nbsp;空白符的行为，强制文字在它被用到的地方断行。通过设置值为space即可实现 */
+
+
+
+/* IOS 设备上禁止长按链接或图片时出现的菜单，防止用户在新窗口打开页面或者保存图片 */
+/* 在 Android 设备上对 <a> 连接无效 */
+-webkit-touch-callout: none; /* default 为默认值 */
+
+
+
+/* 设置整个元素而非它的内容可拖动 */
+/* 对应于标签属性draggable。其中图片和链接默认为可拖动（draggable="true"），其他元素默认为不可拖动（draggable="false"） */
+-webkit-user-drag:
+	auto; /* 使用默认的拖动行为。图片和链接默认为可拖动，其他元素默认为不可拖动 */
+	element; /* 整个元素而非它的内容可拖动 */
+	none; /* 元素不能被拖动。但可通过复制选中后拖动 */
+
+
+
+/* IOS设备上使其它容器元素的 scroll 滚动更加平滑，且附带弹性效果 */
+-webkit-overflow-scrolling: touch;
+/* IOS应该是需要5.0。Android只在4.0以上支持 */
+
+
+
+# 修改 webkit 浏览器默认滚动条样式
+
+/* webkit内核下浏览器滚动条效果（用伪元素修改样式）*/
+/* 滑动条，垂直轴会忽略 width，水平轴会忽略 height */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: rgba(255,255,255,0.8);
+}
+
+/* 滚动条手柄 */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: rgba(255,0,0,0.3);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(255,0,0,0.8);
+}
+::-webkit-scrollbar-thumb:vertical {
+
+}
+::-webkit-scrollbar-thumb:horizontal {
+
+}
+
+/* 浏览器窗口失去焦点时 */
+::-webkit-scrollbar-thumb:window-inactive {
+	background: yellow;
+}
+
+/* 水平垂直滚动条之前的夹角处 */
+::-webkit-scrollbar-corner {
+	background: transparent;
+}

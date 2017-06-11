@@ -1,0 +1,198 @@
+﻿*UIImage 图像
+
+UIImage对象提供下列方法：
+
+// 加载指定文件名对应的图片，该方法有缓存机制
++(UIImage *)imageNamed:(NSString *);
+
+// 加载指定路径对应的图片
++(UIImage *)imageWithContentsOfFile:(NSString *);
+
+// 根据NSData中封装的数据来创建图片
++(UIImage *)imageWithData:(NSData *);
+
+// 根据NSData中封装的数据来创建图片，并根据scale参数进行缩放
++(UIImage *)imageWithData:(NSData *)
+	scale:(CGFloat);
+
+// 根据指定的CGImageRef对象来创建图片
++(UIImage *)imageWithCGImage:(CGImageRef);
+
+// 根据指定的CGImageRef对象来创建图片，并根据scale参数进行缩放
+// 第三个参数用于指定对图片执行旋转、镜像等变幻操作
++(UIImage *)imageWithCGImage:(CGImageRef)
+	scale:(CGFloat)
+	orientation:(UIImageOrientation);
+
+// 根据指定图片名来加载系列图片。例如第一个参数名为img，则该方法自动加载img0.png、img1.png、img2.png等图片
+// 第二个参数用来控件动画的持续时间，单位秒
++(UIImage *)animatedImageNamed:(NSString *)
+	duration:(NSTimeInterval);
+
+// 该方法根据传入的包含多个UIImage的NSArray对象来创建系列图片
+// 第二个参数用来控件动画的持续时间，单位秒
++(UIImage *)animatedImageWithImages:(NSArray *)
+	duration:(NSTimeInterval);
+
+
+// 将当前UIImage对象绘制到当前绘图CGContextRef的指定点
+-(void)drawAtPoint:(CGPoint);
+
+// 将当前UIImage对象绘制到当前绘图CGContextRef的指定点，同时指定叠加模式和透明度
+-(void)drawAtPoint:(CGPoint)
+	blendMode:(CGBlendMode)
+	alpha:(CGFloat);
+
+// 将当前UIImage对象绘制到当前绘图CGContextRef的指定区域
+-(void)drawInRect:(CGRect);
+
+// 将当前UIImage对象绘制到当前绘图CGContextRef的指定区域，同时指定叠加模式和透明度
+-(void)drawInRect:(CGRect)
+	blendMode:(CGBlendMode)
+	alpha:(CGFloat);
+
+
+// 顶级函数，将绘图CGContextRef中的图片生成一个UIImage对象
+UIImage* UIGraphicsGetImageFromCurrentImageContext();
+
+// 顶级函数，将UIImage对象转换成PNG格式的NSData
+NSData* UIImagePNGRepresentation(UIImage *image);
+
+// 顶级函数，将UIImage对象转换成JPEG格式的NSData，第二个参数为图片的压缩质量
+NSData* UIImageJPEGRepresentation(UIImage *image, CGFloat compressionQuality);
+
+// 顶级函数，将image绘制到rext区域内
+void CGContextDrawImage(CGContextRef c, CGRect rect, CGImageRef image)
+
+// 顶级函数，采用平铺模式将image绘制到rext区域内
+void CGContextDrawTiledImage(CGContextRef c, CGRect rect, CGImageRef image)
+
+// 顶级函数，该函数返回一个图片的CGImageDef副本
+CGImageDef CGImageCreateCopy(CGImageDef image);
+
+// 顶级函数，该函数返回一个图片指定rect区域的CGImageDef副本
+CGImageDef CGImageCreateWithImageInRect(CGImageDef image,CGRect rect);
+
+// 该函数返回一个当前屏幕图像的CGImageDef副本
+// 需要先声明该外部函数 extern CGImageRef UIGetScreenImage();
+CGImageRef UIGetScreenImage();
+
+
+// 另外UIView还提供以下方法用于将自身绘制到CGContextRef中
+// 必须导入以下库
+#import <QuartzCore/QuartzCore.h>
+[UIView对象.layer renderInContext:context];
+
+
+
+
+
+*UIImageView 图像视图
+
+UIImageView对象提供下列属性：
+
+image;//访问或设置该控件显示的图片
+
+highlightedImage;//访问或设置该控件处于高亮状态时显示的图片
+
+animationImages;//访问或设置该控件需要动画显示的多张图片，该属性值是一个包含多个UIImage的NSArray对象
+
+highlightedAnimationImages;//访问或设置该控件处于高亮状态时需要动画显示的多张图片，该属性值是一个包含多个UIImage的NSArray对象
+
+animationDuration;//访问或设置该控件的动画持续时间
+
+animationRepeatCount;//访问或设置该控件的动画重复次数
+
+isAnimating;//判断该控件是否正在播放动画
+
+
+// 创建并初始化一个带图片的图像视图
+UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"图片文件名"]];
+// 创建一个空视图并初始化位置和大小
+UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,30,50,50)];
+
+// 为图像控件添加一张图像，原图会被自动缩放为图像控件的大小
+imageView.image = [UIImage imageNamed:@"图片文件名"];
+
+imageView.alpha = 0.1;//设置图片对象的透明度
+
+[imageView startAnimating];//开始播放动画
+
+[imageView stopAnimating];//停止播放动画
+
+
+// 由于UIImageView没有继承UIControl基类，因此不支持为触摸动作绑定事件处理，但是可以通过为UIImageView添加手势检测器来处理单击事件
+
+// 首先启用该控件的用户交互属性
+UIImageView对象.userInteractionEnabled = YES;
+// 创建一个轻击的手势检测器，并绑定事件方法
+UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc]
+				initWithTarget:self
+				action:@selector(clicked:)];
+// 为图像控件添加手势检测器
+[UIImageView对象 addGestureRecognizer:singleTap];
+
+// 实现方法
+-(void) clicked:(UIGestureRecognizer *)gestureRecognizer
+{
+	// 获取原始位图，改图为未缩放的原始尺寸
+	UIImage* srcImage = UIImageView对象.image;
+
+	// 获取用户手指在图像控件上的触碰点
+	CGPoint pt = [gesureRecognizer locationInView:UIImageView对象];
+
+	// 获取原始图片实际大小与UIImageView对象的缩放比例
+	CGFloat scale = srcImage.size.width / UIImageView对象.frame.size.width;
+
+	// 将图像控件上的触碰点换算成原始位图上的位置
+	CGFloat x = pt.x * scale;
+	CGFloat y = pt.y * scale;
+
+	// 获取原始位图对应的CGImageDef
+	CGImageDef sourceImageRef = [srcImage CGImage];
+
+	// 获取sourceImageRef中指定区域的图片
+	CGImageDef newImageDef = CGImageCreateWithImageInRect(sourceImageRef,CGRectMake(x,y,100,100));
+
+	// 将图像控件内的图片替换成新图片
+	UIImageView对象.image = [UIImage imageWithCGImage:newImageDef];
+}
+
+
+
+*在内存中绘制图片，并保存到本地
+
+// 创建内存中的图片
+UIGraphicsBeginImageContext(CGSize);
+// 获取绘图工具
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+// 设置线宽
+CGContextSetLineWidth(ctx, 8);
+// ---------下面开始向内存中绘制图形---------
+// 设置线条颜色
+CGContextSetRGBStrokeColor(ctx, 0 , 1, 0 , 1);
+// 绘制一个矩形边框
+CGContextStrokeRect(ctx , CGRectMake(30 , 30 , 120 , 60));
+// 设置填充颜色
+CGContextSetRGBFillColor(ctx, 1, 1, 0 , 1);
+// 绘制一个矩形边框
+CGContextFillRect(ctx , CGRectMake(180 , 30 , 120 , 60));
+// 设置线条颜色
+CGContextSetRGBStrokeColor(ctx, 0, 1 , 1 , 1);
+// 绘制一个椭圆
+CGContextStrokeEllipseInRect(ctx , CGRectMake(30 , 120 , 120 , 60));
+// 设置填充颜色
+CGContextSetRGBFillColor(ctx, 1, 0 , 1 , 1);
+// 填充一个椭圆
+CGContextFillEllipseInRect(ctx , CGRectMake(180 , 120 , 120 , 60));
+// 获取该绘图Context中的图片
+UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+// ---------结束绘图---------
+UIGraphicsEndImageContext();
+// 获取当前应用路径下的Documents目录下的指定文件名对应的文件路径
+NSString *path = [[NSHomeDirectory()
+		stringByAppendingPathComponent:@"Documents"]
+		stringByAppendingPathComponent:@"newPng.png"];
+// 保存PNG图片
+[UIImagePNGRepresentation(newImage)
+	 	writeToFile:path atomically:YES];

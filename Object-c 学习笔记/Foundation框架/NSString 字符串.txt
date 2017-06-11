@@ -1,0 +1,123 @@
+*NSString 固定字符串
+
+// 创建一个固定字符串(固定字符串不能改变自身，只能重新赋值)
+NSString* str = @"hello";//如果常量池中存在该字符串，则指向它，否则创建一个该字符串，并储存于常量池
+NSString* str = [NSString stringWithFormat:@"Hello"];//创建一个新的字符串
+
+// 因此下列比较结果等同于==，返回真
+NSString* str1 = @"hello";
+NSString* str2 = @"hello";
+[str1 isEqual str2];
+
+// 因此下列比较结果，返回假
+NSString* str1 = [NSString stringWithFormat:@"Hello"];
+NSString* str2 = [NSString stringWithFormat:@"Hello"];
+[str1 isEqual str2];
+
+// 下列比较方法是针对字符串进行序列比较，结果返回真
+[str1 isEqualString str2];
+
+// 在str后面追加固定的字符串
+// 原来字符串对象并不改变，只是将新生成的字符串重新赋给str指针变量
+str = [str stringByAppendingString:@",iOS!"];
+
+// 在str后面追加带变量的字符串。
+// 原来字符串对象并不改变，只是将新生成的字符串重新赋给str指针变量
+str = [str stringByAppendingFormat:@"%@是一本非常不错的图书."
+	, book];
+
+[str length];//返回字符串长度
+
+[str lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);//返回str按UTF-8字符集解码后的字节数
+
+//将字符串转换成大写
+str = [str uppercaseString];
+
+// 获取str的前10个字符组成的字符串
+str = [str substringToIndex:10];
+
+// 获取str的从第5个字符开始，与后面字符组成的字符串
+str = [str substringFromIndex:5];
+
+// 获取str从第5个字符开始，到第15个字符组成的字符串
+str = [str substringWithRange:NSMakeRange(5, 15)];
+
+// 获取iOS在str中出现位置
+// NSRange是一个结构体，表示范围，包含location和length两个正整数属性
+NSRange pos = [str rangeOfString:@"iOS"];
+pos.location;//返回位置索引
+pos.length;//返回长度
+
+
+
+// 将NSData内容，用UTF-8格式初始化字符串
+NSString* str = [NSString stringWithData:NSData对象
+		encoding:NSUTF8StringEncoding];
+// 将str内容，用UTF-8格式转化为NSData
+NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];
+
+// 读取文件内容，用该内容初始化字符串
+NSString* str = [NSString stringWithContentsOfFile:@"NSStringTest.m"
+		encoding:NSUTF8StringEncoding
+		error:nil];
+NSString* str = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"网址"]
+		encoding:NSUTF8StringEncoding
+		error:nil];
+
+
+
+// 将字符串写入指定文件
+// atomically参数被设置为YES，表示首先将字典写入临时备份文件中，如果成功，再把最终数据转移到指定文件中。防止在不成功时是原文件受到损坏
+[str2 writeToFile:@"myFile.txt"
+	atomically:YES
+	encoding:NSUTF8StringEncoding
+	error:nil];
+
+// 使用Unicode数值数组初始化字符串
+unichar data[6] = {97 , 98 , 99 , 100 , 101, 102};
+NSString* str = [[NSString alloc] initWithCharacters:data length:6];
+
+// 将C风格的字符串转换为NSString对象
+char* cstr = "Hello, iOS!";
+NSString* str2 = [NSString stringWithUTF8String:cstr];
+// 获取字符串对应的C风格字符串
+const char* cstr = [str UTF8String];
+
+
+
+// 如果字符串不以http://开头，为该用户输入的网址添加http://前缀
+if (![str hasPrefix:@"http://"])
+{
+	str = [NSString stringWithFormat:@"http://%@" , str];
+}
+
+
+
+
+
+*NSMutableString 可变字符串
+
+// 创建一个可变字符串
+NSMutableString* mutStr=@"";
+NSMutableString* mutStr = [NSMutableString stringWithString:@"Hello"];
+
+NSMutableString* mutStr=[str mutableCopy];//固定字符串方法，返回一个可变字符串
+
+// 追加固定字符串
+// 字符串所包含的字符序列本身发生了改变，因此无需重新赋值
+[mutStr appendString:@"world"];
+
+// 追加带变量的字符串
+// 字符串所包含的字符序列本身发生了改变，因此无需重新赋值
+[mutStr appendFormat:@"%@是一本非常不错的图书." , str];
+
+// 在指定位置插入字符串
+// 字符串所包含的字符序列本身发生了改变，因此无需重新赋值
+[mutStr insertString:@"fuck" atIndex:6];
+
+// 删除从位置6到位置12的所有字符
+[mutStr deleteCharactersInRange:NSMakeRange(6, 12)];
+
+// 将从位置6到位置9的字符串替换成Objective-C
+[mutStr replaceCharactersInRange:NSMakeRange(6, 9)
+	withString:@"Objetive-C"];

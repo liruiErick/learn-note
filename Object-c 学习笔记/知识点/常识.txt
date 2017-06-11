@@ -1,0 +1,79 @@
+1):
+&变量;可以得到该变量在内存中的地址
+
+%@在NSLog()中代表输出Object-c对象
+
+%c在NSLog()中代表以单字符的形式输出0~65535范围的整数
+
+%d在NSLog()中代表以十进制的形式输出数值
+
+
+%x在NSLog()中代表以十六进制的形式输出数值
+
+
+%u在NSLog()中代表以无符号整数的形式输出数值
+
+%f在NSLog()中代表以浮点数的形式输出数值
+
+
+%g在NSLog()中代表以最短浮点数的形式输出数值，即不输出无意的0
+
+%lld在NSLog()中代表long long整数变量
+
+
+%-m.nf 其中”m”表示输出数字宽度，如果数字宽度不够，则用空格填补，”.n”表示精确到n位小数，如果用于字符串，则表示截取n个字符，其中“－”表示左对齐
+
+
+2):
+
+sizeof()可判断变量占用的内存空间
+
+
+
+3):
+arc4random();//返回一个随机的32位int值
+
+
+4):
+- (void)awakeFromNib{};//当窗口打开，方法awakeFromNib就会自动被调用
+
+
+5):
+
+
+
+unsigned 整数类型 变量名;//用于声明无符号整数，例如 unsigned int。
+
+
+6):
+[NSNull null]可在数组中作为占位符使用
+
+
+7):
+在IOS中RGB颜色值范围为(0.0 ~ 1.0)
+假设颜色值RGB(135,200,0)，那么在ios代码中是这样的RGB(135/255,200/255,0/255)
+
+
+8):
+[sender resignFirstResponder];//使控件放弃第一响应器，达到虚拟键盘释放的目的。
+
+
+9):
+// 获取屏幕大小
+CGRect screenRect = [UIScreen mainScreen] bounds];
+
+
+10):
+// 获取C数组的长度
+NSInteger patternCount = sizeof(C数组)/ sizeof(C数组[0]);
+
+
+
+11):
+// 获取当前应用路径下的Documents目录下的指定文件名对应的文件路径
+// 即先用NSHomeDirectory()方法获取当前应用沙盒的根目录
+// 再在根目录后添加Documents目录
+// 最后在新目录下添加newPng.png文件名，生成该文件的完整路径
+NSString *path = [[NSHomeDirectory()
+		stringByAppendingPathComponent:@"Documents"]
+		stringByAppendingPathComponent:@"newPng.png"];

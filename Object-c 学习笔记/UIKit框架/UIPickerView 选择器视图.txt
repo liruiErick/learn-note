@@ -1,0 +1,99 @@
+由于UIPickerView没有继承UIControl基类，因此不支持为触摸动作绑定事件处理，只能交给委托对象处理。
+
+UIPickerView控件的常用属性和方法：
+
+UIPickerView对象.userInteractionEnabled = NO;//禁止用户选择
+
+[UIPickerView对象 reloadComponent:1];//重写加载第二个列表
+
+numberOfComponents;//只读属性，获取指定列中包含的列表项的数量
+
+showsSelectionIndicator;//该属性控制是否以高亮背景显示被选中的标记
+
+-numberOfRowsInComponent:;//获取包含的列数量
+
+-rowSizeForComponent:;//获取包含指定列中列表项的大小，该方法返回一个CGSize对象
+
+-selectRow:(NSInteger)row
+	inComponent:
+	animated:;//该方法设置选中指定列的特定列表项
+
+-selectedRowInComponent:;//该方法返回指定列中被选中的列表项
+
+-viewForRow:(NSInteger)row
+	forComponent:;//该方法返回指定列的列表项所使用的UIView对象
+
+
+
+UIPickerView控件只是负责控件的通用行为，而该控件包含多少列，各列包含多少个列表项则是由UIPickerViewDataSource对象负责。
+必须为UIPickerView设置实现了UIPickerViewDataSource协议的对象：
+
+UIPickerView对象.dataSource = UIPickerViewDataSource对象;
+
+并实现如下方法：
+
+// UIPickerView对象将通过该方法判断应该包含多少列
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView;
+
+// UIPickerView对象将通过该方法判断指定列应该包含多少个列表项
+-(NSInteger)pickerView:(UIPickerView *)pickerView
+	numberOfRowsInComponent:(NSInteger)component;
+
+
+
+如果程序需要控制UIPickerView中各列的宽度，以及各列中列表项的大小和外观，或程序需要为UIPickerView的选中事件提供相应，则需要委托对象来实现，UIPickerView的委托对象必须实现UIPickerViewDelegate协议：
+
+UIPickerView对象.delegate = UIPickerViewDelegate对象;
+
+该协议定义了如下方法：
+
+// 该方法返回的CGFloat值将作为该UIPickerView控件中指定列中列表项的高度
+-(CGFloat)pickerView:(UIPickerView *)pickerView
+	rowHeightForComponent:(NSInteger)component;
+
+// 该方法返回的CGFloat值将作为该UIPickerView控件中指定列的宽度
+
+-(CGFloat)pickerView:(UIPickerView *)pickerView
+	widthForComponent:(NSInteger)component;
+
+// 该方法返回的NSString值将作为该UIPickerView控件中指定列的列表项的文本标题
+-(NSString *)pickerView:(UIPickerView *)pickerView
+	titleForRow:(NSInteger)row
+	forComponent:(NSInteger)component;
+
+// 该方法返回的NSView值将直接作为该UIPickerView控件中指定列的指定列表项
+-(NSView *)pickerView:(UIPickerView *)pickerView
+	viewForRow:(NSInteger)row
+	forComponent:(NSInteger)component
+	reusingView:(NSView *)view;
+
+// 当用户单击选中该UIPickerView控件中指定列的指定列表项时将激发该方法
+-(void)pickerView:(UIPickerView *)pickerView
+	didSelectRow:(NSInteger)row
+	inComponent:(NSInteger)component;
+
+
+
+
+应用示例：
+#define kImageTag 1
+// UIPickerViewDelegate中定义的方法，该方法返回的UIView将作为
+// UIPickerView中指定列、指定列表项的UI控件
+- (UIView *)pickerView:(UIPickerView *)pickerView
+	viewForRow:(NSInteger)row
+	forComponent:(NSInteger)component
+	reusingView:(UIView *)view
+{
+    
+	// 如果可重用的view的tag不等于kImageTag，表明该view已经不存在，需要重新创建
+	if(view.tag != kImageTag)
+	{
+		view = [[UIImageView alloc] initWithImage:[images objectAtIndex:row]];
+		// 为该UIView设置tag属性
+		view.tag = kImageTag;
+		// 设置不允许用户交互
+		view.userInteractionEnabled = NO;
+	}
+	return view;
+}
+

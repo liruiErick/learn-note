@@ -1,0 +1,45 @@
+﻿我们很多时候都想把一些数据保存在flash之外比如玩一个游戏，我们可以把一些数据保存在外部，这样下次用户打开flash的时候就可以从外部先加载信息。如：把用户游戏的关数保存在外部那么下次用户玩的时候就可以直接读取外部的，而不用一直重复去玩一些已经玩过的。
+
+   as3.0中保存数据到外部用的是SharedObject类，这个类实现了了客户端机器数据的持久性存储，我们可以把一些数据保存在客服端，也可以把数据保存到远程服务器上，保存在客户端就相当于cookie，而保存在服务器端就相当于session。
+
+   flash本地可以存储大量数据，且存储和读取的都是原生的ActionScript数据类型。默认的空间大小100 KB，他默认的后缀是.sol,同一个域里都文件都可以通过SharedObject类来访问。
+
+
+
+*import flash.net.SharedObject; 导入共享对象类
+
+静态方法:getLocal()可以创建一个SharedObject或者打开共享对象。
+
+属性:data,是一个object类型的对象，因此我们可以添加任意类型的东西进去。
+
+方法：flush()保存到客户机上。
+
+var:result=SharedObject对象.flush()
+
+返回的结果类型有三种：
+
+第一种是flushed，表示保存成功。
+
+第二种是拒绝保存的情况返回一个error。
+
+第三种是SharedObjectFlushStatus.PENDING没有足够空间，如果是这样的话我们可以在里面增加事件监听：
+SharedObject对象.addEventListener(NetStatusEvent.NET_STATUS, onStatus );
+
+事件类型是NetStatusEvent.NET_STATUS，在onStatus方法里写：
+if ( event.info.code == "SharedObject.Flush.Success" )
+{
+	//当用户点击成功的时候触发的事件
+}
+else if ( event.info.code == "SharedObject.Flush.Failed" )
+{
+	//用户点击取消的时候触发的事件
+	//我们可以打开对话框来改变保存到本地容量的大小，前面提过了默认是100kb。
+	Security.showSettings( SecurityPanel.LOCAL_STORAGE );
+}
+
+
+读取客户端的数据就直接通过访问data中你保存的数据就可以了很简单。当我们要删除data里保存的数据的时候只要通过调用delete或者直接调用SharedObject对象的clear（）方法就可以了，但是clear是删除所有保存的数据。delete是删除您要删除的具体的某项。delete SharedObject对象.data.someVariable，我们不能通过把SharedObject对象.data.someVariable的值赋空来实现。如果我们要保存类的话，首先要把类序列化，序列化可以把对象的信息保存在本地，在需要的时候在通过反序列化直接获得类的当前信息，在as3.0中是通过用flash.net.registerClassAlias( )来实现的。
+
+registerClassAlias（别名，具体的引用，也就是类名)：他有两个参数，一个是保存的别名，另外一个是具体的类的引用，这个方法必须在getLocal( )方法前调用才有效。
+
+如果我们要在多个flash中共享客户端的内容，我们就必须制定路径，getLocal()可以带两个参数，前一个参数是保存的名称，后面一个是路径.这个路径必须是同一个域下要共享客服端保存内容的flash所能访问到的

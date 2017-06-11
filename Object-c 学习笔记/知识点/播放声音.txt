@@ -1,0 +1,12 @@
+*打开外部音频并播放
+
+// 首先为项目导入AudioToolbox库，然后在相关类文件中导入
+import <AudioToolbox/AudioToolbox.h>
+// 使用NSBundle获取音频的url地址
+NSURL* soundUrl = [[NSBundle mainBundle] URLForResource:@"音频文件名"
+			withExtension:@"音频扩展名"];
+SystemSoundID soundId;//声明一个声音ID
+// 装载音频文件
+AudioServicesCreateSystemSoundID((__bridge CFURLRef)(soundUrl),&soundId);
+// 播放声音
+AudioServicesPlaySystemSound(soundId);

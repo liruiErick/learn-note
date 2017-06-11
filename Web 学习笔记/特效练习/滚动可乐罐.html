@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>滚动可乐罐</title>
+</head>
+<body>
+<script>
+	var coke = document.createElement("div");
+	coke.style.width = "200px";
+	document.body.appendChild(coke);
+	document.body.style.overflow = "hidden";
+	var x = 0;
+	var ps = [];
+	// 创建可乐罐的贴图
+	for (var i=0;i<55;i++)
+	{
+		var p = document.createElement("p");
+		p.style.cssFloat = "left";
+		p.style.height = "336px";
+		p.style.backgroundImage = "url(images/coke-label.jpg)";
+		p.style.backgroundRepeat = "repeat-x";
+		p.style.backgroundAttachment = "fixed";
+		coke.appendChild(p);
+		//coke.style.webkitTransform = "rotate(20deg)";
+		ps.push(p);
+		
+		if (i<16 || i>38) p.style.width = "1px";
+		else if (i<21 || i>33) p.style.width = "2px";
+		else if (i<23 || i>31) p.style.width = "3px";
+		else if (i==23) p.style.width = "4px";
+		else if (i==24) p.style.width = "5px";
+		else if (i==25) p.style.width = "6px";
+		else if (i==26) p.style.width = "12px";
+		else if (i==27) p.style.width = "55px";
+		else if (i==28) p.style.width = "12px";
+		else if (i==29) p.style.width = "6px";
+		else if (i==30) p.style.width = "5px";
+		else if (i==31) p.style.width = "4px";
+		
+		if (i==0) x = 0;
+		else if (i==1 || i==54) x -= 5;
+		else if (i<4 || i>51) x -= 3;
+		else if (i<8 || i>47) x -= 2;
+		else x -= 1;
+		p.x = x;
+		p.style.backgroundPosition = p.x+"px 30px";
+	}
+	
+	// 创建可乐罐框架图片
+	var img = document.createElement("img");
+	img.style.border = "0";
+	img.style.marginTop = "12px";
+	img.style.marginLeft = "-173px";
+	img.src = "images/coke-can.png";
+	//img.setAttribute("src","images/coke-can.png");
+	coke.appendChild(img);
+	
+	// 控制可乐罐的位置
+	document.addEventListener("mousemove",cokeRoll);
+	function cokeRoll(event)
+	{
+		// 刷新可乐罐位置
+		coke.style.marginLeft = event.clientX-87+"px";
+		coke.style.marginTop = event.clientY-230+"px";
+		// 如果垂直移动，刷新可乐罐贴图位置
+		// 获取coke相对于窗口的顶部坐标，需要减去body元素默认的8px外边距
+		var y = coke.getBoundingClientRect().top+30-8;
+		for (var i in ps)
+		{
+			ps[i].style.backgroundPosition = ps[i].x+"px "+y+"px";
+		}
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿*UIProgressView 进度条
+
+由于UIProgressView直接继承了UIView，因此只能作为静态控件使用
+
+// 创建一个进度条
+UIProgressView* prog = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+// 设置UIProgressView的大小
+prog.frame = CGRectMake(0 , 0 , 80, 20);
+// 设置该进度条的初始进度为0
+prog.progress = 0;
+
+// 创建2个可以九宫格局部拉伸的的图片
+// UIEdgeInsetsZero为一个UIEdgeInsets结构体，表示left、top、right、bottom均为0，表明图片整体作为缩放主体
+// UIImageResizingModeTile为图片平铺
+UIImage* trackImage = [[UIImage imageNamed:@"图片路径"]
+		resizableImageWithCapInsets:UIEdgeInsetsZero
+		resizingMode:UIImageResizingModeTile];
+
+UIImage* progressImage = [[UIImage imageNamed:@"图片路径"]
+		resizableImageWithCapInsets:UIEdgeInsetsZero
+		resizingMode:UIImageResizingModeTile];
+
+// 自定义进度条外观
+prog.trackImage = trackImage;//设置轨道部分图片
+prog.progressImage = progressImage;//设置完成部分图片
+
+// 更改进度条进度值，值为0-1之间的CGFloat
+[prog setProgress:0.01 animated:YES];
+
+
+
+
+*UIActivityIndicatorView 转动菊花
+
+// 创建一个转动菊花
+UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc]
+					initWithFrame:CGRectMake(0.0f,0.0f,32.0f,32.0f)];
+
+// 设置转动菊花的样式为白色大菊花
+activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+
+// 隐藏转动菊花
+activityIndicator.hidden = YES;
+
+[activityIndicator setCenter:父级视图对象.center];//将转动菊花设置到父级视图中央
+
+[activityIndicator startAnimating];//开始转动
+
+[activityIndicator stopAnimating];//停止转动
+
+
+
+
+
+*UISlider 拖动条
+
+// 设置拖动条的最大值与最小值
+UISlider对象.minimumValue = 0;
+UISlider对象.maximumValue = 10;
+
+// 创建九宫格局部拉伸图片，指定对heart.gif图片整体进行平铺
+UIImage* minImage = [[UIImage imageNamed:@"heart.gif"]
+		resizableImageWithCapInsets:UIEdgeInsetsZero
+		resizingMode:UIImageResizingModeTile];
+
+// 创建九宫格局部拉伸图片，指定对grow.gif图片整体进行平铺
+UIImage* maxImage = [[UIImage imageNamed:@"grow.gif"]
+		resizableImageWithCapInsets:UIEdgeInsetsZero
+		resizingMode:UIImageResizingModeTile];
+
+// 设置拖动条已完成部分的轨道的图片。
+[UISlider对象 setMinimumTrackImage:minImage
+	forState:UIControlStateNormal];
+
+// 设置拖动条未完成部分的轨道的图片。	
+[UISlider对象 setMaximumTrackImage:maxImage
+	forState:UIControlStateNormal];
+	
+// 设置拖动条上滑块的图片。
+[UISlider对象 setThumbImage:[UIImage imageNamed:@"ic_launcher.png"]
+	forState:UIControlStateNormal];
+
+// UISlider对象可为Value Changed事件绑定处理方法
+-(IBAction) changed:(UISlider *)sender
+{
+	// 获取UISlider对象的当前值，值在0-1之间
+	float slideValue = sender.value;
+}

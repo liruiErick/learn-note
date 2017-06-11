@@ -1,0 +1,162 @@
+﻿# ECMAScript5 Object的新属性方法（IE8及以下浏览器不支持）
+
+## Object 类方法
+
+// 获取实例对象的原型
+Object.setPrototypeOf(obj, prototype); //设置实例对象的原型
+Object.getPrototypeOf(obj); //返回实例对象的原型
+obj.__proto__; //返回实例对象的原型
+
+
+
+// 获取对象的键组成的数组（IE8及以下浏览器不支持）
+Object.prototype.e = 5;
+var obj = {a:1, b:2, c:3};
+
+Object.defineProperty(obj, "d", {value: 4, enumerable: false});
+Object.keys(obj); //返回所有直接对该对象定义的可枚举的属性键["a", "b", "c"]
+Object.getOwnPropertyNames(obj); //返回所有直接对该对象定义的属性键（包含不可枚举的属性）["a", "b", "c", "d"]
+
+var b2 = [];
+for (var i in obj) obj2.push(i); //["a", "b", "c", "e"]，包含直接对该对象定义的可枚举的属性键以及原形链中继承的可枚举的属性键
+
+
+// 为对象定义一个属性（IE8及以下浏览器不支持）
+Object.defineProperty(object, propertyname, descriptor);
+例如，给对象的原型定义一个新属性：
+var obj = fucntion() {};
+Object.defineProperty(obj.prototype, "customProperty", { 
+	value: 101, //设置属性值。默认是undefined。（不能与访问器共存）
+	writable: true, //是否可写。默认为 true。但是如果不声明该属性，将会按 false 对待。（不能与访问器共存）
+	enumerable: true, //是否可被(for in)枚举。默认为 true。但是如果不声明该属性，将会按 false 对待。
+	configurable: true, //该属性是否可被 delete 删除。默认为 true。但是如果不声明该属性，将会按 false 对待。
+	set: function (x) { //设置 set 访问器（不能与 value 或 writable 共存）
+		this._customProperty = x; 
+	},
+	get: function () { //设置 get 访问器（不能与 value 或 writable 共存）
+		return this._customProperty; 
+	}
+});
+
+// 创建一个对象时直接设置 getter\setter
+var obj = {
+	value: 1,
+	get val() { return this.val; },
+	set val(v) { this.val = v; }
+};
+
+
+// 为对象定义一组属性（IE8及以下浏览器不支持）
+// defineProperties 方法与 defineProperty 用法相同，只是第二个参数接受一个对象，包含了要定义的属性
+Object.defineProperties(object, descriptors);
+例如，给对象的原型定义一组新属性：
+var obj = fucntion() {};
+Object.defineProperties(obj.prototype, { 
+	customProperty_1: {
+		value: 101,
+		writable: true,
+		enumerable: true,
+		configurable: true
+	},
+	customProperty_2: {
+		set: function (x) {
+			this._customProperty_2 = x;
+		},
+		get: function () {
+			return this._customProperty_2; 
+		},
+		enumerable: true,
+		configurable: true
+	}
+});
+
+
+// 获取对象某个属性的描述对象，该属性可以是自己定义的属性，也可以使原形链中继承的属性
+Object.getOwnPropertyDescriptor(object, propertyname);
+// 返回对象包括：
+{
+	value: 1,
+	writable: true,
+	enumerable: true,
+	configurable: true,
+	set: function (x),
+	get: function ()
+}
+
+
+// 创建一个以 prototype 为原型的对象（相当 new 一个以 prototype 作为原型的对象），并且可以同时设置一组属性的描述对象
+Object.create(prototype, descriptors);
+// 返回对象继承了prototype上所有的属性，但是这些属性都不算该返回对象直接定义的属性，因此不能等同于克隆
+// prototype  必需。 被继承的对象原型。 可以为 null，则生成一个空对象。
+// descriptors  可选。 包含一个或多个属的性描对象。每个属性的描述对象中，enumerable 默认为 false，即不可枚举。
+// 该方法也可以用来生成一个新的实例对象（类似于new一个类）
+Object.create(obj.__proto__);
+
+
+// 方法用于锁住对象属性，使其不能够拓展，也就是不能增加新的属性，但是属性的值仍然可以更改，也可以把属性删除
+Object.preventExtensions(car);
+Object.isExtensible(car); // 用于判断对象是否可以被拓展
+
+
+// 方法用于把对象密封，也就是让对象既不可以拓展也不可以删除属性（把每个属性的configurable设为false）,单数属性值仍然可以修改
+Object.seal(car);
+Object.isSealed(car); // 用于判断对象是否被密封
+
+
+// 终极神器，完全冻结对象，在seal的基础上，属性值也不可以修改（每个属性的wirtable也被设为false）
+Object.freeze(car);
+Object.isFrozen(car); // 用于判断对象是否被冻结
+
+// 数据变动观察（目前已经被ES7草案废除，不建议使用）
+// 封装的易用库 https://github.com/Polymer/observe-js
+Object.observe(obj, callback, acceptList); // 注册观察监听
+// 如果只关心一个对象所有变化的一部分，而非全部，可以通过一个 acceptList 来指定那些我们真正关心的变化类型。
+// 如果不指定 acceptList，它将默认监听固有类型["add"，"update"，"delete"，"reconfigure"，"preventExtensions"]
+Object.unobserve(obj, callback); // 移除观察监听
+// 回调会在所有数据变动结束后才执行一次
+function callback(changes){
+	// 遍历所有的变动
+	changes.forEach(function(change) {
+		console.log(change.type, change.name, change.oldValue);
+	});
+}
+// 向变动观察监听发送一个属性变动通知
+Object.getNotifier(obj).notify({
+	type: 'update',
+	name: 'name',
+	oldValue: _name
+});
+
+
+
+## Object 实例方法
+
+var obj = {};
+obj.isPrototypeOf; //用来判断指定对象object1是否存在于另一个对象object2的原型链中，是则返回true，否则返回false。 
+obj.hasOwnProperty("name"); //返回一个布尔值，检查obj是否包含"name"属性。只能检查定义在该实例对象上的属性，如果是定义在该原型对象上的属性，则返回 false。
+obj.propertyIsEnumerable("name"); //返回一个布尔值，表示"name"属性是否可被obj枚举
+
+
+# ES6 扩展
+
+## Object 类方法
+
+Object.is(a, b); // 比较 a 与 b 是否严格相等。与 === 的不同之处在于：一是+0不等于-0，二是NaN等于自身。
+
+Object.assign(target, source1, source2); // 对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）。
+// 但是只能做到浅拷贝。
+// 相当于 jQuery.extend(target, source1, source2);
+// 用结构运算符表示为 let target = { ...target, ...source1, ...source2 };
+
+Object.values(); // 返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。
+
+Object.entries(); // 返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值对数组。成员数组第一个值为 key，第二个值为 value。
+
+Object.getOwnPropertySymbols(obj); // 返回一个数组，包含对象自身的所有Symbol属性。
+
+Reflect.ownKeys(obj); // 返回一个数组，包含对象自身的所有属性，不管是属性名是Symbol或字符串，也不管是否可枚举。
+
+Object.getOwnPropertyDescriptors(obj); // 返回指定对象所有自身属性（非继承属性）的描述对象。
+
+
+

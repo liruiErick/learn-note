@@ -1,0 +1,37 @@
+// 设置线条颜色 
+void CGContextSetRGBStrokeColor(CGContextRef context, CGFloat red, CGFloat green, CGFloat blue, CGFloat alpha);
+void CGContextSetStrokeColorWithColor(CGContextRef c, CGColorRef color);
+// 设置填充颜色
+void CGContextSetRGBFillColor(CGContextRef context, CGFloat red, CGFloat green, CGFloat blue, CGFloat alpha);
+void CGContextSetFillColorWithColor(CGContextRef c, CGColorRef color);
+// 设置阴影
+CGContextSetShadow(CGContextRef context, CGSize offset, CGFloat blur);
+CGContextSetShadowWithColor(CGContextRef context, CGSize offset, CGFloat blur, CGColorRef color);
+
+
+应用示例：
+
+// 获取当前绘图工具
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+// 设置线宽
+CGContextSetLineWidth(ctx, 8);
+// 设置线条颜色
+CGContextSetRGBStrokeColor(ctx, 0 , 1, 0 , 1);
+// 绘制一个矩形边框
+CGContextStrokeRect(ctx , CGRectMake(30 , 30 , 120 , 60));
+
+// 设置填充颜色
+CGContextSetRGBFillColor(ctx, 1, 1, 0 , 1);
+// 使用默认的阴影颜色，阴影向左上角投影，模糊度为5
+CGContextSetShadow(ctx, CGSizeMake(8, -6), 5);
+// 绘制一个矩形边框
+CGContextFillRect(ctx , CGRectMake(180 , 30 , 120 , 60));
+
+// 设置线条颜色
+CGContextSetFillColorWithColor(ctx, [UIColor buleColor].CGColor)
+// 设置填充颜色
+CGContextSetFillColorWithColor(ctx, [UIColor yellowColor].CGColor);
+// 使用红色的阴影，阴影向右下角投影，模糊度为20
+CGContextSetShadowWithColor(ctx, CGSizeMake(10, 8), 10, [[UIColor redColor] CGColor]);
+// 填充一个椭圆
+CGContextFillEllipseInRect(ctx , CGRectMake(180 , 120 , 120 , 60));

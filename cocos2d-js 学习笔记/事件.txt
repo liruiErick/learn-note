@@ -1,0 +1,322 @@
+﻿* 事件监听器包含以下几种类型：
+触摸事件监听器 (cc.EventListenerTouch)
+键盘事件监听器 (cc.EventListenerKeyboard)
+加速计事件监听器 (cc.EventListenerAcceleration)
+鼠标事件监听器 (cc.EventListenerMouse)
+自定义事件监听器 (cc.EventListenerCustom)
+
+
+
+
+* 创建一个事件监听器 OneByOne 为单点触摸
+var listener = cc.EventListener.create({
+	event: cc.EventListener.TOUCH_ONE_BY_ONE, // 事件类型为单点触摸事件监听器
+	swallowTouches: true, // 设置是否吞没事件，在 onTouchBegan 方法返回 true 时吞掉事件，不再向下传递。
+	onTouchBegan: function (touch, event) { // 实现 onTouchBegan 事件处理回调函数
+
+		var pos = to uch.getLocation(); // 获取触摸点的坐标
+		var id = touch.getID(); // 获取触摸点的唯一ID
+		var target = event.getCurrentTarget(); // 获取当前事件的接受者
+		var rect =  target.getBoundingBox(); // 获取该精灵的边缘盒子
+
+		// 判断触摸点是否在该精灵的边缘盒子内
+		if (cc.rectContainsPoint(rect, pos)) {
+			// 触摸后的执行代码
+			return true; // 返回true，貌似是表示继续响应之后的Touch事件，例如：touchmove
+		}
+		return false; // 返回false，貌似是表示不继续响应之后的Touch事件
+	},
+	onTouchMoved: function (touch, event) { // 实现onTouchMoved事件处理回调函数, 触摸移动时触发
+		// 移动当前按钮精灵的坐标位置
+		var target = event.getCurrentTarget();
+		var delta = touch.getDelta(); // 获取移动量
+		target.x += delta.x;
+		target.y += delta.y;
+	},
+	onTouchEnded: function (touch, event) { // 实现onTouchEnded事件处理回调函数
+		var target = event.getCurrentTarget();
+		// 触摸结束后的执行代码
+	},
+	onTouchCancelled: function (touch, event) { // 实现onTouchCancelled事件处理回调函数
+		var target = event.getCurrentTarget();
+		// 触摸取消后的执行代码
+	}
+});
+
+注意，如果创建的 event 为 cc.EventListener.TOUCH_ALL_AT_ONCE (多点触摸)
+那么它的监听函数命名应改为 onTouchesBegan、onTouchesMoved、onTouchesEnded、onTouchesCancelled
+并且接收到的 touch 参数已不在是一个触摸点，而多个 touch 触摸点组成的数组，因此应该命名为 touches
+
+// 设置监听器的禁用或启用（注意，当监听器被禁用时，监听器对象的引用计数会-1）
+listener.setEnabled(false); // 将事件监听器禁用
+
+
+
+
+* 可选event类型列表:
+cc.EventListener.TOUCH_ONE_BY_ONE (单点触摸)
+cc.EventListener.TOUCH_ALL_AT_ONCE (多点触摸)
+cc.EventListener.KEYBOARD (键盘)
+cc.EventListener.MOUSE (鼠标)
+cc.EventListener.ACCELERATION (加速计)
+cc.EventListener.CUSTOM (自定义)
+
+
+
+
+* 添加监听器到管理器或者将监听器从管理器中移除
+cc.eventManager.addListener(listener, this); //将监听器添加到 Sprite 自身
+cc.eventManager.removeListener(listener); //移除 listener 监听器
+cc.eventManager.removeListeners(cc.EventListener.TOUCH_ONE_BY_ONE); //移除所有单点触摸事件监听器
+cc.eventManager.removeListeners(aSprite); //移除 aSprite 上的所有监听器
+cc.eventManager.removeAllListeners(); //移除说有事件监听器，包括引擎默认设置的监听器（慎用）
+
+通过调用 addListener 函数可以将listener加入到管理器中，
+需要注意的是第二个参数，如果传入的是一个Node对象，则加入的是SceneGraphPriority(精灵以显示优先级) 类型的listener，
+如果是一个数值类型的参数，则加入到的是FixedPriority 类型的listener。
+
+cc.eventManager 加入了精灵以显示优先级 (SceneGraphPriority)排序的功能，以这种类型注册的监听器，事件管理器会根据屏幕显示的情况来决定事件会优化分发给哪个事件监听器。
+与 SceneGraphPriority 所不同的是 FixedPriority 将会依据手动设定的 Priority 值来决定事件相应的优先级，值越小优先级越高。
+
+FixedPriority 事件类型则是相对于 SceneGraphPriority 来定义的，不需要与场景显示顺序相关的事件监听器 也就是优先级固定的(fixed)，就可以注册成FixedPriority类型事件。 
+我们的SceneGraphPriority定义的系统优先级是 0，在添加监听器（addListener）时，
+如果第二个参数设置为负数时，该监听器就会拥有比所有场景相关监听器都高的优先级，而如果是正数，则反之。
+
+注意： 这里当我们想给不同的节点使用相同的事件监听器时，需要使用 clone() 函数克隆出一个新的监听器，
+因为在使用 addListener 方法时，会对当前使用的事件监听器添加一个已注册的标记，这使得它不能够被添加多次。
+另外，有一点非常重要，FixedPriority 类型的 listener添加完之后需要手动删除，而SceneGraphPriority 类型的 listener是跟node绑定的，在node调用cleanup时会被移除。
+
+
+
+
+* 暂停与恢复事件
+我们只需要暂停根node的事件，就可以让根节点以及其子节点暂停事件响应。 代码如下：
+cc.eventManager.pauseTarget(aLayer, true); //让aLayer对象暂停响应事件
+
+而恢复对象的事件响应也非常简单：
+cc.eventManager.resumeTarget(aLayer, true); //让aLayer对象恢复响应事件
+注意: 第二个参数为可选参数，默认值为false, 表示是否递归调用子节点的暂停/恢复操作.
+
+
+
+
+* 鼠标响应事件
+// 引擎在检测到不支持触摸事件时，会让鼠标事件模拟成触摸事件进行分发，开发者只需编写触摸事件监听器就能完成大部分工作
+cc.eventManager.addListener({
+	event: cc.EventListener.MOUSE,
+	onMouseMove: function(event){
+		event.getLocation(); // 获取鼠标当前位置
+		event.getLocationX(); // 获取鼠标当前X位置
+		event.getLocationY(); // 获取鼠标当前Y位置
+		// do something...
+	},
+	onMouseDown: function(event){
+		var button = event.getButton(); // 获取鼠标当前点击的按键
+		if(event.getButton() === cc.EventMouse.BUTTON_LEFT) // 左键被按下时
+		else if(event.getButton() === cc.EventMouse.BUTTON_RIGHT) // 右键被按下时
+		// do something...
+	},
+	onMouseUp: function(event){
+		// do something...
+	},
+	onMouseScroll: function(event){
+		// do something...
+	}
+},this);
+
+
+
+
+* 键盘事件绑定
+// 给statusLabel绑定键盘事件
+var that = this;
+cc.eventManager.addListener({
+	event: cc.EventListener.KEYBOARD,
+	onKeyPressed:  function(keyCode, event){ // 用户按下某个键
+		// 使用对应平台的方法来将字符编码转换成字符
+		var key = cc.sys.isNative ? that.getNativeKeyName(keyCode) : String.fromCharCode(keyCode);
+		console.log(key + " 键被按下!");
+	},
+	onKeyReleased: function(keyCode, event){ // 用户松开某个键
+		var key = cc.sys.isNative ? that.getNativeKeyName(keyCode) : String.fromCharCode(keyCode);
+		console.log(key + " 键被松开!");
+	}
+}, this);
+
+// 在this上创建一个本地应用使用的转码方法
+getNativeKeyName:function(keyCode) {
+	var allCode = Object.getOwnPropertyNames(cc.KEY); // cc.KEY为cocos自带的键盘码对照表
+	var keyName = "";
+	for(var x in allCode){
+		if(cc.KEY[allCode[x]] == keyCode){
+			keyName = allCode[x];
+			break;
+		}
+	}
+	return keyName;
+}
+
+
+
+
+* 加速计事件
+在使用加速计事件监听器之前，需要先启用此硬件设备, 代码如下：
+cc.inputManager.setAccelerometerEnabled(true);
+
+// 同时还可以设置迭代间隔
+cc.inputManager.setAccelerometerInterval(1/60);
+
+然后将相应的事件处理监听器与sprite进行绑定就可以了，如下：
+cc.eventManager.addListener({
+	event: cc.EventListener.ACCELERATION,
+	callback: function(acc, event){
+		//这里处理逻辑
+		cc.log('Accel x: '+ acc.x + ' y:' + acc.y + ' z:' + acc.z + ' time:' + acc.timestamp );
+	}
+}, sprite);
+
+
+
+
+* EVENT_HIDE和EVENT_SHOW事件
+在cocos-js3.0中可以添加事件监听，在游戏进入后台（切换浏览器tab或者手机app进入后台）和返回游戏时做一些处理,这2个事件是可以重复注册的。例如：
+
+cc.eventManager.addCustomListener(cc.game.EVENT_HIDE, function(){
+    //处理游戏进入后台的情况
+});
+cc.eventManager.addCustomListener(cc.game.EVENT_SHOW, function(){
+    //处理返回游戏的情况
+});
+
+
+
+
+* 自定义事件
+// 监听自定义事件
+var _listener = cc.EventListener.create({
+	event: cc.EventListener.CUSTOM,
+	eventName: "game_custom_event1",
+	callback: function(event){
+		// 可以通过getUserData来获取传输过来的用户自定义数据
+		statusLabel.setString("Custom event 1 received, " + event.getUserData() + " times");
+	}
+});    
+cc.eventManager.addListener(this._listener, 1);
+// 简单写法
+cc.eventManager.addCustomListener("game_custom_event1", callback.bind(this));
+
+// 派发自定义事件
+var event = new cc.EventCustom("game_custom_event1"); //创建一个自定义事件
+event.setUserData(this._item1Count.toString()); //设置自定义数据
+cc.eventManager.dispatchEvent(event); //将此事件分发出去
+
+
+
+
+* 属性与方法列表
+
+1) cc.Event (事件类)
+
+属性/方法				类型			参数说明		用法说明
+getType				Number		no			返回事件类型，包含：TOUCH, KEYBOARD, ACCELERATION, MOUSE, CUSTOM
+stopPropagation		void		no			停止当前事件的冒泡
+isStopped			Boolean		no			事件是否已停止
+getCurrentTarget	cc.Node		no			返回事件相关的Node对象, 如果事件未与cc.Node对象关联，则返回null
+
+2) cc.EventCustom (自定义事件)
+cc.EventCustom 继承自 cc.Event
+
+属性/方法				类型			参数说明					用法说明
+setUserData			void		data: 要设置的自定义数据	设置用户自定义数据
+getUserData			*			no						返回用户设置的自定义数据
+getEventName		String		no						返回自定义事件名称
+
+3) cc.EventMouse		(鼠标事件)
+cc.EventMouse 继承自 cc.Event
+
+属性/方法				类型			参数说明				用法说明
+setScrollData		void		scrollX， scrollY	设置滚轮数据
+getScrollX			Number		no					返回x轴滚轮数据
+getScrollY			Number		no					返回y轴滚轮数据
+setLocation			void		x, y				设置鼠标光标位置
+getLocation			cc.Point	no					获取鼠标光标位置
+getLocationInView	cc.Point	no					返回鼠标光标在屏幕上的位置
+getDelta			cc.Point	no					获取当前光标与上一光标的偏移量
+setButton			void		button				设置鼠标按键
+getButton			Number		no					获取鼠标按键
+
+4) cc.EventTouch ()
+cc.EventTouch 继承自 cc.Event
+
+属性/方法				类型			参数说明		用法说明
+getEventCode		Number		no			获取触摸事件类型代码: BEGAN, MOVED, ENDED, CANCELLED
+getTouches			Array		no			获取触摸事件中所有点信息
+
+5) cc.EventListener (事件监听器)
+
+属性/方法				类型					参数说明			用法说明
+checkAvailable		boolean				no				检测监听器是否有效
+clone				cc.EventListener	no				克隆一个监听器,其子类会重写本函数
+create				cc.EventListener	json object		通过json对象创建事件监听器
+
+cc.EventListener.create 函数参数列表：
+
+创建EventListenerTouchOneByOne对象:
+event: cc.EventListener.TOUCH_ONE_BY_ONE
+可选参数:
+1、swallowTouches, boolean, 是否吞下该touch点
+2、onTouchBegan, function, TouchBegan 事件回调
+3、onTouchMoved, function, TouchMoved 事件回调
+4、onTouchEnded, function, TouchEnded 事件回调
+5、onTouchCancelled, function, TouchCancelled 事件回调
+
+创建EventListenerTouchAllAtOnce对象：
+event: cc.EventListener.TOUCH_ALL_AT_ONCE
+可选参数:
+1、onTouchesBegan, function, TouchesBegan 事件回调
+2、onTouchesMoved, function, TouchesMoved 事件回调
+3、onTouchesEnded, function, TouchesEnded 事件回调
+4、onTouchesCancelled, function, TouchesCancelled 事件回调
+
+创建EventListenerKeyboard对象:
+event: cc.EventListener.KEYBOARD
+可选参数:
+1、onKeyPressed, function, KeyPressed (键按下) 事件回调
+2、onKeyReleased, function, keyRelease (键放开) 事件回调
+
+创建EventListenerMouse对象:
+event: cc.EventListener.MOUSE
+可选参数:
+1、onMouseDown, function, MouseDown 事件回调
+2、onMouseUp, function, MouseUp 事件回调
+3、onMouseMove, function, MouseMove 事件回调
+4、onMouseScroll, function, MouseScroll 事件回调
+
+创建EventListenerAcceleration对象:
+event: cc.EventListener.ACCELERATION
+可选参数:
+1、callback, function, Acclerometer 事件回调
+
+创建EventListenerCustom对象:
+event: cc.EventListener.CUSTOM
+可选参数:
+1、callback, function, 自定义事件回调
+
+6) cc.eventManager
+
+属性/方法					类型			参数说明										用法说明
+pauseTarget				void		node, recursive(是否递归调用子类)				暂停传入的node相关的所有监听器的事件响应
+resumeTarget			void		node, recursive								恢复传入的node相关的所有监听器的事件响应
+addListener				void		json对象或cc.EventListener, node对象或优化值	向事件管理器添加一个监听器
+addCustomListener		void		eventName, callback							向事件管理器添加一个自定义事件监听器
+removeListener			void		listener									移除一个事件监听器
+removeListeners			void		listenerType								cc.Node, recursive
+removeCustomListeners	void		customEventName								移除同一事件名的自定义事件监听器
+removeAllListeners		void		no											移除所有事件监听器
+setPriority				void		listener, fixedPriority						设置FixedPriority类型监听器的优先集
+setEnabled				void		enabled										是否允许分发事件
+isEnabled				boolean		no											检测事件管理器是否分发事件
+dispatchEvent			void		event										分发事件
+dispatchCustomEvent		void		eventName, optionalUserData					分发自定义事件
+
+

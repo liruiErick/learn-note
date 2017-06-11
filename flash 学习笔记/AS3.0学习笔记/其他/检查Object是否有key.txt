@@ -1,0 +1,7 @@
+public static function hasKey(obj:Object):Boolean
+{
+	var bol:Boolean = false;
+	if(obj == null) return bol;
+	for(var key:Object in obj) bol = true;
+	return bol;
+}

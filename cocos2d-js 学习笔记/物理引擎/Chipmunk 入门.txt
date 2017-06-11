@@ -1,0 +1,263 @@
+﻿* 引入 Chipmunk 库
+
+打开 project.json 文件，然后作如下修改：
+将："modules" : ["cocos2d"],
+改为："modules" : ["cocos2d","chipmunk"],
+
+
+
+* 应用 Chipmunk
+
+在Chipmunk中，用一个 space 对象来表示物理世界。
+
+首先，让我们添加一个名叫 space 的新成员变量到游戏场景的js文件中：
+
+space: null,
+
+// 定义初始化物理世界方法
+initPhysics: function() {
+	// 新建一个空间
+	this.space = new cp.Space(); // Chipmunk 的命名空间为 cp
+	// 设置空间中的重力
+	this.space.gravity = cp.v(0, -500);
+	
+	// 设置每帧计算的迭代次数
+	this.space.iterations = 10;
+	
+	// 一组刚体休眠需要保持静止闲置的时间阈值。默认值为INFINITY, 禁用了休眠功能。
+	this.space.sleepTimeThreshold = 0.5;
+
+	// 支持形状间的重叠量。鼓励将这个值设置高点而不必在意重叠，因为它提高了稳定性。它默认值为0.1。
+	this.space.collisionSlop = 0.5;
+
+	// 设置空间中的围墙，此处只设置了底部
+	var wallBottom = new cp.SegmentShape( // 创建一个线段形状
+		this.space.staticBody, // 静态刚体
+		cp.v(0, 100), // 起始点
+		cp.v(4294967295, 100), // 结束点，MAX INT:4294967295
+		0 // 墙的半径
+	);
+	this.space.addStaticShape(wallBottom); // 将这个静态刚体加入到空间中
+}
+
+
+// 创建物理精灵帧
+this.sprite = new cc.PhysicsSprite("#runner0.png");
+var contentSize = this.sprite.getContentSize();
+
+// 初始化一个刚体
+var mass = 1; // 设置质量
+var moment = cp.momentForBox(mass, contentSize.width, contentSize.height); // 计算矩形转动惯性
+var moment = cp.momentForCircle(mass, 0, radius, cp.v(0,0); // 计算圆形转动惯性。第二个参数为内径（实心圆圈的内径为0），第三个参数为外径，第四个参数为是重心偏移量
+var moment = cp.momentForSegment(mass, a, b); // 计算线段转动惯性。a、b为刚体的两个端点
+var moment = cp.momentForPoly(mass, verts, cp.v(0,0)); // 计算多边形转动惯性。verts 为一个定长数组，cp.v(0,0)表示重心偏移量
+this.body = new cp.Body(mass, moment); // 创建刚体
+
+// 设置物理刚体的位置
+this.body.setPos(cp.v(posX, posY)); // 也可以写为 this.body.p = cp.v(posX, posY)
+
+// 将刚体加入到物理空间
+this.space.addBody(this.body);
+
+// 创建一个形状
+this.shape = new cp.BoxShape(this.body, contentSize.width, contentSize.height); // 矩形
+this.shape = new cp.CircleShape(this.body, radius, cp.v(0,0)); // 圆形
+this.shape = new cp.SegmentShape(this.body, a, b, 20); // 线段形状。a、b为刚体的两个端点，20为半径（线段实际上一个椭圆体）
+this.shape = new cp.PolyShape(body, verts, cp.v(0,0)); // 多边形状。verts为一个定长数组，cp.v(0,0)表示重心偏移量
+// 第一个参为绑定到的刚体
+
+// 将盒形状加入到物理空间
+this.space.addShape(this.shape);
+
+// 为物理精灵帧设置刚体
+this.sprite.setBody(this.body);
+// 设置之后，可以通过 this.sprite.body 来访问到绑定的刚体对象
+
+
+
+* 刷新物理世界
+
+// 定义刷新方法
+update:function (dt) {
+	this.space.step(dt);
+	space.eachShape(function(shape){ // 遍历空间内所有形状
+		var pos = shape.body.p; // 获取绑定刚体的位置
+		shape.sprite.setPosition(pos.x, pos.y); // 同步形状绑定精灵的位置（shape.sprite 貌似是自定义属性，保存了刚体绑定的精灵）
+	});
+}
+// 在物理世界创建完成后调用每帧计时器
+this.scheduleUpdate();
+
+
+
+* 刚体属性设置
+
+body.space; // 获取刚体所在的物理空间对象
+
+body.rot; // 获取刚体的旋转向量
+
+body.setMass(mass); // 设置刚体的质量
+
+body.setMoment(moment); // 设置刚体的转动惯性
+
+body.setPos(cp.v(posX, posY)); // 设置刚体的位置
+
+body.setAngle(radian); // 设置刚体的弧度
+
+body.setAngVel(radian); // 设置刚体的角速度，弧度/秒
+
+body.getAngVel(); // 获取刚体的角速度，弧度/秒
+
+body.setVel(cp.v(400, 0)); // 设置施加在刚体重心的线速度
+
+body.getVel(); // 获取施加在刚体重心的线速度
+
+body.applyForce(cp.v(150, 0), cp.v(0, 0)); // 刚体应用力（持续的力）
+// 参数1：表示力的方向
+// 参数2：表示施加力在重心的偏移量
+
+body.applyImpulse(cp.v(150, 0), cp.v(0, 0)); // 刚体应用冲力
+// 冲力基本上是一个在非常短的时间内施加的一个非常大的力，就像一个球击中一堵墙或者大炮射击一样。
+
+// 以下API在JS版本中似乎还未实现
+body.setUserData(data); // 设置自定义数据对象
+body.setForce(cp.v(400, 0)); // 设置施加在刚体重心的线速度
+body.setTorque(value); // 设置刚体的扭矩
+body.setAngVelLimit(radian); // 设置刚体的角速度限制，默认为 INFINITY（无限大）
+body.setVelLimit(cp.v(1000, 1000)); // 设置施加在刚体重心的线速度限制，默认为 INFINITY（无限大）
+
+
+
+* 形状属性设置
+
+shape.body; // 设置或返回形状绑定的刚体
+
+shape.getBB(); // 返回形状的包围盒
+
+shape.setElasticity(1); // 设置形状的弹力。这是调整对象弹性程度的属性，你可以在0.0-1.0之间调整它们。
+shape.setFriction(1); // 设置形状的摩擦力。这用来计算两个对象之间的摩擦，你可以在0.0-1.0之间调整它们。
+// 以上两个属性默认为0，如果需要实现该效果，那么两个碰撞对象必须同时设置该属性
+// 比如反弹时，实际弹力系数为两个碰撞对像的弹力属性值相乘
+
+shape.group; // 设置或返回形状的组别。在相同的非零组中，形状间不产生碰撞。
+// 在创建了一个许多形状组成的物体，但却不想自身与自身之间发生碰撞，这会很有用。默认值为 CP_NO_GROUP 。
+
+shape.layers; // 设置或返回形状的位面。貌似是同一位面的形状才会发生碰撞。默认值为CP_ALL_LAYERS。
+
+
+
+* 开启调试模式，便于查看刚体绘制信息
+
+this._debugNode = new cc.PhysicsDebugNode(this.space);
+this.addChild(this._debugNode);
+
+// 隐藏绘制信息
+this._debugNode.visible = false;
+
+// 封装
+setupDebugNode : function() {
+	this._debugNode = new cc.PhysicsDebugNode(this.space);
+	this._debugNode.visible = false;
+	this.addChild(this._debugNode);
+},
+onToggleDebug : function() {
+	this._debugNode.visible = this._debugNode.visible;
+}
+
+
+
+* 关节约束
+
+// 创建一个关节
+var joint = new cp.PinJoint(body1, body2, v(15,0), v(15,0)); // 大头针关节。将两个刚体连接，第三四个参数分别为连接点在两个刚体中心的偏移量
+var joint = new cp.SlideJoint(body1, body2, v(15,0), v(15,0), 20, 40); // 滑动关节。
+var joint = new cp.PivotJoint(body1, body2, cp.v(x, y)); // 轴关节。第三个参数表示轴心，该坐标为一个相对舞台的全局坐标
+var joint = new cp.GrooveJoint(body1, body2, v(30,30), v(30,-30), v(-30,0)); // 凹槽关节。
+var joint = new cp.DampedSpring(body1, body2, v(15,0), v(15,0), 20, 5, 0.3); // 阻尼关节。
+var joint = new cp.RotaryLimitJoint(body1, body2, -Math.PI/2, Math.PI/2); // 旋转限制关节。
+var joint = new cp.RatchetJoint(body1, body2, 0, Math.PI/2); // 棘轮关节。
+var joint = new cp.GearJoint(body1, body2, 0, 2); // 齿轮关节。
+var joint = new cp.SimpleMotor(body1, body2, Math.PI); // 简单马达。
+
+space.addConstraint(joint); // 在空间中加入该关节约束
+
+
+
+* 内存释放
+
+this.space.removeShape(shape); // 移除形状
+this.space.removeBody(body); // 移除刚体
+cp.spaceFree(this.space); // 释放空间
+
+
+
+* 向量以及运算（cp.Vect）
+
+cp.v(x, y); // 返回一个x、y方向的向量，也表示一个点
+
+cp.v.add(v1, v2); // 返回两个向量相加后的新向量
+
+cp.v.sub(v1, v2); // 返回两个向量相减后的新向量
+
+cp.v.eql(v1, v2); // 检测两个向量是否相等
+
+cp.v.dist(v1, v2); // 检测两个点之间的距离
+
+cp.v.near(v1, v2, dist); // 如果两个点的距离小于dist则返回真。
+
+cp.v.distsq(v1, v2); // 检测两个点之间的距离的平方。如果只是比较距离的话它比cpvdist()快，因为它将减少一个开平方的操作。
+
+cp.v.lerpconst(v1, v2, d); // 以长度d在v1和v2之间线性插值。
+
+cp.v.length(v); // 返回一个向量的长度
+
+cp.v.lengthsq(v); // 返回一个向量的长度的平方。如果只是比较长度的话它的速度比cpvlength()快，因为它将减少一个开平方的操作。
+
+cp.v.neg(v); // 返回一个向量的相反向量
+
+cp.v.forangle(radian); // 返回弧度对应的向量
+
+cp.v.toangle(v); // 返回向量对应的弧度。这里弧度坐标系的0度在3点钟位置，弧度为顺负逆正
+
+cp.v.normalize(v); // 返回向量的归一化副本
+
+cp.v.rotate(v1, v2); // 将向量v1按照向量v2旋转。如果v1不是单位向量，则v1会被缩放。
+
+cp.v.unrotate(v1, v2); // 和cp.v.rotate()相反。
+
+
+
+* 包围盒（cp.BB）
+
+cp.bb(l, b, r ,t); // 返回一个矩形包围盒，第一二个参数表示左下角的点坐标，第三四个参数表示右上角的点坐标
+
+// 以下API在JS中均未实现
+cp.BB.bbIntersects(bb1, bb2); // 返回两个包围盒是否相交
+cp.BB.bbContainsBB(bb1, bb2); // 返回bb1是否完全包裹bb2
+cp.BB.bbContainsVect(bb, v); // 返回包围盒是否包含该点
+cp.BB.bbMerge(bb1, bb2); // 返回两个包围盒的最小边界框
+cp.BB.bbExpand(bb, v); // 返回包围盒与该点的最小边界框
+cp.BB.bbCenter(bb); // 返回包围盒的中心点
+cp.BB.bbArea(bb); // 返回包围盒的面积
+cp.BB.bbMergedArea(bb1, bb2); // 返回两个包围盒边界框的面积
+cp.BB.bbSegmentQuery(bb, v1, v2); // 返回两点组成的线段与包围盒的相交点个数，如果没有相交，返回 INFINITY
+cp.BB.bbIntersectsSegment(bb, v1, v2); // 返回两点组成的线段是否与包围盒相交
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

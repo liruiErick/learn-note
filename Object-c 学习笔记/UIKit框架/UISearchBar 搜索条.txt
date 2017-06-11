@@ -1,0 +1,51 @@
+如果程序需要响应UISearchBar控件不同部分所触发的事件，则需要委托对象来实现，UISearchBar的委托对象必须实现UISearchBarDelegate协议：
+
+UISearchBar对象.delegate = UISearchBarDelegate对象;
+
+该协议定义了如下方法：
+
+// 当搜索文本框内文本改变时激发该方法
+-(void)searchBar:(UISearchBar *)searchBar
+	textDidChange:(NSString *)searchText
+
+// 用户单击搜索条上的书签按钮时激发该方法
+-(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
+
+// 用户单击搜索条上的取消按钮时激发该方法
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+
+// 用户单击虚拟键盘上Search按键时激发该方法
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+
+// 用户单击搜索条上的查询结果按钮时激发该方法
+-(void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar
+
+// 用户单击分段上的分段按钮时激发该方法
+-(void)searchBar:(UISearchBar *)searchBar
+	selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+
+
+在执行搜索时常使用的谓词过滤方法：
+bool isSearch;
+- (void) filterBySubstring:(NSString*) subStr
+{
+	// 设置为搜索状态
+	isSearch = YES;
+	// 定义搜索谓词，[c]表示不区分大小写
+	NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@" , subStr];
+	// 使用谓词过滤NSArray
+	NSArray对象 = [NSArray对象 filteredArrayUsingPredicate:pred];
+	// 让表格控件重新加载数据
+	[UITableView对象 reloadData];
+}
+
+
+
+*UISearchDisplayController控件自身封装了UITableView控件
+如果程序使用UISearchDisplayController控件，则该UIViewController类需要实现以下四个协议：
+UIViewController<UITableViewDataSource,
+	UITableViewDelegate,
+	UISearchBarDelegate,
+	UISearchDisplayDelegate>
+
+UISearchDisplayController默认将该UIViewController类作为自身和UISearchBar的delegate对象，以及显示结果的UITableView控件的delegate和dataSource对象，并且无需在代码中再为UITableView控件实现重新加载数据方法

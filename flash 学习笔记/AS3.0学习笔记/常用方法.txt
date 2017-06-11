@@ -1,0 +1,120 @@
+﻿方法
+
+数字1 & 数字2;当数字1等于数字2的时候返回他们自身的值，否则返回0
+
+数字1 | 数字2;等同于数字1 + 数字2
+
+super.方法();使用自身所扩展的类的方法
+
+super();运行自身所扩展的类的构造函数，如果该构造函数有参数，则同样要使用相同参数
+
+MovieClip(root).scenes;返回主文档类的场景数组,MovieClip(root).scenes[0]表示场景1
+
+gotoAndPlay(帧数,"场景名称");跳转到指定场景的指定帧
+
+变量=i++;先赋值再递加
+
+变量=++i;先递加再赋值
+
+mc1.mask=mc2;用mc2做为mc1的遮罩层
+
+isNaN(数字变量);检验是否为非数字
+
+数字类型.MAX_VALUE;数字类型对应的最大值
+
+数字类型.MIN_VALUE;数字类型对应的最小值
+
+(123).toString(16);将123转换为16进制数
+
+对象.mouseEnabled=false;该对象不响应鼠标事件
+
+对象.mouseChildren=false;该对象的子对象不响应鼠标事件
+
+对象.buttonMode=true;将对象变成按钮
+
+按钮对象.useHandCursor=true;设置鼠标经过按钮时是否显示小手
+
+对象.visible=false;隐藏对象
+
+对象.alpha=0-1;设置对象透明度,0为全透明,0.5为半透明,1为不透明
+
+对象.scaleX=0-1;设置对象在X轴方向上的缩放,0为缩放到没有,0.5为缩放到一半,1为不缩放,1以上为放大倍率
+
+对象.rotation=0-360;设置对象旋转角度,rotationX让对象延X轴旋转
+
+对象.constructor;返回对象的类型
+
+对象.hasOwnProperty(name:String):Boolean;返回对象是否已经定义了指定的属性或方法，但是不包括该对象基类里定义的属性或方法
+
+对象.propertyIsEnumerable(name:String):Boolean;返回指定属性或方法是否可被对象枚举，即是否可在for in循环中被找到
+
+对象.setPropertyIsEnumerable(name:String,isEnum:Boolean=true):void;设置指定属性或方法是否可被对象枚举，即是否可在for in循环中被找到
+
+对象.hasEventListener(type:String):Boolean;检查 EventDispatcher 对象是否为特定事件类型注册了任何侦听器
+
+类.prototype.isPrototypeOf(theClass:Object):Boolean;检查传入的对象是否为类的实例或者子类的实例
+
+影片剪辑.currentFrame;获取影片剪辑当前帧
+
+影片剪辑.currentFrameLabel;获取影片剪辑当前关键帧的标签,如果当前帧不是关键帧则返回null
+
+影片剪辑.totalFrames;获取影片剪辑总帧数
+
+影片剪辑.currentLabel;获取影片剪辑当前帧所在的关键帧的标签
+
+标签数组=影片剪辑.currentLabels;获取当前影片剪辑中所有的帧标签,并赋予数组
+
+标签数组[0].frame;获取该标签的帧数
+
+标签数组[0].name;获取该标签的名称
+
+影片剪辑.nextFrame();正向播放
+
+影片剪辑.prevFrame();反向播放
+
+nextScene();跳转至下一个场景
+
+影片剪辑.addFrameScript(0,函数);加入帧代码,当影片剪辑播放到第一帧时调用函数(0代表第一帧),可同时设定多个帧及要调用的函数,如(0,函数,1,函数,2,函数),如果在同一帧添加多个函数,则只会调用最后一个
+
+影片剪辑.addFrameScript(0,null);清除这个帧代码,或者(0,null,false,false),效果相同
+
+this.root.loaderInfo.bytesLoaded;已读取字节
+
+this.root.loaderInfo.bytesTotal;总字节(除以1024转换成KB)
+
+root.loaderInfo.addEventListener(ProgressEvent.PROGRESS,loadProgress,false,0,true);监听加载数据时触发
+
+root.loaderInfo.addEventListener(Event.COMPLETE,init,false,0,true);监听加载完成时触发
+
+MovieClip(parent).player.x;访问上一级的对象
+
+MovieClip(root).player.x;访问文档类中的对象
+
+数组=getObjectsUnderPoint(x,y);返回与该点相交的所有对象
+
+A.hitTestObject(B);检测A碰撞B
+
+A.hitTestPoint(B.x,B.y,true);检测B的全局坐标与A的实际边缘碰撞
+
+A.startDrag(true,矩形变量) 开始拖拽A物体,并和鼠标中点对齐(矩形变量可不填写)
+
+A.stopDrag() 停止拖拽A物体
+
+A.dropTarget.parent.name 指A物体与鼠标下共同目标父级的名称
+
+* 返回对象结构函数的引用
+对象.constructor
+// 可判断该对象是否为指定类型的实例，但无法判断是否为指定类型后代类的实例
+对象.constructor == 类型
+// 也可以用来创建同类型对象
+new 对象.constructor();
+
+* 为一个类型对象创建原型属性，相当于实现 Object-C 中的类别功能
+// 该属性将会成为每一个该类型对象实例的共享属性
+// 注意，如果该属性的值为对象或者函数，那么每一个该类型对象实例的该属性都指向相同的对象或者函数
+function Car() {}
+Car.prototype.动态属性名 ＝ 值/对象/函数;
+
+* 隐藏鼠标
+import flash.ui.Mouse;
+Mouse.hide();

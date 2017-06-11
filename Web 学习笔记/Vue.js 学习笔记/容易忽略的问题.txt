@@ -1,0 +1,52 @@
+## 表单数据双向绑定
+
+<div id="form">
+	<span>Message is: {{ message }}</span>
+	<input type="text" v-model="message" placeholder="edit me">
+</div>
+
+// 需要注意的是，如果没有在 data 中定义 message，虽然绑定能正常工作，但是会发出警告，此时只要在 data 中定义出 message 即可。
+new Vue({
+	el: '#form',
+	data: {
+		message: ''
+	}
+});
+
+// 在给 input 元素绑定数据模型后，数据模型得到的数据是一个字符串，如果希望得到的是一个数字类型的数据，则需要声明 number 属性
+<input type="text" v-model="message" placeholder="edit me" number>
+
+// v-model 与 v-bind:value 不要同时使用
+// 如果使用 v-model 绑定了表单元素的 value 值，则不在需要 v-bind:value 来绑定表单元素的 value 了
+// 如果同时声明的这两个指令，则 v-model 必须声明在 v-bind:value 的前面，否则会出现实际绑定值为一个意想不到的数值
+
+
+
+## 数组的操作
+
+由于 JavaScript 的限制， Vue 不能检测以下变动的数组：
+
+1）当你直接设置一个项的索引时，例如： vm.arr[index] = newValue
+2）当你修改数组的长度时，例如： vm.arr.length = newLength
+
+为了避免第一种情况，以下两种方式将达到像 vm.arr[index] = newValue 的效果， 同时也将触发状态更新：
+// Vue.set（但是在 v1.0.26 版本中测试时，发现此方法无效，建议用第二中方法）
+Vue.set(vm.arr, index, newValue)
+// Array.prototype.splice`
+vm.arr.splice(index, 1, newValue)
+
+避免第二种情况，使用 splice：
+vm.arr.splice(newLength)
+
+
+
+## 初始化时DOM的获取
+
+初始化时，Vue 会重置挂载点下所有的 DOM 元素，无论它是否被绑定了数据。
+因此，如果要获取 DOM 元素，必须在 mounted 回调中或之后。在这之前的原始 DOM 的会被 Vue 移除。
+
+
+
+
+
+

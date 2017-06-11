@@ -1,0 +1,246 @@
+﻿* 使用方法
+
+var action = cc.moveTo(4, cc.p(sprite.x,-30)); // 用4秒时间移动到该点
+var repeatAction = new cc.RepeatForever(action); // 创建一个循环动作
+
+sprite.runAction(action); // 精灵执行该动作
+
+// 创建队列
+var sequence = cc.sequence( // 创建一个动作队列
+	cc.delayTime(1.4), // 延迟1.4秒
+	cc.fadeOut(1.1), // 1.1秒淡出
+	cc.callFunc(this.func, this))// 在队列中插入一个函数，第二个参数为函数中this的指向对象。该函数会有一个参数，参数为执行当前动作的精灵对象
+);
+queue = queue.repeatForever(); // 创建一个无限循环的动作队列
+queue = queue.repeat(4); // 创建一个循环4次的动作队列
+sprite.runAction(sequence); // 执行动作队列
+sprite.getNumberOfRunningActions(); // 获取队列当前正在执行的动作号
+
+// 反向执行
+var actionByBack = action.reverse();
+sprite.runAction(cc.sequence(action, actionByBack));
+
+// 动作或者动作队列可以设置一个标签
+sequence.tag = 1;
+sprite.stopActionByTag(1); // 停止精灵上对应标签的动作
+sprite.getActionByTag(1); // 获取精灵上对应标签的动作
+
+// 创建一个动作组，组内的所有动作或者队列同时开始执行
+var spawn = cc.spawn(
+	cc.jumpBy(2, cc.p(300, 0), 50, 4),
+	cc.rotateBy(2, 720)
+);
+sprite.runAction(spawn); // 执行动作组
+
+// 恢复和暂停节点上的动作
+node.pause(); // 暂停节点上的动作
+node.resume(); // 恢复节点上的动作
+node.stopAction(action); // 停止节点上指定的动作
+node.stopAllActions(); // 停止节点上所有的动作
+
+// 通过动作管理器调用
+cc.director.getActionManager().addAction(action, sprite, true); // 将对象和要执行的动作加入到动作管理器
+cc.director.getActionManager().pauseTarget(sprite); // 暂停该对象上的所有动作，包括在这之后添加的动作
+cc.director.getActionManager().resumeTarget(sprite); // 重新开始执行该对象上的所有动作
+
+
+
+* 创建动作
+
+cc.show(); // 将设置了visible=false的对象设置为true
+cc.hide(); // 将设置了visible=true的对象设置为false
+cc.flipX(true); // 设置对象的flippedX
+cc.flipY(true); // 设置对象的flippedY
+
+cc.place(cc.p(200, 200)); // 直接放置于该点
+cc.place(200, 200); // 另一种简写，与上面效果相同
+
+cc.delayTime(0.25); // 创建一个0.25秒的延迟
+
+cc.callFunc(func, this, data); // 创建一个用于执行的回调函数
+// 第二个参数为函数中this的指向对象。
+// 第三个参数为传入函数中的data参数
+// 该函数默认会有一个参数，参数引用为执行当前动作的精灵对象
+
+cc.moveBy(duration, cc.p(150, 0)); // 相对于当前位置，向右移动150像素。
+cc.moveTo(duration, cc.p(150, 0)); // 移动至X轴150像素Y轴0像素位置
+// 如果传入第三个参数，则该参数表示延Y轴的坐标，同时第二个参数只作用于X轴
+
+cc.scaleBy(duration, 2); // 相对于当前大小，放大2倍
+cc.scaleTo(duration, 2); // 放大至2倍
+// 如果传入第三个参数，则该参数表示延Y轴的缩放，同时第二个参数只作用于X轴
+
+cc.rotateBy(duration, 90); // 相对于当前角度，延Z轴再旋转90度
+cc.rotateTo(duration, 90); // 延Z轴旋转到90度
+// 在官方文档中，如果不传第三个参数，那么表示第二个参数将同时作用于XY轴的旋转，但实际表现出来的竟然相当于Z轴的旋转？
+// 如果传入第三个参数，则该参数表示延Y轴的旋转，同时第二个参数只作用于X轴的旋转
+
+cc.skewBy(duration, 0, 90); // 相对于当前斜度，延Y轴再倾斜90度
+cc.skewTo(duration, 0, 90); // 延Y轴倾斜到90度
+
+cc.jumpBy(duration, cc.p(300, 0), 50, 4); // 相对于当前位置，向右跳跃300像素
+cc.jumpTo(duration, cc.p(300, 0), 50, 4); // 跳跃至X轴300像素Y轴0像素位置
+// 第三个参数表示跳跃的高度，第四个参数表示跳跃的次数
+
+cc.blink(duration, 10); // 闪动10次
+
+cc.fadeIn(duration); // 淡入
+cc.fadeOut(duration); // 淡出
+cc.fadeTo(duration, 200); // 过渡到指定透明度，取值0~255
+
+cc.tintBy(duration, red, green, blue); // 相对于当前颜色值，加上给定的颜色值
+cc.tintTo(duration, red, green, blue); // 过渡到给定的颜色值
+
+
+
+* 贝塞尔曲线动作
+
+// 创建一个点的集合
+var controlPoints = [cc.p(0, 374), cc.p(300, -374), cc.p(300, 100)];
+cc.bezierBy(2, controlPoints); // 相对以当前位置，将该集合中的点作为向量，做贝塞尔运动
+cc.bezierTo(2, controlPoints); // 延该集合中的点做贝塞尔运动
+
+
+
+* 指定目标动作
+
+// 在队列中的某个环节，指定其他目标执行动作
+var jump = cc.jumpBy(2, cc.p(0, 0), 100, 3);
+var rot = cc.rotateBy(1, 360);
+var tarAction = cc.targetedAction(sprite2, jump); // 创建一个目标动作
+var seq = cc.sequence(rot, tarAction);
+sprite.runAction(seq);
+// sprite执行完rot动作后，sprite2执行jump动作
+
+
+
+* 屏幕跟随动作
+
+// 创建一个屏幕跟随动作，第二个参数用于限定一个范围，超出范围则不在跟随
+var follow = cc.follow(sprite, cc.rect(0, 0, s.width * 2, s.height));
+this.runAction(follow); // 注意，这里执行动作的对象是sprite的容器
+
+
+
+* 摄像机动作
+
+// 创建一个跟随节点运动的摄像机
+var orbit = cc.orbitCamera(10, 1, 0, 0, 360, 0, 0);
+// 参数1：表示动画时长
+// 参数2：表示radius
+// 参数3：表示deltaRadius
+// 参数4：表示angleZ
+// 参数5：表示deltaAngleZ
+// 参数6：表示angleX
+// 参数7：表示deltaAngleX
+sprite.runAction(orbit.repeatForever());
+
+
+
+* 进程动作
+
+// 创建一个完整进程动作
+var to = cc.progressFromTo(2, 0, 100);
+// 第一个参数表示进程总时间，单位秒
+// 第二个参数表示起始百分比
+// 第三个参数表示结束百分比
+
+// 创建一个进程动作
+var to = cc.progressTo(2, 100); // 表示2秒时间从当前进程开始到100%结束
+
+
+// 创建一个进程计时器
+var gress = new cc.ProgressTimer(new cc.Sprite(s_pathSister)); // 将进程使用的图形传入构造器
+gress.type = cc.ProgressTimer.TYPE_RADIAL; // 设置进程类型为径向进程
+//gress.type = cc.ProgressTimer.TYPE_BAR; // 设置进程类型为线性进程
+
+gress.midPoint = cc.p(0, 1); // 设置进程的起始点向量。
+// 如果是径向进程，则该点表示进程旋转的轴心
+// 如果是线性进程，则(0, 1)表示从顶部开始向下显示，(0, 0.5)表示垂直方向上从中间开始向两端显示
+
+//gress.barChangeRate = cc.p(0, 1); // 设置线性进程的变化率向量。(0, 1)表示垂直方向从完全隐藏开始显示，(0, 0.5)表示垂直方向从显示一半开始显示
+
+gress.setReverseDirection(true); // 设置径向进程是否反方向。默认为顺时针
+
+gress.runAction(to.repeatForever()); // 应用进程动作
+
+
+
+* 复制动作
+
+// 所有的动作对象都有一个 clone() 方法
+var action2 = action.clone();
+var tarAction2 = tarAction.clone();
+var follow2 = follow.clone();
+
+
+
+* 设置动作的速度
+
+action = sequence.speed(2); // 队列动作速度加快至两倍
+this.runAction(action);
+action.setSpeed(.5); // 修改队列动作速度为原始速度的一半（慢动作效果）
+action.getSpeed(); // 获取当前队列动作的速度值
+
+
+
+* 应用缓动
+
+ease_in = action.easing(cc.easeIn(2.0));
+this.runAction(ease_in);
+
+cc.easeIn(2.0); // 速度由慢到快
+cc.easeOut(2.0); // 速度由快到慢
+cc.easeInOut(2.0); // 速度由慢到快再到慢
+// 参数是必需的，表示一个比率系数，一般使用2.0
+// 当参数等于1的时候，速度将变为匀速。
+// 当参数大于1的时候，缓动效果会随着数值的增大越来越明显
+// 当参数小于1的时候，缓动效果会变成反向缓动，随着数值的减小越来越明显
+// 也就是说，cc.easeIn(2.0) 的效果和 cc.easeOut(0.5) 的效果完全相同
+
+cc.easeSineIn(); // 速度由慢到快的正弦值
+cc.easeSineOut(); // 速度由快到慢的正弦值
+cc.easeSineInOut(); // 速度由慢到快再到慢的正弦值
+
+cc.easeQuadraticActionIn(); // 速度由慢到快的二次方值
+cc.easeQuadraticActionOut(); // 速度由快到慢的二次方值
+cc.easeQuadraticActionInOut(); // 速度由慢到快再到慢的二次方值
+
+cc.easeCubicActionIn(); // 速度由慢到快的三次方值
+cc.easeCubicActionOut(); // 速度由快到慢的三次方值
+cc.easeCubicActionInOut(); // 速度由慢到快再到慢的三次方值
+
+cc.easeQuarticActionIn(); // 速度由慢到快的四次方值
+cc.easeQuarticActionOut(); // 速度由快到慢的四次方值
+cc.easeQuarticActionInOut(); // 速度由慢到快再到慢的四次方值
+
+cc.easeQuinticActionIn(); // 速度由慢到快的五次方值
+cc.easeQuinticActionOut(); // 速度由快到慢的五次方值
+cc.easeQuinticActionInOut(); // 速度由慢到快再到慢的五次方值
+
+cc.easeExponentialIn(); // 速度由慢到快的指数值
+cc.easeExponentialOut(); // 速度由快到慢的指数值
+cc.easeExponentialInOut(); // 速度由慢到快再到慢的指数值
+
+cc.easeCircleActionIn(); // 速度由慢到快的圆环值
+cc.easeCircleActionOut(); // 速度由快到慢的圆环值
+cc.easeCircleActionInOut(); // 速度由慢到快再到慢的圆环值
+
+cc.easeElasticIn(); // 动作开始时附带弹簧效果
+cc.easeElasticOut(); // 动作结束时附带弹簧效果
+cc.easeElasticInOut(); // 动作开始及结束时附带弹簧效果
+
+cc.easeBounceIn(); // 动作开始时附带反弹效果
+cc.easeBounceOut(); // 动作结束时附带反弹效果
+cc.easeBounceInOut(); // 动作开始及结束时附带反弹效果
+
+cc.easeBackIn(); // 动作开始时附带回撤效果
+cc.easeBackOut(); // 动作结束时附带回撤效果
+cc.easeBackInOut(); // 动作开始及结束时附带回撤效果
+
+cc.easeBezierAction(0.5, 0.5, 1.0, 1.0); // 贝塞尔缓动，参数作用暂不明确
+
+
+
+
+

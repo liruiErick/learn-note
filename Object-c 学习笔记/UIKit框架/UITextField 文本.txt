@@ -1,0 +1,25 @@
+// 返回或设置文本框文本
+UITextField对象.text;
+
+// 为文本框的Did End On Exit事件绑定IBAction事件处理方法
+- (IBAction)finishEdit:(id)sender
+{
+	// sender放弃作为第一响应者
+	[sender resignFirstResponder];
+}
+
+
+// 实现委托的方法：
+UITextField对象.delegate = 委托对象;
+
+UITextField的委托对象必须实现UITextFieldDelegate协议，该协议定义了如下方法：
+
+// 用户将要Return时会激发该方法
+-(BOOL)textFieldShouldReturn:(UITextField *)theTextField
+{
+    if (theTextField == self.textField)
+    {
+        [theTextField resignFirstResponder];
+    }
+    return YES;
+}

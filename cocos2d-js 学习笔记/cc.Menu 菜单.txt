@@ -1,0 +1,61 @@
+﻿* 创建菜单项
+
+// 创建一个文字菜单项
+var item = new cc.MenuItemFont("Send Custom Event 1", function(sender){
+	// 单击后的回调
+});
+
+// 创建一个标签菜单项
+var label = new cc.LabelTTF("Compressed Interpolation: Enabled", "Marker Felt", 26);
+var item2 = new cc.MenuItemLabel(label);
+
+// 创建一个图片菜单项
+var item3 = new cc.MenuItemImage(// 创建一个菜单项图片，类似按钮
+	res.start_N_png, // 菜单默认时的图片
+	res.start_S_png, // 菜单按下时的图片
+	function () {}, // 菜单单击后的回调
+	this // 表示回调函数的this指向
+);
+// 这里，菜单项的默认锚点是其自身的左上角，因此需要设置锚点为其自身的中心
+startItem.attr({
+	x: size.width/2,
+	y: size.height/2,
+	anchorX: 0.5,
+	anchorY: 0.5
+});
+
+// 创建一个精灵菜单项
+var item4 = new cc.MenuItemSprite(
+	spriteNormal,
+	spriteSelected,
+	spriteDisabled,
+	function () {}, // 菜单单击后的回调
+	this // 表示回调函数的this指向
+);
+
+
+// 创建一个开关菜单项
+var enable = true;
+var item5 = new cc.MenuItemToggle(
+	new cc.MenuItemFont("Enabled"),
+	new cc.MenuItemFont("Disabled"),
+	function (sender) {
+		if (enable) { // 禁用
+			enable = false;
+		} else { // 启用
+			enable = true;
+		}
+	});
+
+
+
+
+* 创建菜单容器，并将容器放入场景中
+
+// 创建一个菜单
+var menu = new cc.Menu(item, item2, item3, item4, item5); // 创建一个菜单
+menu.alignItemsVertically(); // 设置菜单垂直排列
+// 菜单的默认锚点是其自身的左上角
+menu.x = 0;
+menu.y = 0;
+this.addChild(menu);

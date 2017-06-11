@@ -1,0 +1,26 @@
+@charset "UTF-8";
+html { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body, dl, dd, h1, h2, h3, h4, h5, h6, p, form, input { margin: 0; }
+table { border-collapse: collapse; }
+td, th { padding: 0; }
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+i, em { font-style: normal; }
+a { outline: none; background: transparent; }
+a img { border: 0; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+audio:not([controls]) { display: none; height: 0; }
+* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+
+body {
+	.fix;
+	position: relative;
+	width: 100%;
+	font-family: @ft, @ftDef;
+	font-size: @ftsz;
+	background-color: @bgcl;
+}
+a { .acl(@lkcl); text-decoration: none; }
+
+

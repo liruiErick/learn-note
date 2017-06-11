@@ -1,0 +1,64 @@
+﻿/* 模拟类用的是函数的原型属性 prototype */
+
+// 创建一个类（人）
+// 为其定义 name 和 age 两个属性
+function People(name, age){
+	this.name = name;
+	this.age = age;
+
+	//return {};
+	// 注意，只要new表达式之后的constructor返回（return）一个引用对象（数组，对象，函数等），都将覆盖new创建的匿名对象
+	// 如果返回（return）一个原始类型（无return时其实为return原始类型undefined），那么就返回 new 创建的匿名对象。
+	// 也就是说，如果函数最后 return 了一个引用对象，那么 new People() 返回值将不是 People 的实例，而是这个引用对象
+}
+People.prototype.constructor = People; // 更改构造函数的引用
+// 为这个类定义一个原型方法
+// 之所以不写在类中，而是在类外用原型方法的形式，是因为如果原型属性是引用类型的值，那么所有原型的实例对象都会共享该引用的指向对象
+// 这样，在创建多个类的实例时不会创建多个该函数方法，以节省资源
+// 注意，即使在实例创建后再定义原型属性和方法，创建后的实例同样会动态拥有该属性和方法
+People.prototype.say = function(){
+	console.log("我的名字叫："+this.name+"，\n我今年"+this.age+"岁。");
+};
+
+
+// 创建另一个类（男人），用于继承上一个类（人）
+function Man(name, age, hobby){
+	// 使用 call() 方法实现对父类的函数访问，等同于 super()。
+	People.call(this, name, age);
+	// 扩展新的属性
+	this.hobby = hobby;
+}
+// 实际上 prototype 原型属性就是 People 类的一个实例模板
+// 所以 new People() 就等同于创建了一个 People.prototype 的副本，这个副本就相当于我们创建的实例
+// 如果将一个 People 类的实例作为 Man 的原型（实例模板），Man 就拥有了 People 所有的属性和方法
+// 因此可以实现类的继承：
+Man.prototype = new People(); // 如果在People的构造方法中定义了某些必须的参数，则这种写法会导致报错
+Man.prototype = Object.create(People.prototype); // 推荐使用这种写法
+Man.prototype.constructor = Man;
+// 还可以实现方法的扩展或重写
+Man.prototype.say = function() {
+	People.prototype.say.call(this);
+	console.log("我的爱好是"+this.hobby+"。");
+};
+
+
+// 创建 Man 的实例
+// 这里相当先复制一个 Man.prototype 的副本给变量，然后执行 Man() 进行初始化。
+var man = new Man("小白", 28, "打游戏");
+man.say();
+// 输出：
+// 我的名字叫：小白
+// 我今年28岁。
+// 我的爱好是打游戏。
+
+// 有一点需要注意，原型属性与实例属性在本质上是两个属性。
+// 如果在构造函数中或者创建的实例上定义了与原型属性同名的实例属性，那么原型属性将会被隐藏。
+// 例如：
+Man.prototype.age = 100; //实例将无法直接访问到该属性值，但是仍可以通过实例获取到原型后访问
+man = new Man("小白", 28, "打游戏");
+console.log("小白今年"+man.age+"岁。"); //输出：小白今年28岁。
+
+
+// 注意，实例永远无法修改或者删除从原形链上继承的属性或方法
+// 通常为这些属性和方法重新赋值，看似好像覆盖掉了它们，但当delete它们的时候，它们又会复原，且无法被彻底删除
+

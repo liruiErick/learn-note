@@ -1,0 +1,133 @@
+﻿数学
+
+Math.random();随机0-1,不包含1
+
+Math.random()*0xFFFFFF;随机颜色
+
+Math.round();取整四舍五入
+
+Math.floor();取整不进位
+
+Math.ceil();取整进位
+
+Math.abs();取绝对值
+
+Math.sqrt();开平方
+
+Math.pow(a,b);a的b次幂
+
+Math.min(a,b,c);返回abc中最小的一个值
+
+Math.max(a,b,c);返回abc中最大的一个值
+
+Math.PI;圆周率
+
+Math.sin(弧度);正弦,求对边比斜边的比值,有正负,另外sin(0)等于0
+
+Math.asin(比值);反正弦,用对边比斜边的比值求弧度,有正负,比值必须为-1~1之间的数,否则输出NaN
+
+Math.cos(弧度);余弦,求邻边比斜边的比值,无正负,另外cos(0)等于1
+
+Math.acos(比值);反余弦,用邻边比斜边的比值求弧度,无正负,比值必须为-1~1之间的数,否则输出NaN
+
+Math.tan(弧度);正切,求对边比邻边的比值,有正负,另外tan(0)等于0
+
+Math.atan(y/x);反正切,用对边比邻边的比值求弧度,有正负
+
+Math.atan2(y1-y2,x1-x2);旋转物与指向物y,x坐标之差,计算旋转物0度位(影片剪辑左侧)到指向物的弧度(指向物与旋转物y,x坐标之差可直接算出影片剪辑右侧到指向物的弧度)
+
+弧度*180/Math.PI=角度
+
+Math.cos(弧度)*-1=移动物到指向物以1为半径圆在x轴上的方向,相当于x轴距离/斜边距离
+
+Math.sin(弧度)*-1=移动物到指向物以1为半径圆在y轴上的方向,相当于y轴距离/斜边距离
+
+(x1-x2)/Math.cos(弧度)=(y1-y2)/Math.sin(弧度)=两物体间的距离
+
+
+
+*辨别角度正负
+从坐标轴开始，顺时针为正角，逆时针为负角。
+
+
+
+*物体延轴旋转后新坐标点的简单算法:
+dx = 物体x坐标 - 轴x座标;
+dy = 物体y坐标 - 轴y座标;
+x = Math.cos(弧度) * dx - Math.sin(弧度) * dy;
+y = Math.cos(弧度) * dy + Math.sin(弧度) * dx;
+newX = x + 轴x座标;
+newY = y + 轴y座标;
+调换 + - 号可实现相反角度的计算。
+
+
+
+*余弦定理:(用于非直角三角形,角ABC,对边abc)
+a2=b2+c2-2*b*c*cosA
+b2=a2+c2-2*a*c*cosB
+c2=a2+b2-2*a*b*cosC
+ActionScript 的余弦定理： 
+A=Math.acos((b*b+c*c-a*a)/(2*b*c));
+B=Math.acos((a*a+c*c-b*b)/(2*a*c));
+C=Math.acos((a*a+b*b-c*c)/(2*a*b));
+
+
+
+*动量守恒的数学表达式:(质量m,速度v)         
+v0Final = ((m0 – m1) * v0 + 2 * m1 * v1) / (m0 + m1)
+v1Final = ((m1 – m0) * v1 + 2 * m0 * v0) / (m0 + m1)
+动量守恒的 ActionScript 表达式:
+var vxTotal:Number = vx0 - vx1;
+vx0 = ((ball0.mass - ball1.mass) * vx0 + 2 * ball1.mass * vx1) / (ball0.mass + ball1.mass);
+vx1 = vxTotal + vx0;
+
+
+
+*引力的一般公式:
+force = G * m1 * m2 / distance 2
+ActionScript 实现万有引力:
+function gravitate(partA:Ball, partB:Ball):void
+{
+    var dx:Number = partB.x ‐ partA.x;
+    var dy:Number = partB.y ‐ partA.y;
+    var distSQ:Number = dx * dx + dy * dy;
+    var dist:Number = Math.sqrt(distSQ); 
+    var force:Number = partA.mass * partB.mass / distSQ;
+    var ax:Number = force * dx / dist;
+    var ay:Number = force * dy / dist;
+    partA.vx += ax / partA.mass;
+    partA.vy += ay / partA.mass;
+    partB.vx ‐= ax / partB.mass;
+    partB.vy ‐= ay / partB.mass;
+}
+
+
+
+*颜色
+
+设置颜色:
+
+颜色值为0-255之间的数
+
+color24 = red << 16 | green << 8 | blue;
+color32 = alpha << 24 | red << 16 | green << 8 | blue;
+
+使用或(OR)运算，符号是 | 。它会将两组数的每个二进制位进行比较，如果两个之中有一个数为1，那么结果就为 1，如果两个数都为 0，那么结果就为 0。
+
+获取颜色:
+
+alpha = color32 >> 24;
+red = color32 >> 16 & 0xFF;
+green = color32 >> 8 & 0xFF;
+blue = color32 & 0xFF;
+
+这里就是要使用与(And)操作符的地方，与(OR)操作符相同，都是对两组数值的比较，可以这样解释“两个数相比较，如果两个都是1那么结果就为 1，如果其中有一个为 0，那么结果就为 0”。
+
+
+
+* 运算符技巧
+表达式1 || 表达式2; //从左向右返回第一个为真的表达式的值，其后的表达式则不再验证。如果全部表达式的值都为假，则返回最后一个表达式的值。
+表达式1 && 表达式2; //从左向右返回第一个为假的表达式的值，其后的表达式则不再验证。如果全部表达式的值都为真，则返回最后一个表达式的值。
+小数 | 0; //返回这个小数的小数点前的整数部分，相当于不进位取整。
+小数 >> 0; //返回这个小数的小数点前的整数部分，相当于不进位取整。
+!function(){}(); 等同于 (function(){})();

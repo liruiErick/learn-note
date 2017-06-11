@@ -1,0 +1,217 @@
+事件类
+
+import flash.events.Event;加入Event事件类
+
+addEventListener(Event.ENTER_FRAME,onEnterFrame);加入事件监听,舞台每一帧都触发一次onEnterFrame
+
+Event.ADDED;监听当元件被加入到其它元件的显示列表
+
+Event.ADDED_TO_STAGE;监听当元件被加入到舞台时触发
+
+Event.REMOVED;监听当元件从其它元件的显示列表移出时触发
+
+Event.REMOVED_FROM_STAGE;监听当元件从舞台移出时触发
+
+Event.FRAME_CONSTRUCTED;监听当元件加入到舞台后每一帧都触发
+
+Event.MOUSE_LEAVE;监听鼠标离开FlashPlayer播放器时,必须注册在stage上
+
+Event.ACTIVATE;激活事件
+
+Event.DEACTIVATE;对象休眠事件
+
+Event.RESIZE;注册在stage上,当SWF尺寸发生变化时调度
+
+import flash.events.MouseEvent;加入鼠标事件类
+
+被点击对象.addEventListener(MouseEvent.CLICK,onClick);加入鼠标监听,鼠标左键单击时触发onClick
+
+MouseEvent.DOUBLE_CLICK;监听鼠标左键双击时触发,同时要设置对象的doubleClickEnabled属性为true
+
+MouseEvent.MOUSE_DOWN;监听鼠标左键按下时触发
+
+MouseEvent.MOUSE_UP;监听鼠标左键弹起时触发
+
+MouseEvent.MOUSE_MOVE;监听鼠标移动时触发
+
+MouseEvent.MOUSE_WHEEL;监听鼠标滚轮转动时触发
+
+event.delta;获取滚动值,向上是+3,向下是-3
+
+MouseEvent.MOUSE_OVER;监听鼠标移入注册对象或其子对象上时都触发
+
+MouseEvent.MOUSE_OUT;监听鼠标移出注册对象或其子对象上时都触发
+
+MouseEvent.ROLL_OVER;监听鼠标移入注册对象区域时触发
+
+MouseEvent.ROLL_OUT;监听鼠标移出注册对象区域时触发
+
+event.stageX/stageY;等同于stage.mouseX/mouseY
+
+event.shiftKey/ctrlKey/altKey;是否同时按下shift/ctrl/alt键
+
+event.stopImmediatePropagation();阻止事件继续传播,同一层级内的监听器也监听不到
+
+event.stopPropagation();阻止事件继续向父级冒泡,同一层级内的监听器仍然监听的到
+
+import flash.ui.Mouse;加入鼠标类
+
+Mouse.hide();隐藏鼠标
+
+Mouse.show();显示鼠标
+
+import flash.ui.Keyboard;加入键盘类
+
+import flash.events.KeyboardEvent;加入键盘事件类
+
+stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDown);加入键盘监听,键盘按下时触发onKeyDown
+
+KeyboardEvent.KEY_UP;监听键盘弹起时触发
+
+event.keyCode;键盘码
+
+event.target;触发事件的对象
+
+event.currentTarget;注册事件的对象
+
+影片剪辑变量=MovieClip(event.target);可赋予变量或数组,用来控制对象
+
+stage.addEventListener("自定义事件",执行方法);加入一个自定义事件监听,如果发送事件不冒泡,则必须注册在本类
+
+dispatchEvent(new Event("自定义事件",true));发送自定义事件,true为冒泡发送(向父级逐级发送),false为不冒泡(只向本类发送)
+
+
+import flash.events.FullScreenEvent;加入全屏事件类
+
+FULL_SCREEN;注册在stage上,在stage进入或退出全屏时触发
+
+event.fullScreen;如果显示状态为全屏，则为true，否则为false
+
+
+import flash.ui.Multitouch;加入多点触控类
+
+Multitouch.supportsGestureEvents;返回布尔值，检测是否支持手势事件
+
+Multitouch.supportsTouchEvents;返回布尔值，检测是否支持触控事件
+
+Multitouch.supportedGestures;返回一个字符串数组，包含系统能够识别的手势名称
+
+Multitouch.maxTouchPoints;返回硬件能够识别的同时触控数量，可查看是否支持多点触控
+
+import flash.ui.MultitouchInputMode;加入多点触控输入模式类
+
+Multitouch.inputMode=MultitouchInputMode.NONE;不监听触摸和手势
+
+Multitouch.inputMode=MultitouchInputMode.GESTURE;设置触控模式为手势
+
+Multitouch.inputMode=MultitouchInputMode.TOUCH_POINT;设置触控模式为点触控
+
+*检测设备支持
+try
+{
+    if (Multitouch.supportsGestureEvent)
+    {
+        Multitouch.inputMode=MultitouchInputMode.GESTURE;
+    }
+    else
+    {
+        trace("不支持");
+    }
+}
+catch (error:ReferenceError)
+{
+    trace("检测出错");
+}
+
+import flash.events.TouchEvent;加入触控事件类
+
+TouchEvent.TOUCH_BEGIN;当按住屏幕时
+
+TouchEvent.TOUCH_END;当离开屏幕时
+
+TouchEvent.TOUCH_MOVE;当按住屏幕滑动时
+
+TouchEvent.TOUCH_OVER;当按住屏幕滑入时
+
+TouchEvent.TOUCH_OUT;当按住屏幕滑出时
+
+TouchEvent.ROLL_OVER;当按住屏幕移入对象或其子对象上时，但存在设备支持问题
+
+TouchEvent.ROLL_OUT;当按住屏幕移出对象或其子对象上时，但存在设备支持问题
+
+TouchEvent.TOUCH_TAP;当单击屏幕时
+
+event事件对象属性与鼠标事件大体相同
+
+event.touchPointID;支持多点触摸时，会为每一个屏幕接触到的触摸点分配一个ID
+
+event.sizeX/sizeY;手指和屏幕之间的触点区域的相对大小
+
+event.pressure;手指按下的程度，在0.0(还没触碰)和1.0(不会损坏屏幕)之间
+
+Sprite有两种方法来启动拖放:
+用法与startDrag()和stopDrag()相同
+Sprite实例.startTouchDrag(event.touchPointID);
+Sprite实例.stopTouchDrag(event.touchPointID);
+
+
+
+import flash.events.GestureEvent;加入手势事件类
+
+GestureEvent.GESTURE_TWO_FINGER_TAP;使用两个相邻的手指快速点击时
+
+import flash.events.PressAndTapGestureEvent;加入按下并且敲击手势事件类
+
+PressAndTapGestureEvent.GESTURE_PRESS_AND_TAP;按下一个手指并使用另一个手指快速点击，在抬起第二个手指之后可以继续移动第一个手指
+
+event.tapLocallX/tapLocallY/tapStageX/tapStageY;记录第二个手指点击的位置
+
+import flash.events.TransformGestureEvent;加入变换手势事件类
+
+TransformGestureEvent.GESTURE_PAN;放置两个手指并慢慢一致地将其移动
+
+TransformGestureEvent.GESTURE_ROTATE;放置两个手指并围绕中心点旋转
+
+TransformGestureEvent.GESTURE_SWIPE;手指轻扫
+
+TransformGestureEvent.GESTURE_ZOOM;放置两个手指并将其展开或者聚集到中心点周围
+
+event.type;返回事件类型
+
+event.offsetX/offsetY;手势中最后一个事件发生之后的坐标移动量,用于判断轻扫的方向,值为1时offsetX表示向左,offsetY表示向上,值为-1时相反
+
+event.scaleX/scaleY;手势中最后一个事件发生之后的缩放比例
+
+event.rotation;手势中最后一个事件发生之后的旋转,以弧度为单位
+
+*旋转手势的应用
+var matrix:Matrix=对象.transform.matrix;
+var rotatePoint:Point=matrix.transformPoint(new Point(对象.width/2,对象.height/2));
+matrix.translate(-rotatePoint.x,-rotatePoint.y);
+matrix.rotate(event.rotation*(Math.PI/180));
+matrix.translate(rotatePoint.x,rotatePoint.y);
+对象.transform.matrix=matrix;
+
+
+
+import flash.sensors.Accelerometer;加入加速计类
+
+Accelerometer.isSupported;返回布尔值,检测设备是否安装了加速计
+
+Accelerometer.isMuted;返回布尔值,检测设备是否拒绝使用加速计
+
+Accelerometer.setRequestedUpdateInterval;设置加速计响应的时间间隔
+
+import flash.events.AccelerometerEvent;加入加速计事件类
+
+var acc:Accelerometer=new Accelerometer();创建一个加速计
+
+acc.addEventListener(AccelerometerEvent.UPDATE,函数);监听加速计更新事件
+
+event.accelerationX/accelerationY/accelerationZ;返回该方向上的速度向量,单位为G(9.8m/sec2万有引力常数),其中任意两个方向与它们前一次更新时的差值同时大于0.7时，表示设备在晃动
+
+event.timestamp;移动检测开始后的时间,以毫秒为单位
+
+import flash.sensors.Geolocation;加入GPS类
+
+import flash.events.GeolocationEvent;加入GPS事件类,用法与加速计类相似

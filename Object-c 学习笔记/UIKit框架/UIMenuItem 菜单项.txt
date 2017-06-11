@@ -1,0 +1,31 @@
+﻿// 创建一个菜单项，并绑定事件方法
+UIMenuItem* weiboShare = [[UIMenuItem alloc] initWithTitle:@"微博分享"
+			action:@selector(weiboShare:)];
+
+// 创建一个菜单控制器
+UIMenuController* menu = [UIMenuController sharedMenuController];
+
+// 将菜单项加入菜单控制器，该属性通过一个数组来添加菜单项
+[menu setMenuTtems:[NSArray arrayWithObject:weiboShare]];
+
+// 在视图控制器文件中重写UIResponder的canPerformAction:withSender:方法
+// 该方法的sender为UIMenuController对象
+// 当该方法返回YES时，界面将会显示Action对应的控件
+-(BOOL) canPerformAction:(SEL)action withSender:(id)sender
+{
+	// 如果Action等于微博分享的方法
+	if (action == @selector(weiboShare:))
+	{
+		// 如果UITextView对象选中的内容长度大于0，则返回YES
+		// 当该方法返回YES时，该Action对应的控件将会显示出来
+		if (UITextView对象.selectedRange.length>0)
+			return YES;
+	}
+	return NO;
+}
+
+// 定义微博分享方法
+-(void) weiboShare:(id)sender
+{
+	//微博分享功能实现
+};

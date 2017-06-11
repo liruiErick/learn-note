@@ -1,0 +1,13 @@
+removeMC(this);
+function removeMC(mc:Object):void
+{
+	var n:int=mc.numChildren;
+	for (var i:int=0;i<n;i++)
+	{
+		var m:Object=mc.getChildAt(i);
+		if (m is DisplayObjectContainer)
+		{
+			removeMC(m);
+		}
+	}
+}

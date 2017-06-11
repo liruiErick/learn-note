@@ -1,0 +1,44 @@
+﻿为了获取NSBundle对象，一般会调用该类的mainBundle方法，该方法就会返回该应用对应的应用程序包。
+得到NSBundle对象之后，接下来就可以通过该对象的如下常用方法来获取指定的资源文件。
+
+// 根据资源名、扩展名从指定目录中获取资源对应的URL
+-(NSURL *)URLForResource:str1
+	withExtension:str2
+	subdirectory:str3;
+
+// 根据资源名、扩展名获取资源对应的URL
+-(NSURL *)URLForResource:str1
+	withExtension:str2;
+
+// 根据扩展名从指定目录中获取所有对应资源的URL数组
+-(NSArray *)URLsForResourcesWithExtension:str1
+	subdirectory:str2;
+
+// 根据资源名、类型名获取资源对应的路径
+-(NSString *)pathForResource:str1
+	ofType:str2;
+
+// 根据资源名、类型名从指定目录中获取资源对应的路径
+-(NSString *)pathForResource:str1
+	ofType:str2
+	inDirectory:str3;
+
+// 根据类型名从指定目录中获取所有对应资源的路径数组
+-(NSArray *)pathsForResourcesOfType:str1
+	inDirectory:str2;
+
+// 直接根据完整的路径来获取对象资源
+-(NSString *)resourcePath;
+-(NSURL *)resourceURL;
+
+演示代码如下：
+
+// 使用NSBundle获取该应用自包含的指定资源文件的路径
+NSString* filePath = [[NSBundle mainBundle] pathForResource:@"bookinf"
+			ofType:@"txt"];
+// 使用指定文件的内容来初始化NSString
+NSString* content = [NSString stringWithContentsOfFile:filePath
+			encoding:NSUTF8StringEncoding error:nil];
+
+
+

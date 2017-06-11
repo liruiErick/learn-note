@@ -1,0 +1,98 @@
+*NSObject的copy与mutableCopy方法
+
+
+
+NSMutableString* book = [NSMutableString stringWithString:@"Object-C"];
+
+
+// 调用book（可变字符串）的copy方法，程序返回一个不可修改的副本
+
+NSMutableString* bookCopy = [book copy];
+
+
+// 由于bookCopy是不可修改的，因此下面代码将会出现错误
+
+[bookCopy appendString:@"aa"];
+
+
+// 复制str（不可变字符串）的可变副本
+
+NSString* str = @"Object-C";
+
+NSMutableString* strCopy = [str mutableCopy];
+
+
+
+
+
+*NSCopying与NSMutableCopying协议
+
+
+
+// 对于自定义类，如果要实现copy与mutableCopy方法，则必须扩展NSCopying与NSMutableCopying协议(实验证明不扩展也可以)
+
+// 然后实现下列方法:
+
+- (id)copyWithZone:(NSZone*)zone
+
+- (id)mutableCopyWithZone:(NSZone*)zone
+
+
+
+// 为浅复制实现的copyWithZone:方法
+
+- (id)copyWithZone:(NSZone*)zone
+
+{
+
+	// 使用zone参数创建FKDog对象
+	FKDog* dog = [[[self class] allocWithZone:zone] init];
+
+	dog.name = self.name;
+	dog.age = self.age;
+
+	return dog;
+
+}
+
+
+
+// 为深复制实现的copyWithZone:方法
+
+- (id)copyWithZone:(NSZone*)zone
+
+{
+
+	// 使用zone参数创建FKDog对象
+
+	FKDog* dog = [[[self class] allocWithZone:zone] init];
+	// 将原对象的name实例变量复制一份副本后赋值给新对象的name实例变量
+	dog.name = [self.name copy];
+	dog.age = self.age;
+	return dog;
+
+}
+
+
+// 为深复制实现的mutableCopyWithZone:方法
+
+- (id)mutableCopyWithZone:(NSZone*)zone
+
+{
+
+	// 使用zone参数创建FKDog对象
+
+	FKDog* dog = [[[self class] allocWithZone:zone] init];
+	// 将原对象的name实例变量复制一份副本后赋值给新对象的name实例变量
+	dog.name = [self.name mutableCopy];
+		dog.age = self.age;
+
+	return dog;
+
+}
+
+
+
+// 这里的copy，是指在调用setter方法时用参数的copy方法为变量赋予一个不可变副本
+
+@property (nonatomic , copy) NSMutableString* name;

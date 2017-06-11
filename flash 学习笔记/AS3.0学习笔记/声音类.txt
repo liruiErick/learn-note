@@ -1,0 +1,43 @@
+声音类
+
+import flash.media.Sound 加入声音类
+
+var sound:Sound=new Sound() 创建声音,Sound可替换为任意声音文件类
+
+sound.play() 播放声音
+
+sound.play(1000) 从声音文件的开头跳至1秒后开始播放
+
+sound.play(0,int.MAX_VALUE) 设置循环次数为最大(2,147,483,647次),该参数为0或为1都是播放一次
+
+play()方法还接受第三个参数,为一个SoundTransform实例
+
+sound.length;返回该音频的时长
+
+sound.clear();停止播放并停止下载当前音频流
+
+import flash.media.SoundChannel 加入声音播放类
+
+var soundChannel:SoundChannel=new SoundChannel() 创建一个播放器
+
+soundChannel=(new Sound()).play() 播放声音
+
+soundChannel.stop();停止当前播放器内的声音
+
+变量=soundChannel.position 纪录声音播放到了多少毫秒处
+
+import flash.media.SoundTransform 加入声道类
+
+var soundTrans:SoundTransform=new SoundTransform(1,0);选填属性,默认值1代表音量最大,0是偏移量
+
+var soundTrans:SoundTransform=soundChannel.soundTransform;此方法比较安全
+
+soundTrans.volume=0-1;设置音量,0为静音,0.5为半音量,1为原音量
+
+soundChannel.soundTransform=soundTrans;将设置好的音量赋予播放类实例,从而达到音量变化(语句必须写于播放声音语句之后才可生效)
+
+import flash.media.SoundMixer;加入全局混音器类
+
+SoundMixer.stopAll();停止当前播放的所有声音
+
+SoundMixer.soundTransform=new SoundTransform(0);静音

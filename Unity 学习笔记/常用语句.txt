@@ -1,0 +1,101 @@
+# 获取输入
+
+Input.GetAxis('Horizontal'); // 返回一个浮点数，表示水平输入。大于0表示向右，小于0表示向左。
+Input.GetButtonDown('Jump'); // 表示按下空格键（目前不知道名称是怎么定义的）
+Input.GetButtonDown('Fire1'); // 鼠标左键
+
+
+# 获取组件
+
+GetComponent<Animator>(); // 获取 Animator 类型的组件。
+transform.root.gameObject.GetComponent<Animator>();
+transform.root.GetComponent<PlayerControl>();
+
+
+# 获取物体
+
+transform.Find('player'); // 获取被命名为 player 的 transform 物体。
+
+
+# 在 Inspector 面板中隐藏脚本中定义的变量
+
+在定义变量语句的上面添加
+[HideInInspector]
+
+
+# 播放音乐
+
+AudioSource.PlayClipAtPoint(AudioClip music, Vector position); // 第二个参数表示在场景中哪个位置播放音乐，似乎是用于立体声更能。
+
+
+# 随机数
+
+Random.Range(int startValue, int endValue); // 返回两个整数间的随机数。
+
+
+# Debug
+
+Debug.DrawLine(Vector point1, Vector point2, string color, float delay); // 两点之间画线
+Debug.Log(Time.deltaTime); // 打印帧间隔
+
+
+# Mathf 数学工具
+
+Mathf.Sign(number); // 获取数字的正负。正数返回1，负数返回-1，0返回0。
+Mathf.Lerp(float from, float to, float t); // 当t=0返回from，当t=1返回to。当t=0.5返回from和to的平均值。
+
+
+# 数字转字符串
+
+vlaue.ToString();
+
+
+# 时间格式转换
+
+using System;
+TimeSpan.FromDays(value); // 将微秒数转换为天
+TimeSpan.FromHours(value); // 将微秒数转换为小时
+TimeSpan.FromMinutes(value); // 将微秒数转换为分钟
+TimeSpan.FromSeconds(value); // 将微秒数转换为秒
+TimeSpan.FromMilliseconds(value); // 将微秒数转换为毫秒
+
+
+# 字符串格式化
+
+应用方法：
+string.Format();
+Debug.Log();
+
+“{}”中 0 表示从第二个参数开始算起的第一个参数
+“:”后面跟格式化标识符
+格式化标识符后面的数字根据标识符的不同表示的含义也不同
+
+C 代表货比
+Debug.Log('{0:C}', 2.5); // $2.50
+
+D 代表代表10进制数
+Debug.Log('{0:D5}', 25); // 00025，标识符后数字表示数字位数长度，不足则补0
+
+E 代表科学型
+Debug.Log('{0:E}', 250000); // 2.500000E+005
+
+F 代表固定点
+Debug.Log('{0:F2}', 25); // 25.00，标识符后数字表示小数点精确的位数
+
+G 代表常规
+Debug.Log('{0:G}', 2.5); // $2.5
+
+N 代表数字
+Debug.Log('{0:N}', 2500000); // 2,500,000.00
+
+X 代表十六进制
+Debug.Log('{0:X}', 0xffff); // FFFF
+
+P 代表百分数格式
+Debug.Log('{0:P}', 2.5); // 250%
+
+
+
+
+
+

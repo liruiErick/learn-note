@@ -1,0 +1,93 @@
+加入移除方法
+
+addChild(A);将A加入场景,并返回一个DisplayObject
+
+addChildAt(A,0);将A加入到场景底层,并返回一个DisplayObject
+
+removeChild(A);从场景中消除A,并返回一个DisplayObject
+
+removeChildAt(0);按加入顺序依次消除对象,0为场景中第一个加入的对象(即底层对象)量,并返回一个DisplayObject
+
+getChildAt(0).name;获取第一个对象的实例名,0为底层对象
+
+getChildByName(对象.name);根据对象的name属性获取该对象
+
+numChildren;舞台上对象数
+
+getChildIndex(A);获取A的显示层级
+
+setChildIndex(A,numChildren-1);设置A到显示列表的最顶层,可无视图层顺序
+
+swapChildren(A,B);交换A与B的显示层级
+
+swapChildrenAt(1,2);交换1层对象与2层对象的显示层级
+
+A.contains(B);检测B是否为A的子对象,是则输出true
+
+removeChildren();清除所有子对象
+
+
+
+*Stage类
+
+stage.showDefaultContextMenu=false;隐藏右键菜单中的默认项
+
+stage.stageWidth;主场景的宽
+
+stage.stageHeight;主场景的高
+
+stage.fullScreenWidth;全屏的宽
+
+stage.fullScreenHeight;全屏的高
+
+stage.frameRate=24;设定帧频率,Flex中为WindowsApplication.frameRate
+
+
+
+import flash.display.StageDisplayState;加入场景显示状态类
+
+stage.displayState = StageDisplayState.FULL_SCREEN;将 Flash Player 设置为把舞台扩展到用户的整个屏幕。
+stage.displayState = StageDisplayState.NORMAL;将播放器设置回标准的舞台显示模式。
+
+*如果需要在网页中实现全屏显示，除了以上设置外，还需要在HTML代码中添加以下参数：
+如果在<embed>标签中，需要为标签添加全屏属性<embed allowfullscreen="true">
+如果在<object>标签中，需要为标签内添加子标签参数<object><param name="allowfullscreen" value="true"></object>
+
+
+
+import flash.display.StageScaleMode;加入场景缩放模式类
+
+stage.scaleMode=StageScaleMode.EXACT_FIT;整个应用程序在指定区域中可见，但不尝试保持原始高宽比。可能会发生扭曲，应用程序可能会拉伸或压缩显示。 
+stage.scaleMode=StageScaleMode.SHOW_ALL;整个应用程序在指定区域中可见，且不发生扭曲，同时保持应用程序的原始高宽比。应用程序的两侧可能会显示边框。 
+stage.scaleMode=StageScaleMode.NO_BORDER;整个应用程序填满指定区域，不发生扭曲，但有可能进行一些裁切，同时保持应用程序的原始高宽比。 
+stage.scaleMode=StageScaleMode.NO_SCALE;整个应用程序的大小固定，因此，即使播放器窗口的大小更改，它也会保持不变。如果播放器窗口比内容小，则可能进行一些裁切。
+
+
+
+import flash.display.StageQuality;加入场景质量类
+
+stage.quality=StageQuality.LOW;低呈现品质。图形不是消除锯齿的，且位图未进行平滑处理，但运行时仍使用 mip 贴图技术。Adobe AIR 中不支持此设置。 
+stage.quality=StageQuality.MEDIUM;中等呈现品质。图形是使用 2 x 2 像素网格消除锯齿的，而位图平滑处理取决于 Bitmap.smoothing 设置。运行时使用 mip 贴图技术。此设置适用于不包含文本的影片。Adobe AIR 中不支持此设置。 
+stage.quality=StageQuality.HIGH;高呈现品质。图形是使用 4 x 4 像素网格消除锯齿的，而位图平滑处理取决于 Bitmap.smoothing 设置。运行时使用 mip 贴图技术。这是 Flash Player 使用的默认呈现品质设置。 
+stage.quality=StageQuality.BEST;极高呈现品质。图形是使用 4 x 4 像素网格消除锯齿的。如果将 Bitmap.smoothing 设置为 true，则运行时会使用产生较少伪像的高品质降级算法（但是，使用 StageQuality.BEST 时将 Bitmap.smoothing 设置为 true 会显著降低性能，因此不建议使用此设置）。
+
+注意：操作系统绘制设备字体，因此，这些设备字体不会受 quality 属性的影响。
+
+
+
+import flash.display.StageAlign;加入场景对齐类
+
+stage.align=StageAlign.BOTTOM;底部对齐
+stage.align=StageAlign.BOTTOM_LEFT;左下对齐
+stage.align=StageAlign.BOTTOM_RIGHT;右下对齐
+stage.align=StageAlign.TOP;顶部对齐
+stage.align=StageAlign.TOP_LEFT;左上对齐
+stage.align=StageAlign.TOP_RIGHT;右上对齐
+stage.align=StageAlign.LEFT;左对齐
+stage.align=StageAlign.RIGHT;右对齐
+
+
+
+*Flex下设置舞台尺寸
+
+[SWF(width="800",height="600",backgroundColor="#000000",frameRate="24")]

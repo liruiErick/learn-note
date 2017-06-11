@@ -1,0 +1,31 @@
+﻿// 获取分段控件对象中当前被选中的按钮下标，为一个正整数NSUInteger值
+[UISegmentedControl对象 selectedSegmentIndex];
+
+// 获取分段控件对象中按钮的数量，为一个正整数NSUInteger值
+UISegmentedControl对象.numberOfSegments;
+
+// 为分段控件对象插入一个对应下标的分段按钮，animated参数表示插入分段按钮时是否有过渡动画
+[UISegmentedControl对象 insertSegmentWithTitle:@"分段按钮名称"
+	atIndex:下标
+	animated:YES];
+
+// 从分段控件对象中删除一个对应下标的分段按钮，animated参数表示删除分段按钮时是否有过渡动画
+[UISegmentedControl对象 removeSegmentAtIndex:下标
+	animated:YES];
+
+// UISegmentedControl对象可为Value Changed事件绑定处理方法
+-(IBAction) segmentChanged:(id)sender
+{
+	switch ([sender selectedSegmentIndex])
+	{
+		case 0:
+			// 分段按钮1被选中
+			break;
+		case 1:
+			// 分段按钮2被选中
+			break;
+		case 2:
+			// 分段按钮3被选中
+			break;
+	}
+}

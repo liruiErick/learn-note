@@ -1,0 +1,36 @@
+﻿因为复杂的应用程序会要求你去定义自定义cc.Layer子类，所以Cocos2d提供了几个预定义的层。
+这些例子包括：
+cc.Menu（简单的菜单层）
+cc.ColorLayer（填充色层）
+cc.LayerMultiplex（可以复用它的子节点，每次激活其中的一个子节点，同时禁用其它子节点）。
+
+
+// 创建一个颜色层
+var clLayer = new cc.ColorLayer(cc.color(128,0, 128, 255), width, height);
+
+// 创建一个渐变层
+var bgLayer = new cc.LayerGradient(cc.color(128,0, 128, 255), cc.color(0, 0, 128, 255));
+bgLayer.setVector(cc.p(x, y)); // 传入一个标准化向量，改变渐变方向
+
+// 设置是否忽略锚点
+// layer的默认锚点在其中心点
+// 如果忽略锚点，则相当于锚点始终为左下角(0,0)位置
+layer.ignoreAnchorPointForPosition(true);
+layer.ignoreAnchor = true;
+
+layer.setPosition(60, 80); // 设置层的位置
+layer.setContentSize(700, 300); // 设置层的大小
+
+
+// 为层设置混合
+var src;
+var dst;
+if (this._blend) {
+	src = cc.SRC_ALPHA;
+	dst = cc.ONE_MINUS_SRC_ALPHA;
+} else {
+	src = cc.ONE_MINUS_DST_COLOR;
+	dst = cc.ZERO;
+}
+layer.setBlendFunc( src, dst );
+this._blend = ! this._blend;

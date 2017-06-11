@@ -1,0 +1,125 @@
+NSPathUtilities.h包含了NSString的函数和分类扩展，它允许你操作路径名。应该尽可能的使用这些函数，以便使程序更独立于文件系统结构以及特定文件和目录的位置。
+
+下面总结了许多常用的使用路径方法。其中，components是一个NSArray对象，它包含路径中每一部分的字符串对象；path是一个字符串对象，它指定文件的路径；ext是表示路径扩展名的字符串对象（如，@“txt”）。
+
+// 根据components中的元素构造有效路径
++(NSString *)pathWithComponents:components;
+
+// 返回该路径是否为绝对路径
+-(BOOL)isAbsolutePath;
+
+// 分析路径，获得组成此路径的各个部分
+-(NSArray *)pathComponents;
+
+// 提取路径的最后一个组成部分
+-(NSString *)lastPathComponent;
+
+// 从路径的最后一个组成部分中提取其扩展名
+-(NSString *)pathExtension;
+
+// 将路径中当前用户的home路径替换为~；将路径中指定当前用户的home路径替换为~user
+-(NSString *)stringByAbbreviatingWithTildeInPath;
+
+// 将path添加到现在路径的末尾
+-(NSString *)stringByAppendingPathComponent:path;
+
+// 将制定扩展名ext添加到路径的末尾
+-(NSString *)stringByAppendingPathExtension:ext;
+
+// 删除路径的最后一个组成部分
+-(NSString *)stringByDeletingLastPathComponent;
+
+// 从文件的最后一部分删除扩展名
+-(NSString *)stringByDeletingPathExtension;
+
+// 将路径中的代字符（~或~user）解析成当前用户的home目录或指定目录的home目录
+-(NSString *)stringByExpandingTildeInPath;
+
+// 尝试解析路径中的符号链接，返回解析后的路径
+-(NSString *)stringByResolvingSymlinksInPath;
+
+// 通过尝试解析~、..（父目录符号）、.（当前目录符号）和符号链接来标准化路径
+-(NSString *)stringByStandardizingPath;
+
+下面又展示了一些函数，它可以用于获取用户、用户的主目录和存储临时文件的目录信息：
+
+NSString* NSUserName(void);//返回当前用户的登录名
+
+NSString* NSFullUserName(void);//返回当前用户的完整用户名
+
+NSString* NSHomeDirectory(void);//返回当前用户home目录的路径
+
+NSString* NSHomeDirectoryForUser(NSString* user);//返回指定用户home目录的路径
+
+NSString* NSTemporaryDirectory(void);//返回可用于创建临时文件的目录路径
+
+// 另外，还有Foundation函数NSSearchPathForDirectoriesInDomains，它用于查找系统的特殊目录，如Application目录。
+NSArray* NSSearchPathForDirectoriesInDomains (
+   NSSearchPathDirectory directory,
+   NSSearchPathDomainMask domainMask,
+   BOOL expandTilde
+);
+
+下面的代码，展示了如何使用NSPathUtilities.h提供的几种函数和方法：
+
+#import <Foundation/Foundation.h>  
+  
+int main(int argc, const char * argv[])  
+{
+    @autoreleasepool {  
+          
+        NSString *fName = @"main.m";  
+        NSFileManager *fm;  
+        NSString *path, *tempdir, *extension, *homedir, *fullpath;  
+        NSString *upath = @"~/test/./TestPath/main.m";  
+          
+        NSArray *components;  
+          
+        fm = [NSFileManager defaultManager];  
+          
+        //获取系统用来创建临时文件的目录路径名称  
+        tempdir = NSTemporaryDirectory();  
+        NSLog(@"Temporary Direcctory is: %@", tempdir);  
+          
+        //提取当前目录中的基本目录  
+        path = [fm currentDirectoryPath];  
+        NSLog(@"Base dir is: %@",[path lastPathComponent]);//提取路径中的最后一个文件名  
+          
+        //在当前目录 创建一个全部路径到fName  
+        fullpath = [path stringByAppendingPathComponent:fName];//用于将文件名附加到路径的末尾  
+        NSLog(@"fullpaht to %@ is: %@", fName, fullpath);  
+          
+        //获取文件的扩展名  
+        extension = [fullpath pathExtension];  //获取指定路径名的文件扩展名  
+        NSLog(@"extension for %@ is: %@", fullpath, extension);  
+          
+        //获取用户的主目录  
+        homedir = NSHomeDirectory();   //返回当前用户的主目录  
+        NSLog(@"You home directory is %@", homedir);  
+          
+        //将一个路径分离成几个部分  
+        components = [homedir pathComponents]; //返回指定路径的每个组成部分的数组  
+        for(path in components)  
+            NSLog(@"%@",path);  
+          
+        //“Standardize”一个路径  
+        NSLog(@"%@ => %@",upath, [upath stringByStandardizingPath]);//解析包含字符的目录的详细路径，同时删除特殊字符，将其标准化  
+    }  
+    return 0;  
+}
+
+代码分析：
+
+函数NSTemporaryDirectory返回系统中可以用来创建临时文件的目录路径名。如果在这个目录中创建临时文件，一定要在完成任务之后把它们删除。另外，还要确保文件名是唯一的，特别是在应用程序的多个实例同时运行时更应该如此。如果多个用户登陆到系统，并且运行同一个应用程序，这种情况很容易发生。
+
+方法lastPathComponent用来从路径中提取最后一个文件名。当你有一个绝对路径名，并且只想从中获取基本文件名时，这个函数很有用。
+
+stringByAppendingPathComponent：方法用于将文件名附加到路径的末尾。如果指定为接收者的路径名不是以斜线结束，那么该方法将在路径名中插入一个斜线，将路径名和附加的文件名分开。结合使用CurrentDirectory方法和stringByAppendingPathComponent：方法，可以在当前目录中创建文件的完整路径名。
+
+PathExtension方法给出了指定路径名的文件没有扩展名。在这个例子中，文件main.m的扩展名是"m"，该方法返回这个扩展名。如果所给的文件没有扩展名，那么这个方法仅仅返回一个空字符串。
+
+NSHomeDirectory函数返回当前用户的主目录。使用NSHomeDirectoryForUser函数，同时提供用户名作为函数的参数，可以获得任何特定用户的主目录。
+
+PathComponents方法返回一个数组，这个数组包含指定路径的每个组成部分。
+
+另外，如程序中所用的，有时路径名中包含 “代字符”（如~），FileManager方法将（~）用做用户主目录的缩写，或者将~user用做指定用户的主目录。如果路径名中包含代字符，那么使用stringByStandardizingPath方法可以解析它们。这个方法返回同一个路径，同时删除这些特殊字符，既将其标准化。如果路径名中出现代字符，则可以使用方法stringByExpandingTildeInPath扩展代字符。

@@ -1,0 +1,40 @@
+全称: Key Value Coding
+
+
+
+*设置属性
+
+
+[对象 setValue:值 forKey:@"属性名"];
+
+[对象 setValue:值 forKeyPath:@"属性父级.属性名"];
+
+
+
+*读取属性
+
+
+[对象 valueForKey:@"属性名"];
+
+[对象 valueForKeyPath:@"属性父级.属性名"];
+
+
+
+
+
+*调用方法
+
+
+方法一:
+[对象 performSelector:@selector(方法名:)];
+
+[对象 performSelector:NSSelectorFromString(@"方法名:")];
+
+
+方法二:
+
+#import <objc/message.h>
+
+objc_msgSend(对象,@selector(方法名:),参数1,参数2);
+
+objc_msgSend(对象,NSSelectorFromString(@"方法名:"),参数1,参数2);

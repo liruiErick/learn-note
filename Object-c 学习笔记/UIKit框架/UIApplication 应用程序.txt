@@ -1,0 +1,80 @@
+// 无论对象在程序的什么位置，以下代码都可以快速获取应用程序委托，如同AS3的root。
+// 获取应用程序委托对象之后，即可通过该对象读取全局有效的信息。
+XXXAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+// 让应用程序的窗口显示UIViewController对象
+appDelegate.window.rootViewController = UIViewController对象;
+
+
+// 通知应用程序隐藏状态栏
+[UIApplication sharedApplication].statusBarHidden = YES;
+
+
+// 返回应用程序当前状态的枚举
+// UIApplicationStateInactive  不活动状态，表示即将进入前台
+// UIApplicationStateBackground  后台
+// UIApplicationStateActive  前台
+[UIApplication sharedApplication].applicationState;
+
+
+IOS中UIApplication的委托事件方法：
+
+// 应用程序将要启动时自动调用该方法，该方法是应用程序启动时第一次执行自定义代码的机会
+-(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+	return YES;
+}
+
+// 应用程序启动时自动调用该方法，该方法中执行初始化相关代码
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+	return YES;
+}
+
+//当应用程序将要进入非活动状态执行，在此期间，应用程序不接受消息或事件
+- (void)applicationWillResignActive:(UIApplication *)application  
+{  
+    NSLog(@"应用程序将要进入非活动状态，即锁屏、来电、闹钟、电量过低等，并且可能将要进入后台");  
+}  
+  
+//应用程序已经进入后台运行  
+- (void)applicationDidEnterBackground:(UIApplication *)application  
+{  
+    NSLog(@"如果应用程序支持后台运行，则应用程序已经进入后台运行");  
+}  
+  
+//应用程序正从后台转入前台，将要进入活动状态时执行
+- (void)applicationWillEnterForeground:(UIApplication *)application  
+{  
+    NSLog(@"应用程序将要进入活动状态，即将进入前台运行");  
+}  
+  
+//应用程序转入前台，并已经进入活动状态（应用程序从启动到前台，或者从后台转入前台都会调用该方法）
+- (void)applicationDidBecomeActive:(UIApplication *)application  
+{  
+    NSLog(@"应用程序已进入前台，处于活动状态");  
+}  
+  
+//应用程序将要退出，通常用于保存数据和一些退出前的清理工作，如果应用程序处于挂起状态，则此方法不会被调用
+- (void)applicationWillTerminate:(UIApplication *)application  
+{  
+    NSLog(@"应用程序将要退出，通常用于保存数据和一些退出前的清理工作");  
+}  
+  
+//当设备为应用程序分配了太多的内存，操作系统会终止应用程序的运行，在终止前会执行这个方法  
+//通常可以在这里进行内存清理工作，防止程序被终止  
+-(void)applicationDidReceiveMemoryWarning:(UIApplication *)application  
+{  
+    NSLog(@"系统内存不足，需要进行清理工作");  
+}  
+  
+//当系统时间发生改变时执行  
+-(void)applicationSignificantTimeChange:(UIApplication *)application  
+{  
+    NSLog(@"当系统时间发生改变时执行");  
+}  
+  
+//当程序载入后执行  
+-(void)applicationDidFinishLaunching:(UIApplication *)application  
+{  
+    NSLog(@"当程序载入后执行");  
+}  

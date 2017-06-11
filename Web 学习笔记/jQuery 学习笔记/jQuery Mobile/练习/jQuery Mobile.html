@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>jQuery Mobile</title>
+<link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css" />
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/jquery.mobile-1.4.2.min.js"></script>
+</head>
+
+<body>
+<div data-role="page" id="pageone">
+  <div data-role="header">
+    <h1>欢迎来到我的主页</h1>
+	<a href="#" data-role="button" data-icon="search" data-iconpos="notext">搜索</a>
+  </div>
+
+  <div data-role="content">
+    <p>这是一张标准页面。</p>
+    <a href="#pagetwo">转到主题化的对话页面</a>
+  </div>
+
+  <div data-role="footer">
+    <h1>页脚文本</h1>
+  </div>
+</div> 
+
+<div data-role="dialog" id="pagetwo" data-overlay-theme="e" data-close-btn-text="关闭111" data-title="哈哈哈哈">
+  <div data-role="header">
+    <h1>我是主题化的对话框</h1>
+  </div>
+
+  <div data-role="content" data-theme="a">
+    <p>data-overlay-theme 属性规定对话框出现在其上的页面的背景色。</p>
+    <a href="#pageone">转到页面一</a>
+  </div>
+
+  <div data-role="footer" data-theme="c">
+    <h1>页脚文本</h1>
+  </div>
+</div>  
+
+</body>
+</html>

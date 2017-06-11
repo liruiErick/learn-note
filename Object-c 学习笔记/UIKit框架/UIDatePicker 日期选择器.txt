@@ -1,0 +1,22 @@
+*获取日期选择器当前的日期和时间
+// 获取用户通过UIDatePicker设置的日期和时间
+NSDate *selected = [UIDatePicker对象 date];
+// 创建一个日期格式器
+NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+// 为日期格式器设置格式字符串
+[dateFormatter setDateFormat:@"yyyy年MM月dd日 HH:mm +0800"];
+// 使用日期格式器格式化日期、时间
+NSString *destDateString = [dateFormatter stringFromDate:selected];
+
+
+// 设置使用Count Down Timer倒计时模式
+UIDatePicker对象.datePickerMode = UIDatePickerModeCountDownTimer;
+
+// 获取该倒计时器的剩余时间，单位秒
+NSInteger leftSeconds = UIDatePicker对象.countDownDuration;
+
+// 修改UIDatePicker的剩余时间，单位秒
+UIDatePicker对象.countDownDuration = leftSeconds;
+
+// 禁用UIDatePicker控件和按钮
+UIDatePicker对象.enabled = NO;

@@ -1,0 +1,53 @@
+﻿* 创建精灵
+
+var sprite = new cc.Sprite(s_menuItem, c.rect(0, 0, 120, 50));
+// 第一个参数表示图片资源的引用
+// 第二个参数表示裁剪资源的矩形区域，或者可以通过如下方法进行设置
+sprite.setTextureRect(cc.rect(0, 0, 120, 50));
+
+// 通过纹理对象创建精灵
+var texture = cc.textureCache.addImage(s_menuItem);
+var sprite = new cc.Sprite(texture, c.rect(0, 0, 120, 50));
+sprite.texture; // 设置或返回精灵的纹理对象
+
+
+
+* 获取精灵的摄像机对象
+
+// 获取摄像机
+var cam = sprite.getCamera();
+cam.setEye(x, y, z);
+cam.setCenter(x, y, z);
+// 在使用摄像机前要检查当前环境是否支持"opengl"，并设置投影模式为3D
+director.setProjection(cc.Director.PROJECTION_3D);
+if ("opengl" in cc.sys.capabilities)
+
+
+
+* 为精灵设置颜色混合
+
+什么是颜色混合？
+简单来说就是将RGBA中的A,经行操作处理。具体一点，就是把某一像素位置原来的颜色和将要画上去的颜色，通过某种方式混在一起，从而实现特殊的效果。
+OpenGL 会把源颜色和目标颜色各自取出，并乘以一个系数（源颜色乘以的系数称为“源因子”，目标颜色乘以的系数称为“目标因子”），然后相加，这样就得到了新的颜 色。
+（也可以不是相加，新版本的OpenGL可以设置运算方式，包括加、减、取两者中较大的、取两者中较小的、逻辑运算等，但我们这里为了简单起见，不讨 论这个了）
+假设源颜色的四个分量（指红色，绿色，蓝色，alpha值）是(Rs, Gs, Bs,  As)，目标颜色的四个分量是(Rd, Gd, Bd, Ad)，又设源因子为(Sr, Sg, Sb, Sa)，目标因子为(Dr, Dg, Db,  Da)。
+则混合产生的新颜色可以表示为：(Rs*Sr+Rd*Dr, Gs*Sg+Gd*Dg, Bs*Sb+Bd*Db, As*Sa+Ad*Da)
+
+sprite.setBlendFunc(cc.ONE, cc.ZERO);
+// 有两个参数，前者表示源因子，后者表示目标因子。这两个参数可以是多种值，下面介绍比较常用的几种。
+cc.ZERO:			表示使用0.0作为因子，实际上相当于不使用这种颜色参与混合运算。
+cc.ONE:				表示使用1.0作为因子，实际上相当于完全的使用了这种颜色参与混合运算。
+cc.SRC_ALPHA:			表示使用源颜色的alpha值来作为因子。
+cc.DST_ALPHA:			表示使用目标颜色的alpha值来作为因子。
+cc.ONE_MINUS_SRC_ALPHA:		表示用1.0减去源颜色的alpha值来作为因子。
+cc.ONE_MINUS_DST_ALPHA:		表示用1.0减去目标颜色的alpha值来作为因子。
+
+
+
+
+
+
+
+
+
+

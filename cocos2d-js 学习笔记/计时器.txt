@@ -1,0 +1,39 @@
+﻿* 计时器
+
+在Cocos2d-JS中提供了三种Schedule，其中：
+node.schedule(callback, interval, repeat, delay); // 根据用户指定的参数定时执行
+
+里面四个参数对应的含义是：
+callback：调用的方法名
+interval：间隔多久再进行调用，单位秒
+repeat：重复的次数。默认为 cc.REPEAT_FOREVER（无限循环）
+delay：延迟多久再进行调用，单位秒
+
+node.scheduleOnce(callback, delay); // 该节点会在 delay 延迟之后调用一次 callback 方法
+
+node.scheduleUpdate(); // 该节点会每一帧都调用 update() 方法一次，并将与上一帧的时间差作为第一个参数传入，单位为秒
+
+node.unscheduleUpdate(); // 移除节点上的update计时器
+
+node.unschedule(callback); // 移除节点上调用callback的计时器
+
+node.unscheduleAllCallbacks(); // 移除节点上的全部计时器
+
+
+
+* 通过导演类设置计时器
+
+var scheduler = director.getScheduler(); // 获取全局计时器引用
+
+var priority = 0; // priority 0. default.设置优先级
+var paused = false; // not paused, queue it now.不暂停当前队列？
+scheduler.scheduleUpdateForTarget(node, priority, paused); // 为传入节点设置每帧计时器
+
+var interval = 0.25; // 间隔时间
+var repeat = cc.REPEAT_FOREVER; // 无限循环
+var delay = 2; // 2秒延迟;
+paused = false; // not paused. queue it now.
+scheduler.scheduleCallbackForTarget(node, this.callback, interval, repeat, delay, paused); // 为传入节点设置一个循环计时器
+scheduler.unscheduleAllCallbacksForTarget(node); // 删除传入节点上的所有计时器
+
+scheduler.unscheduleAllCallbacks(); // 通过导演删除所有计时器

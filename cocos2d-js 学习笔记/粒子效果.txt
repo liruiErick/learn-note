@@ -1,0 +1,23 @@
+﻿// 创建一个粒子烟花效果（默认粒子数量为1500）
+var emitter = new cc.ParticleFireworks();
+emitter.setTotalParticles(250); // 设置粒子数量
+emitter.texture = cc.textureCache.addImage("res/Images/fire.png");
+this.addChild(emitter);
+
+
+// 创建一个燃烧的太阳效果（默认粒子数量为350）
+var sun = new cc.ParticleSun();
+sun.texture = cc.textureCache.addImage(s_fire);
+sun.setTotalParticles(130);
+sun.setLife(0.6);
+sun.x = s.width - 32;
+sun.y = s.height - 32;
+this.addChild(sun);
+
+
+// 创建一个燃烧的火焰效果（默认粒子数量为300）
+var fire = new cc.ParticleFire();
+fire.texture = cc.textureCache.addImage(s_fire);
+fire.x = 80;
+fire.y = winSize.height / 2 - 50;
+this.addChild(fire);

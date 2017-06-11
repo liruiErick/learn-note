@@ -1,0 +1,36 @@
+﻿# Query String 模块
+
+var querystring = require('querystring');
+
+querystring 模块用于实现 URL 参数字符串与参数对象的互相转换，示例如下。
+
+querystring.parse('foo=bar&baz=qux&baz=quux&corge');
+/* =>
+{
+    foo: 'bar',
+    baz: ['qux', 'quux'],
+    corge: ''
+}
+*/
+
+querystring.stringify({
+    foo: 'bar',
+    baz: ['qux', 'quux'],
+    corge: ''
+});
+/* =>
+    'foo=bar&baz=qux&baz=quux&corge='
+*/
+
+这两个方法都支持3个参数
+第二个参数，可选，一个字符串，用于替换分隔符'&'。
+第三个参数，可选，一个字符串，用于替换'='。
+
+
+对字符串进行编码，这样就可以在所有的计算机上读取该字符串，该函数返回已编码字符串。
+querystring.escape("哈哈"); // 作用相当与 window.escape
+
+将已编码的字符串解码，返回已解码的字符串。
+querystring.unescape("%E5%93%88%E5%93%88"); // 作用相当与 window.unescape
+
+

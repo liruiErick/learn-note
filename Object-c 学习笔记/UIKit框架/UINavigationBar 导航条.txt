@@ -1,0 +1,176 @@
+﻿*UINavigationBar 导航条
+
+// 创建一个导航条
+UINavigationBar* navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0,20,320,44)];
+
+// 将导航条加入到视图
+[视图对象 addSubview:navbar];
+
+// 创建一个导航项
+UINavigationItem* navItem = [[UINavigationItem alloc] initWithTitle:@"导航条"];
+
+// 将导航项加入到导航条，该属性通过一个数组来添加导航项
+navBar.items = [NSArray arrayWithObject:navItem];
+
+// 创建一个导航项按钮，并绑定事件方法
+UIBarButtonItem* navBtn = [[UIBarButtonItem alloc]
+			initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+			target:self
+			action:@selector(方法名)];
+
+// 设置按钮文本为“完成”
+navItem.rightBarButtonItem.title = @"完成";
+
+// 将导航项按钮加入到导航项的右侧
+navItem.rightBarButtonItem = navBtn;
+
+// 移除导航项的右侧按钮
+navItem.rightBarButtonItem = nil;
+
+
+
+提供了如下方法和属性来管理UINavigationBar中的UINavigationItem：
+
+// 该方法用于将一个UINavigationItem压入UINavigationBar的栈中
+-(void)pushNavigationItem:(UINavigationItem *)navigationItem
+	animated:(BOOL);
+
+// 该方法用于将UINavigationBar栈顶的UINavigationItem弹出栈
+-(UINavigationItem *)popNavigationItemAnimated:(BOOL);
+
+// 同时为UINavigationBar设置多个UINavigationItem控件
+-(void)setItems:(NSArray *)
+	animated:(BOOL);
+
+items;//设置或返回UINavigationBar所包含的多个UIBarButtonItem控件组成的数组
+
+topItem;//只读属性，用于返回UINavigationBar栈中最顶层的UINavigationItem控件
+
+backItem;//只读属性，用于返回UINavigationBar栈中最顶层下面的UINavigationItem控件
+
+
+
+UINavigationItem也作为一个容器，它由标题、左边N个按钮、右边N个按钮组成，每个按钮都时一个UIBarButtonItem控件
+
+提供如下属性和方法来配置UINavigationItem：
+
+title;//设置或返回UIBarButtonItem的标题控件
+
+leftBarButtonItems;//设置或返回UINavigationItem左边的多个按钮组成的数组
+
+leftBarButtonItem;//设置或返回UINavigationItem左边的单个按钮
+
+rightBarButtonItems;//设置或返回UINavigationItem右边的多个按钮组成的数组
+
+rightBarButtonItem;//设置或返回UINavigationItem右边的单个按钮
+
+// 设置是否显示后退按钮
+-(void)setHidesBackButton:(BOOL)
+	animated:(BOOL);
+
+// 同时设置UINavigationItem左边的多个按钮
+-(void)setLeftBarButtonItems:(NSArray *)
+	animated:(BOOL);
+
+// 同时设置UINavigationItem左边的单个按钮
+-(void)setLeftBarButtonItem:(UIBarButtonItem *)
+	animated:(BOOL);
+
+// 同时设置UINavigationItem右边的多个按钮
+-(void)setRightBarButtonItems:(NSArray *)
+	animated:(BOOL);
+
+// 同时设置UINavigationItem右边的单个按钮
+-(void)setRightBarButtonItem:(UIBarButtonItem *)
+	animated:(BOOL);
+
+
+
+
+*UINavigationController 导航控制器
+
+// 创建一个导航控制器，并初始化根视图控制器
+UINavigationController* navController = [[UINavigationController alloc]
+		initWithRootViewController:UIViewController对象];
+		
+// 当一个UIViewController接受UINavigationController的管理后，该属性将会返回当前视图关联个导航项
+UIViewController对象.navigationItem;
+
+UINavigationController提供如下属性和方法来操作接受其管理的多个UIViewController
+
+topViewController;//只读属性，用于返回栈顶的UIViewController控件
+
+visibleVIewController;//只读属性，用于返回UINavigationController中当前可见页面的UIViewController
+
+viewControllers;//设置或返回UINavigationController管理的栈中所有的UIViewController
+
+// 为UINavigationController同时设置所有的UIViewController
+-(void)setViewControllers:(NSArray *)
+	animated:(BOOL);
+
+// 将指定的UIViewController压入UINavigationController管理的栈中
+-(void)pushViewController:(UIViewController *)
+	animated:(BOOL);
+
+// 弹出UINavigationController栈顶的UIViewController
+-(UIViewController *)popViewControllerAnimated:(BOOL);
+
+// 弹出UINavigationController栈中除了root UIViewController之外的所有UIViewController
+-(NSArray *)popToRootViewControllerAnimated:(BOOL);
+
+// 弹出指定的UIViewController
+-(NSArray *)popToViewController:(UIViewController *)
+	animated:(BOOL);
+
+
+
+UINavigationController提供如下属性和方法来配置导航条：
+
+navigationBar;//只读属性，返回UINavigationController管理的导航条
+
+navigationBarHidden;//设置或返回是否隐藏导航条
+
+// 设置是否隐藏导航条
+-(void)setNavigationBarHidden:(BOOL)
+	animated:(BOOL);
+
+
+
+UINavigationController提供如下属性和方法来配置工具条：
+
+toolbar;////只读属性，返回UINavigationController管理的工具条
+
+toolbarHidden;//设置或返回是否隐藏工具条
+
+// 设置是否隐藏工具条
+-(void)setToolbarHidden:(BOOL)
+	animated:(BOOL);
+
+
+
+*segue
+
+// 根据segue的唯一标识符触发指定的segue
+-(void)performSegueWithIdentifier:(NSString *)identifier
+	sender:(id)sender;
+
+// 当segue触发时，且将要从一个视图控制器跳转到下一个视图控制器时，将会自动调用该方法
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+
+segue.sourceViewController;//获取segue跳转前的视图控制器
+
+segue.destinationViewController;//获取segue跳转的目标视图控制器
+
+segue.identifier;//获取segue的唯一标识符
+
+
+
+
+
+
+
+
+
+
+
+

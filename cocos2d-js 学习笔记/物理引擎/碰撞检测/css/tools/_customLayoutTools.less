@@ -1,0 +1,373 @@
+@charset "UTF-8";
+
+/////////////////////////////////// 自定义布局工具 ///////////////////////////////////
+
+// 图片文本两栏自适应
+.img-txt(@img_width, @img_height, @padding_left: 0.5em) {
+	>img:only-of-type {
+		float: left;
+		.sz(@img_width, @img_height);
+	}
+	>img:only-of-type~* {
+		display: block;
+		width: auto;
+		padding-left: @padding_left;
+		margin-left: @img_width;
+	}
+}
+// 文本图片两栏自适应
+.txt-img(@img_width, @img_height, @padding_right: 0.5em) {
+	>img:only-of-type {
+		float: right;
+		.sz(@img_width, @img_height);
+	}
+	>img:only-of-type~* {
+		display: block;
+		width: auto;
+		padding-right: @padding_right;
+		margin-right: @img_width;
+	}
+}
+
+
+
+// 左栏定宽，右栏自适应（高度100%时，两栏不可以有上下内边距和边框）
+// @h_offset 参数表示左右内边距+边框的值
+.col2(@width, @height: auto, @h_offset: 0) when not (@width = abs) {
+	>:first-child {
+		float: left;
+		.setWidth(@width);
+		height: @height;
+	}
+	>:nth-child(2) {
+		display: block;
+		.sz(auto, @height);
+		margin-left: @width + @h_offset;
+		overflow: hidden; //左栏的浮动有时会导致右栏中的伪元素折行（比如清除浮动时产生的伪元素），即折行到与左栏底部平行的位置，导致整个父元素被撑开，这可能是一个bug，因此需要设置右栏不与浮动元素重叠
+	}
+}
+// 如果是有上下内边距和边框，且需要高度自适应，可以使用绝对定位的方法
+.col2(abs, @width, @h_offset: 0) {
+	>:first-child {
+		.fit(0 auto 0 0);
+		.setWidth(@width);
+	}
+	>:nth-child(2) {
+		.fit(0 0 0 @width + @h_offset);
+	}
+}
+// 右栏定宽，左栏自适应
+// 如果不适用绝对定位的方法，那么由于固定栏为浮动元素，因此右栏在文档树中必须位于左栏前面
+.col2-r(@width, @height: auto, @h_offset: 0) when not (@width = abs) {
+	>:first-child {
+		float: right;
+		.setWidth(@width);
+		height: @height;
+	}
+	>:nth-child(2) {
+		display: block;
+		.sz(auto, @height);
+		margin-right: @width + @h_offset;
+		overflow: hidden;
+	}
+}
+.col2-r(abs, @width, @h_offset: 0) {
+	>:first-child {
+		.fit(0 @width + @h_offset 0 0);
+	}
+	>:nth-child(2) {
+		.fit(0 0 0 auto);
+		.setWidth(@width);
+	}
+}
+
+
+
+// 三栏自适应（只能使用绝对定位的方法）
+.col3(@left_width, @right_width, @left_h_offset: 0, @right_h_offset: 0) {
+	>:first-child {
+		.fit(0 auto 0 0);
+		.setWidth(@left_width);
+	}
+	>:nth-child(2) {
+		.fit(0 @right_width + @right_h_offset 0 @left_width + @left_h_offset);
+	}
+	>:nth-child(3) {
+		.fit(0 0 0 auto);
+		.setWidth(@right_width);
+	}
+}
+
+
+
+// 垂直列表（IE6-7下计算结果会有误差）
+.list(@height, @item_height, @row_count: floor(unit(@height / @item_height))) when not(@height = jy) {
+	.fix;
+	@spacing: (@height - (@item_height * @row_count)) / (@row_count + 1);
+	@half_spacing: @spacing / 2;
+	height: @height;
+	>:nth-child(n) { margin-top: @spacing; }
+}
+.list(jy, @height, @item_height, @row_count: floor(unit(@height / @item_height))) {
+	.fix;
+	@spacing: (@height - (@item_height * @row_count)) / (@row_count - 1);
+	@half_spacing: @spacing / 2;
+	height: @height + @spacing;
+	margin-top: -@spacing;
+	>:nth-child(n) { margin-top: @spacing; }
+}
+
+
+
+// 浮动列表（虽然为IE6做了hack，但是由于IE6会将所有小数值转化为整数，因此表现结果会有误差）
+.float-list(@width, @item_width, @column_count: floor(unit(@width / @item_width))) when not(@width = jy) {
+	.cf;
+	@spacing: (@width - (@item_width * @column_count)) / (@column_count + 1);
+	@half_spacing: @spacing / 2;
+	width: @width;
+	>:nth-child(n) {
+		float: left;
+		margin-left: @spacing;
+		_margin-left: @half_spacing;
+		_margin-right: @half_spacing;
+	}
+}
+.float-list(jy, @width, @item_width, @column_count: floor(unit(@width / @item_width))) {
+	.cf;
+	@spacing: (@width - (@item_width * @column_count)) / (@column_count - 1);
+	width: @width;
+	>:nth-child(n) {
+		float: left;
+		margin-right: @spacing;
+	}
+	>:nth-child(@{column_count}n) { margin-right: 0; }
+}
+
+
+
+// 头部标题
+.header-init(@left_size, @right_size, @left_color, @right_color) {
+	display: block;
+	width: auto;
+	height: max(@left_size, @right_size);
+	position: relative;
+	
+	>:not(:only-child) { position: absolute; }
+	>:nth-child(n) {
+		width: 44%;
+		line-height: 100%;
+		.of3p;
+	}
+	>:first-child {
+		.ftsz(@left_size, left);
+		color: @left_color;
+		font-weight: bold;
+	}
+	>:nth-child(2) {
+		.ftsz(@right_size, right);
+		color: @right_color;
+		& a { color: inherit; }
+	}
+}
+.header(@left_size: 1.3em, @right_size: .9em, @left_color: #000, @right_color: #666) when (isem(@left_size)) and (isem(@right_size)) {
+	.header-init(@left_size, @right_size, @left_color, @right_color);
+	padding: .6em 1em;
+	>:first-child:not(:only-child) { left: 1 / @left_size; bottom: .6 / @left_size; }
+	>:nth-child(2):not(:only-child) { right: 1 / @right_size; bottom: .6 / @right_size; }
+}
+.header(@left_size: 1.3em, @right_size: .9em, @left_color: #000, @right_color: #666) when (ispixel(@left_size)) and (ispixel(@right_size)) {
+	.header-init(@left_size, @right_size, @left_color, @right_color);
+	padding: 8px 14px;
+	>:first-child:not(:only-child) { left: 14px; bottom: 8px; }
+	>:nth-child(2):not(:only-child) { right: 14px; bottom: 8px; }
+}
+.header(jy, @left_size: 1.3em, @right_size: .9em, @left_color: #000, @right_color: #666) when (isem(@left_size)) and (isem(@right_size)) {
+	.header-init(@left_size, @right_size, @left_color, @right_color);
+	padding: 0 1em;
+	>:first-child:not(:only-child) { left: 0; bottom: .6 / @left_size; }
+	>:nth-child(2):not(:only-child) { right: 0; bottom: .6 / @right_size; }
+}
+.header(jy, @left_size: 1.3em, @right_size: .9em, @left_color: #000, @right_color: #666) when (ispixel(@left_size)) and (ispixel(@right_size)) {
+	.header-init(@left_size, @right_size, @left_color, @right_color);
+	padding: 0 14px;
+	>:first-child:not(:only-child) { left: 0; bottom: 8px; }
+	>:nth-child(2):not(:only-child) { right: 0; bottom: 8px; }
+}
+
+
+
+// 导航
+.nav-style(@link_color, @line_height, @height) {
+	height: @height;
+	>:nth-child(n) {
+		color: @link_color;
+		height: 100%;
+		line-height: @line_height;
+		float: left;
+		text-align: center;
+	}
+}
+.nav-init(@border_style, @link_color, @width, @item, @line_height, @height) when (@item=auto) and (iscolor(@border_style)) {
+	.nav-style(@link_color, @line_height, @height);
+	.inbl;
+	width: @width;
+	>:nth-child(n) {
+		padding: 0 1em;
+		width: @item;
+		white-space: nowrap;
+	}
+}
+.nav-init(@border_style, @link_color, @width, @item, @line_height, @height) when (@item=auto) and not (iscolor(@border_style)) {
+	.nav-style(@link_color, @line_height, @height);
+	.inbl;
+	width: @width;
+	>:nth-child(n) {
+		width: @item;
+		white-space: nowrap;
+	}
+	a { padding: 0 1em; }
+}
+.nav-init(@border_style, @link_color, @width, @item, @line_height, @height) when (ispixel(@item)), (isem(@item)), (ispercentage(@item)) {
+	.nav-style(@link_color, @line_height, @height);
+	.inbl;
+	width: @width;
+	>:nth-child(n) { width: @item; .of3p; }
+}
+.nav-init(@border_style, @link_color, @width, @item, @line_height, @height) when (ispixel(@width)) and (isnumber(@item)) and not(ispixel(@item)) and not(isem(@item)) and not(ispercentage(@item)) {
+	.nav-style(@link_color, @line_height, @height);
+	display: block;
+	width: @width;
+	.clear;
+	>:nth-child(n) {
+		.of3p;
+		.box-sizing(border-box); //由于使用的IE9.js来为IE7浏览器兼容该属性，所以宽度值如果不是具体像素值，则会产生误差，因此限定值必须为具体像素值
+		width: @width / @item;
+		@media screen and (min--moz-device-pixel-ratio:0) {
+			width: (@width - 1px) / @item; //火狐下会出现计算误差导致最后一项折行，因此需要先减去1px	
+		}
+	}
+}
+.nav-init(@border_style, @link_color, @width, @item, @line_height, @height) when not (iskeyword(@width)) and not (ispixel(@width)) and (isnumber(@item)) and not(ispixel(@item)) and not(isem(@item)) and not(ispercentage(@item)) {
+	.nav-style(@link_color, @line_height, @height);
+	display: block;
+	width: @width;
+	.clear;
+	>:nth-child(n) {
+		.of3p;
+		.box-sizing(border-box); //由于使用的IE9.js来为IE7浏览器兼容该属性，所以宽度值如果不是具体像素值，则会产生误差，因此限定值必须为具体像素值
+		width: 100% / @item;
+	}
+}
+.nav(@border_style: #666, @link_color: #666, @width: auto, @item: auto, @line_height: 100%, @height: auto) when (iscolor(@border_style)) {
+	.nav-init(@border_style, @link_color, @width, @item, @line_height, @height);
+	>:nth-child(n) {
+		border-left: 1px solid @border_style;
+		&:first-child { border-left-style: none; }
+	}
+	a { .acl(@link_color); }
+}
+.nav(@border_style, @link_color, @width: auto, @item: auto, @line_height: 100%, @height: auto) when not (iscolor(@border_style)) {
+	.nav-init(@border_style, @link_color, @width, @item, @line_height, @height);
+	a {
+		display: block;
+		_display: inline-block; //IE6下块元素宽度自动时会撑大宽度同样是自动的非块父元素（也包括浮动或者绝对定位的块元素），因此这里需要hack
+		height: 100%;
+		.acl(@link_color, none);
+	}
+}
+
+
+
+// 广告（IE6下显示不正确，如果需要兼容IE6，请用GIF动态图片替换）
+// html 格式如下：
+// <div class="ad">
+// 	<object data="ad/flash.swf" width="100%" type="application/x-shockwave-flash">
+// 		<param name="src" value="ad/flash.swf">
+// 		<param name="wmode" value="opaque">
+// 		<param name="quality" value="high">
+// 	</object>
+// 	<a href="###"></a>
+// </div>
+.ad(fl, @width, @height) {
+	display: block;
+	.sz(@width, @height);
+	margin: 3px auto;
+	position: relative;
+	
+	>:nth-child(n) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		.sz(100%);
+		z-index: 0;
+	}
+	a {
+		display: block;
+		z-index: 1;
+		*background: #fff;
+		*filter: alpha(opacity=0);
+	}
+}
+.ad(@width, @height) {
+	display: block;
+	.sz(@width, @height);
+	margin: 3px auto;
+	img { .sz(100%); }
+}
+
+
+
+// 滚动横幅
+.banner(@width, @height) { //固定宽高
+	display: block;
+	.sz(@width, @height);
+	overflow: hidden;
+	
+	>:first-child {
+		display: block;
+		.nosel;
+		.sz(1000%, 100%);
+		margin: 0;
+		
+		>:nth-child(n) {
+			float: left;
+			.sz(10%, 100%);
+			
+			a {
+				display: block;
+				.sz(auto, 100%);
+			}
+			
+			img { .sz(100%); }
+		}
+	}
+}
+.banner(@height: auto) { //自适应宽高
+	.sz(100%, @height);
+	overflow: hidden;
+	
+	>:first-child {
+		display: block;
+		.nosel;
+		.sz(1000%, @height);
+		.clear;
+		*font-size: 0; //IE7下容器会多出1个字的高度
+		
+		>:nth-child(n) {
+			float: left;
+			.sz(10%, @height);
+			
+			a {
+				display: block;
+				.sz(auto, @height);
+			}
+			
+			img {
+				display: block; //img 默认为 inline-block，在父容器高度为 auto 时，会使父容器高度多出至少 3px。
+				width: 100%;
+				min-height: @height;
+			}
+		}
+	}
+}
+
