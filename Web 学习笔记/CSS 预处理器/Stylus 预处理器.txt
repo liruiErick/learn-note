@@ -1,0 +1,53 @@
+文档：
+http://stylus-lang.com/docs/bifs.html
+
+中文文档：
+http://www.zhangxinxu.com/jq/stylus/functions.php
+
+stylus 没有明确的变量声明要求，但是为了便于阅读，推荐使用 `$` 前缀定义变量
+
+#### 运算符
+
+下表运算符优先级，从最高到最低：
+[]
+! ~ + -
+is defined
+** * / %
++ -
+... ..
+<= >= < >
+in
+== is != is not isnt
+is a
+&& and || or
+?:
+= := ?= += -= *= /= %=
+not
+if unless
+
+除了类似 js 的运算符以外，还有以下运算符别名
+`==` 也可以写作 `is`
+`!=` 也可以写作 `is not` 或者 `isnt`
+`!$var` 也可以写作 `not $var`
+`&&` 也可以写作 `and`
+`||` 也可以写作 `or`
+`typeof($var) == 'string'` 也可以写作 `$var is a 'string'`
+`unit($var, '%')` 也可以写作 `($var)%`
+`s('%s and %s', $var, $var2)` 也可以写作 `'%s and %s' % ($var $var2)`
+`$color is defined ? $color : white` 也可以写作 `color := white` 或者 `color ?= white`
+
+特殊运算符：
+1..5 // => 1 2 3 4 5
+1...5 // => 1 2 3 4
+指数操作符：
+2 ** 8 // => 256
+
+判断变量是否定义
+$color is defined
+
+
+## 目前存在的问题
+1）不具备 merge 能力
+2）语法过于松散，定义的 mixin 如果与 CSS 属性同名，会导致本来只想正常书写 CSS 属性的时候却调用了同名的 mixin，且没有直接输出 CSS 属性的解决方案。
+3）传参单一，当参数中包含“,”时，会被当做两个参数，直接导致多参数的 mixin 就无法传递带“,”的参数值。
+
