@@ -107,6 +107,18 @@ h2 {
 在引号中引用变量需要通过 @{name} 来调用
 @base_url = 'http://www.domainname.com';
 background-image: url("@{base_url}/images/background.png");
+格式化函数
+%(string, arguments ...)
+Example:(%a 与 %d 好像没有区别)
+format-a-d: %("repetitions: %a file: %d", 1 + 2, "directory/file.less");
+// => format-a-d: "repetitions: 3 file: "directory/file.less"";
+format-a-d-upper: %('repetitions: %A file: %D', 1 + 2, "directory/file.less");
+// => format-a-d-upper: "repetitions: 3 file: %22directory%2Ffile.less%22";
+format-s: %("repetitions: %s file: %s", 1 + 2, "directory/file.less");
+// => format-s: "repetitions: 3 file: directory/file.less";
+format-s-upper: %('repetitions: %S file: %S', 1 + 2, "directory/file.less");
+// => format-s-upper: "repetitions: 3 file: directory%2Ffile.less";
+
 
 
 * LESS中的数组
@@ -249,7 +261,7 @@ LESS的条件表达式同样支持 AND（并且）和 OR（或者）以及 NOT�
 .math (@a) when (@a > 10) and (@a < 20) { 
 	background-color: red; 
 } 
-.math (@a) when (@a < 10)，(@a > 20) {  /* “,”表示或者 */
+.math (@a) when (@a < 10), (@a > 20) {  /* “,”表示或者 */
 	background-color: blue; 
 } 
 .math (@a) when not (@a = 10)  { 

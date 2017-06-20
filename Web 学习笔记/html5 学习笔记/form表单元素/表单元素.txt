@@ -58,16 +58,17 @@ multiple 属性规定 <select> 可同时选择多个选项。
 select.options[0] = new Option(text, value);
 
 select对象有下列属性和方法
-disabled; //设置或返回是否应禁用下拉列表。
-form; //返回对包含下拉列表的表单的引用。
-id; //设置或返回下拉列表的 id。
-length; //返回下拉列表中的选项数目。将该属性设为0，可以清空 option 选项。
-multiple; //设置或返回是否选择多个项目。
-name; //设置或返回下拉列表的名称。
-selectedIndex; //设置或返回下拉列表中被选项目的索引号。若允许多重选择，则仅会返回第一个被选选项的索引号。
-size; //设置或返回下拉列表中的可见行数。
-tabIndex; //设置或返回下拉列表的 tab 键控制次序。
-type; //返回下拉列表的表单类型。
+disabled //设置或返回是否应禁用下拉列表。
+form //返回对包含下拉列表的表单的引用。
+id //设置或返回下拉列表的 id。
+vlaue // 被选中下拉选项的 value。
+length //返回下拉列表中的选项数目。将该属性设为0，可以清空 option 选项。
+multiple //设置或返回是否选择多个项目。
+name //设置或返回下拉列表的名称。
+selectedIndex //设置或返回下拉列表中被选项目的索引号。若允许多重选择，则仅会返回第一个被选选项的索引号。
+size //设置或返回下拉列表中的可见行数。
+tabIndex //设置或返回下拉列表的 tab 键控制次序。
+type //返回下拉列表的表单类型。
 
 add(option, before); //向下拉列表添加一个选项。
 // option 必需，是 option 或 optgroup 元素
@@ -77,15 +78,15 @@ blur(); //从下拉列表移开焦点。
 focus(); //在下拉列表上设置焦点。
 
 option对象有下列属性
-defaultSelected; //返回 selected 属性的默认值。
-disabled; //设置或返回选项是否应被禁用。
-form; //返回对包含该元素的 <form> 元素的引用。
-id; //设置或返回选项的 id。
-index; //返回下拉列表中某个选项的索引位置。
-label; //设置或返回选项的标记 （仅用于选项组）。
-selected; //设置或返回 selected 属性的值。
-text; //设置或返回某个选项的纯文本值。
-value; //设置或返回被送往服务器的值
+defaultSelected //返回 selected 属性的默认值。
+disabled //设置或返回选项是否应被禁用。
+form //返回对包含该元素的 <form> 元素的引用。
+id //设置或返回选项的 id。
+value //设置或返回选项的值。
+text //设置或返回选项的纯文本值。
+index //返回下拉列表中某个选项的索引位置。
+label //设置或返回选项的标记 （仅用于选项组）。
+selected //设置或返回 selected 属性的值。
 
 注意，在Webkit以及IE浏览器中，select 内容无法通过 css 中的 text-align: right 来实现右对齐
 解决方法：
