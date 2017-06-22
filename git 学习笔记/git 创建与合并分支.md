@@ -76,3 +76,31 @@ no changes added to commit (use "git add" and/or "git commit -a")
 $ git branch -d my-branch
 ```
 
+#### 远程分支处理
+
+查看所有远程分支
+
+```shell
+$ git branch -r
+```
+
+拉取远程分支并创建本地分支。
+
+方式一，该方式会在本地新建分支，但是不会自动切换到该本地分支，需要手动checkout。
+
+```shell
+$ git fetch origin {远程分支名}:{本地分支名}
+```
+
+方式二，该方式会在本地新建分支，并自动切换到该本地分支。
+
+```shell
+$ git checkout -b {本地分支名} origin/{远程分支名}
+```
+
+将本地分支推送到远程仓库
+
+```shell
+$ git push origin {本地分支名}:{远程分支名}
+```
+
