@@ -1,5 +1,7 @@
 ﻿// 添加一个网页小图标
-<link rel="shortcut icon" href="img/icon.png">
+<link rel="icon" href="img/favicon.ico"><!-- IE11 -->
+<link rel="icon" type="image/x-icon" href="img/favicon.ico"><!-- IE9 -->
+<link rel="shortcut icon" href="img/favicon.ico">
 // 添加一个放置在 apple 设备主屏幕上的快捷图标
 <link rel="apple-touch-icon" href="img/apple-icon.png">
 // 添加一个放置在 android 设备主屏幕上的快捷图标

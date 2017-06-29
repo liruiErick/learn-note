@@ -1,9 +1,0 @@
-### 解决连续跳转到同一组件，但是数据无法重新初始化的问题
-
-经过和 vue-router 开发人员的沟通发现，原来 <router-view> 有一个类似 v-for 中 :key 的机制。
-因此可以通过一下方式，在参数不同但组件相同时，强制 router 重载组件。
-
-```html
-<router-view :key="$route.fullPath"></router-view>
-```
-注意，只需要在最顶层的 <router-view> 上添加即可，无需在嵌套路由中的每一个 <router-view> 上添加。

@@ -40,9 +40,9 @@ Object.defineProperty(obj.prototype, "customProperty", {
 
 // 创建一个对象时直接设置 getter\setter
 var obj = {
-	value: 1,
-	get val() { return this.val; },
-	set val(v) { this.val = v; }
+	_value: 1,
+	get value() { return this._value; },
+	set value(v) { this._value = v; }
 };
 
 
