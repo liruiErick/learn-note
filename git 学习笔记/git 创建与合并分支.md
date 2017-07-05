@@ -72,8 +72,22 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 #### 删除分支
 
+删除本地分支
+
 ```shell
 $ git branch -d my-branch
+```
+
+强制删除本地分支
+
+```shell
+$ git branch -D my-branch
+```
+
+删除远程分支（冒号前面的空格不能少，原理是把一个空分支push到server上，相当于删除该分支）
+
+```shell
+$ git push origin :my-branch
 ```
 
 #### 远程分支处理
@@ -102,5 +116,16 @@ $ git checkout -b {本地分支名} origin/{远程分支名}
 
 ```shell
 $ git push origin {本地分支名}:{远程分支名}
+```
+
+#### 放弃本地修改，强制更新
+
+`git fetch` 只是下载远程的库的内容，不做任何的合并
+
+`git reset` 把HEAD指向刚刚下载的最新的版本
+
+```shell
+$ git fetch --all
+$ git reset --hard origin/{远程分支名}
 ```
 
