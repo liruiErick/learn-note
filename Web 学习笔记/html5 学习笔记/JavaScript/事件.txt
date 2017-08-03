@@ -43,7 +43,7 @@ detachEvent(eventName, handle); //IE8.0及其以下版本使用该方法
 
 // 新建一个事件，必须分为两步写，否则会报错：
 var evt = document.createEvent("HTMLEvents"); //经测试，"Events" 与 "Event" 同样可以正常创建事件。
-evt.initEvent(eventType,canBubble,cancelable); //IE8及以下浏览器不支持该方法。IE9及以上浏览器中，这三个参数都是必填项，否则报错。
+evt.initEvent(eventType, canBubble, cancelable); //IE8及以下浏览器不支持该方法。IE9及以上浏览器中，这三个参数都是必填项，否则报错。
 // eventType   字符串值，事件的类型。
 // canBubble   事件是否冒泡。
 // cancelable  是否可以用 preventDefault() 方法取消事件。

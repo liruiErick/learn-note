@@ -1,4 +1,4 @@
-## Babel 按需加载
+# Babel 按需加载
 
 #### 一般情况下引入UI框架
 
@@ -31,7 +31,7 @@ Vue.component(Button.name, Button);
 
 // Antd UI
 import Button from 'antd/lib/button';
-import 'antd/lib/button/style';
+import 'antd/lib/button/style.css';
 ```
 
 #### 按需加载
@@ -97,19 +97,19 @@ import { Button } from 'antd';
 
 其实插件一共做了两件事：
 
-- 将结构导入转换为直接导入
+- 将解构导入转换为直接导入
 - 自动引入相应的 CSS 文件
 
 例如：
 
 ```js
-import { Button } from 'antd'; // 实际上，结构导入仍然会加载全部库文件
+import { Button } from 'antd'; // 实际上，解构导入仍然会加载全部库文件
 ```
 
 转换为
 
 ```js
 var Button = require('antd/lib/button'); // 只有直接导入才会被按需加载
-require('antd/lib/button/style');
+require('antd/lib/button/style.css');
 ```
 
