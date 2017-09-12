@@ -46,6 +46,11 @@ npm install
 npm install --production
 安装当前目录package.json文件中配置的dependencies模块
 
+#### 安装原模块的某个 Fork 版本
+npm install <Fork所有人>/<模块>
+Example:
+npm install baijunjie/react-native-search-bar
+
 #### 安装本地的模块文件
 npm install <tarball file>
 Example:
@@ -178,3 +183,4 @@ npm install --registry=https://registry.npm.taobao.org
 3) $ npm init 创建 package.json
 4) $ npm adduser / $ npm login 添加或者登陆 npm 账户
 5) $ npm publish 发布项目  
+6) $ npm --force unpublish [包名] 删除项目  

@@ -6,7 +6,7 @@ let 用于声明只在块作用于内有效的变量
 { let a = 10; }
 ```
 
-const 用于声明常量（常量不可修改，在声明后再赋值就会报错）
+const 用于声明常量（常量不可修改，在声明后再赋值就会报错，同样只在块作用于内有效）
 
 ```js
 onst PI = 3.1415;
@@ -387,6 +387,22 @@ MyTestableClass.isTestable // true
 @testable(false)
 class MyClass {}
 MyClass.isTestable // false
+```
+
+**注意**，类修器如果有一个为 `true` 的返回值，那么该值将会替换到被修饰的类。
+
+```js
+function testable(target) {
+  return class Child extends target {
+    static isTestable = true
+    isTestable = true
+  };
+}
+
+@testable
+class Parent {}
+// 等同于
+class Child {}
 ```
 
 修饰器不仅可以修饰类，还可以修饰类的属性。
