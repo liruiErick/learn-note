@@ -68,7 +68,7 @@ npm install <folder>
 npm install <name> [–save|–save-dev|–save-optional]
 其中：
 添加–save 参数安装的模块的名字及其版本信息会出现在package.json的dependencies选项中（简写 -S）
-添加–save-dev 参数安装的模块的名字及其版本信息会出现在package.json的devDependencies选项中（简写 -DD）
+添加–save-dev 参数安装的模块的名字及其版本信息会出现在package.json的devDependencies选项中（简写 -D）
 添加–save-optional 参数安装的模块的名字及其版本信息会出现在package.json的optionalDependencies选项中
 
 #### 安装模块的config的tag配置中含有指定tag的版本
