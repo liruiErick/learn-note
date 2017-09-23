@@ -17,7 +17,7 @@ Object.defineProperty(obj, "d", {value: 4, enumerable: false});
 Object.keys(obj); //返回所有直接对该对象定义的可枚举的属性键["a", "b", "c"]
 Object.getOwnPropertyNames(obj); //返回所有直接对该对象定义的属性键（包含不可枚举的属性）["a", "b", "c", "d"]
 
-var b2 = [];
+var obj2 = [];
 for (var i in obj) obj2.push(i); //["a", "b", "c", "e"]，包含直接对该对象定义的可枚举的属性键以及原形链中继承的可枚举的属性键
 
 
@@ -143,7 +143,7 @@ obj.propertyIsEnumerable("name"); //返回一个布尔值，表示"name"属性�
 
 Object.is(a, b); // 比较 a 与 b 是否严格相等。与 === 的不同之处在于：一是+0不等于-0，二是NaN等于自身。
 
-Object.assign(target, source1, source2); // 对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）。
+Object.assign(target, source1, source2); // 对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（会改变 target），同时返回目标对象。
 // 但是只能做到浅拷贝。
 // 相当于 jQuery.extend(target, source1, source2);
 // 用结构运算符表示为 let target = { ...target, ...source1, ...source2 };
