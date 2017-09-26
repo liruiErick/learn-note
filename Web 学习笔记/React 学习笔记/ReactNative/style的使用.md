@@ -241,10 +241,10 @@ alignSelf
 #### 阴影
 
 ```js
-shadowColor
-shadowOffset
-shadowOpacity
-shadowRadius
+shadowColor // 阴影色
+shadowOffset // 阴影偏移量，值为一个对象 { width: 0, height: 2 }，实际为 x,y 的偏移
+shadowOpacity // 阴影透明度
+shadowRadius // 阴影羽化度
 elevation // 安卓专用
 ```
 
