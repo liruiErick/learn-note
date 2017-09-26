@@ -155,7 +155,7 @@ fontSize // 字体大小
 fontStyle // 字体样式，正常，倾斜等，值为 enum('normal', 'italic')
 fontWeight // 字体粗细，值为 enum("normal", 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
 letterSpacing // 字符间隔
-lineHeight // 行高
+lineHeight // 行高，只能设置具体像素值
 textAlign // 字体对齐方式，值为 enum("auto", 'left', 'right', 'center', 'justify')
 textDecorationLine // 貌似没效果，字体修饰，上划线，下划线，删除线，无修饰，值为enum("none", 'underline', 'line-through', 'underline line-through')
 textDecorationStyle // enum("solid", 'double', 'dotted', 'dashed') 貌似没效果，修饰的线的类型
