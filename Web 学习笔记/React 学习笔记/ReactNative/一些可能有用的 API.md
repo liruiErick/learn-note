@@ -37,9 +37,9 @@ import { Keyboard } from 'react-native';
 
 **坑**
 
-> Android 可能对 `keyboardWillShow` 监听不到。
+> 多行输入框获取焦点事件有一定延迟，会在 `keyboardWillShow` 事件之后才触发获取焦点事件，也是由于这个原因，在单行输入框通过键盘上的`下一项`按钮切换到多行输入框的时候会先触发`keyboardWillHide`和`keyboardDidHide`再触发`keyboardWillShow`和`keyboardDidShow`。
 >
-> 多行输入框获取焦点事件有一定延迟，会在 `keyboardWillShow` 事件之后才触发获取焦点事件，也是由于这个原因，在单行输入框通过键盘上的`下一项`按钮切换到多行输入框的时候会先触发`keyboardWillHide`再触发`keyboardWillShow`和`keyboardDidShow`
+> 如果把`android:windowSoftInputMode`设置为`adjustResize`或是`adjustNothing`，则在Android上只有`keyboardDidShow`和`keyboardDidHide`事件有效。
 
 **手动关闭键盘**
 

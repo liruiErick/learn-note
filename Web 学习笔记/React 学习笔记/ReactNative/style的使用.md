@@ -124,6 +124,8 @@ backgroundColor
 
 #### 宽高
 
+React Native 中的盒模型为边框盒，也就是说宽高包含 `padding` 和 `border`。
+
 ```js
 width 
 minWidth
