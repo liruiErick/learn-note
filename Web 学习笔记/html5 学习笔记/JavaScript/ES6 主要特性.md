@@ -916,7 +916,7 @@ getJSON("ajax/test.json")
 
 注意，`catch`方法返回的还是一个 Promise 对象，因此后面还可以接着调用`then`方法。
 
-如果第一个`catch`没有返回信息，那么后续的`catch`将不会执行。但是后续的`then`反而会执行，如果第一个`catch`又返回值，那么之后的`then`在执行时会获取到这个值。如果想让后面的`catch`执行，那么第一个`catch`必须返回一个 `Promise.reject()`。
+如果第一个`catch`没有返回信息，那么后续的`catch`将不会执行。但是后续的`then`反而会执行，如果第一个`catch`有返回值，那么之后的`then`在执行时会获取到这个值。如果想让后面的`catch`执行，那么第一个`catch`必须返回一个 `Promise.reject()` 或者 `new Promise()`。
 
 #### Promise.all() 
 
