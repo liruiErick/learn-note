@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>CSS3 旋转进度条</title>
+<style>
+.arc {
+	position: absolute;
+	left: 300px;
+	top: 100px;
+	width: 100px;
+	height: 100px;
+	border: 10px solid blue;
+	border-radius: 50%;
+	border-left-color: green;
+	border-top-color: green;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.arc:after,
+.arc:before {
+	content: "";
+	position: absolute;
+	left: -10px;
+	top: -10px;
+	width: 100px;
+	height: 100px;
+	z-index: 1;
+	border: 10px solid green;
+	border-radius: 50%;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+}
+.arc:after {
+	border-left-color: blue;
+	border-top-color: blue;
+}
+.arc.run {
+	-webkit-animation: run 10s linear infinite;
+	animation: run 10s linear infinite;
+}
+.arc.run:before {
+	-webkit-animation: before 10s linear infinite;
+	animation: before 10s linear infinite;
+}
+.arc.run:after {
+	-webkit-animation: after 10s linear infinite;
+	animation: after 10s linear infinite;
+}
+@-webkit-keyframes run {
+0% {
+	border-left-color: green;
+	border-top-color: green;
+	border-right-color: blue;
+	border-bottom-color: blue;
+}
+50% {
+	border-left-color: green;
+	border-top-color: green;
+	border-right-color: blue;
+	border-bottom-color: blue;
+}
+50.01% {
+	border-left-color: blue;
+	border-top-color: blue;
+	border-right-color: green;
+	border-bottom-color: green;
+}
+100% {
+	border-left-color: blue;
+	border-top-color: blue;
+	border-right-color: green;
+	border-bottom-color: green;
+}
+}
+@-webkit-keyframes before {
+0% {
+	border-left-color: green;
+	border-top-color: green;
+	-webkit-transform:rotate(0deg);
+}
+25% {
+	-webkit-transform:rotate(180deg);
+}
+50% {
+	border-left-color: green;
+	border-top-color: green;
+	-webkit-transform:rotate(180deg);
+}
+50.01% {
+	border-left-color: blue;
+	border-top-color: blue;
+	-webkit-transform:rotate(0deg);
+}
+75% {
+	-webkit-transform:rotate(180deg);
+}
+100% {
+	border-left-color: blue;
+	border-top-color: blue;
+	-webkit-transform:rotate(180deg);
+}
+}
+@-webkit-keyframes after {
+0% {
+	z-index:1;
+	border-left-color: blue;
+	border-top-color: blue;
+	-webkit-transform:rotate(0deg);
+}
+25% {
+	z-index:1;
+	-webkit-transform:rotate(0deg);
+}
+25.01% {
+	z-index:0;
+	-webkit-transform:rotate(0deg);
+}
+50% {
+	z-index:0;
+	border-left-color: blue;
+	border-top-color: blue;
+	-webkit-transform:rotate(180deg);
+}
+50.01% {
+	z-index:1;
+	border-left-color: green;
+	border-top-color: green;
+	-webkit-transform:rotate(0deg);
+}
+75% {
+	z-index:1;
+	-webkit-transform:rotate(0deg);
+}
+75.01% {
+	z-index:0;
+	-webkit-transform:rotate(0deg);
+}
+100% {
+	z-index:0;
+	border-left-color: green;
+	border-top-color: green;
+	-webkit-transform:rotate(180deg);
+}
+}
+@keyframes run {
+0% {
+	border-left-color: green;
+	border-top-color: green;
+	border-right-color: blue;
+	border-bottom-color: blue;
+}
+50% {
+	border-left-color: green;
+	border-top-color: green;
+	border-right-color: blue;
+	border-bottom-color: blue;
+}
+50.01% {
+	border-left-color: blue;
+	border-top-color: blue;
+	border-right-color: green;
+	border-bottom-color: green;
+}
+100% {
+	border-left-color: blue;
+	border-top-color: blue;
+	border-right-color: green;
+	border-bottom-color: green;
+}
+}
+@keyframes before {
+0% {
+	border-left-color: green;
+	border-top-color: green;
+	transform:rotate(0deg);
+}
+25% {
+	transform:rotate(180deg);
+}
+50% {
+	border-left-color: green;
+	border-top-color: green;
+	transform:rotate(180deg);
+}
+50.01% {
+	border-left-color: blue;
+	border-top-color: blue;
+	transform:rotate(0deg);
+}
+75% {
+	transform:rotate(180deg);
+}
+100% {
+	border-left-color: blue;
+	border-top-color: blue;
+	transform:rotate(180deg);
+}
+}
+@keyframes after {
+0% {
+	z-index:1;
+	border-left-color: blue;
+	border-top-color: blue;
+	transform:rotate(0deg);
+}
+25% {
+	z-index:1;
+	transform:rotate(0deg);
+}
+25.01% {
+	z-index:0;
+	transform:rotate(0deg);
+}
+50% {
+	z-index:0;
+	border-left-color: blue;
+	border-top-color: blue;
+	transform:rotate(180deg);
+}
+50.01% {
+	z-index:1;
+	border-left-color: green;
+	border-top-color: green;
+	transform:rotate(0deg);
+}
+75% {
+	z-index:1;
+	transform:rotate(0deg);
+}
+75.01% {
+	z-index:0;
+	transform:rotate(0deg);
+}
+100% {
+	z-index:0;
+	border-left-color: green;
+	border-top-color: green;
+	transform:rotate(180deg);
+}
+}
+</style>
+</head>
+<body>
+点击圆内看效果
+<div class="arc"></div>
+<script>
+	document.querySelector&&document.querySelector(".arc").addEventListener("click",function(){
+		this.classList.toggle("run");
+	},false);
+</script>
+</body>
+</html>

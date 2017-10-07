@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>双联选择列表</title>
+<script src="jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+<div class="sele1">
+	<h4>什么什么人选择</h4>
+	<div style="float:left;width:200px;">
+		<select style="width:100%;" multiple="multiple" size="20" class="candidate">
+			<option value="1" selected>白俊杰</option>
+			<option value="2">党威</option>
+			<option value="3">顶峰</option>
+		</select>
+	</div>
+	<div style="padding:138px 20px;height:100%;float:left;">
+		<input type="button" class="add" value=">>" style="margin-bottom:20px;" />
+		<br/>
+		<input type="button" class="remove" value="<<" />
+	</div>
+	<div style="float:left;width:200px;">
+		<select style="width:100%;" multiple="multiple" size="20" class="hasCandidate">
+		</select>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+<script>
+$(function() {
+	var $sele1_candidate = $(".sele1 .candidate");
+	var $sele1_hasCandidate = $(".sele1 .hasCandidate");
+	var addBtn = $(".sele1 .add");
+	var removeBtn = $(".sele1 .remove");
+	var removeSelected = true; //是否在原列表中删除已选择过的对象
+	$sele1_candidate.on("dblclick", "option", function() {
+		var $this = $(this);
+		var value = $this.val();
+		var selected;
+		if (!removeSelected) {
+			$sele1_hasCandidate.children().each(function() {
+				if (this.value == value) { // 检查是否已经添加进已选择列表
+					selected = true;
+					return false;
+				}
+			});
+		}
+		if (!selected) {
+			$sele1_hasCandidate.append("<option value='"+value+"'>"+$this.text()+"</option>");
+			if (removeSelected) $this.remove();
+		}
+	});
+	$sele1_hasCandidate.on("dblclick", "option", function() {
+		var $this = $(this);
+		$this.remove();
+		if (removeSelected) $sele1_candidate.append("<option value='"+$this.val()+"'>"+$this.text()+"</option>");
+	});
+	addBtn.click(function() {
+		var option = "";
+		var $option = $();
+		$sele1_candidate.children().each(function() {
+			if (!this.selected) return;
+			var $this = $(this);
+			var value = $this.val();
+			var selected;
+			if (!removeSelected) {
+				$sele1_hasCandidate.children().each(function() {
+					if (this.value == value) { // 检查是否已经添加进已选择列表
+						selected = true;
+						return false;
+					}
+				});
+			}
+			if (!selected) {
+				option += "<option value='"+$this.val()+"'>"+$this.text()+"</option>";
+				$option = $option.add($this);
+			}
+		});
+		$sele1_hasCandidate.append(option);
+		$option.remove();
+	});
+	removeBtn.click(function() {
+		$sele1_hasCandidate.children().each(function() {
+			if (this.selected) {
+				var $this = $(this);
+				$this.remove();
+				$sele1_candidate.append("<option value='"+$this.val()+"'>"+$this.text()+"</option>");
+			}
+		});
+	})
+});
+</script>
+</body>
+</html>

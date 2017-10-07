@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui"/>
+<title>获取百度坐标</title>
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body ontouchstart="">
+<div id="form">
+	<div class="hgb">
+		<input id="keyword" type="text" placeholder="请输入位置关键字" />
+		<input id="search" type="button" class="green" value="搜索" />
+	</div>
+	<div>请在地图上点出大概位置，并提交坐标</div>
+	<form>
+		<table>
+			<tr>
+				<td>x坐标值：</td>
+				<td><input id="longitude" type="tel" readonly disabled value="" /></td>
+				<td rowspan="2"><input type="submit" class="green" value="提交坐标" /></td>
+			</tr>
+			<tr>
+				<td>y坐标值：</td>
+				<td><input id="latitude" type="tel" readonly disabled value="" /></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="allmap"></div>
+<script src="http://api.map.baidu.com/api?type=quick&ak=y21vB9vLX8OlYS8TLaCZFA5r&v=1.0"></script>
+<script>
+// GPS坐标转百度坐标封装
+(function() {
+	function load_script(xyUrl, callback) {
+		var head = document.getElementsByTagName('head')[0];
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = xyUrl;
+		//借鉴了jQuery的script跨域方法
+		script.onload = script.onreadystatechange = function() {
+			if ((!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
+				callback && callback();
+				// Handle memory leak in IE
+				script.onload = script.onreadystatechange = null;
+				if (head && script.parentNode) {
+					head.removeChild(script);
+				}
+			}
+		};
+		// Use insertBefore instead of appendChild  to circumvent an IE6 bug.
+		head.insertBefore(script, head.firstChild);
+	}
+
+	function translate(point, type, callback) {
+		var callbackName = 'cbk_' + Math.round(Math.random() * 10000); //随机函数名
+		var xyUrl = "http://api.map.baidu.com/geoconv/v1/?coords=" + point.lng + "," + point.lat + "&from=" + type + "&to=5&callback=BMap.Convertor." + callbackName + "&ak=y21vB9vLX8OlYS8TLaCZFA5r";
+		//动态创建script标签
+		load_script(xyUrl);
+		BMap.Convertor[callbackName] = function(data) {
+			delete BMap.Convertor[callbackName]; //调用完需要删除改函数
+			var point = new BMap.Point(data.result[0].x, data.result[0].y);
+			callback && callback(point);
+		}
+	}
+
+	window.BMap = window.BMap || {};
+	BMap.Convertor = {};
+	BMap.Convertor.translate = translate;
+})();
+</script>
+
+<script>
+var defaultCity = "西安";
+
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(showPosition, showError);
+} else {
+	createMap();
+}
+
+var keyword = document.getElementById("keyword");
+var search = document.getElementById("search");
+var longitude = document.getElementById("longitude");
+var latitude = document.getElementById("latitude");
+
+function showPosition(position) {
+	// 获取地理位置信息
+	var lng = position.coords.longitude; // 经度
+	var lat = position.coords.latitude; // 纬度
+	var gpsPoint = new BMap.Point(lng,lat);
+	BMap.Convertor.translate(gpsPoint, 1, function(point) {
+		createMap(point);
+	});
+}
+function showError(error) {
+	switch(error.code) {
+		case error.PERMISSION_DENIED:
+			alert("用户不允许地理定位");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			alert("无法获取当前位置");
+			break;
+		case error.TIMEOUT:
+			alert("获取用户位置请求超时");
+			break;
+		case error.UNKNOWN_ERROR:
+			alert("发生一个未知的错误");
+			break;
+	}
+	createMap();
+}
+
+function createMap(point) {
+	// 创建地图
+	var map = new BMap.Map("allmap");
+	map.addControl(new BMap.ZoomControl()); //添加缩放控件
+	map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
+	// 配置信息窗口
+	var opts = {
+		offset: new BMap.Size(0, -15),
+		width : 200, // 信息窗口宽度
+		enableAutoPan : true //自动平移
+	};
+	var infoWindow = new BMap.InfoWindow("", opts); // 创建信息窗口对象
+	// 创建地址解析器实例
+	var myGeo = new BMap.Geocoder();
+
+	var marker;
+	if (point) {
+		map.centerAndZoom(point, 16); // 初始化地图,设置中心点坐标和地图级别
+		marker = new BMap.Marker(point); // 创建标注
+		map.addOverlay(marker);
+		createInfoWindow(point);
+		setPosInfo(point);
+	} else { // 没有获取到定位点，则将默认城市转化为百度坐标
+		myGeo.getPoint(defaultCity, function(point){
+			if (point) {
+				map.centerAndZoom(point, 12);
+				marker = new BMap.Marker(point); // 创建标注
+				map.addOverlay(marker);
+				createInfoWindow(point);
+				setPosInfo(point);
+			}
+		});
+	}
+
+	map.addEventListener("click", function(e){
+		var point = new BMap.Point(e.point.lng, e.point.lat);
+		marker.setPosition(point);
+		createInfoWindow(point);
+		setPosInfo(point);
+	});
+
+	search.onclick = function() {
+		var address = keyword.value;
+		// 将地址解析结果显示在地图上,并调整地图视野
+		myGeo.getPoint(address, function(point){
+			if (point) {
+				map.centerAndZoom(point, 16);
+				marker.setPosition(point);
+				createInfoWindow(point);
+				setPosInfo(point);
+			}
+		});
+	};
+
+	function createInfoWindow(point) {
+		myGeo.getLocation(point, function(rs){
+			var addComp = rs.addressComponents;
+			var address = "地址：" +
+				addComp.province +
+				addComp.city +
+				addComp.district +
+				addComp.street +
+				addComp.streetNumber;
+			infoWindow.setContent(address);
+			map.openInfoWindow(infoWindow, point); //开启信息窗口
+		});
+	}
+}
+
+function setPosInfo(point) {
+	longitude.value = point.lng;
+	latitude.value = point.lat;
+}
+
+</script>
+</body>
+</html>

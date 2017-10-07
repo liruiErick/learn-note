@@ -1,0 +1,65 @@
+﻿# Slider
+
+## Slider 结构如下
+
+<div id="slider">
+	<ul>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+
+
+## 创建一个 Slider
+
+var slider = new Slider("#slider", {
+	prevBtn: ".prevBtn",
+	nextBtn: ".nextBtn",
+	aequilate: false
+});
+
+
+## option 配置项
+{
+	item: ">", //基于滑动层元素的子项选择器
+	prevBtn: null, //前一页按钮
+	nextBtn: null, //后一页按钮
+	btnDisableClass: "disabled", //前后按钮禁用类名
+
+	align: "start", //当前项目的对齐方式，默认居于起始位置。"center"表示居中，"end"表示居于结束位置
+	isVer: false, //排列方向，默认为水平方向。如果值为true则表示垂直方向
+	offset: 0, //设置起始位置的偏移量
+
+	activeClass: "active", //当前焦点的焦点类名
+	initIndex: 0, //初始化时的索引，默认为0
+	duration: 400, //拖拽结束后，滑动动画的持续时间
+	aequilate: true, //每个项目是否等宽
+
+	// 项目单击后的回调函数。并将当前点击（焦点）项目的索引作为参数传入。this指向点击项的DOM对象
+	onClick: function(i) {},
+	// 拖拽结束后，项目定位滑动前的回调函数。并将拖拽结束后判定的当前索引作为第一个参数传入，第二个参数为当前项目左上角到容器左上角的距离。this指向该项的DOM对象
+	onSlide: function(i, offset) {}
+}
+
+
+## API
+
+// 切换到前一页
+slider.prevPage();
+
+// 切换到下一页
+slider.nextPage();
+
+// 刷新，并停留在指定项目上
+slider.update(1);
+
+// 设置指定项目为焦点
+slider.setItem(2);
+
+// 跳转到指定项目上。执行跳转项目的同时，返回跳转后当前项目左上角到容器左上角的距离
+slider.gotoItem(2);
+
+// 销毁 Slider 对象
+slider.destroy();
+
+

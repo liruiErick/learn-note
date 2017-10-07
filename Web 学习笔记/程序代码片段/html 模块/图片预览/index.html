@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1000, user-scalable=no, minimal-ui"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="keywords" content="">
+<meta name="description" content="">
+<title>图片预览</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="shortcut icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="apple-touch-icon-precomposed" href="img/icon.png">
+
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/DragEvent.min.js"></script>
+<script src="js/TabBanner.js"></script>
+<script src="js/PhotoPreview.js"></script>
+
+<script src="js/jquery.lazyload.min.js"></script>
+<script>
+$(function() {
+	$("img").lazyload();
+});
+</script>
+</head>
+<body>
+<ul id="imgBox">
+	<li title="图片1"><div><img data-src="img/1.jpg" /></div></li>
+	<li title="图片2"><div><img data-src="img/2.jpg" /></div></li>
+	<li title="图片3"><div><img data-src="img/3.jpg" /></div></li>
+	<li title="图片4"><div><img data-src="img/4.jpg" /></div></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,256 @@
+﻿## SVG元素样式
+
+fill - 填充色，相当于背景色
+x - 相对于容器的X轴坐标
+y - 相对于容器的Y轴坐标
+stroke - 边框色
+stroke-opacity - 边透明度
+stroke-width - 边框宽度
+stroke-linecap - 边框线条端点样式。默认值为"butt"，表示无端点。"round"表示圆形端点。"square"表示方形端点
+stroke-linejoin - 边框连接线样式。默认值为"miter"，表示尖角。"round"表示圆角。"bevel"表示斜角
+stroke-dasharray - 设置边框的样式，接受两个值“a, b”。整个边框可以看做由若干的线段组成，a 表示每条线段的长度，b 表示每两条线段的间隔，单位默认为px，也支持百分比。
+                   如果传一个值，则表示“a, b”都等于该值。
+stroke-dashoffset - 边框的偏移值，单位默认为px，也支持百分比。正值向逆时针方向偏移，负值则向顺时针方向偏移。
+
+
+## js 操作 path
+
+var svgPath = document.getElementById('svgPath');
+var pathLength = svgPath.getTotalLength();
+svgPath.setAttribute('stroke-dasharray', dasharray);
+
+
+## SVG animation元素
+
+<set>
+<animate>
+<animateColor>
+<animateTransform>
+<animateMotion>
+
+
+
+## demo
+
+<set attributeName="x" attributeType="XML" to="60" begin="3s" /> //set虽然不能触发连续的动画，但是，其还是可以实现基本的延迟功能。
+
+<animate attributeName="x" from="160" to="60" begin="0s" dur="3s" repeatCount="indefinite" />
+
+<animate attributeName="x" values="160;40;160" dur="3s" repeatCount="indefinite" />
+
+<animateTransform attributeName="transform" begin="0s" dur="3s"  type="scale" from="1" to="1.5" repeatCount="indefinite"/>
+
+<animateMotion path="M10,80 q100,120 120,20 q140,-50 160,0" begin="0s" dur="3s" repeatCount="indefinite" rotate="auto"/>
+
+
+
+## SVG animation参数详解
+
+### 1. attributeName = <attributeName>
+要变化的元素属性名称
+① 可以是元素直接暴露的属性，例如，对于本文反复出现的「马」对应的text元素上的x, y或者font-size;
+② 可以是CSS属性。例如，透明度opacity.
+
+
+### 2. attributeType = “CSS | XML | auto”
+attributeType支持三个固定参数，CSS/XML/auto. 用来表明attributeName属性值的列表。
+x, y以及transform就属于XML, opacity就属于CSS. auto为默认值，自动判别的意思（实际上是先当成CSS处理，如果发现不认识，直接XML类别处理）。
+因此，如果你不确信某属性是XML类别还是CSS类别的时候，我的建议是不设置attributeType值，直接让浏览器自己去判断，几乎无差错。
+既然浏览器酱可以自己判断属性类别，那这个属性还有什么意义吗？可能某些属性，XML能其作用，CSS也能其作用，例如font-size, 此时就需要明确下归属。
+
+
+### 3. from, to, by, values
+上面4个属性是一个家族的，是最具哲理的一个家族。他们解决的是非常有哲理的问题：你从哪里来？要到哪里去？……
+
+from = "<value>"
+动画的起始值。
+to = "<value>"
+指定动画的结束值。
+by = "<value>"
+动画的相对变化值。
+values = "<list>"
+用分号分隔的一个或多个值，可以看出是动画的多个关键值点。
+
+from, to, by, values虽然属于一个家族，但是相互之间还是有制约关系的。有以下一些规则：
+
+a. 如果动画的起始值与元素的默认值是一样的，from参数可以省略。
+
+b. （不考虑values）to,by两个参数至少需要有一个出现。否则动画效果没有。to表示绝对值，by表示相对值。
+拿位移距离来说，如果from是100, to值为160则表示移动到160这个位置，但是，如果by值是160，则表示移动到100+160=260这个位置。
+
+c. 如果to,by同时出现，则by打酱油，只识别to。
+
+d. 如果to,by,values都没设置，自然没动画效果。如果任意（包括from）一个属性的值不合法，规范上说是没有动画效果。
+但是，据我测试，FireFox浏览器确实如此，但是Chrome特意做了写容错处理。例如，本来是数值的属性，写了个诸如a这个不合法的值，其会当作0来处理，动画效果依然存在。
+
+e. values可以是一个值或多值。根据我在Chrome浏览器下的测试，是一个值的时候是没有动画效果。多值时候有动画效果。
+当values值设置并能识别时候，from, to, by的值都会被忽略。那values属性是干什么的呢？别看名字挺大众的，其还是有些功力的。
+我们实现动画，不可能就是单纯的从a位置到b位置，有时候，需要去c位置过渡下。此时，实际上有3个动画关键点。而from, to/by只能驾驭两个，此时就是values大显身手的时候了！
+
+总结下，也就是from-to动画、from-by动画、to动画、by动画以及values动画。
+
+
+### 4. begin, end
+begin指动画开始的时间，看上去很简单。设个时间，延迟嘛~~实际上非也非也，上面出现的beigin="3s"只是最简单最基本的表示。
+begin的定义是分号分隔的一组值。看到没？是一组值，单值只是其中的情况之一。
+例如，beigin="3s;5s"表示的是3s之后动画走一下，6s时候动画再走一下（如果之前动画没走完，会立即停止从头开始）。
+所以，如果一次动画时间为3s, 即dur="3s"，同时没有repeatCount属性时候，我们可以看到动画似乎连续执行了2次。
+
+- 时间值
+
+既然这里提到了时间，就顺势讲简单一下SVG animation中的时间表示(适用于begin，dur，end属性)。常见单位有 "h"|"min"|"s"|"ms"，默认是"s"。
+时间值还支持hh:mm:ss这种写法，因此，90s我们也可以使用01:30表示。
+
+begin的单值除了普通value，还有下面这些类别的value：
+offset-value | syncbase-value | event-value | repeat-value | accessKey-value | media-marker-value | wallclock-sync-value | "indefinite"
+
+① offset-value 表示偏移值，数值前面有+或-. 应该指相对于document的begin值而言。
+
+② syncbase-value 基于同步确定的值。语法为：[元素的id].begin/end +/- 时间值. 就是说借用其他元素的begin值再加加减减，这个可以准确实现两个独立元素的动画级联效果。
+<animate id="a1" attributeName="x" to="60" begin="0s" dur="3s" fill="freeze" />
+<animate attributeName="y" to="100" begin="a1.end" dur="3s" fill="freeze" />
+a1.end中的a1就是上面一个animate元素的id值，而end是动画元素都有的一个属性，动画结束的时间。
+当然，我们还可以增加一些偏移值，例如begin="a1.end-1s", 就表示id为x的元素动画结束前一秒开始纵向移动。
+
+③ event-value 这个表示与事件相关联的值。类似于“点击执行该动画”。语法是：[元素的id].[事件类型] +/- 时间值. 举个例子，点击下图的圆圈圈，马儿它就会自己跑！
+<circle id="circle" cx="100" cy="100" r="50"></circle>
+<text font-family="microsoft yahei" font-size="120" y="160" x="160">马
+    <animate attributeName="x" to="60" begin="circle.click" dur="3s" />
+</text>
+如果你想点击圆圈圈2秒钟后马儿才跑，很简单，偏移时间加上就可以了——begin="circle.click+2s"。
+主要注意的是，这类与事件关联的SVG需要内联在页面中，否则click什么的都是徒劳。
+
+④ repeat-value指重复多少次之后干嘛干嘛。语法为：[元素的id].repeat(整数) +/- 时间值。
+<animate id="a1" attributeName="x" to="60" begin="0s" dur="3s" repeatCount="indefinite" />
+<animate attributeName="y" to="100" begin="a1.repeat(2)" dur="3s" fill="freeze" />
+begin="x.repeat(2)"指id为a1的元素的动画重复2次后执行
+
+⑤ accessKey-value定义快捷键。即按下某个按键动画开始。语法为：accessKey("character").character表示快捷键所在的字符。
+<animate attributeName="x" to="60" begin="accessKey(s)" dur="3s" repeatCount="indefinite" />
+按下键盘上的字母"s"，理论上动画就会执行。但是，据我测试，我的Chrome浏览器（版本36）上是没有效果的，FireFox浏览器效果杠杠的！
+
+⑥ wallclock-sync-value指真实世界的时钟时间定义。时间语法是基于在ISO8601中定义的语法。例如1997-07-16T19:20:30.45+01:00。
+
+⑦ "indefinite"就是这个字符串值，表示“无限等待”。据说需要beginElement()方法触发或者指向该动画元素的超链接(SVG中的a元素)。
+下面代码是beginElement()方法触发的例子：
+<svg id="svg" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+    <text font-family="microsoft yahei" font-size="120" y="160" x="160">马
+        <animate attributeName="x" to="60" begin="indefinite" dur="3s" />
+    </text>
+</svg>
+
+var animate = document.getElementsByTagName("animate")[0];
+if (animate) {
+    document.getElementById("svg").onclick = function() {
+        animate.beginElement();
+    };
+}
+上面是HTML代码，下面是JS代码。意思很简单，点击我们的svg, 触发animate元素的beginElement()方法，前提是begin="indefinite"。
+
+超链接触发的例子参见下面：
+<svg width="320" height="200" font-family="microsoft yahei" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+     <text font-size="120" y="160" x="160">马
+          <animate id="animate" attributeName="x" to="60" begin="indefinite" dur="3s" repeatCount="indefinite" />
+     </text>
+     <a xlink:href="#animate">
+          <text x="10" y="20" fill="#cd0000" font-size="30">点击我</text>
+     </a>
+</svg>
+从上面代码可以看出，动画触发条件很简单，只要a元素的xlink:href指向的我们的动画元素就可以了。
+
+
+### 5. dur
+dur属性值就后面两种：常规时间值 | "indefinite"。
+"indefinite"指事件无限。试想下，动画时间无限，实际上就是动画压根不执行的意思。因此，设置为"indefinite"跟没有dur是一个意思，与dur解析异常一个意思。
+
+
+### 6. calcMode, keyTimes, keySplines
+这几个参数是控制动画先快还是先慢类似这样作用的。
+
+1) calcMode属性支持4个值：discrete | linear | paced | spline. 
+中文意思分别是：“离散”|“线性”|“踏步”|“样条”。
+
+discrete
+- from值直接跳到to值。
+linear
+- animateMotion元素以外元素的calcMode默认值。动画从头到尾的速率都是一致的。
+paced
+- 通过插值让动画的变化步调平稳均匀。仅支持线性数值区域内的值，这样点之间“距离”的概念才能被计算（如position, width, height等）。
+  如果“paced”指定，任何keyTimes或keySplines值都会打酱油。
+spline
+- 插值定义贝塞尔曲线。spline点的定义在keyTimes属性中，每个时间间隔控制点由keySplines定义。
+
+2) keyTimes = "<list>"
+keyTimes总名字上看是关键时间点的意思，大致就是这个意思。前面提到过values也是多值，这里有一些约定的规则：
+首先，keyTimes值的数目要和values一致，如果是from/to/by动画，keyTimes就必须有两个值。
+然后对于linear和spline动画，第一个数字要是0, 最后一个是1。
+最后，每个连续的时间值必须比它前面的值大或者相等。
+
+paced模式下，keyTimes会被忽略；keyTimes定义错误，也会被忽略；dur为indefinite也会被忽略。
+
+3) keySplines = "<list>"
+keySplines表示的是与keyTimes相关联的一组贝塞尔控制点（默认0 0 1 1）。
+两个个控制点使用4个浮点值表示：x1 y1 x2 y2. 只有模式是spline时候这个参数才有用，也是分号分隔，值范围0~1，总是比keyTimes少一个值。
+如果keySplines值不合法或个数不对，是没有动画效果的。
+
+如下4个SVG，只展示重要部分代码：
+<animate attributeName="x" dur="5s" values="0; 20; 160" calcMode="linear" />
+<animate attributeName="x" dur="5s" values="0; 20; 160" calcMode="paced"/>
+<animate attributeName="x" dur="5s" values="0; 80; 160" keyTimes="0; .8; 1" calcMode="linear"/>
+<animate attributeName="x" dur="5s" values="0; 80; 160" keyTimes="0; .8; 1" calcMode="spline"  keySplines=".5 0 .5 1; 0 0 1 1" />
+
+
+### 7. repeatCount, repeatDur
+repeatCount表示动画执行次数，可以是合法数值或者”indefinite“（动画循环到电脑死机）。
+repeatDur定义重复动画的总时间。可以是普通时间值或者”indefinite（”动画循环到电脑死机）。
+例如这个：
+<animate attributeName="x" to="60" dur="3s" repeatCount="indefinite" repeatDur="10s" />
+动画只玩执行完整3个 + 一个1/3个动画。因为repeat总时间就10s而已。
+
+
+### 8. fill
+fill表示动画间隙的填充方式。支持参数有：freeze | remove. 
+其中remove是默认值，表示动画结束直接回到开始的地方。
+freeze“冻结”表示动画结束后像是被冻住了，元素保持了动画结束之后的状态。
+
+
+### 9. accumulate, additive
+accumulate是累积的意思。支持参数有：none | sum。默认值是none。如果值是sum表示动画结束时候的位置作为下次动画的起始位置。
+
+additive控制动画是否附加。支持参数有：replace | sum。默认值是replace。如果值是sum表示动画的基础知识会附加到其他低优先级的动画上。
+例1：
+<img ...>
+   <animateMotion begin="0" dur="5s" path="[some path]" additive="sum" fill="freeze" />
+   <animateMotion begin="5s" dur="5s" path="[some path]" additive="sum" fill="freeze" />
+   <animateMotion begin="10s" dur="5s" path="[some path]" additive="sum" fill="freeze" />
+</img>
+这里轮到第二个动画的时候，路径是从第一个动画路径结束地方开始的，于是，3个动画完美无缝连接起来了。
+
+例2：
+<animateTransform attributeName="transform" type="scale" from="1" to="3" dur="10s" repeatCount="indefinite" additive="sum"/>
+<animateTransform attributeName="transform" type="rotate" from="0 30 20" to="360 30 20" dur="10s" fill="freeze" repeatCount="indefinite" additive="sum"/>
+这里，两个动画同时都是transform，都要使用一个type属性，好在这个例子additive="sum"是累加的而不是replace替换。于是，我们就可以是实现一边旋转一边放大的效果。
+
+
+### 10. restart
+restart这个属性诞生的背景如下：
+很多动画呢，其触发可能与事件相关，例如，点击某圆圈，马儿就跑。而且，似乎没点一次，马儿就跑一下。现在，存在这种情况，希望马儿只跑一次，之后在点击就没有反应。
+这种需求的出现迫使restart参数的出现。支持的参数有：always | whenNotActive | never。
+always是默认值，表示总是，也就是点一次圈圈，马儿跑一下。whenNotActive表示动画正在进行的时候，是不能重启动画的。never表示动画是一波流。
+
+
+### 11. min, max
+min/max表示动画执行最短和最长时间。支持参数为时间值和"media"（媒介元素有效），max还支持indefinite.
+
+
+
+
+
+
+
+
+
+
+
+
+

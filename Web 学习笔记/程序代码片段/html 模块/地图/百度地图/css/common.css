@@ -1,0 +1,850 @@
+@charset "UTF-8";
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+form,
+input {
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  padding: 0;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+i,
+em {
+  font-style: normal;
+}
+a {
+  outline: none;
+  background: transparent;
+}
+a img {
+  border: 0;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+body:not(.nostyle) select:not(.nostyle),
+body:not(.nostyle) textarea:not(.nostyle),
+body:not(.nostyle) input[type="text"]:not(.nostyle),
+body:not(.nostyle) input[type="password"]:not(.nostyle),
+body:not(.nostyle) input[type="datetime"]:not(.nostyle),
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle),
+body:not(.nostyle) input[type="date"]:not(.nostyle),
+body:not(.nostyle) input[type="month"]:not(.nostyle),
+body:not(.nostyle) input[type="time"]:not(.nostyle),
+body:not(.nostyle) input[type="week"]:not(.nostyle),
+body:not(.nostyle) input[type="number"]:not(.nostyle),
+body:not(.nostyle) input[type="email"]:not(.nostyle),
+body:not(.nostyle) input[type="url"]:not(.nostyle),
+body:not(.nostyle) input[type="search"]:not(.nostyle),
+body:not(.nostyle) input[type="tel"]:not(.nostyle),
+body:not(.nostyle) input[type="color"]:not(.nostyle) {
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 2em;
+  line-height: 2\9;
+  padding: 0 .5em;
+  margin: 0;
+  vertical-align: middle;
+  color: #555555;
+  border-width: 1px;
+  border-style: solid;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-color: #cccccc;
+  border-radius: 0.25em;
+  background: #ffffff;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -moz-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+body:not(.nostyle) select:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) textarea:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="text"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="password"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="date"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="month"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="time"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="week"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="number"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="email"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="url"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="search"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="tel"]:not(.nostyle):-moz-placeholder,
+body:not(.nostyle) input[type="color"]:not(.nostyle):-moz-placeholder {
+  color: #999999;
+}
+body:not(.nostyle) select:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) textarea:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="text"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="password"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="date"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="month"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="time"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="week"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="number"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="email"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="url"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="search"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="tel"]:not(.nostyle)::-moz-placeholder,
+body:not(.nostyle) input[type="color"]:not(.nostyle)::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+body:not(.nostyle) select:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) textarea:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="text"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="password"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="date"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="month"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="time"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="week"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="number"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="email"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="url"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="search"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="tel"]:not(.nostyle):-ms-input-placeholder,
+body:not(.nostyle) input[type="color"]:not(.nostyle):-ms-input-placeholder {
+  color: #999999;
+}
+body:not(.nostyle) select:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) textarea:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="text"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="password"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="date"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="month"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="time"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="week"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="number"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="email"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="url"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="search"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="tel"]:not(.nostyle)::-webkit-input-placeholder,
+body:not(.nostyle) input[type="color"]:not(.nostyle)::-webkit-input-placeholder {
+  color: #999999;
+}
+body:not(.nostyle) select:not(.nostyle):focus,
+body:not(.nostyle) textarea:not(.nostyle):focus,
+body:not(.nostyle) input[type="text"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="password"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="date"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="month"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="time"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="week"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="number"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="email"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="url"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="search"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="tel"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="color"]:not(.nostyle):focus {
+  outline: 0;
+}
+body:not(.nostyle) select:not(.nostyle)[disabled],
+body:not(.nostyle) textarea:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="text"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="password"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="date"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="month"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="time"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="week"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="number"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="email"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="url"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="search"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="tel"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="color"]:not(.nostyle)[disabled],
+body:not(.nostyle) select:not(.nostyle)[readonly],
+body:not(.nostyle) textarea:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="text"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="password"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="date"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="month"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="time"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="week"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="number"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="email"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="url"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="search"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="tel"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="color"]:not(.nostyle)[readonly] {
+  cursor: not-allowed !important;
+}
+body:not(.nostyle) select:not(.nostyle):focus,
+body:not(.nostyle) textarea:not(.nostyle):focus,
+body:not(.nostyle) input[type="text"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="password"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="date"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="month"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="time"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="week"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="number"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="email"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="url"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="search"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="tel"]:not(.nostyle):focus,
+body:not(.nostyle) input[type="color"]:not(.nostyle):focus {
+  border-color: #428bca;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(66, 139, 202, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(66, 139, 202, 0.6);
+}
+body:not(.nostyle) select:not(.nostyle)[disabled],
+body:not(.nostyle) textarea:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="text"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="password"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="date"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="month"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="time"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="week"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="number"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="email"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="url"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="search"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="tel"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="color"]:not(.nostyle)[disabled],
+body:not(.nostyle) select:not(.nostyle)[readonly],
+body:not(.nostyle) textarea:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="text"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="password"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="date"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="month"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="time"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="week"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="number"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="email"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="url"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="search"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="tel"]:not(.nostyle)[readonly],
+body:not(.nostyle) input[type="color"]:not(.nostyle)[readonly] {
+  border-color: #cccccc !important;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+  background: #eeeeee !important;
+}
+body:not(.nostyle) select:not(.nostyle).red,
+body:not(.nostyle) textarea:not(.nostyle).red,
+body:not(.nostyle) input[type="text"]:not(.nostyle).red,
+body:not(.nostyle) input[type="password"]:not(.nostyle).red,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle).red,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle).red,
+body:not(.nostyle) input[type="date"]:not(.nostyle).red,
+body:not(.nostyle) input[type="month"]:not(.nostyle).red,
+body:not(.nostyle) input[type="time"]:not(.nostyle).red,
+body:not(.nostyle) input[type="week"]:not(.nostyle).red,
+body:not(.nostyle) input[type="number"]:not(.nostyle).red,
+body:not(.nostyle) input[type="email"]:not(.nostyle).red,
+body:not(.nostyle) input[type="url"]:not(.nostyle).red,
+body:not(.nostyle) input[type="search"]:not(.nostyle).red,
+body:not(.nostyle) input[type="tel"]:not(.nostyle).red,
+body:not(.nostyle) input[type="color"]:not(.nostyle).red {
+  border-color: #cccccc;
+  border-radius: 0.25em;
+  background: #ffffff;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -moz-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+body:not(.nostyle) select:not(.nostyle).red:focus,
+body:not(.nostyle) textarea:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="text"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="password"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="datetime"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="date"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="month"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="time"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="week"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="number"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="email"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="url"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="search"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="tel"]:not(.nostyle).red:focus,
+body:not(.nostyle) input[type="color"]:not(.nostyle).red:focus {
+  border-color: #d9534f;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(217, 83, 79, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(217, 83, 79, 0.6);
+}
+body:not(.nostyle) select:not(.nostyle).red[disabled],
+body:not(.nostyle) textarea:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="text"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="password"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="date"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="month"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="time"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="week"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="number"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="email"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="url"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="search"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="tel"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="color"]:not(.nostyle).red[disabled],
+body:not(.nostyle) select:not(.nostyle).red[readonly],
+body:not(.nostyle) textarea:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="text"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="password"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="datetime"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="datetime-local"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="date"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="month"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="time"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="week"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="number"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="email"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="url"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="search"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="tel"]:not(.nostyle).red[readonly],
+body:not(.nostyle) input[type="color"]:not(.nostyle).red[readonly] {
+  border-color: #cccccc !important;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+  background: #eeeeee !important;
+}
+body:not(.nostyle) .button:not(.nostyle),
+body:not(.nostyle) button:not(.nostyle),
+body:not(.nostyle) input[type="button"]:not(.nostyle),
+body:not(.nostyle) input[type="submit"]:not(.nostyle),
+body:not(.nostyle) input[type="reset"]:not(.nostyle) {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 2em;
+  line-height: 2;
+  padding: 0 1em;
+  margin: 0;
+  border: 0;
+  background: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-touch-callout: none;
+  color: #000000;
+  text-shadow: 0 -1px 1px #ffffff;
+  border-color: #b3b3b3;
+  background: #f2f2f2;
+  -webkit-transition: all 0.15s;
+  -moz-transition: all 0.15s;
+  -o-transition: all 0.15s;
+  transition: all 0.15s;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+}
+body:not(.nostyle) .button:not(.nostyle)[disabled],
+body:not(.nostyle) button:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle)[disabled],
+body:not(.nostyle) .button:not(.nostyle).disabled,
+body:not(.nostyle) button:not(.nostyle).disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+body:not(.nostyle) .button:not(.nostyle)::-moz-focus-inner,
+body:not(.nostyle) button:not(.nostyle)::-moz-focus-inner,
+body:not(.nostyle) input[type="button"]:not(.nostyle)::-moz-focus-inner,
+body:not(.nostyle) input[type="submit"]:not(.nostyle)::-moz-focus-inner,
+body:not(.nostyle) input[type="reset"]:not(.nostyle)::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+body:not(.nostyle) .button:not(.nostyle)[disabled],
+body:not(.nostyle) button:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle)[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle)[disabled],
+body:not(.nostyle) .button:not(.nostyle).disabled,
+body:not(.nostyle) button:not(.nostyle).disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle):hover,
+body:not(.nostyle) button:not(.nostyle):hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle):hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle):hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle):hover {
+  border-color: #bfbfbf;
+  background: #ffffff;
+}
+body:not(.nostyle) .button:not(.nostyle):active,
+body:not(.nostyle) button:not(.nostyle):active,
+body:not(.nostyle) input[type="button"]:not(.nostyle):active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle):active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle):active,
+body:not(.nostyle) .button:not(.nostyle).active,
+body:not(.nostyle) button:not(.nostyle).active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).active {
+  color: #a6a6a6;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #f2f2f2;
+}
+body:not(.nostyle) .button:not(.nostyle).blue,
+body:not(.nostyle) button:not(.nostyle).blue,
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(25, 60, 90, 0.4);
+  border-color: #357ebd;
+  background: #428bca;
+}
+body:not(.nostyle) .button:not(.nostyle).blue[disabled],
+body:not(.nostyle) button:not(.nostyle).blue[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue[disabled],
+body:not(.nostyle) .button:not(.nostyle).blue.disabled,
+body:not(.nostyle) button:not(.nostyle).blue.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).blue:hover,
+body:not(.nostyle) button:not(.nostyle).blue:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue:hover {
+  border-color: #428bca;
+  background: #5697d0;
+}
+body:not(.nostyle) .button:not(.nostyle).blue:active,
+body:not(.nostyle) button:not(.nostyle).blue:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue:active,
+body:not(.nostyle) .button:not(.nostyle).blue.active,
+body:not(.nostyle) button:not(.nostyle).blue.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).blue.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).blue.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).blue.active {
+  color: #193c5a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #5a89b2;
+}
+body:not(.nostyle) .button:not(.nostyle).green,
+body:not(.nostyle) button:not(.nostyle).green,
+body:not(.nostyle) input[type="button"]:not(.nostyle).green,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(37, 86, 37, 0.4);
+  border-color: #4cae4c;
+  background: #5cb85c;
+}
+body:not(.nostyle) .button:not(.nostyle).green[disabled],
+body:not(.nostyle) button:not(.nostyle).green[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).green[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green[disabled],
+body:not(.nostyle) .button:not(.nostyle).green.disabled,
+body:not(.nostyle) button:not(.nostyle).green.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).green.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).green:hover,
+body:not(.nostyle) button:not(.nostyle).green:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).green:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green:hover {
+  border-color: #5cb85c;
+  background: #6ec06e;
+}
+body:not(.nostyle) .button:not(.nostyle).green:active,
+body:not(.nostyle) button:not(.nostyle).green:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).green:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green:active,
+body:not(.nostyle) .button:not(.nostyle).green.active,
+body:not(.nostyle) button:not(.nostyle).green.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).green.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).green.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).green.active {
+  color: #255625;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #73a173;
+}
+body:not(.nostyle) .button:not(.nostyle).yellow,
+body:not(.nostyle) button:not(.nostyle).yellow,
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(152, 95, 13, 0.4);
+  border-color: #eea236;
+  background: #f0ad4e;
+}
+body:not(.nostyle) .button:not(.nostyle).yellow[disabled],
+body:not(.nostyle) button:not(.nostyle).yellow[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow[disabled],
+body:not(.nostyle) .button:not(.nostyle).yellow.disabled,
+body:not(.nostyle) button:not(.nostyle).yellow.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).yellow:hover,
+body:not(.nostyle) button:not(.nostyle).yellow:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow:hover {
+  border-color: #f0ad4e;
+  background: #f2b866;
+}
+body:not(.nostyle) .button:not(.nostyle).yellow:active,
+body:not(.nostyle) button:not(.nostyle).yellow:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow:active,
+body:not(.nostyle) .button:not(.nostyle).yellow.active,
+body:not(.nostyle) button:not(.nostyle).yellow.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).yellow.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).yellow.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).yellow.active {
+  color: #985f0d;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #ddaa61;
+}
+body:not(.nostyle) .button:not(.nostyle).red,
+body:not(.nostyle) button:not(.nostyle).red,
+body:not(.nostyle) input[type="button"]:not(.nostyle).red,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(118, 28, 25, 0.4);
+  border-color: #d43f3a;
+  background: #d9534f;
+}
+body:not(.nostyle) .button:not(.nostyle).red[disabled],
+body:not(.nostyle) button:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red[disabled],
+body:not(.nostyle) .button:not(.nostyle).red.disabled,
+body:not(.nostyle) button:not(.nostyle).red.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).red.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).red:hover,
+body:not(.nostyle) button:not(.nostyle).red:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).red:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red:hover {
+  border-color: #d9534f;
+  background: #de6764;
+}
+body:not(.nostyle) .button:not(.nostyle).red:active,
+body:not(.nostyle) button:not(.nostyle).red:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).red:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red:active,
+body:not(.nostyle) .button:not(.nostyle).red.active,
+body:not(.nostyle) button:not(.nostyle).red.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).red.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).red.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).red.active {
+  color: #761c19;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #c46764;
+}
+body:not(.nostyle) .button:not(.nostyle).sky,
+body:not(.nostyle) button:not(.nostyle).sky,
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(27, 109, 133, 0.4);
+  border-color: #46b8da;
+  background: #5bc0de;
+}
+body:not(.nostyle) .button:not(.nostyle).sky[disabled],
+body:not(.nostyle) button:not(.nostyle).sky[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky[disabled],
+body:not(.nostyle) .button:not(.nostyle).sky.disabled,
+body:not(.nostyle) button:not(.nostyle).sky.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).sky:hover,
+body:not(.nostyle) button:not(.nostyle).sky:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky:hover {
+  border-color: #5bc0de;
+  background: #70c8e2;
+}
+body:not(.nostyle) .button:not(.nostyle).sky:active,
+body:not(.nostyle) button:not(.nostyle).sky:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky:active,
+body:not(.nostyle) .button:not(.nostyle).sky.active,
+body:not(.nostyle) button:not(.nostyle).sky.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).sky.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).sky.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).sky.active {
+  color: #1b6d85;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #6fb5ca;
+}
+body:not(.nostyle) .button:not(.nostyle).gray,
+body:not(.nostyle) button:not(.nostyle).gray,
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray {
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4);
+  border-color: #aeaeae;
+  background: #bbbbbb;
+}
+body:not(.nostyle) .button:not(.nostyle).gray[disabled],
+body:not(.nostyle) button:not(.nostyle).gray[disabled],
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray[disabled],
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray[disabled],
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray[disabled],
+body:not(.nostyle) .button:not(.nostyle).gray.disabled,
+body:not(.nostyle) button:not(.nostyle).gray.disabled,
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray.disabled,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray.disabled,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray.disabled {
+  color: white !important;
+  text-shadow: 0 -1px 1px rgba(110, 110, 110, 0.4) !important;
+  border-color: #bbbbbb !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: #bbbbbb !important;
+}
+body:not(.nostyle) .button:not(.nostyle).gray:hover,
+body:not(.nostyle) button:not(.nostyle).gray:hover,
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray:hover,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray:hover,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray:hover {
+  border-color: #bbbbbb;
+  background: #c8c8c8;
+}
+body:not(.nostyle) .button:not(.nostyle).gray:active,
+body:not(.nostyle) button:not(.nostyle).gray:active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray:active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray:active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray:active,
+body:not(.nostyle) .button:not(.nostyle).gray.active,
+body:not(.nostyle) button:not(.nostyle).gray.active,
+body:not(.nostyle) input[type="button"]:not(.nostyle).gray.active,
+body:not(.nostyle) input[type="submit"]:not(.nostyle).gray.active,
+body:not(.nostyle) input[type="reset"]:not(.nostyle).gray.active {
+  color: #6e6e6e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: #bbbbbb;
+}
+.hgb {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+}
+.hgb > :focus {
+  position: relative;
+  z-index: 1;
+}
+.hgb > :nth-child(1n) {
+  float: left !important;
+  border-radius: 0 !important;
+}
+.hgb > :first-child ~ * {
+  margin-left: -1px !important;
+}
+.hgb > :first-child {
+  border-top-left-radius: 0.25em !important;
+  border-bottom-left-radius: 0.25em !important;
+}
+.hgb > :last-child {
+  border-top-right-radius: 0.25em !important;
+  border-bottom-right-radius: 0.25em !important;
+}
+.vgb {
+  vertical-align: middle;
+}
+.vgb > :focus {
+  position: relative;
+  z-index: 1;
+}
+.vgb > :nth-child(1n) {
+  display: block !important;
+  border-radius: 0 !important;
+}
+.vgb > :first-child ~ * {
+  margin-top: -1px !important;
+}
+.vgb > :first-child {
+  border-top-left-radius: 0.25em !important;
+  border-top-right-radius: 0.25em !important;
+}
+.vgb > :last-child {
+  border-bottom-left-radius: 0.25em !important;
+  border-bottom-right-radius: 0.25em !important;
+}
+.hide {
+  visibility: hidden !important;
+}
+.none {
+  display: none !important;
+}
+body {
+  position: relative;
+  width: 100%;
+  font-family: Microsoft YaHei, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 16px;
+  background-color: #ffffff;
+}
+body:before {
+  content: "";
+  display: table;
+}
+a {
+  color: #0055aa;
+  text-decoration: none;
+}
+a:hover {
+  color: #1188ff;
+  text-decoration: underline;
+}

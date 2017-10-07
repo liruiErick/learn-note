@@ -1,0 +1,1 @@
+﻿http://apis.map.qq.com/uri/v1/marker?marker=coord:34.258246,108.974963;title:东关正街;addr:公交站&referer=myapp

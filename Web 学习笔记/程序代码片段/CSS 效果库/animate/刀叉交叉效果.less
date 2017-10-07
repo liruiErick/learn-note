@@ -1,0 +1,72 @@
+/* 刀叉交叉效果 */
+.dao {
+	.animation(dao 2s infinite);
+}
+.cha {
+	.animation(cha 2s infinite);
+}
+@jiaocha_range: 10deg;
+@-webkit-keyframes dao {
+	from { .rotate(0); }
+	20% { .rotate(@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@-moz-keyframes dao {
+	from { .rotate(0); }
+	20% { .rotate(@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@-o-keyframes dao {
+	from { .rotate(0); }
+	20% { .rotate(@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@keyframes dao {
+	from { .rotate(0); }
+	20% { .rotate(@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@-webkit-keyframes cha {
+	from { .rotate(0); }
+	20% { .rotate(-@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(-@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@-moz-keyframes cha {
+	from { .rotate(0); }
+	20% { .rotate(-@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(-@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@-o-keyframes cha {
+	from { .rotate(0); }
+	20% { .rotate(-@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(-@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}
+@keyframes cha {
+	from { .rotate(0); }
+	20% { .rotate(-@jiaocha_range); }
+	30% { .rotate(0); }
+	50% { .rotate(-@jiaocha_range); }
+	60% { .rotate(0); }
+	to { .rotate(0); }
+}

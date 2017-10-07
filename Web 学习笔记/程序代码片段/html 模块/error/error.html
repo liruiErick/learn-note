@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="5;url=http://www.baidu.com">
+<title>错误！该页无法显示</title>
+<style>
+html { height:100%; }
+body { margin:0 auto; background:#e0e0e0; height:100%; width:600px; position:relative; font-family: "Microsoft YaHei", Helvetica, Arial, Verdana, sans-serif; }
+img { position:absolute; top:50%; margin-top:-121px; left:0; }
+div { position:absolute; top:50%; margin-top:-74px; *margin-top:-50px; right:0; line-height:30px; }
+span { display:inline-block; width:11px; height:20px; margin-right:10px; background-image:url(num.png); vertical-align:middle; font-size:0; }
+a { color:red; }
+</style>
+</head>
+
+<body>
+<img src="error.jpg" />
+<div>
+	<h1>您浏览的页面暂时不能显示</h1>
+	<p>
+		您正在浏览的网页可能已被删除、重命名或暂时不可用。<br/>
+		<span></span>秒后自动跳转。如果您的浏览器没有跳转，<a href="###">请点击这里</a>
+	</p>
+</div>
+<script>
+var curTime = 0;
+var num = document.getElementsByTagName('span')[0];
+var timerNum = setInterval(function(){
+	curTime++;
+	num.style.backgroundPosition = '0 '+(-20*curTime)+'px';
+	if (curTime==5) clearInterval(timerNum);
+},1000);
+</script>
+</body>
+</html>

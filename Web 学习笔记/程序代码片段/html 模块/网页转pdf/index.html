@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="renderer" content="webkit" />
+<meta name="format-detection" content="telephone=no, email=no, date=no, address=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="msapplication-tap-highlight" content="no" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>网页转PDF</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+    .container {
+        width: 100%;
+        height: 2000px;
+        background-color: rgba(255,0,0,.5);
+    }
+    #content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+</style>
+</head>
+<body ontouchstart>
+
+    <div class="tools">
+        <button id="btn-html2canvas">export PDF by using jspdf + html2canvas</button>
+    </div>
+
+    <div class="container">
+        <div id="content">
+            <div class="content-banner">
+                <img class="content-banner-logo" src="./img/logo.jpg" alt="logo">
+                <h2>How Transform HTML Into PDF</h2>
+            </div>
+            <div class="content-main">
+
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+                <h3>Hello World!</h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script src="js/jspdf.debug.js"></script>
+<script src="js/html2canvas.js"></script>
+<script>
+document.getElementById("btn-html2canvas").onclick = function() {
+
+    html2canvas(document.getElementById("content"), {
+
+        // 渲染完成时调用，获得 canvas
+        onrendered: function(canvas) {
+
+            // 从 canvas 提取图片数据
+            var imgData = canvas.toDataURL('image/jpeg');
+
+            var doc = new jsPDF("p", "mm", "a4");
+            //                               |
+            // |—————————————————————————————|
+            // A0 841×1189
+            // A1 594×841
+            // A2 420×594
+            // A3 297×420
+            // A4 210×297
+            // A5 148×210
+            // A6 105×148
+            // A7 74×105
+            // A8 52×74
+            // A9 37×52
+            // A10 26×37
+            //     |——|——————————————————————————-————|
+            //                                     |——|——|
+            //                                     |     |
+            // doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+
+            // 生成到一页内
+            // var pWidth = 210;
+            // var pHeight = 297;
+
+            // var sx = pWidth / canvas.width;
+            // var sy = pHeight / canvas.height;
+            // var scale; //最终缩放比例
+            // if (sx > sy) scale = sy;
+            // else scale = sx;
+
+            // var width = canvas.width * scale;
+            // var height = canvas.height * scale;
+            // var offsetX = (pWidth - width) * 0.5;
+            // var offsetY = (pHeight - height) * 0.5;
+
+            // doc.addImage(imgData, 'JPEG', offsetX, offsetY, width, height);
+
+            // 图片超长时添加分页
+            var width = 210;
+            var height = 297;
+            var totalHeght = width / canvas.width * canvas.height;
+            var pages = Math.ceil(totalHeght / height);
+
+            for (var i = 0; i < pages; i++) {
+                if (i) doc.addPage();
+                doc.addImage(imgData, 'JPEG', 0, -height * i, width, totalHeght);
+            }
+
+            // doc.output('datauri'); // 当前窗口直接打开PDF
+            // window.open(doc.output('datauristring')); // 新窗口打开PDF
+            doc.save('test.pdf'); // 下载PDF
+
+            // 注意，有时候我们并不想让用户看到打印页面，但是打印页面必须显示在文档流中。
+            // 任何隐藏打印页面的CSS属性，如：visibility、opacity 或者是被 overflow:hidden，都会导致无法正常输出PDF。
+            // 这时我们就需要设法利用 CSS 来“隐藏”页面
+            // 目前只能使用以下设置，并且父容器必须有背景色可以遮挡住它：
+            // position: relative;
+            // z-index: -1;
+        }
+    });
+}
+</script>
+</body>
+</html>

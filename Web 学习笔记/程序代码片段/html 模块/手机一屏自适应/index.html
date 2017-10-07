@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN" id="index">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, minimal-ui"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="keywords" content="">
+<meta name="description" content="">
+<title>手机一屏自适应</title>
+<style>
+html { height: 100%; }
+body { margin: 0; height: 100%; background-color: #333; }
+body:before { content:""; display: table; }
+.abs { position: absolute; }
+.t1 { width: 100px; height: 10%; background-color: red; }
+.t2 { width: 60%; height: 40px; background-color: yellow; }
+.e1 { left: 20px; top: 20px; }
+.e2 { right: 20px; top: 120px; }
+.e3 { right: 20%; top: 220px; }
+.e4 { left: 80px; top: 320px; }
+.e5 { left: 40%; bottom: 10%; }
+.bd { border: 1px solid #fff; }
+.nav {
+	width: 300px;
+	height: 50px;
+	line-height: 50px;
+	margin: 10px auto;
+}
+.nav dt {
+	width: 100px;
+	height: 100%;
+	border-left: 1px solid red;
+	margin-left: -1px;
+	float: left;
+	background-color: #eee;
+	text-align: center;
+}
+.nav dt:first-child {
+	border: 0;
+}
+</style>
+</head>
+<body>
+<div id="page">
+	<dl class="nav">
+		<dt>nav1</dt>
+		<dt>nav2</dt>
+		<dt>nav3</dt>
+	</dl>
+	<div class="e1 t2"></div>
+	<div class="abs e2 t1 bd"></div>
+	<div class="abs e3 t2"></div>
+	<div class="abs e4 t1 bd noscale"></div>
+	<div class="abs e5 t1 nowrap"></div>
+</div>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery.autoAdjust.js"></script>
+<script>
+$("body").autoAdjust();
+</script>
+</body>
+</html>

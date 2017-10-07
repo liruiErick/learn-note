@@ -1,0 +1,102 @@
+@charset "UTF-8";
+@import "less/_config.less";
+
+@body_bgcl: #e5e5e5; //body背景灰
+@bottom_nav_bgcl: #fafafa; //底部导航背景暗白
+@bottom_nav_active_bgcl: darken(@bottom_nav_bgcl, 5%); //底部导航active浅灰
+body { background-color: @body_bgcl; }
+#bottom-nav {
+	position: fixed;
+	bottom: 0;
+	z-index: 99;
+	width: 100%;
+	height: 50px;
+
+	.bottom-nav-level1 {
+		position: relative;
+		z-index: 1;
+		.sz(100%);
+		.tbd;
+		margin-top: -1px;
+		.nav(#ddd, none, 100%, 3, 50px, 100%);
+
+		.iconfont {
+			.inbl;
+			.sz(12px);
+			margin-right: 6px;
+			vertical-align: middle;
+			//.ftsz(12px);
+			//color: @ftcl3;
+			.bgimg("../img/menu_ico.png");
+			.bgsz(12px auto);
+		}
+
+		span {
+			vertical-align: middle;
+			.ftsz(16px);
+		}
+
+		a {
+			display: block;
+			.sz(100%);
+			.bgcl(@bottom_nav_bgcl);
+
+			&:hover,
+			&:active {
+				.bgcl(@bottom_nav_active_bgcl);
+			}
+		}
+	}
+
+	.bottom-nav-level2 {
+		position: absolute;
+		bottom: 100%;
+		width: 100%;
+		z-index: 0;
+		.nav(none, none, 100%, 3, 3);
+
+		li {
+			position: relative;
+			height: 1px !important;
+			overflow: visible !important;
+		}
+
+		dl {
+			max-width: 100%;
+			min-width: 100px;
+			.hc(top, 10px);
+			.bgcl(@bottom_nav_bgcl);
+			.ftsz(16px, center);
+			.barr(@bottom_nav_bgcl, 8px, 10px);
+			.bdrd(4px);
+			.bxsd;
+			.form-group(v);
+
+			dt {
+				overflow: hidden;
+			}
+
+			a {
+				display: block;
+				height: 100%;
+				padding: 0 10px;
+				.acl(none);
+				.of3p;
+
+				&:hover,
+				&:active {
+					.bgcl(@bottom_nav_active_bgcl);
+				}
+			}
+			dt:not(:first-child) {
+				&:before {
+					content: "";
+					display: block;
+					height: 0;
+					margin: 0 5px;
+					.tbd;
+				}
+			}
+		}
+	}
+}

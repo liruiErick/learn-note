@@ -1,0 +1,591 @@
+@charset "UTF-8";
+
+/////////////////////////////////// 自定义input元素 ///////////////////////////////////
+
+// 按钮初始化
+.btn-init(@font_size) {
+	.inbl;
+	.ftsz(@font_size, center);
+	outline: none;
+	cursor: pointer;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 2em;
+	line-height: 2;
+	padding: 0 1em;
+	margin: 0; // 清除 webkit 浏览器中所有表单元素会有默认的 margin：2px
+	border: 0;
+	background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+	.box-sizing(border-box);
+	.nosel;
+	-webkit-appearance: none; // IOS下的表单元素会有默认的样式，且无法通过CSS重置，因此需要将其的渲染设置为 none
+	-moz-appearance: none;
+	-webkit-touch-callout: none; // 禁止长按弹出菜单
+
+	&[disabled],
+	&.disabled {
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	// 火狐浏览器下按钮元素会有私有的 padding 和 border，需要通过私有伪类来重置
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	}
+}
+
+// 立体弧面按钮
+.arc-btn-color(@btn_color) {
+	// 控制背景色的亮度值在10%~90%之间
+	@newColor: darken(@btn_color, max(lightness(@btn_color)-90%,0%));
+	@bgColor: lighten(@newColor, max(30%-lightness(@newColor),0%));
+	@bgColor2: desaturate(@bgColor, 20%);
+	@bgColor_lighten: lighten(@bgColor, 5%);
+	@bgColor_lighten2: lighten(@bgColor, 10%);
+	@bgColor_darken: darken(@bgColor, 5%);
+	@bgColor_darken2: darken(@bgColor, 30%);
+	@ftColor: contrast(@bgColor, black, white, 60%); //根据背景色的深浅判断字体颜色为白色还是黑色
+	@bdColor: darken(@bgColor_darken,max(lightness(@bgColor_darken)-70%,0%)); //边框色的亮度值不超过70%
+	@ttsdColor: contrast(@ftColor, fade(@bgColor_darken2, 40%), white, 40%); //根据字体色的深浅判断字体阴影颜色为白色还是暗色
+	@ttsdColor2: rgba(255, 255, 255, .4);
+
+	.box-shadow(~"inset 0 1px 0 rgba(255, 255, 255, .5), 0 1px 2px rgba(0, 0, 0, .2)");
+	text-shadow: 0 -1px 1px @ttsdColor;
+	color: @ftColor;
+	#gradient > .vertical(@bgColor_lighten, @bgColor_darken);
+	border: solid 1px @bdColor;
+
+	&[disabled],
+	&.disabled {
+		color: white;
+		#gradient > .vertical(lighten(@gray, 5%), darken(@gray, 5%));
+		border-color: @gray;
+		text-shadow: 0 -1px 1px fade(darken(@gray, 30%), 40%);
+	}
+
+	&:not([disabled]):not(.disabled) {
+		&:hover {
+			color: @ftColor;
+			#gradient > .vertical(@bgColor_lighten2, @bgColor_darken);
+		}
+		&:active,
+		&.active {
+			color: @bgColor_darken2;
+			background: @bgColor2;
+			.box-shadow(inset 0 1px 3px rgba(0, 0, 0, .3), 0 1px 0 rgba(255, 255, 255, .5););
+			text-shadow: 0 1px 0 @ttsdColor2;
+		}
+	}
+}
+.arc-btn(@btn_color: @blue, @font_size: 16px, @radius: 4px) {
+	.btn-init(@font_size);
+	.arc-btn-color(@btn_color);
+	.transition(all .15s);
+	border-radius: @radius;
+}
+
+// 扁平按钮
+.flat-btn-color(@btn_color) {
+	@newColor: darken(@btn_color, max(lightness(@btn_color)-95%,0%));
+	@bgColor: lighten(@newColor, max(30%-lightness(@newColor),0%));
+	@bgColor2: desaturate(@bgColor, 20%);
+	@bgColor_lighten: lighten(@bgColor, 5%);
+	@bgColor_darken: darken(@bgColor, 5%);
+	@bgColor_darken2: darken(@bgColor, 30%);
+	@ftColor: contrast(@bgColor, black, white, 60%); //根据背景色的深浅判断字体颜色为白色还是黑色
+	@bdColor: darken(@bgColor_darken,max(lightness(@bgColor_darken)-70%,0%)); //边框色的亮度值不超过70%
+	@bdColor_lighten: lighten(@bdColor, 5%);
+	@ttsdColor: contrast(@ftColor, fade(@bgColor_darken2, 40%), white, 40%); //根据字体色的深浅判断字体阴影颜色为白色还是暗色
+	@ttsdColor2: rgba(255, 255, 255, .4);
+
+	text-shadow: 0 -1px 1px @ttsdColor;
+	color: @ftColor;
+	background-color: @bgColor;
+	border: 1px solid @bdColor;
+
+	&[disabled],
+	&.disabled {
+		color: white;
+		background-color: @gray;
+		border-color: @gray;
+		text-shadow: 0 -1px 1px fade(darken(@gray, 30%), 40%);
+	}
+
+	&:not([disabled]):not(.disabled) {
+		&:hover {
+			border-color: @bdColor_lighten;
+			background-color: @bgColor_lighten;
+		}
+		&:active,
+		&.active {
+			color: @bgColor_darken2;
+			background: @bgColor2;
+			.box-shadow(inset 0 1px 3px rgba(0, 0, 0, .3), 0 1px 0 rgba(255, 255, 255, .5););
+			text-shadow: 0 1px 0 @ttsdColor2;
+		}
+	}
+}
+.flat-btn(@btn_color: @blue, @font_size: 16px, @radius: 4px) {
+	.btn-init(@font_size);
+	.flat-btn-color(@btn_color);
+	.transition(all .15s);
+	border-radius: @radius;
+}
+
+
+// app store 空心按钮
+.hollow-btn-color(@btn_color, @bg_color) {
+	color: @btn_color;
+	background-color: transparent;
+	border: 1px solid @btn_color;
+
+	&[disabled],
+	&.disabled {
+		color: @gray;
+		border-color: @gray;
+	}
+
+	&:not([disabled]):not(.disabled) {
+		&:hover,
+		&:active,
+		&.active {
+			color: @bg_color;
+			background-color: @btn_color;
+		}
+	}
+}
+.hollow-btn(@font_size: 16px, @radius: 4px) when not (iscolor(@font_size)) {
+	.btn-init(@font_size);
+	.hollow-btn-color(#5296FE, #ffffff);
+	.transition(all .15s);
+	border-radius: @radius;
+}
+.hollow-btn(@btn_color, @font_size: 16px, @radius: 4px) when (length(@btn_color) = 1) {
+	.btn-init(@font_size);
+	@bg_color: contrast(@btn_color, black, white, 60%); //根据按钮色的深浅判断背景颜色为白色还是按钮色
+	.hollow-btn-color(@btn_color, @bg_color);
+	.transition(all .15s);
+	border-radius: @radius;
+}
+.hollow-btn(@btn_color, @font_size: 16px, @radius: 4px) when (length(@btn_color) = 2) {
+	.btn-init(@font_size);
+	.hollow-btn-color(extract(@btn_color, 1), extract(@btn_color, 2));
+	.transition(all .15s);
+	border-radius: @radius;
+}
+.hollow-btn-gbcl(@bg_color) {
+	&:not([disabled]):not(.disabled) {
+		&:hover,
+		&:active,
+		&.active { color: @bg_color; }
+	}
+}
+
+// 组按钮
+// 以下是 javascript 切换代码：
+// var $group_btn = $('#group_btn >:not([class="disabled"],[disabled])');
+// if ($group_btn.filter('.active').length == 0) $group_btn.eq(0).addClass("active");
+// $group_btn.on("mousedown",function(){
+//		$group_btn.removeClass("active");
+//		$(this).addClass("active");
+// });
+.group-btn(h, @radius: 4px) {
+	.inbl;
+	vertical-align: middle;
+	>select,
+	>textarea,
+	>input[type="text"],
+	>input[type="password"],
+	>input[type="datetime"],
+	>input[type="datetime-local"],
+	>input[type="date"],
+	>input[type="month"],
+	>input[type="time"],
+	>input[type="week"],
+	>input[type="number"],
+	>input[type="email"],
+	>input[type="url"],
+	>input[type="search"],
+	>input[type="tel"],
+	>input[type="color"] {
+		position: relative;
+		z-index: 1;
+	}
+	>:nth-child(1n) {
+		float: left !important;
+		border-radius: 0 !important;
+	}
+	>:first-child~* { margin-left: -1px !important; }
+	>:first-child {
+		border-top-left-radius: @radius !important;
+		border-bottom-left-radius: @radius !important;
+	}
+	>:last-child {
+		border-top-right-radius: @radius !important;
+		border-bottom-right-radius: @radius !important;
+	}
+}
+.group-btn(v, @radius: 4px) {
+	vertical-align: middle;
+	>select,
+	>textarea,
+	>input[type="text"],
+	>input[type="password"],
+	>input[type="datetime"],
+	>input[type="datetime-local"],
+	>input[type="date"],
+	>input[type="month"],
+	>input[type="time"],
+	>input[type="week"],
+	>input[type="number"],
+	>input[type="email"],
+	>input[type="url"],
+	>input[type="search"],
+	>input[type="tel"],
+	>input[type="color"] {
+		position: relative;
+		z-index: 1;
+	}
+	>:nth-child(1n) {
+		display: block !important;
+		border-radius: 0 !important;
+	}
+	>:first-child~* { margin-top: -1px !important; }
+	>:first-child {
+		border-top-left-radius: @radius !important;
+		border-top-right-radius: @radius !important;
+	}
+	>:last-child {
+		border-bottom-left-radius: @radius !important;
+		border-bottom-right-radius: @radius !important;
+	}
+}
+
+
+
+
+// Bootstrap 表单输入字段样式
+// 可应用于以下表单控件:
+// textarea
+// input[type="text"]
+// input[type="password"]
+// input[type="datetime"]
+// input[type="datetime-local"]
+// input[type="date"]
+// input[type="month"]
+// input[type="time"]
+// input[type="week"]
+// input[type="number"]
+// input[type="email"]
+// input[type="url"]
+// input[type="search"]
+// input[type="tel"]
+// input[type="color"]
+
+.input-init(@border_color, @font_size, @radius) {
+	.ftsz(@font_size);
+	font-family: Arial, Helvetica, sans-serif;
+	height: 2em;
+	line-height: 2;
+	padding: 0 .5em;
+	margin: 0;
+	vertical-align: middle;
+	color: #555555;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: @radius;
+	.box-sizing(border-box);
+	.box-shadow(inset 0 1px 1px rgba(0, 0, 0, .1));
+	.transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+	.placeholder;
+
+	&:focus {
+		border-color: @border_color;
+		outline: 0;
+		.box-shadow(e(%("inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px %d", fade(@border_color,60%))));
+	}
+
+	&[disabled],
+	&[readonly] {
+		cursor: not-allowed;
+		background-color: #eeeeee;
+	}
+}
+.input(@border_color: #66afe9, @font_size: 16px, @radius: 4px) when (iscolor(@border_color)) {
+	.input-init(@border_color, @font_size, @radius);
+}
+.input(@border_color, @font_size: 16px, @radius: 4px) when not (iscolor(@border_color)) {
+	.input-init(#66afe9, @font_size, @radius);
+}
+.input-bdcl(@border_color) {
+	&:focus {
+		border-color: @border_color;
+		.box-shadow(e(%("inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px %d", fade(@border_color,60%))));
+	}
+}
+
+
+
+// 下拉选择框
+// select
+// 文档结构：
+// <div class="select">
+// 	<select name="" id="">
+// 		<option value="">请选择</option>
+// 	</select>
+// </div>
+.select-init(@border_color, @arrow_color, @font_size, @radius) {
+	.inbl;
+	font-size: @font_size;
+	position: relative;
+	.barr(@arrow_color #ffffff, .5em, .5em, 50% .5em auto auto, -.25em 0 0 0);
+
+	&[disabled],
+	&.disabled {
+		cursor: not-allowed;
+		select {
+			background-color: #eeeeee;
+			pointer-events: none;
+		}
+	}
+
+	select {
+		.input(@border_color, @font_size, @radius);
+		-webkit-appearance: none; // IOS下的表单元素会有默认的样式，且无法通过CSS重置，因此需要将其的渲染设置为 none
+		-moz-appearance: none;
+		padding-right: 1.2em;
+		&::-ms-expand { // 隐藏掉ie10+下拉框的按钮
+			display: none;
+		}
+	}
+}
+.select(@font_size: 16px, @radius: 4px) when not (iscolor(@font_size)) {
+	.select-init(#66afe9, #000, @font_size, @radius);
+}
+.select(@color, @font_size: 16px, @radius: 4px) when (length(@color) = 1) {
+	.select-init(@color, @color, @font_size, @radius);
+}
+.select(@color, @font_size: 16px, @radius: 4px) when (length(@color) = 2) {
+	.select-init(extract(@color, 1), extract(@color, 2), @font_size, @radius);
+}
+.select-bdcl(@border_color) {
+	select {
+		.input-bdcl(@border_color);
+	}
+}
+
+
+
+// 复选框
+// 可应用于以下表单控件：
+// input[type="radio"]
+// input[type="checkbox"]
+// 文档结构：
+// <div class="checkbox">
+// 	<input type="checkbox">
+// 	<i></i>
+// </div>
+.checkbox-init(@border_color, @checked_color, @background_color, @size, @radius) {
+	position: relative;
+	.inbl;
+	width: @size;
+	height: @size;
+	border-radius: @radius;
+	background-color: @background_color;
+	.box-shadow(e(%("inset 0 0 0 1px %d", @border_color)));
+	vertical-align: middle;
+
+	&[disabled],
+	&.disabled {
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	input[type="radio"],
+	input[type="checkbox"] {
+		.noapp;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 1;
+		.op(0);
+
+		& + :nth-child(1n) {
+			display: block;
+			width: 35%;
+			height: 65%;
+			margin-left: 30%;
+			border-right: solid @size/8 @checked_color;
+			border-bottom: solid  @size/8 @checked_color;
+			border-bottom-right-radius: @size/8;
+			.transition(all .3s);
+			.op(0);
+			.transform(rotate(45deg) scale(0));
+		}
+
+		&:checked + :nth-child(1n) {
+			.op(1);
+			.transform(rotate(45deg) scale(1));
+		}
+	}
+}
+.checkbox(@color: @blue, @size: 16px, @radius: @size/4) when (length(@color) = 1) {
+	.checkbox-init(@color, @color, #ffffff, @size, @radius);
+}
+.checkbox(@color, @size: 16px, @radius: @size/4) when (length(@color) = 2) {
+	.checkbox-init(extract(@color, 1), extract(@color, 2), #ffffff, @size, @radius);
+}
+.checkbox(@color, @size: 16px, @radius: @size/4) when (length(@color) = 3) {
+	.checkbox-init(extract(@color, 1), extract(@color, 2), extract(@color, 3), @size, @radius);
+}
+
+
+// 单选框
+// 可应用于以下表单控件：
+// input[type="radio"]
+// input[type="checkbox"]
+// 文档结构：
+// <div class="radio">
+// 	<input type="radio">
+// 	<i></i>
+// </div>
+.radio-init(@border_color, @checked_color, @background_color, @size, @radius) {
+	position: relative;
+	.inbl;
+	width: @size;
+	height: @size;
+	border-radius: @radius;
+	background-color: @background_color;
+	.box-shadow(e(%("inset 0 0 0 1px %d", @border_color)));
+	vertical-align: middle;
+
+	&[disabled],
+	&.disabled {
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	input[type="radio"],
+	input[type="checkbox"] {
+		.noapp;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 1;
+		.op(0);
+
+		& + :nth-child(1n) {
+			display: block;
+			width: 50%;
+			height: 50%;
+			border-radius: @radius;
+			background-color: @checked_color;
+			.hvc(50%, 50%);
+			.transition(all .3s);
+			.op(0);
+			.scale(0);
+		}
+
+		&:checked + :nth-child(1n) {
+			.op(1);
+			.scale(1);
+		}
+	}
+}
+.radio(@color: @blue, @size: 16px, @radius: 50%) when (length(@color) = 1) {
+	.radio-init(@color, @color, #ffffff, @size, @radius);
+}
+.radio(@color, @size: 16px, @radius: 50%) when (length(@color) = 2) {
+	.radio-init(extract(@color, 1), extract(@color, 2), #ffffff, @size, @radius);
+}
+.radio(@color, @size: 16px, @radius: 50%) when (length(@color) = 3) {
+	.radio-init(extract(@color, 1), extract(@color, 2), extract(@color, 3), @size, @radius);
+}
+
+
+
+// 开关
+// 可应用于以下表单控件：
+// input[type="radio"]
+// input[type="checkbox"]
+// 文档结构：
+// <div class="switch">
+// 	<input type="checkbox">
+// 	<i></i>
+// </div>
+.switch-init(@color: #00e079, @width: 50px, @height: @width*.6) {
+	@innerWidth: @width - 4px;
+	@innerHeight: @height - 4px;
+
+	position: relative;
+	.inbl;
+	width: @width;
+	height: @height;
+	vertical-align: middle;
+
+	&[disabled],
+	&.disabled {
+		cursor: not-allowed;
+		pointer-events: none;
+		.op(.5);
+	}
+
+	input[type="radio"],
+	input[type="checkbox"] {
+		.noapp;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 1;
+		.op(0);
+		cursor: pointer;
+
+		& + :nth-child(1n) {
+			display: block;
+			width: @innerWidth;
+			height: @innerHeight;
+			border-radius: @height / 2;
+			border: 2px solid #dddddd;
+			background-color: #dddddd;
+			.box-shadow(inset 0 0 @innerWidth #ffffff);
+			.transition(all .2s);
+
+			&:before {
+				content: '';
+				display: block;
+				width: @innerHeight;
+				height: @innerHeight;
+				border-radius: 50%;
+				background: white;
+				.box-shadow(0 1px 2px rgba(0,0,0,.5));
+				.transition(all .2s);
+				.translate(0, 0);
+			}
+		}
+
+		&:checked + :nth-child(1n) {
+			background-color: @color;
+			border-color: @color;
+			.box-shadow(none);
+
+			&:before {
+				.translate(@innerWidth - @innerHeight, 0);
+			}
+		}
+	}
+}
+.switch(@width: 50px, @height: @width*.6) when not (iscolor(@width)) {
+	.switch-init(#00e079, @width, @height);
+}
+.switch(@color, @width: 50px, @height: @width*.6) when (iscolor(@color)) {
+	.switch-init(@color, @width, @height);
+}

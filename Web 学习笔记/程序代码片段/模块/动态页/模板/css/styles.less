@@ -1,0 +1,178 @@
+@charset "UTF-8";
+@import "less/_config.less";
+@import "_common.less";
+
+html, body {
+	height: 100%;
+	.bgcl(#242424);
+}
+
+.rotate {
+	.rotation-animation(rotation-animation, @start: 0, @end: 360, @duration: 2s, @easing: linear, @delay: 0s, @loop: infinite, @repeat: normal);
+}
+
+#pages {
+	.sz(100%);
+	position: relative;
+	overflow: hidden;
+}
+
+#arrow {
+	display: none;
+	position: absolute;
+	left: 50%;
+	margin-left: -34px;
+	bottom: 0;
+	z-index: 9;
+	.arrow-animation(arrow-animation, -20px, 1s, v);
+	img {
+		.sz(68px);
+	}
+}
+
+#loading {
+	//display: none;
+	color: #45a074;
+	text-align:center;
+	.b;
+	.sz(160px);
+	.hvc(160px, 160px);
+	.va;
+	.ftsz(0);
+
+	.shape {
+		position: absolute;
+		left: 0;
+		top: 0;
+		.sz(100%);
+		.rotation-animation(loading-animation, 0, 360, 2s);
+		img {
+			.sz(100%);
+		}
+	}
+
+	.logo {
+		position: relative;
+		z-index: 1;
+		margin-top: -5px;
+		img {
+			width: 80px;
+		}
+	}
+
+	.progress {
+		.ftsz(14px);
+		position: absolute;
+		top: 102px;
+		left: 0;
+		width: 100%;
+	}
+}
+
+#music {
+	display: none;
+	position: fixed;
+	.sz(48px);
+	top: 20px;
+	right: 20px;
+	z-index: 10000;
+
+	&.animing {
+		.music-icon {
+			.animation(musicSlide 1.5s ease infinite);
+		}
+		.circle {
+			.animation(musicWave 2s linear infinite);
+		}
+	}
+
+	i {
+		position: absolute;
+		.sz(48px);
+
+		&.music-icon {
+			background: url(../img/music3.png) no-repeat;
+			z-index: 9;
+		}
+	}
+}
+
+@keyframes musicSlide {
+	0% {
+		transform: translateY(0);
+		-webkit-transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+		-webkit-transform: translateY(-5px);
+	}
+	100% {
+		transform: translateY(0);
+		-webkit-transform: translateY(0);
+	}
+}
+@-webkit-keyframes musicSlide {
+	0% {
+		transform: translateY(0);
+		-webkit-transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+		-webkit-transform: translateY(-5px);
+	}
+	100% {
+		transform: translateY(0);
+		-webkit-transform: translateY(0);
+	}
+}
+@keyframes musicWave {
+	0% {
+		background: url(../img/music3-1.png) no-repeat;
+	}
+	25% {
+		background: url(../img/music3-1.png) no-repeat, url(../img/music3-2.png) no-repeat;
+	}
+	50% {
+		background: url(../img/music3-2.png) no-repeat, url(../img/music3-3.png) no-repeat;
+	}
+	75% {
+		background: url(../img/music3-3.png) no-repeat;
+	}
+	100% {
+		background: none;
+	}
+}
+@-webkit-keyframes musicWave {
+	0% {
+		background: url(../img/music3-1.png) no-repeat;
+	}
+	25% {
+		background: url(../img/music3-1.png) no-repeat, url(../img/music3-2.png) no-repeat;
+	}
+	50% {
+		background: url(../img/music3-2.png) no-repeat, url(../img/music3-3.png) no-repeat;
+	}
+	75% {
+		background: url(../img/music3-3.png) no-repeat;
+	}
+	100% {
+		background: none;
+	}
+}
+
+/****************** index end ******************/
+@media screen and (max-width: @screen_xs_max) { // 超小屏幕（手机）
+
+}
+@media screen and (min-width: @screen_sm_min) { // 除超小屏幕以外（非手机）
+
+}
+@media screen and (min-width: @screen_sm_min) and (max-width: @screen_sm_max) { // 小屏幕（平板）
+
+}
+@media screen and (min-width: @screen_md_min) and (max-width: @screen_md_max) { // 中等屏幕（笔记本）
+
+}
+@media screen and (min-width: @screen_lg_min) { // 大屏幕（桌面）
+
+}

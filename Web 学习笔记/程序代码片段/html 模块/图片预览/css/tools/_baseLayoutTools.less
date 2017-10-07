@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+/////////////////////////////////// 基础布局工具 ///////////////////////////////////
+
+// 块元素水平居中
+.blhc(@width: auto, @margin: auto) {
+	display: block;
+	width: @width;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: @margin;
+	margin-bottom: @margin;
+}
+.blhc(@width, @margin_top, @margin_bottom) {
+	display: block;
+	width: @width;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: @margin_top;
+	margin-bottom: @margin_bottom;
+}
+
+
+
+// 绝对中央居中（如果容器宽度小于该元素，仍然能保持居中）
+// 只对块元素或者行内块元素有效，且父容器必须设置为定位元素
+.hc(@width, @position: top, @v: auto) {
+	width: @width;
+	position: absolute;
+	left: 50%;
+	@{position}: @v;
+	margin-left: @width / 2 * -1;
+}
+.vc(@height, @position: left, @h: auto) {
+	height: @height;
+	position: absolute;
+	@{position}: @h;
+	top: 50%;
+	margin-top: @height / 2 * -1;
+}
+.hvc(@width, @height) {
+	width: @width;
+	height: @height;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: @width / 2 * -1;
+	margin-top: @height / 2 * -1;
+}
+
+
+
+// 容器内所有子元素垂直居中（包括行内块元素，IE7及以下浏览器不支持。但是配合IE9.js可以支持）
+.cdvc(@pseudo_elements: after) {
+	@select: ~":@{pseudo_elements}";
+	white-space: nowrap;
+	>:nth-child(n) { .inbl; vertical-align: middle; white-space: normal; }
+	&@{select} {
+		content: "";
+		.inbl;
+		width: 0;
+		height: 100%;
+		overflow: hidden;
+		vertical-align: middle;
+	}
+}
+
+
+
+// 容器内所有子元素两端对齐（包括行内块元素）
+// 子元素间必须换行书写才会生效。如果是代码动态生成，请在每个子元素之间插入 &#10; 换行的转移字符
+// 注意，在 webkit 浏览器下，父容器的结束标签必须紧跟着最后一个子元素的结尾。否则最后一行结尾会有一个空白（换行符的文本节点）
+// 如果需要兼容IE6-7，那么子元素必须全部为原生的行内元素或行内块元素，如：<span>、<img>等。通过 display 设置的行内元素或行内块元素无效
+.jy() {
+	white-space: normal !important; //主要用作在和 .cdvc 一同使用时，消除该混合中的强制不换行属性
+	text-align: justify; //IE6-7下，子元素必须为原生行内元素或者行内块元素
+	text-align-last: justify; //IE下设置最后一行的对齐方式，主要为兼容IE6-7
+	*text-justify: inter-ideograph; //如果子元素为原生块元素，那么必须声明该属性后，IE6-7下的对齐方式才能生效
+	>:nth-child(n) { .inbl; vertical-align: middle; }
+	&:after {
+		content: "";
+		.inbl;
+		width: 100%;
+		height: 0;
+		overflow: hidden;
+	}
+}
+
+
+
+// 常规两侧浮动
+.lrf() {
+	.clear;
+	>:first-child { float: left; }
+	>:nth-child(2) { float: right; }
+}
+
+
+
+// 剩余空间自适应（父容器需要设置成定位元素。但是IE6不支持这种方法，需要另外做hack）
+// 在 expression 表达式中，如果遇到 parseInt('auto')，那么表达式会自动失效
+.fit(@arg: 0) when (length(@arg) = 1) {
+	.sz(auto);
+	position: absolute;
+	top: extract(@arg, 1);
+	right: extract(@arg, 1);
+	bottom: extract(@arg, 1);
+	left: extract(@arg, 1);
+	_width: e(%(
+	"expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 1), extract(@arg, 1)));
+	_height: e(%(
+	"expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 1), extract(@arg, 1)));
+}
+.fit(@arg) when (length(@arg) = 2) {
+	.sz(auto);
+	position: absolute;
+	top: extract(@arg, 1);
+	right: extract(@arg, 2);
+	bottom: extract(@arg, 1);
+	left: extract(@arg, 2);
+	_width: e(%(
+	"expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 2), extract(@arg, 2)));
+	_height: e(%(
+	"expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 1), extract(@arg, 1)));
+}
+.fit(@arg) when (length(@arg) = 3) {
+	.sz(auto);
+	position: absolute;
+	top: extract(@arg, 1);
+	right: extract(@arg, 2);
+	bottom: extract(@arg, 3);
+	left: extract(@arg, 2);
+	_width: e(%(
+	"expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 2), extract(@arg, 2)));
+	_height: e(%(
+	"expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 1), extract(@arg, 3)));
+}
+.fit(@arg) when (length(@arg) = 4) {
+	.sz(auto);
+	position: absolute;
+	top: extract(@arg, 1);
+	right: extract(@arg, 2);
+	bottom: extract(@arg, 3);
+	left: extract(@arg, 4);
+	_width: e(%(
+	"expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 2), extract(@arg, 4)));
+	_height: e(%(
+	"expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('%d')-parseInt('%d'))",
+	extract(@arg, 1), extract(@arg, 3)));
+}
+

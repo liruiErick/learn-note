@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>获得光标在各种文本框中的位置</title>
+</head>
+
+<body>
+<input type="text" value="1234567890" onclick="javascript:alert(getTxt1CursorPosition(this))">
+<textarea onclick="javascript:alert(getTxt1CursorPosition(this))">1234567890</textarea>
+<script>
+// JavaScript获取文本框光标在第几个字符处
+
+// IE专用
+function getCursorPos(obj){
+	var rngSel = document.selection.createRange();//建立选择域
+	var rngTxt = obj.createTextRange();//建立文本域
+	var flag = rngSel.getBookmark();//用选择域建立书签
+	rngTxt.collapse();//瓦解文本域到开始位,以便使标志位移动
+	rngTxt.moveToBookmark(flag);//使文本域移动到书签位
+	rngTxt.moveStart('character',-obj.value.length);//获得文本域左侧文本
+	str = rngTxt.text.replace(/\r\n/g,'');//替换回车换行符
+	return str.length;//返回文本域文本长度
+}
+// 全浏览器通用
+function getTxt1CursorPosition(obj){
+	var cursurPosition = -1;
+	if (obj.selectionStart){//非IE浏览器
+		cursurPosition = obj.selectionStart;
+	} else {//IE
+		var range = document.selection.createRange();
+		range.moveStart("character",-obj.value.length);
+		cursurPosition = range.text.length;
+	}
+	return cursurPosition;
+}
+</script>
+
+<script>
+// JavaScript获取文本框光标的像素位置
+
+// 获取光标在文本框的位置
+function _getFocus(elem) {
+	var index = 0;
+	if (document.selection) {// IE Support
+		elem.focus();
+		var Sel = document.selection.createRange();
+		if (elem.nodeName === 'TEXTAREA') {//textarea
+			var Sel2 = Sel.duplicate();
+			Sel2.moveToElementText(elem);
+			var index = -1;
+			while (Sel2.inRange(Sel)) {
+				Sel2.moveStart('character');
+				index++;
+			};
+		}
+		else if (elem.nodeName === 'INPUT') {// input
+			Sel.moveStart('character', -elem.value.length);
+			index = Sel.text.length;
+		}
+	}
+	else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox support
+		index = elem.selectionStart;
+	}
+	return index;
+}
+
+// 对于IE浏览器，通过下面的代码实现起来比较方便
+(function() {
+if (document.selection) {
+	elem.focus();
+	var Sel = document.selection.createRange();
+	return {
+		left: Sel.boundingLeft,
+		top: Sel.boundingTop,
+		bottom: Sel.boundingTop + Sel.boundingHeight
+	};
+}
+})();
+
+// 而对于firefox之类的浏览器则通过模拟来实现，如下图所示。
+// 首先通过拷贝输入区域的样式到一个div层（clone层），然后在此clone层之中的text子层添加光标之前的字符，并在text子层之后添加focus层，focus层中包含字符“|”来模拟光标，进而通过获取focus层的偏移量即可获得文本光标的像素坐标位置。
+var kingwolfofsky = {
+    /**
+    * 获取输入光标在页面中的坐标
+    * @param        {HTMLElement}   输入框元素
+    * @return       {Object}        返回left和top,bottom
+    */
+    getInputPositon: function (elem) {
+        if (document.selection) {   //IE Support
+            elem.focus();
+            var Sel = document.selection.createRange();
+            return {
+                left: Sel.boundingLeft,
+                top: Sel.boundingTop,
+                bottom: Sel.boundingTop + Sel.boundingHeight
+            };
+        } else {
+            var that = this;
+            var cloneDiv = '{$clone_div}', cloneLeft = '{$cloneLeft}', cloneFocus = '{$cloneFocus}', cloneRight = '{$cloneRight}';
+            var none = '<span style="white-space:pre-wrap;"> </span>';
+            var div = elem[cloneDiv] || document.createElement('div'), focus = elem[cloneFocus] || document.createElement('span');
+            var text = elem[cloneLeft] || document.createElement('span');
+            var offset = that._offset(elem), index = this._getFocus(elem), focusOffset = { left: 0, top: 0 };
+
+            if (!elem[cloneDiv]) {
+                elem[cloneDiv] = div, elem[cloneFocus] = focus;
+                elem[cloneLeft] = text;
+                div.appendChild(text);
+                div.appendChild(focus);
+                document.body.appendChild(div);
+                focus.innerHTML = '|';
+                focus.style.cssText = 'display:inline-block;width:0px;overflow:hidden;z-index:-100;word-wrap:break-word;word-break:break-all;';
+                div.className = this._cloneStyle(elem);
+                div.style.cssText = 'visibility:hidden;display:inline-block;position:absolute;z-index:-100;word-wrap:break-word;word-break:break-all;overflow:hidden;';
+            };
+            div.style.left = this._offset(elem).left + "px";
+            div.style.top = this._offset(elem).top + "px";
+            var strTmp = elem.value.substring(0, index).replace(/</g, '<').replace(/>/g, '>').replace(/\n/g, '<br/>').replace(/\s/g, none);
+            text.innerHTML = strTmp;
+
+            focus.style.display = 'inline-block';
+            try { focusOffset = this._offset(focus); } catch (e) { };
+            focus.style.display = 'none';
+            return {
+                left: focusOffset.left,
+                top: focusOffset.top,
+                bottom: focusOffset.bottom
+            };
+        }
+    },
+
+    // 克隆元素样式并返回类
+    _cloneStyle: function (elem, cache) {
+        if (!cache && elem['${cloneName}']) return elem['${cloneName}'];
+        var className, name, rstyle = /^(number|string)$/;
+        var rname = /^(content|outline|outlineWidth)$/; //Opera: content; IE8:outline && outlineWidth
+        var cssText = [], sStyle = elem.style;
+
+        for (name in sStyle) {
+            if (!rname.test(name)) {
+                val = this._getStyle(elem, name);
+                if (val !== '' && rstyle.test(typeof val)) { // Firefox 4
+                    name = name.replace(/([A-Z])/g, "-$1").toLowerCase();
+                    cssText.push(name);
+                    cssText.push(':');
+                    cssText.push(val);
+                    cssText.push(';');
+                };
+            };
+        };
+        cssText = cssText.join('');
+        elem['${cloneName}'] = className = 'clone' + (new Date).getTime();
+        this._addHeadStyle('.' + className + '{' + cssText + '}');
+        return className;
+    },
+
+    // 向页头插入样式
+    _addHeadStyle: function (content) {
+        var style = this._style[document];
+        if (!style) {
+            style = this._style[document] = document.createElement('style');
+            document.getElementsByTagName('head')[0].appendChild(style);
+        };
+        style.styleSheet && (style.styleSheet.cssText += content) || style.appendChild(document.createTextNode(content));
+    },
+    _style: {},
+
+    // 获取最终样式
+    _getStyle: 'getComputedStyle' in window ? function (elem, name) {
+        return getComputedStyle(elem, null)[name];
+    } : function (elem, name) {
+        return elem.currentStyle[name];
+    },
+
+    // 获取光标在文本框的位置
+    _getFocus: function (elem) {
+        var index = 0;
+        if (document.selection) {// IE Support
+            elem.focus();
+            var Sel = document.selection.createRange();
+            if (elem.nodeName === 'TEXTAREA') {//textarea
+                var Sel2 = Sel.duplicate();
+                Sel2.moveToElementText(elem);
+                var index = -1;
+                while (Sel2.inRange(Sel)) {
+                    Sel2.moveStart('character');
+                    index++;
+                };
+            }
+            else if (elem.nodeName === 'INPUT') {// input
+                Sel.moveStart('character', -elem.value.length);
+                index = Sel.text.length;
+            }
+        }
+        else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox support
+            index = elem.selectionStart;
+        }
+        return (index);
+    },
+
+    // 获取元素在页面中位置
+    _offset: function (elem) {
+        var box = elem.getBoundingClientRect(), doc = elem.ownerDocument, body = doc.body, docElem = doc.documentElement;
+        var clientTop = docElem.clientTop || body.clientTop || 0, clientLeft = docElem.clientLeft || body.clientLeft || 0;
+        var top = box.top + (self.pageYOffset || docElem.scrollTop) - clientTop, left = box.left + (self.pageXOffset || docElem.scrollLeft) - clientLeft;
+        return {
+            left: left,
+            top: top,
+            right: left + box.width,
+            bottom: top + box.height
+        };
+    }
+};
+
+function getPosition(ctrl) {
+    var p = kingwolfofsky.getInputPositon(ctrl);
+    document.getElementById('show').style.left = p.left + "px";
+    document.getElementById('show').style.top = p.bottom + "px";
+}
+</script>
+</body>
+</html>

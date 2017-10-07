@@ -1,0 +1,34 @@
+﻿# DynamicElement
+
+// 视差移动元素
+// 基于 jQuery 和 jQuery Animate 动画扩展插件
+// 需要预先为动态元素绑定速度系数到 data-speed 属性，默认值为 -1 ~ 1 之间。
+// - data-speed 的速度区间可以通过 maxSpeed 进行设置。
+// - 负值 表示和滚动轴反方向位移，且 -maxSpeed 位移最大
+// - 0 表示没有位移
+// - 正值 表示和滚动轴同方向位移，且 maxSpeed 位移最大
+//
+// 如果声明了 data-speed-inversion 速度反转属性，那么当元素划到参考点另一端的时候速度变为 1-speed
+//
+// 如果声明了 data-direction-inversion 方向反转属性，那么元素延参考方向的运动将会水平与垂直对调
+
+## 默认配置选项
+var defaultOptions = {
+	winOffset: {x: 0, y: 0}, //窗口的x、y轴的偏移量
+	maxSpeed: 1, //设置最大速度的绝对值
+	container: "", //设置参考容器选择器，每个元素会遍历祖先元素，找到距离自己最近的元素作为参考容器
+	refer: "y", //元素运动的参考方向，可以为"x"、"y"、"xy"这3种值。默认为"y"，表示只参考页面垂直滚动的位置做运动。
+	speedAttr: "data-speed", //声明速度的属性名
+	speedInversionAttr: "data-speed-inversion", //声明是否速度反转的属性名
+	directionInversionAttr: "data-direction-inversion" //声明是否方向反转的属性名
+};
+
+## 调用方法
+
+html
+<div class="dynamic" data-speed="-0.2" data-speed-inversion></div>
+js
+var moveElement = new bjj.MoveElement(".dynamic");
+
+
+// 注意，在 webkit 核心的浏览器上，如果动态元素为 <img> 元素，那么页面可能会被卡死，所以请把 <img> 元素用 <div> 包裹后将动态类添加在 <div> 上。

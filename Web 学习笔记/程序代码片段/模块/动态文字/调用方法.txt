@@ -1,0 +1,67 @@
+﻿# DynamicText 动态文字
+
+// 基于 jQuery 和 jQuery Animate 扩展插件
+
+
+## 调用方法
+
+var dynamicText = new DynamicText(".text", {
+	loop: false, // 设置循环次数，如果是布尔值，则true表示无限循环，false表示不循环
+	interval: 3000, // 循环的时间间隔，单位毫秒
+	effect: "scale", // 默认为缩放效果
+	wrap: "span" // 包裹文字的标签
+});
+
+
+## API
+
+hide(delay); // 隐藏所有文本，接受一个毫秒数作为参数，表示延时多少毫秒后再进行隐藏
+
+show(delay); // 显示所有文本，接受一个毫秒数作为参数，表示延时多少毫秒后再进行显示
+
+play(delay); // 播放动画，接受一个毫秒数作为参数，表示延时多少毫秒后再进行播放
+
+stop(); // 停止循环
+
+setLoop(value); // 设置循环次数
+
+setInterval(value); // 设置循环间隔
+
+setEffect(effect); // 设置动画效果。如果 DynamicText.effects 中没有改效果，则忽略
+
+
+
+## 自定义动画效果
+
+// 第一个参数表示字符的索引
+// 第二个参数表示字符的 jQuery 对象
+DynamicText.effects["scale"] = function(i, $char) {
+	$char
+		.delay(i*100)
+		.animate({"scale": 2}, 300)
+		.animate({"scale": 1}, 600, "easeOutBack");
+};
+
+
+
+
+## 配合 banner 使用
+	
+var $page = $('#banner li'), //获得每页的容器
+	page = $page.toArray(); //获得DOM元素数组
+
+$page.each(function(i, n){
+	var $text = $(n).find('p'); //每一个匹配的jQuery对象都将独立创建动态文本对象
+	var dynamicText = DynamicText($text); //创建动态文本，每个动态文本对象中字符的动画队列都是独立的
+	page[i].dynamicText = dynamicText; //将动态文本绑定在 DOM 对象上
+});
+	
+// 切换事件中调用
+function tabText(currentIndex) { // 切换动态文本
+	$.each(page, function(i, n){
+		if(i == currentIndex) n.dynamicText.play(); //启动动态文本
+		else n.dynamicText.stop(); //停止动态文本
+	});
+}
+	
+});

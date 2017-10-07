@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*-----------基本样式------------*/
+html,body{margin:0;padding:0;font:12px "宋体";line-height:22px;width:100%;height:100%;}
+form, ul, li, p, h1, h2, h3, h4, h5, h6,dl,dt,dd {margin:0;padding:0}
+input, select {font-size:12px;line-height:16px;color:#999;margin:0;}
+img,input {border:0 none}
+ul, li {list-style-type:none}
+p{text-indent:2em}
+a{color:#333;text-decoration:none;outline:none}
+a:hover{color:#ea5504}
+
+/*-----------公用样式------------*/
+.show{display:block}
+.hidden{display:none}
+.fb{font-weight:bold;}
+.f14{font-size:14px;}
+.fl{float:left;}
+.fr{float:right;}
+
+/*-----------表单样式------------*/
+#fjjsq{width:100%;height:100%; }
+#fjjsq .tab{border-color:rgb(247, 191, 160); border-style:solid; border-width:1px 1px 0px 1px;height:10%;box-sizing:border-box;}
+#fjjsq .tab li{width:49.5%;height:100%; float:left;font-weight:bold;font-size:14px;background:#fff;}
+#fjjsq .tab li:first-child { border-right:1px solid rgb(247, 191, 160);}
+#fjjsq .tab li a {display:block;width:100%;height:100%;color:#666; text-align:center;line-height:30px;}
+#fjjsq .tab li.now {background:#fffbf7;}
+#fjjsq .tab li.now a {color:#ea5504;}
+
+#fjjsq .content{width:100%;height:90%; overflow:hidden;box-sizing:border-box;}
+#fjjsq .content form {width:200%;height:100%;}
+#fjjsq .content form .fl,
+#fjjsq .content form .fr {width:50%;height:100%;}
+#fjjsq .content form table {width:100%;height:100%;}
+#fjjsq .content form > div > table { table-layout:fixed;border:1px solid rgb(247, 191, 160);background:#fffbf7;position:relative;}
+
+#fjjsq .content .fl > table > tbody > tr > td {border-bottom:1px solid rgb(247, 191, 160);padding-left:6px;}
+#fjjsq .content .fl > table > tbody > tr > td:first-child {border-right:1px solid rgb(247, 191, 160);}
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) {height:218px;}
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) table {height:100%;}
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) table tr:nth-child(1),
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) table tr:nth-child(2) {height:30px;}
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) table tr:nth-child(1) td :nth-child(n),
+#fjjsq .content .fl > table > tbody > tr:nth-child(2) table tr:nth-child(2) td :nth-child(n) { vertical-align:middle;}
+#fjjsq .content .fl table tr:last-child td {border-bottom-style:none !important;border-right-style:none !important;}
+#fjjsq .content .fl table td:first-child {width:30%}
+#fjjsq .content .fl table td:last-child {width:70%}
+
+#fjjsq .content .fr table tr:first-child { visibility:hidden;height:0; font-size:0; padding:0;}
+#fjjsq .content .fr table th {border-bottom:1px solid rgb(247, 191, 160); position:relative; font-size:14px; text-align:center;}
+#fjjsq .content .fr table td { overflow:hidden;}
+#fjjsq .content .fr table td:first-child {width:40%; text-align:right;}
+#fjjsq .content .fr table td:last-child {width:60%; text-align:left;border-left:1px solid rgb(247, 191, 160);padding-left:6px;}
+#fjjsq .content .calculate{width:76px;height:20px;background:url(but_bg.jpg) no-repeat;color:#fff;font:bold 12px "宋体";margin-right:10px;}
+#fjjsq .content .back{width:76px;height:20px;background:url(but_bg.jpg) no-repeat;color:#fff;font:bold 12px "宋体";margin-right:10px; position:absolute;right:6px;}
+
+#fjjsq .content .input1{width:43px;border:1px solid #7f9db9;}
+#fjjsq .content .input2{width:75px;border:1px solid #7f9db9;}
+#fjjsq .content .input3{width:143px;border:1px solid #7f9db9;}
+#fjjsq .content .input4{width:99px;border:1px solid #7f9db9;}
+
+

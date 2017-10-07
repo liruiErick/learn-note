@@ -1,0 +1,116 @@
+@charset "UTF-8";
+@import "_config.less";
+html { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body, dl, dd, h1, h2, h3, h4, h5, h6, p, form, input { margin: 0; }
+table { border-collapse: collapse; }
+td, th { padding: 0; }
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+i, em { font-style: normal; }
+a { outline: none; background: transparent; }
+a img { border: 0; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+audio:not([controls]) { display: none; height: 0; }
+* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+	body:not(.nostyle) &:not(.nostyle) {
+		.input;
+		&.red    { .input-bdcl(@red); }
+	}
+}
+
+.button,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+	body:not(.nostyle) &:not(.nostyle) {
+		.btn;
+		&.blue   { .btncl(@blue); }
+		&.green  { .btncl(@green); }
+		&.yellow { .btncl(@yellow); }
+		&.red    { .btncl(@red); }
+		&.sky    { .btncl(@sky); }
+		&.gray   { .btncl(@gray); }
+	}
+}
+
+.hgb { .group-btn(h); }
+.vgb { .group-btn(v); }
+
+.hide { visibility: hidden !important; }
+.none { display: none !important; }
+
+body {
+	.fix;
+	position: relative;
+	width: 100%;
+	font-family: @ft, @ftDef;
+	font-size: @ftsz;
+	background-color: @bgcl;
+}
+a { .acl(@lkcl); text-decoration: none; }
+
+#dialogBox {
+	.sz(100%);
+	position: fixed;
+	left:0;
+	top:0;
+	z-index: 9999;
+	.bgcl(#000);
+	.bgcl(rgba(0,0,0,0.2));
+	.va;
+	text-align:center;
+	.flexbox;
+	.flexcenter;
+	overflow: auto;
+	.box {
+		width: 300px;
+		padding: 16px;
+		.bgcl(#fff);
+		.bdrd(8px);
+		overflow: hidden;
+		.header {
+			height: 36px;
+			.ftsz(18px, center);
+			.b;
+			.bbd;
+		}
+		.msg {
+			padding: 16px 0;
+			text-align: left;
+			line-height: 1.6;
+			.ftsz(16px, left);
+			.wba;
+			white-space: normal;
+			//text-indent: 2em;
+		}
+		.footer {
+			height: 40px;
+			line-height: 40px;
+			span {
+				width: 100%;
+				.btn(@green, 18px);
+				.b;
+				font-family: @ft;
+			}
+		}
+	}
+
+}

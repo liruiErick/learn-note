@@ -1,0 +1,76 @@
+﻿# TabBanner
+
+## TabBanner 结构如下
+
+<div id="tabBanner">
+	<ul>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+
+
+## 创建一个 tabBanner
+
+var tabBanner = new TabBanner("#tabBanner", {
+	tabBtnWrap: ".point", //自定义小点按钮容器
+	prevBtn: ".prevBtn", //上一个按钮
+	nextBtn: ".nextBtn" //下一个按钮
+});
+
+
+## option 配置项
+{
+	neglectSelector: ".ie7_anon", //图片容器需要排除掉的子元素选择器，默认为IE9.js兼容伪元素时为容器内添加的元素类名 ".ie7_anon"
+	itemActiveClass: "active", //项目焦点类
+
+	prevBtn: null, //上一个按钮
+	nextBtn: null, //下一个按钮
+	btnDisableClass: "disabled", //前后按钮禁用类名
+
+	defaultTabBtn: { // 默认小点按钮配置
+		size: 10,
+		color: "#666",
+		activeColor: "#ccc",
+		style: {}, // 小点按钮样式
+		wrapStyle: {}, // 小点按钮容器样式
+	},
+	tabBtnWrap: null, //自定义小点按钮容器
+	tabBtnActiveClass: "active", //自定义小点按钮焦点类名
+	tabBtnActiveEvent: "mouseenter", // 切换按钮事件，默认为 "mouseenter"。也可以为 "click"
+	hideTabBtn: false, //是否隐藏点按钮
+
+	initIndex: 0, //初始化时的索引，默认为0
+	interval: 5000, //每张图轮动的时间间隔，默认为5000毫秒。如果设置为0，则不自动轮播
+	duration: 400, //切换动画的持续时间
+
+	mouseStopTab: false, //鼠标放在banner上时，是否停止切换，默认为否
+	loop: true, //是否循环切换，默认为是
+
+	effect: "slide", //默认效果为"slide"，还可以选择"fade"效果
+	isVer: false, //排列方向，默认为水平方向。如果值为true则表示垂直方向。只有effect为"slide"时才有效
+
+	onResize: function(){}, //窗口大小调整后的回调函数
+	onEnter: function(){}, //每个banner进入前的回调函数，并将该banner的索引以及jQuery对象作为参数传入。this指向当前banner的DOM对象
+	onLeave: function(){}, //每个banner离开后的回调函数，并将该banner的索引以及jQuery对象作为参数传入。this指向当前banner的DOM对象
+	onTab: function(){}, //每个banner进入后的回调函数，并将该banner的索引以及jQuery对象作为参数传入。this指向当前banner的DOM对象
+	onClick: function(){} //每个banner单击后的回调函数，并将该banner的索引以及jQuery对象作为参数传入。this指向当前banner的DOM对象
+}
+
+
+## API
+
+// 切换到前一个
+tabBanner.prevTab();
+
+// 切换到下一个
+tabBanner.nextTab();
+
+// 刷新，并停留在指定项上
+tabBanner.update(1);
+
+// 跳转到指定项目上
+tabBanner.gotoItem(2);
+
+// 销毁 TabBanner 对象
+tabBanner.destroy();

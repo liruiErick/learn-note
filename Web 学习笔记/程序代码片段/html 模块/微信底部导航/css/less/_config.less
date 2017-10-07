@@ -1,0 +1,117 @@
+@import "tools/_tools.less";
+@import "_defaultMixins.less";
+
+////////////////////////////////////// 常用变量配置 //////////////////////////////////////
+
+@ftdef: Helvetica, Arial, Verdana, sans-serif;  //页面默认备用字体
+@ft: Microsoft YaHei;  //页面默认首选字体（微软雅黑）
+@ft2: SimSun;  //常用字体2（宋体）
+@ft3: SimHei;  //常用字体3（黑体）
+@ft4: Arial;  //常用字体4
+@ft5: Impact;  //常用字体5
+@ft6: Georgia; //数字字体
+@ftsz: 14px;  //页面默认字体大小
+@min_width: 1200px; //页面最小宽度
+@min_width2: 1000px; //页面最小宽度2
+
+// 页面常用色
+@ftcl: #333;  //常用字体颜色（黑）
+@ftcl2: #666;  //常用字体颜色（深灰）
+@ftcl3: #999;  //常用字体颜色（灰）
+@bgcl: #fff;  //页面默认背景颜色（白）
+@bgcl2: #fafafa;  //页面背景颜色（暗白）
+@bgcl3: #eee;  //页面背景颜色（淡灰）
+@lkcl: #188BFF;  //页面默认链接颜色（蓝）
+
+// 响应式配置
+@screen_lg: 1200px;
+@screen_md: 992px;
+@screen_sm: 768px;
+@screen_sm2: 560px;
+@screen_sm3: 400px;
+// 大屏幕（桌面）
+@screen_lg_min: @screen_lg;
+// 中等屏幕（笔记本）
+@screen_md_min: @screen_md;
+@screen_md_max: (@screen_lg - 1);
+// 小屏幕（平板）
+@screen_sm_min: @screen_sm;
+@screen_sm_max: (@screen_md - 1);
+// 超小屏幕（手机）
+@screen_xs_max: (@screen_sm - 1);
+
+////////////////////////////////////// 页面变量配置 //////////////////////////////////////
+
+@theme_color: #ffcc00; //主题黄
+@link_color: #188BFF; //链接蓝
+@link_active_color: #fd4040; //链接红
+
+@label_color: #999; // 标签默认色
+@label_news_game: @red; // 游戏颜色
+@label_news_product: @green; // 产品颜色
+@label_news_industry: @blue; // 行业颜色
+@label_download_ios: #00CCFF; // ios下载颜色
+@label_download_and: #99CC00; // 安卓下载颜色
+@label_download_pc: #FF6600; // pc下载颜色
+@label_course: @yellow; // 教程颜色
+
+
+@topbar_height: 30px;
+@topbar_font_size: 13px;
+@topbar_bgcolor: #fff;
+@topbar_menu_bdcolor: #999; // 顶部菜单边框色
+
+@header_height: 80px;
+@header_bgcolor: @theme_color;
+@header_level1_font_size: 16px; // 1级导航字体大小
+@header_level2_height: 40px; // 2级导航高度
+@header_level2_font_size: 14px; // 2级导航字体大小
+@header_level2_font_color: #fff; // 2级导航字体颜色
+@header_level2_bdcolor: #999; // 2级导航边框色
+@header_level2_bgcolor: #333; // 2级导航背景色
+
+@headermobile_height: 40px; // 头部移动端高度
+
+@searchArea_height: 40px; // 搜索区域高度
+@searchArea_bgcolor: #ddd; // 搜索区域背景色
+
+@category_height: 40px;
+@category_bgcolor: #0085da;
+@category_active_bgcolor: darken(@category_bgcolor, 10%);
+@category_font_color: #fff;
+@category_font_size: 14px;
+
+@footer_bgcolor: #333;
+@footer_font_color: #999;
+
+
+@aside_width: 300px;
+
+
+// 首页变量
+@index_sec1_left_width: 430px;
+@index_sec1_right_width: 260px;
+
+@index_sec1_banner_width: @index_sec1_left_width;
+@index_sec1_banner_height: 270px;
+@index_sec1_banner_tabbtn_bgcolor: #444;
+@index_sec1_banner_tabbtn_active_bgcolor: #e40853;
+
+@index_sec1_headline_font_color: #e40451;
+
+@index_sec1_leftmiddle_ad_width: @index_sec1_left_width;
+@index_sec1_leftmiddle_ad_height: 66px;
+
+@index_sec1_righttop_ad_width: @index_sec1_right_width;
+@index_sec1_righttop_ad_height: 200px;
+
+@index_sec1_rightbottom_ad_width: @index_sec1_right_width;
+@index_sec1_rightbottom_ad_height: 100px;
+
+
+@index_sec2_left_width: 430px;
+@index_sec2_right_width: @min_width - @index_sec2_left_width - 40px;
+
+
+@bottom_nav_bgcl: #fafafa; //menu背景暗白
+@bottom_nav_active_bgcl: darken(@bottom_nav_bgcl, 5%); //menu active浅灰

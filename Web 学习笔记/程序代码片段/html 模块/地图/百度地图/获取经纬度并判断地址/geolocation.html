@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>获取地理位置</title>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=y21vB9vLX8OlYS8TLaCZFA5r"></script>
+<script>
+// GPS坐标转百度坐标封装
+(function(){
+function load_script(xyUrl, callback){
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = xyUrl;
+    //借鉴了jQuery的script跨域方法
+    script.onload = script.onreadystatechange = function(){
+        if((!this.readyState || this.readyState === "loaded" || this.readyState === "complete")){
+            callback && callback();
+            // Handle memory leak in IE
+            script.onload = script.onreadystatechange = null;
+            if ( head && script.parentNode ) {
+                head.removeChild( script );
+            }
+        }
+    };
+    // Use insertBefore instead of appendChild  to circumvent an IE6 bug.
+    head.insertBefore( script, head.firstChild );
+}
+function translate(point,type,callback){
+    var callbackName = 'cbk_' + Math.round(Math.random() * 10000);    //随机函数名
+    var xyUrl = "http://api.map.baidu.com/geoconv/v1/?coords=" + point.lng + "," + point.lat + "&from=" + type + "&to=5&callback=BMap.Convertor." + callbackName + "&ak=y21vB9vLX8OlYS8TLaCZFA5r";
+    //动态创建script标签
+    load_script(xyUrl);
+    BMap.Convertor[callbackName] = function(data){
+        delete BMap.Convertor[callbackName];    //调用完需要删除改函数
+        var point = new BMap.Point(data.result[0].x, data.result[0].y);
+        callback && callback(point);
+    }
+}
+
+window.BMap = window.BMap || {};
+BMap.Convertor = {};
+BMap.Convertor.translate = translate;
+})();
+</script>
+
+<script>
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(showPosition, showError);
+} else {
+	//alert("这个浏览器不支持地理定位");
+}
+function showPosition(position) {
+	// 获取地理位置信息
+	var lng = position.coords.longitude; // 经度
+	var lat = position.coords.latitude; // 纬度
+	var gpsPoint = new BMap.Point(lng,lat);
+	BMap.Convertor.translate(gpsPoint, 1, function(point) {
+		var geoc = new BMap.Geocoder();
+		geoc.getLocation(point, function(rs){
+			var addComp = rs.addressComponents;
+			alert("省份：" + addComp.province +
+				"\n城市：" + addComp.city +
+				"\n区县： " + addComp.district +
+				"\n街道：" + addComp.street +
+				"\n街道编号：" + addComp.streetNumber);
+		});
+	});
+}
+function showError(error) {
+	switch(error.code) {
+		case error.PERMISSION_DENIED:
+			//alert("用户不允许地理定位");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			//alert("无法获取当前位置");
+			break;
+		case error.TIMEOUT:
+			//alert("获取用户位置请求超时");
+			break;
+		case error.UNKNOWN_ERROR:
+			//alert("发生一个未知的错误");
+			break;
+	}
+}
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

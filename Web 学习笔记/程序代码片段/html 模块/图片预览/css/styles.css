@@ -1,0 +1,159 @@
+@charset "UTF-8";
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+form,
+input {
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  padding: 0;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+i,
+em {
+  font-style: normal;
+}
+a {
+  outline: none;
+  background: transparent;
+}
+a img {
+  border: 0;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+body {
+  position: relative;
+  width: 100%;
+  font-family: Microsoft YaHei, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+body:before {
+  content: "";
+  display: table;
+}
+a {
+  color: #0055aa;
+  text-decoration: none;
+}
+a:hover {
+  color: #1188ff;
+  text-decoration: underline;
+}
+/****************** index start ******************/
+#imgBox {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  *zoom: 1;
+  width: 1000px;
+}
+#imgBox:before,
+#imgBox:after {
+  content: "";
+  display: table;
+}
+#imgBox:after {
+  clear: both;
+}
+#imgBox > :nth-child(n) {
+  float: left;
+  margin-left: 38.4px;
+  _margin-left: 19.2px;
+  _margin-right: 19.2px;
+}
+#imgBox li {
+  position: relative;
+  width: 180px;
+  height: 220px;
+  margin: 20px 0;
+  border: 1px solid #dddddd;
+  background-color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+#imgBox li div {
+  width: 180px;
+  height: 180px;
+  white-space: nowrap;
+  background-color: #666666;
+}
+#imgBox li div > :nth-child(n) {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+  white-space: normal;
+}
+#imgBox li div:after {
+  content: "";
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 0;
+  height: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+}
+#imgBox li:after {
+  content: attr(title);
+  display: block;
+  font-size: 16px;
+  text-align: center;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#imgBox img {
+  max-width: 100%;
+  max-height: 100%;
+}
+/****************** index end ******************/

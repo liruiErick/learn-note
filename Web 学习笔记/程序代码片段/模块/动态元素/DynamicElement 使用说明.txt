@@ -1,0 +1,25 @@
+﻿# DynamicElement
+
+// 视差动态元素
+// 基于 jQuery 和 jQuery Animate 动画扩展插件
+// 需要预先为动态元素绑定速度系数到 data-speed 属性，值为 -1 ~ 1 之间。
+// - -1 表示和滚动轴反方向位移，且位移最快
+// - 0 表示没有位置
+// - 1 表示和滚动轴同方向位移，且位移最快
+
+
+// 调用方法
+var dynamicElement = new bjj.DynamicElement(".dynamic");
+
+var shake = function() {
+	// 自定义晃动
+	var dx = Math.random()*200-100; //水平移动量
+	var dy = Math.random()*200-100; //垂直移动量
+	dynamicElement.move(dx, dy, this);
+};
+
+$dynamic.click(shake).mouseover(shake);
+
+
+
+// 注意，在 webkit 核心的浏览器上，如果动态元素为 <img> 元素，那么页面可能会被卡死，所以请把 <img> 元素用 <div> 包裹后将动态类添加在 <div> 上。

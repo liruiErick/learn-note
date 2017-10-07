@@ -1,0 +1,49 @@
+﻿# 拖拽事件
+
+## 创建拖拽事件
+var dragEvent = new DragEvent({
+	obj: this.$wrap, // 拖拽事件的绑定对象
+	holder: this, // 事件回调回调的持有者，即this指向的对象。如果未指定，则默认为当前触发拖拽事件的目标对象
+	start: this._startDragHandler, // 拖拽开始事件回调，将包含事件信息的data对象作为第二个参数传入
+	move: this._moveDragHandler, // 拖拽中事件回调，将包含事件信息的data对象作为第二个参数传入
+	end: this._endDragHandler // 拖拽结束事件回调，将包含事件信息的data对象作为第二个参数传入
+});
+
+// 注意，如果 start 返回值为 false，将会取消之后的移动和结束事件
+
+// 事件回调中有两个参数
+// 第一个是 jQuery 的 event 事件对象
+// 第二个是 data 事件数据对象
+// data 属性值包括：
+data.startX; //相对于窗口的拖拽起始X坐标
+data.startY; //相对于窗口的拖拽起始Y坐标
+data.startLocalX; //相对于事件对象的拖拽起始X坐标
+data.startLocalY; //相对于事件对象的拖拽起始Y坐标
+data.x; //相对于窗口的当前X坐标
+data.y; //相对于窗口的当前Y坐标
+data.localX; //相对于事件对象的当前X坐标
+data.localY; //相对于事件对象的当前Y坐标
+data.dx; //从拖拽开始到当前的X轴移动距离差
+data.dy; //从拖拽开始到当前的Y轴移动距离差
+data.absDx; //从拖拽开始到当前的X轴移动距离差的绝对值
+data.absDy; //从拖拽开始到当前的Y轴移动距离差的绝对值
+data.stepDx; //当前较上一步的X轴移动距离差
+data.stepDy; //当前较上一步的Y轴移动距离差
+data.absStepDx; //当前较上一步的X轴移动距离差的绝对值
+data.absStepDy; //当前较上一步的Y轴移动距离差的绝对值
+data.swipeLeft; //是否构成向左清扫
+data.swipeRight; //是否构成向右清扫
+data.swipeTop; //是否构成向上清扫
+data.swipeBottom; //是否构成向下清扫
+data.swipe; //是否构成清扫
+data.startTime; //开始拖拽时的时间
+data.stepTime; //当前较上一步的时间差
+
+
+dragEvent.open(); // 打开拖拽事件，即重新注册开始拖拽的事件监听
+
+dragEvent.close(); // 关闭拖拽事件，即移除开始拖拽的事件监听（但本次拖拽进行中的事件仍可继续）
+
+dragEvent.stop(); // 停止拖拽事件，即移除正在拖拽与拖拽结束的事件监听（但仍然可以进行下一次拖拽）
+
+dragEvent.remove(); // 移除拖拽事件，即关闭并停止拖拽事件

@@ -1,0 +1,39 @@
+@charset "UTF-8";
+html,
+body,
+#allmap {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+#form {
+  padding: 10px;
+  height: 150px;
+  text-align: center;
+  color: #999999;
+}
+#form > div {
+  margin-bottom: 10px;
+}
+#form table {
+  width: 100%;
+}
+#form table td {
+  padding: 4px 0;
+}
+#longitude,
+#latitude {
+  width: 110px;
+}
+#allmap {
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 170px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  _width: expression((this.offsetParent||this.parentNode).clientWidth-parseInt(this.currentStyle.paddingLeft||0)-parseInt(this.currentStyle.paddingRight||0)-(isNaN(parseInt(this.currentStyle.borderLeftWidth))?0:parseInt(this.currentStyle.borderLeftWidth))-(isNaN(parseInt(this.currentStyle.borderRightWidth))?0:parseInt(this.currentStyle.borderRightWidth))-parseInt('0')-parseInt('0'));
+  _height: expression((this.offsetParent||this.parentNode).clientHeight-parseInt(this.currentStyle.paddingTop||0)-parseInt(this.currentStyle.paddingBottom||0)-(isNaN(parseInt(this.currentStyle.borderTopWidth))?0:parseInt(this.currentStyle.borderTopWidth))-(isNaN(parseInt(this.currentStyle.borderBottomWidth))?0:parseInt(this.currentStyle.borderBottomWidth))-parseInt('170px')-parseInt('0'));
+}

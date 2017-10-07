@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>准备安装</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+    <script>
+    var is_apple = !!navigator.userAgent.match(/(iPad|iPod|iPhone)/i);
+    var is_android = !!navigator.userAgent.match(/android/i);
+
+    if (is_apple) {
+        var bool = confirm("注意，非越狱用户将无法安装！是否继续安装？");
+        if (bool) {
+            location.href = "itms-services://?action=download-manifest&url=https://downloadpkg.apicloud.com:443/zip/3b/2a/3b2a4b1b164836e4a1701ce1ddbe7906.plist";
+        } else {
+            alert("您取消了安装，请关闭网页");
+        }
+    } else {
+        location.href = "http://downloadpkg.apicloud.com/app/download?path=http://7xrb91.com1.z0.glb.clouddn.com/c1760b1479a446900df903e48c33d913_d";
+    }
+    </script>
+</head>
+<body>
+</body>
+</html>

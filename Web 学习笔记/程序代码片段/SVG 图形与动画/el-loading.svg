@@ -1,0 +1,31 @@
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="25 25 50 50"
+    style="width: 100px; height: 100px; transform-origin: center; animation: loading-rotate 2s linear infinite;">
+<style type="text/css" >
+@keyframes loading-rotate {
+    to {
+        transform: rotate(1turn)
+    }
+}
+
+@keyframes loading-dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -40px;
+    }
+
+    to {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -120px;
+    }
+}
+</style>
+<circle stroke="#20a0ff" stroke-width="2" stroke-linecap="round"  cx="50" cy="50" r="20" fill="none" style="animation: loading-dash 1.5s ease-in-out infinite;"></circle>
+</svg>

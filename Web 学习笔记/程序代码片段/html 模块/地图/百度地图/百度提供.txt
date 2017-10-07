@@ -1,0 +1,6 @@
+﻿调用方法：
+http://api.map.baidu.com/marker?location=34.275964,108.931355&title=老城根&content=内容介绍&output=html
+
+API说明：
+http://developer.baidu.com/map/uri-intro.htm
+http://developer.baidu.com/map/uri-introweb.htm

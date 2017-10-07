@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>自动拨号</title>
+</head>
+<body>
+<script>
+// 将要拨打的电话号码以参数的写在网页url地址之后即可
+// 例如 http://www.myhost.com/autodial.html?18691236164
+window.location.href='tel:'+window.location.search.substr(1);
+//直接调用无效，因此必须延迟调用
+window.setTimeout(function(){
+	WeixinJSBridge.call("closeWindow");
+},0);
+//由于Android会不过经提示，直接打开拨号面板，那么如果刚好在切换拨号面板过程中计时器回调，将会导致代码无法执行，因此需要设定一个较长的延迟调用
+window.setTimeout(function(){
+	WeixinJSBridge.call("closeWindow");
+},2000);
+</script>
+</body>
+</html>

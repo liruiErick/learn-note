@@ -1,0 +1,210 @@
+﻿// 触摸设备动态滑动图
+// 基于 jQuery 和 jQuery Animate
+
+// 调用方法
+var option = {
+	config: {
+		"page1": {
+			autoShow: false,
+			bgColor: "#4BC7C7",
+			elemConfig: []
+		},
+		"page2": {
+			bgImg: "img/bg.jpg",
+			elemConfig: []
+		},
+		"page3": {
+			bgColor: "#ffb751",
+			bgImg: "img/android/3.jpg",
+			bgSize: "contain",
+			elemConfig: []
+		},
+		"page4": {
+			style: {"background":" url(img/bg.jpg)"},
+			elemConfig: []
+		}
+	},
+	preload: true,
+	container: "#pages",
+	basePath: "img/",
+	callback: function(obj) {
+		obj.allFix();
+	},
+	progress: function(data) {
+		$progress.text(data.progress + "%");
+		console.log(data.progress + "%");
+	},
+	complete: function(data) {
+		data.obj.elemShow();
+	}
+};
+window.bjj.dynamicPage(option);
+
+
+* API说明
+
+// 创建方法：
+dynamicPage(option); //返回包含所有 DynamicPage 对象的数组
+
+// option 参数说明：
+option = {
+	config: {}, //必须参数，所有页的配置对象
+	basePath: "", //图片资源的基路径
+	container: "", //为所有页指定一个容器，可以是一个DOM元素、jQuery对象或者选择器。如果找不到对应容器，则使用 body
+	curIndex: 0, //初始化时首先显示的页面索引，默认为第一个
+	scaleAdjust: false, //是否启用CSS3缩放来进行屏幕自适应调整。如果开启会提高自适应效率，但会降低图片和文字的质量，默认为关闭
+	preload: false, //所有页是否预加载
+	loadingConfig: {}, //一个包含loading对象设置参数的对象，用于在每个页面加载过程中显示
+	wrapSize: {width: 320, height: 480}, //设置包裹层的大小对象，包含 width 和 height。如果未定义，则包裹层大小等于初始化时容器的大小
+
+	enableScale: false, //是否全部页都启用缩放过渡动画，默认禁用
+	enableOpacity: false, //是否全部页都启用透明过渡动画，默认禁用
+	enableOffset: true, //是否全部页都启用位移过渡动画，默认启用
+	minScale: 0.5, //全部页启用缩放过渡动画后的最小缩放比，取值0.0~1.0
+	minOpacity: 0, //全部页启用透明过渡动画后的最小透明度，取值0.0~1.0
+	coefOffset: 0.3, //全部页启用位移过渡动画后的位移系数，取值0.0~1.0
+
+	dur: 0, //首先显示的页初始化完成后显示出来的时长，默认为直接显示
+	callback: function(){}, //首先显示的页面初始化完成并显示出来后的回调，自身的 DynamicPage 对象会作为参数被传入
+	progress: function(data){ //页面内资源加载进程回调
+		// data对象包含4个属性
+		data.loadCount; //表示总加载数
+		data.loadedCount; //表示当前已加载数
+		data.progress; //表示当前的加载进度
+		data.obj; //表示触发当前加载事件的元素所处的 DynamicPage 对象
+	},
+	complete: function(data){ //全部页面初始化完成，且所有资源加载完成时的回调
+		// data对象包含4个属性
+		data.loadCount; //表示总加载数
+		data.loadedCount; //表示当前已加载数
+		data.progress; //表示当前的加载进度
+		data.obj; //表示首先显示页的 DynamicPage 对象，即 option 中 curIndex 属性对应的 DynamicPage 对象
+	}
+}
+
+// option 中 config 参数说明：
+config = {
+	// 页配置对象
+	"page1": { //设置本页的id名或者类名。传入一个选择器，会首先查找是否存在对应选择器的元素，如果存在，则使用该元素
+		style: {}, //设置样式
+		bgColor: "#eee", //设置背景色
+		bgImg: "", //设置背景图片的url。该背景图片以<img>的形式呈现，而非使用style，主要是为了便于监控加载进程
+		basePath: option.basePath, //本页内图片资源的基路径
+		bgSize: "cover", //设置背景图片的覆盖方式，包含两个值："contain"表示背景图片完全显示，"cover"表示背景图片覆盖整个屏幕
+		onlyOne: false, //所有动画是否只显示一次，默认为 false
+
+		dir: "y", //表示本页的滑动方向，分别有"y"（垂直）、"x"（水平）、"none"（无）三个值，默认为"y"。当为"none"时，页面只可以划出，但无法划入
+		dur: 400, //本页划入动画持续的毫秒数，默认为400毫秒
+		easing: "swing", //本图片的动画的缓动函数，默认为"swing"
+		autoShow: true, //本页完全进入屏幕后，是否自动显示子元素动画，即自动执行elemShow()
+		prevReadyAtUp: false, //上一个（左上）准备时是否将从上方出现，默认为 false
+		nextReadyAtUp: true, //下一个（右下）准备时是否将从上方出现，默认为 true
+
+		enableScale: false, //本页是否启用缩放过渡动画，默认禁用
+		enableOpacity: false, //本页是否启用透明过渡动画，默认禁用
+		enableOffset: true, //本页是否启用位移过渡动画，默认启用
+		minScale: 0.5, //启用缩放过渡动画后的最小缩放比，取值0.0~1.0
+		minOpacity: 0, //启用透明过渡动画后的最小透明度，取值0.0~1.0
+		coefOffset: 0.3, //启用位移过渡动画后的位移系数，取值0.0~1.0
+
+		onReady: function(){}, //页面准备好后的回调函数，this指向为当前页的DOM对象，并将本页的DynamicPage对象作为参数传入
+		onEnter: function(){}, //页面完全显示出来后的回调函数，this指向为当前页的DOM对象，并将本页的DynamicPage对象作为参数传入
+		onLeave: function(){}, //页面被完全划出屏幕后的回调函数，this指向为当前页的DOM对象，并将本页的DynamicPage对象作为参数传入
+
+		elemConfig: [{ //子元素配置对象
+			url: "", //元素内图片路径
+			html: "", //元素内html内容（如果文本内容过长，可能导致初始化时获取到的宽度不正确，需要在样式中加入 white-space: nowrap 使文本不会自动换行来解决）
+			name: "", //设置元素的id名或者类名。传入一个选择器，会首先查找是否存在对应选择器的元素，如果存在，则使用该元素
+			className: "", //可以为元素设置一个或一组类
+			link: "", //跳转链接地址
+			style: {}, //元素样式
+
+			maxWidth: 0, //设置元素的最大宽度。如果超出该值，元素将会被等比缩放。（一般用于防止文本元素超出限定个宽度）
+			maxHeight: 0, //设置元素的最大高度。如果超出该值，元素将会被等比缩放。
+					//设置maxWidth或者maxHeight该参数后，可以通过设置元素的CSS属性transform-origin来调整缩放后的位置，比如缩放后是居左还是居中或者是居右。
+
+			centerX: false, //水平方向是否以元素中心进行定位，默认为 false
+			centerY: false, //垂直方向是否以元素中心进行定位，默认为 false
+			pause: false, //是否在此元素显示后停止其后元素的显示，默认为 false。如果是最后一个显示的元素，则无效。设置为 true 后可以再次执行 elemShow()
+			nowrap: false, //是否不被包裹层包裹，默认为 false。如果元素是倚靠屏幕边缘定位的，那么应该设为 true。
+			fixed: false, //如果本页包含滚动条，有不想让该元素跟随内容滚动，则可以将该值设置为 true
+			keep: false, //在该元素动画开始前，是否保持原大小和位置，即不跟随屏幕调整自身的大小和位置。（一般用于loading元素）
+			show: false, //元素是否始终显示，如果为true则表示该元素在动画开始前不会被隐藏，但注意需要同时设置opacity大于0。（一般用于loading元素，和背景元素）
+			onlyOne: false, //该元素动画是否只显示一次，默认为 false
+			easing: "swing", //动画的缓动函数 继续显示其后元素
+			dur: "slow", //动画持续的毫秒数或关键字。可能的值：毫秒（比如 1000）、"slow"(600)、"normal"、"fast"(200)。
+
+			container: 0, //按elemConfig对象中的配置顺序，将指定索引对应的元素作为该元素的容器。默认为 0，表示使用默认容器。如果值为负数，则会从当前元素的索引处反向查找。
+					//注意，所有设置基于目标的索引值不能大于自身的索引值，也就是说不能基于在配置顺序中位于自身之后的元素
+
+			delay: 0, //动画延迟的毫秒数
+			baseDelay: -1, //表示显示延迟将基于上一个元素开始显示时的延迟（设置后delay将被无视）
+			delayBaseTo: -1, //改变延迟基于的目标，默认目标元素为elemConfig对象中配置顺序的前一个。如果值为负数，则会从当前元素的索引处反向查找。
+			xBaseTo: -1, //改变水平位置基于的目标，默认目标元素为elemConfig对象中配置顺序的前一个。如果值为负数，则会从当前元素的索引处反向查找。
+			yBaseTo: -1, //改变垂直位置基于的目标，默认目标元素为elemConfig对象中配置顺序的前一个。如果值为负数，则会从当前元素的索引处反向查找。
+					//注意，以上所有设置基于目标的索引值不能大于自身的索引值，也就是说不能基于在配置顺序中位于自身之后的元素
+			baseLeft: NaN, //表示元素的right基于上一个元素的左侧定位，同时接受基于包裹层尺寸的百分比值（设置后style的right将被无视）
+			baseRight: NaN, //表示元素的left基于上一个元素的右侧定位，同时接受基于包裹层尺寸的百分比值（设置后style的left将被无视）
+			baseTop: NaN, //表示元素的bottom基于上一个元素的顶部定位，同时接受基于包裹层尺寸的百分比值（设置后style的bottom将被无视）
+			baseBottom: NaN, //表示元素的top基于上一个元素的底部定位，同时接受基于包裹层尺寸的百分比值（设置后style的top将被无视）
+
+			opacity: 0, //动画开始前的透明值，动画结束后会回到默认值。（默认值可被style属性或者endStyle属性修改）
+			x: 0, //动画开始前的水平偏移量，动画结束后会回到默认值。（使用的是translateX）
+			y: 0, //动画开始前的垂直偏移量，动画结束后会回到默认值。（使用的是translateY）
+			scale: 1, //动画开始前的缩放比例，动画结束后会回到默认值。
+			scaleX: NaN, //动画开始前X轴的缩放比例，动画结束后会回到默认值。
+			scaleY: NaN, //动画开始前Y轴的缩放比例，动画结束后会回到默认值。
+			rotate: 0, //动画开始前Z轴的旋转角度，动画结束后会回到默认值。
+			rotateX: 0, //动画开始前X轴的旋转角度，动画结束后会回到默认值。
+			rotateY: 0, //动画开始前Y轴的旋转角度，动画结束后会回到默认值。
+			skewX: 0, //动画开始前X轴的倾斜度，动画结束后会回到默认值。
+			skewY: 0, //动画开始前Y轴的倾斜度，动画结束后会回到默认值。
+
+			startStyle: null, //动画开始前的样式。（只接受数值型样式，且会覆盖掉其他CSS3变换属性的设置）
+			endStyle: null, //动画结束后的样式。（**包含一个高级用法，详见下文**）
+
+			event: "click", //交互事件的默认事件类型，默认为"click"
+			onEvent: function(){}, //事件回调，this指向为当前元素的DOM对象，并将本页的DynamicPage对象作为参数传入
+			onStart: function(){}, //元素动画开始前的回调，this指向为当前元素的DOM对象，并将本页的DynamicPage对象作为参数传入
+			onEnd: function(){} //元素动画完成后的回调，this指向为当前元素的DOM对象，并将本页的DynamicPage对象作为参数传入
+		}]
+	}
+}
+
+// option 中 loadingConfig 参数说明：
+loadingConfig = {
+	name: "", //设置loading对象的id名或者类名。传入一个选择器，会首先查找是否存在对应选择器的元素，如果存在，则使用该元素
+	html: "", //设置loading对象的html内容
+	style: {} //设置loading对象的样式
+}
+// loading 元素有一个默认类名 "loading"
+
+
+// DynamicPage对象的实例方法：
+.getDOM(); //返回该动态页的DOM对象
+.getScale(); //返回该动态页相对于初始设置的wrapSize的缩放比例
+.getIndex(); // 返回该动态页的索引值
+.allFix(); //锁定除过正在拖拽的DynamicPage对象以外的所有DynamicPage对象，使它们不允许在被拖拽
+.allUnfix(); //解除所有DynamicPage对象的锁定状态
+.nextShow(duration, nextIndex, callback); //显示下一个DynamicPage对象，可以通过nextIndex指定一个索引，则显示该索引号对应的DynamicPage对象
+.show(duration, callback); //显示当前的DynamicPage对象（但不立即执行子元素的动画），参数回调的this指向为当前页的DOM对象，并将本页的DynamicPage对象作为参数传入
+.hide(duration, callback); //隐藏当前的DynamicPage对象，参数回调的this指向为当前页的DOM对象，并将本页的DynamicPage对象作为参数传入
+.elemShow(); //让DynamicPage对象中子元素的显示动画开始播放。如果显示动画被某个子元素暂停，那么该方法可以使动画继续播放
+
+
+
+// elemConfig 中 endStyle 的高级用法：
+endStyle: {
+	opacity: { //结束动画的属性值接受一个对象，如果该值为对象，则表示该属性动画将脱离其它属性动画独立执行
+		value: 1, //目标值
+		dur: 200, //动画时长。如果未定义则取该元素动画定义的dur值
+		easing: "swing", //动画应用的缓动。如果未定义则取该元素动画定义的easing值
+		delay: 500, //相对于该元素其它属性动画开始时的延迟。
+	}
+}
+
+
+
+
+
+

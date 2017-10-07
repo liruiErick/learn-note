@@ -1,0 +1,287 @@
+@charset "UTF-8";
+
+/////////////////////////////////// 自定义input元素 ///////////////////////////////////
+
+// 按钮初始化
+.btn-init(@font_size) {
+	.inbl;
+	.ftsz(@font_size, center);
+	outline: none;
+	cursor: pointer;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 100%;
+	height: auto;
+	padding: .5em 1em;
+	margin: 0; //清除 webkit 浏览器中所有表单元素会有默认的 margin：2px
+	border: 0;
+	background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+	.box-sizing(border-box);
+	.nosel;
+	-webkit-appearance: none; // IOS下的表单元素会有默认的样式，且无法通过CSS重置，因此需要将其的渲染设置为 none
+	
+	&[disabled],
+	&.disabled {
+		.op(0.5);
+		cursor: not-allowed;
+		text-decoration: line-through;
+	}
+	
+	// 火狐浏览器下按钮元素会有私有的 padding 和 border，需要通过私有伪类来重置
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	}
+}
+
+// 立体弧面按钮
+.arc-btn-color(@btn_color) {
+	// 控制背景色的亮度值在10%~90%之间
+	@newColor: darken(@btn_color, max(lightness(@btn_color)-90%,0%));
+	@bgColor: lighten(@newColor, max(30%-lightness(@newColor),0%));
+	@bgColor2: desaturate(@bgColor, 20%);
+	@bgColor_lighten: lighten(@bgColor, 5%);
+	@bgColor_lighten2: lighten(@bgColor, 10%);
+	@bgColor_darken: darken(@bgColor, 5%);
+	@bgColor_darken2: darken(@bgColor, 30%);
+	@ftColor: contrast(@bgColor, black, white, 70%); //根据背景色的深浅判断字体颜色为白色还是黑色
+	@bdColor: darken(@bgColor_darken,max(lightness(@bgColor_darken)-50%,0%)); //边框色的亮度值不超过50%
+	@ttsdColor: fade(darken(@bgColor_darken2,max(lightness(@bgColor_darken2)-50%,0%)), 40%);
+	@ttsdColor2: rgba(255, 255, 255, .4);
+	
+	.box-shadow(~"inset 0 1px 0 rgba(255, 255, 255, .5), 0 1px 2px rgba(0, 0, 0, .2)");
+	text-shadow: 0 -1px 1px @ttsdColor;
+	color: @ftColor;
+	#gradient > .vertical(@bgColor_lighten, @bgColor_darken);
+	border: solid 1px @bdColor;
+	
+	&:hover {
+		color: @ftColor;
+		#gradient > .vertical(@bgColor_lighten2, @bgColor_darken);
+	}
+	&:active,
+	&.active {
+		color: @bgColor_darken2;
+		background: @bgColor2;
+		.box-shadow(~"inset 0 1px 3px rgba(0, 0, 0, .3), 0 1px 0 rgba(255, 255, 255, .5)");
+		text-shadow: 0 1px 0 @ttsdColor2;
+	}
+	&[disabled],
+	&.disabled {
+		&:focus,
+		&:hover,
+		&:active,
+		&.active {
+			position: static;
+			color: @ftColor;
+			#gradient > .vertical(@bgColor_lighten, @bgColor_darken);
+		}
+	}
+}
+.arc-btn(@btn_color: @blue, @radius: 4px, @font_size: 14px) {
+	.btn-init(@font_size);
+	.arc-btn-color(@btn_color);
+	border-radius: @radius;
+}
+
+// 扁平按钮
+.flat-btn-color(@btn_color) {
+	@newColor: darken(@btn_color, max(lightness(@btn_color)-95%,0%));
+	@bgColor: lighten(@newColor, max(30%-lightness(@newColor),0%));
+	@bgColor2: desaturate(@bgColor, 20%);
+	@bgColor_lighten: lighten(@bgColor, 5%);
+	@bgColor_darken: darken(@bgColor, 5%);
+	@bgColor_darken2: darken(@bgColor, 30%);
+	@ftColor: contrast(@bgColor, black, white, 70%); //根据背景色的深浅判断字体颜色为白色还是黑色
+	@bdColor: darken(@bgColor_darken,max(lightness(@bgColor_darken)-50%,0%)); //边框色的亮度值不超过50%
+	@bdColor_lighten: lighten(@bdColor, 5%);
+	@ttsdColor: fade(darken(@bgColor_darken2,max(lightness(@bgColor_darken2)-50%,0%)), 40%);
+	@ttsdColor2: rgba(255, 255, 255, .4);
+	
+	text-shadow: 0 -1px 1px @ttsdColor;
+	color: @ftColor;
+	background-color: @bgColor;
+	border: 1px solid @bdColor;
+	
+	&:hover {
+		border-color: @bdColor_lighten;
+		background-color: @bgColor_lighten;
+	}
+	&:active,
+	&.active {
+		color: @bgColor_darken2;
+		background: @bgColor2;
+		.box-shadow(~"inset 0 1px 3px rgba(0, 0, 0, .3), 0 1px 0 rgba(255, 255, 255, .5)");
+		text-shadow: 0 1px 0 @ttsdColor2;
+	}
+	&[disabled],
+	&.disabled {
+		&:focus,
+		&:hover,
+		&:active,
+		&.active {
+			position: static;
+			color: @ftColor;
+			background-color: @btn_color;
+		}
+	}
+}
+.flat-btn(@btn_color: @blue, @radius: 4px, @font_size: 14px) {
+	.btn-init(@font_size);
+	.flat-btn-color(@btn_color);
+	.transition(all .15s);
+	border-radius: @radius;
+}
+
+
+// app store 空心按钮
+.hollow-btn-color-init(@btn_color, @bg_color) {
+	color: @btn_color;
+	background-color: transparent;
+	border: 1px solid @btn_color;
+	
+	&:hover,
+	&:active,
+	&.active {
+		color: @bg_color;
+		background-color: @btn_color;
+	}
+	&[disabled],
+	&.disabled {
+		&:hover,
+		&:active,
+		&.active {
+			color: @btn_color;
+			background-color: transparent;
+		}
+	}
+}
+.hollow-btn-color(@btn_color) when (length(@btn_color) = 1) {
+	@bg_color: contrast(@btn_color, black, white, 70%); //根据按钮色的深浅判断背景颜色为白色还是黑色
+	.hollow-btn-color-init(@btn_color, @bg_color);
+}
+.hollow-btn-color(@btn_color) when (length(@btn_color) = 2) {
+	.hollow-btn-color-init(extract(@btn_color, 1), extract(@btn_color, 2));
+}
+.hollow-btn(@btn_color: #5296FE, @bg_color, @radius: 4px, @font_size: 14px) {
+	.btn-init(@font_size);
+	.hollow-btn-color(@btn_color);
+	.transition(~"color ease-in-out .15s, background-color ease-in-out .15s");
+	border-radius: @radius;
+}
+.hollow-btn-gbcl(@bg_color) {
+	&:hover,
+	&:active,
+	&.active { color: @bg_color; }
+}
+
+// 组按钮
+// 以下是 javascript 切换代码：
+// var $group_btn = $('#group_btn >:not([class="disabled"],[disabled])');
+// if ($group_btn.filter('.active').length == 0) $group_btn.eq(0).addClass("active");
+// $group_btn.on("mousedown",function(){
+//		$group_btn.removeClass("active");
+//		$(this).addClass("active");
+// });
+.group-btn(h, @radius: 4px) {
+	.inbl;
+	vertical-align: middle;
+	
+	>:nth-child(n) {
+		float: left !important;
+		border-radius: 0 !important;
+	}
+	>:first-child~* { margin-left: -1px !important; }
+	>:first-child {
+		border-top-left-radius: @radius !important;
+		border-bottom-left-radius: @radius !important;
+	}
+	>:last-child {
+		border-top-right-radius: @radius !important;
+		border-bottom-right-radius: @radius !important;
+	}
+}
+.group-btn(v, @radius: 4px) {
+	vertical-align: middle;
+	
+	>:nth-child(n) {
+		display: block !important;
+		border-radius: 0 !important;
+	}
+	>:first-child~* { margin-top: -1px !important; }
+	>:first-child {
+		border-top-left-radius: @radius !important;
+		border-top-right-radius: @radius !important;
+	}
+	>:last-child {
+		border-bottom-left-radius: @radius !important;
+		border-bottom-right-radius: @radius !important;
+	}
+}
+
+
+
+
+// Bootstrap 表单输入字段样式
+// 可应用于以下表单控件:
+// select
+// textarea
+// input[type="text"]
+// input[type="password"]
+// input[type="datetime"]
+// input[type="datetime-local"]
+// input[type="date"]
+// input[type="month"]
+// input[type="time"]
+// input[type="week"]
+// input[type="number"]
+// input[type="email"]
+// input[type="url"]
+// input[type="search"]
+// input[type="tel"]
+// input[type="color"]
+
+.input-init(@border_color, @radius, @font_size) {
+	.ftsz(@font_size);
+	font-family: Arial, Helvetica, sans-serif;
+	height: auto;
+	line-height: 110%;
+	padding: .5em;
+	margin: 0;
+	vertical-align: middle;
+	color: #555555;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: @radius;
+	.box-sizing(border-box);
+	.box-shadow(inset 0 1px 1px rgba(0, 0, 0, .1));
+	.transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+	.placeholder;
+	-webkit-appearance: none; // IOS下的表单元素会有默认的样式，且无法通过CSS重置，因此需要将其的渲染设置为 none
+	
+	&:focus {
+		border-color: @border_color;
+		outline: 0;
+		.box-shadow(e(%("inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px %d", fade(@border_color,60%))));
+	}
+	
+	&[disabled],
+	&[readonly] {
+		cursor: not-allowed;
+		background-color: #eeeeee;
+	}
+}
+.input(@border_color: #66afe9, @radius: 4px, @font_size: 14px) when (iscolor(@border_color)) {
+	.input-init(@border_color, @radius, @font_size);
+}
+.input(@border_color, @radius: 4px, @font_size: 14px) when not (iscolor(@border_color)) {
+	.input-init(#66afe9, @radius, @font_size);
+}
+.input-bdcl(@border_color) {
+	&:focus {
+		border-color: @border_color;
+		.box-shadow(e(%("inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px %d", fade(@border_color,60%))));
+	}
+}

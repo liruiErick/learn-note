@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui"/>
+<title>地理位置</title>
+<style>
+html, body, #allmap {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+</style>
+</head>
+
+<body>
+<div id="allmap"></div>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=ZIABZ-3AYHV-PIXPJ-UOU2I-L4HGT-JQBCI"></script>
+<script>
+createMap();
+function createMap() {
+	// 将腾讯坐标拼写在当前页面路径之后
+	// 例如："?location=34.258246,108.974963&title=东关正街&content=公交站"
+	var search = window.location.search,
+		params = parseQueryString(search),
+		location = params.location.split(","),
+		x = location[0],
+		y = location[1];
+
+	// 创建地图
+	var center = new qq.maps.LatLng(x,y),
+		map = new qq.maps.Map(document.getElementById('allmap'),{
+			center: center,
+			zoom: 18
+		}); // 初始化地图,设置中心点坐标和地图级别
+
+	// 创建标注
+	var marker = new qq.maps.Marker({
+        position: center,
+        map: map
+    });
+
+
+	var content = "<b>" + decodeURI(params.title) + "</b>"
+				+ "<hr>"
+				+ "<div>" + decodeURI(params.content) + "</div>";
+
+	// 配置信息窗口
+	var opts = {
+		map: map,
+		content: content,
+		position: center
+	};
+
+	// 创建信息窗口对象
+	var infoWin = new qq.maps.InfoWindow(opts);
+    //开启信息窗口
+    infoWin.open();
+
+	qq.maps.event.addListener(marker, "click", function(){
+		infoWin.open();
+	});
+}
+
+function parseQueryString(url) {
+	var obj = {};
+	var a = url.split('?');
+	if(a.length == 1) return obj;
+	var b = a[1].split('&');
+	for(var i = 0, l = b.length; i < l; i++) {
+		var c = b[i].split('=');
+		obj[c[0]] = c[1];
+	}
+	return obj;
+}
+
+</script>
+</body>
+</html>
