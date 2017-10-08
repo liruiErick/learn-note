@@ -24,7 +24,7 @@ arr.shift(); //将数组头部对象移出，改变原数组，并返回被移�
 arr.splice(index, count, object, ...); //在数组中index位置，去除count个对象，如果有第3个或更多参数，则将这些参数对象插入该位置，返回包含被移出对象的新数组，改变原数组。index可为负数，能够从倒数开始插入。
 arr.slice(index, endIndex); //返回从index开始（包括第index）到endIndex结束（不包括endIndex）的元素数组，不改变原数组，参数可为负数，能够从倒数开始截取。
 
-arr.reverse(); //颠倒数组中元素的顺序。
+arr.reverse(); //颠倒数组中元素的顺序，会改变源数组。
 arr.sort(); //对数组的元素进行排序，默认按 toString() 后的字母顺序进行排序。
 arr.sort(比较函数); //函数有两个参数A和B，让A在B前返回负数，让A在B后返回正数，A=B返回0。
 arr.sort(function(a,b){ return a - b; }); //对数字由小到大排序。
