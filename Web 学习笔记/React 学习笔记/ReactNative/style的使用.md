@@ -188,6 +188,9 @@ flexWrap
 justifyContent
 alignItems
 flex
+flexBasis // 暂不清楚用法
+flexGrow // 暂不清楚用法
+flexShrink // 暂不清楚用法
 alignSelf
 ```
 

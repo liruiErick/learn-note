@@ -2,7 +2,7 @@
  * 防抖函数
  * @param  {Function} func      源函数
  * @param  {Number}   wait      毫秒数，调用该函数后，如果函数在 wait 毫秒内没有被再次调用，才会执行一次。
- * @param  {Boolean}  immediate 如果为 true，则第一次调用函数会立即执行。
+ * @param  {Boolean}  immediate 如果为 true，则函数会立即执行，如果在 wait 毫秒内没有被再次调用，下次调用才会再次执行。
  * @return {Function}           返回一个新函数，该函数在停止调用一段时间后执行一次。
  */
 function debounce(func, wait, immediate) {
@@ -14,7 +14,7 @@ function debounce(func, wait, immediate) {
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
 			timeout = null;
-			func.apply(context, args);
+			if (!callNow) func.apply(context, args);
 		}, wait);
 		if (callNow) func.apply(context, args);
 	};
@@ -27,7 +27,7 @@ export function debounce(func, wait, immediate) {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             timeout = null;
-            func.apply(this, args);
+            if (!callNow) func.apply(this, args);
         }, wait);
         if (callNow) func.apply(this, args);
     };
@@ -48,7 +48,7 @@ export function debounce(func, immediate) {
         cancelAnimationFrame(id);
         id = requestAnimationFrame(() => {
             id = null;
-            func.apply(this, args);
+            if (!callNow) func.apply(this, args);
         });
         if (callNow) func.apply(this, args);
     };
@@ -96,6 +96,30 @@ export function debounce(func) {
                 func.apply(this, args);
             });
         }
+    };
+}
+
+/**
+ * 基于 rAF 的防抖函数变种2
+ * @param   {Function} func      源函数
+ * @param   {Number}   wait      rAF 次数，调用该函数后，如果函数在 wait 次 rAF 内没有被再次调用，才会执行一次。
+ * @returns {Function}           返回一个新函数，新函数第一个参数表示是否立即执行。
+ */
+function debounce(func, wait) {
+    wait = wait || 1;
+    let id, count;
+    let rAF = function(event) {
+        if (count) {
+            count--;
+            id = requestAnimationFrame(() => rAF.call(this, event));
+        } else {
+            func.call(this, event);
+        }
+    };
+    return function({nativeEvent:event}) {
+        cancelAnimationFrame(id);
+        count = wait;
+        rAF.call(this, event);
     };
 }
 
