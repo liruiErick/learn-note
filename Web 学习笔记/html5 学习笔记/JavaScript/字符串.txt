@@ -7,6 +7,10 @@ str.length;
 // 返回执行索引位置的字符
 str[0];
 
+// 注意
+''.charAt(0); // => ''
+''[0]; // => undefined
+
 ## 以下方法将字符串转换为HTML格式的字符串（全浏览器支持）
 str.anchor("锚点名称"); //创建 HTML 锚点。相当于<a name="锚点名称">元素。
 str.link("url"); //将字符串显示为链接。相当于<a href="url">元素。
