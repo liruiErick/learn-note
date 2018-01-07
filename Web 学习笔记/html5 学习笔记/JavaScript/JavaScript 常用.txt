@@ -46,6 +46,10 @@ encodeURI(test); //输出：http://www.w3school.com.cn/My%20first/
 encodeURIComponent(test); //输出：http%3A%2F%2Fwww.w3school.com.cn%2FMy%20first%2F
 
 
+* 数字格式化
+(10000).toLocaleString('en-US'); // => "10,000"
+
+
 * 文档内所有元素（包括图像）全部加载完成时执行该函数
 window.onload=function(){};
 

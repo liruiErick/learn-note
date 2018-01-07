@@ -1,0 +1,2 @@
+// 打印
+System.out.println(msg);﻿

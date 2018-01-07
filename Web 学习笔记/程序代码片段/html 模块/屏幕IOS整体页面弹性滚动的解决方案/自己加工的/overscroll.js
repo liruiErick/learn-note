@@ -75,7 +75,7 @@
 
 	// 获取元素样式
 	function getStyle(elem, pro) {
-		elem = ('string' == typeof elem) ? document.getElementById(elem) : elem;
+		elem = ('string' === typeof elem) ? document.getElementById(elem) : elem;
 		if (!elem) return null;
 		if (elem.style[pro]) { //内联
 			return elem.style[pro];

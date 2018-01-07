@@ -29,7 +29,7 @@ function createRepeater(events) {
 	});
 
 	// 同时监听iframe的load事件，在每次重载后重新注册转发器
-	$('iframe').on('load', function () {console.log('load')
+	$('iframe').on('load', function () {
 		registerRepeater(this);
 	});
 
