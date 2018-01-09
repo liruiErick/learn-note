@@ -1,2 +1,5 @@
 // 打印
-System.out.println(msg);﻿
+System.out.println(msg);
+
+// 获取实例对象的 Class
+obj.getClass();

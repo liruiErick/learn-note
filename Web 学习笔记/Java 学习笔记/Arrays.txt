@@ -1,0 +1,12 @@
+import java.util.Arrays;
+
+String[] hobbies = { "sports", "game", "movie" };
+
+// foreach 循环
+for (String value : hobbies) {
+    System.out.println(value);
+}
+
+Arrays.sort(hobbies); // 对数组进行排序，改变源数组。
+
+Arrays.toString(hobbies); // 将数组转化为字符串，并返回。多个元素之间使用逗号和空格隔开。
