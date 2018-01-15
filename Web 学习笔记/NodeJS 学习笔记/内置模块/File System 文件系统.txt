@@ -20,6 +20,15 @@ fs.readFile(pathname, function (err, buffer) {
     if (err) {
         //Deal with error.
     } else {
+        //Deal with buffer.
+    }
+});
+
+// 如果指定文件类型为 utf-8，则可以直接得到文件内容
+fs.readFile(pathname, 'utf-8', function (err, data) {
+    if (err) {
+        //Deal with error.
+    } else {
         //Deal with data.
     }
 });
@@ -49,6 +58,29 @@ try {
 // 判断文件是否存在
 fs.existsSync(pathname);
 
-
+//递归创建目录 异步方法  
+function mkdirs(dirname, callback) {  
+    fs.exists(dirname, function (exists) {  
+        if (exists) {  
+            callback();  
+        } else {   
+            mkdirs(path.dirname(dirname), function () {  
+                fs.mkdir(dirname, callback);  
+            });  
+        }  
+    });  
+}  
+  
+//递归创建目录 同步方法  
+function mkdirsSync(dirname) {   
+    if (fs.existsSync(dirname)) {  
+        return true;  
+    } else {  
+        if (mkdirsSync(path.dirname(dirname))) {  
+            fs.mkdirSync(dirname);  
+            return true;  
+        }  
+    }  
+} 
 
 
