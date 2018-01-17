@@ -1,5 +1,8 @@
-// 打印
+﻿// 打印
 System.out.println(msg);
+
+// 获取当前程序根目录所在系统的绝对路径
+System.getProperty("user.dir");
 
 // 获取实例对象的 Class
 obj.getClass();
