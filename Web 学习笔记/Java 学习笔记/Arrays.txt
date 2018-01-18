@@ -1,6 +1,13 @@
-import java.util.Arrays;
+﻿import java.util.Arrays;
 
 String[] hobbies = { "sports", "game", "movie" };
+
+// 创建数组，如果在创建的同时不初始化数组则必须指定其大小
+intArray0 = new int[3];
+// 错误的创建数组的方式，如果创建数组时不指定大小则必须初始化
+intArray1 = new int[];
+// 创建数组时，不指定数组大小则必须在创建的同时初始化数组
+intArray1 = new int[]{0,1,2};
 
 // foreach 循环
 for (String value : hobbies) {

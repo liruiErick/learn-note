@@ -12,7 +12,7 @@ public class Main {
         long startTime = new Date().getTime();
         convert();
         long endTime = new Date().getTime();
-        System.out.printf("完了、" + (endTime - startTime) + "ミリ秒がかかる");
+        System.out.println("完了、" + (endTime - startTime) + "ミリ秒がかかる");
     }
 
     public static void convert() throws Exception {
