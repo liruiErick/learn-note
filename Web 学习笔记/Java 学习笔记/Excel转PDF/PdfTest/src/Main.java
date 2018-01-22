@@ -16,7 +16,7 @@ public class Main {
     }
 
     public static void convert() throws Exception {
-        String excelPath = new CreateExcel().create();
-        new ConvertPdf().excel2Pdf(excelPath, OUTPUT_FILE_PATH);
+        CreateExcel excel = new CreateExcel();
+        new ConvertPdf().excel2Pdf(excel.getPath(), OUTPUT_FILE_PATH);
     }
 }

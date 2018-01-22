@@ -23,7 +23,11 @@ public class CreateExcel {
     private static final String OUTPUT_FILE_PATH = BASE_PATH + "/output/result.xlsx";
     XSSFWorkbook wb;
 
-    public String create() throws IOException {
+    public CreateExcel() throws IOException {
+        create();
+    }
+
+    private void create() throws IOException {
         // Excelテンプレートパス
         File fi = new File(TEMPLATE_FILE_PATH);
         FileInputStream fs = new FileInputStream(fi);
@@ -38,8 +42,6 @@ public class CreateExcel {
         wb.write(out);
         out.close();
         wb.close();
-
-        return OUTPUT_FILE_PATH;
     }
 
     private void dealWithExcel(XSSFWorkbook wb) {
@@ -89,6 +91,10 @@ public class CreateExcel {
         setCellValue(cell, value, true);
     }
 
+    public String getPath() {
+        return OUTPUT_FILE_PATH;
+    }
+
     private void setCellValue(XSSFCell cell, String value, Boolean isRed) {
         XSSFCellStyle cellStyle = cell.getCellStyle();
         XSSFFont cellFont = cellStyle.getFont();
@@ -103,6 +109,6 @@ public class CreateExcel {
     }
 
     public static void main(String[] args) throws IOException {
-        new CreateExcel().create();
+        new CreateExcel();
     }
 }

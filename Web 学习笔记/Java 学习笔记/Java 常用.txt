@@ -6,3 +6,16 @@ System.getProperty("user.dir");
 
 // 获取实例对象的 Class
 obj.getClass();
+
+// 消除函数中调用弃用方法时的警告
+@SuppressWarnings("deprecation")
+private void main() {}
+
+// use instanceOf，用来判断对象是否是类的实例
+System.out.println(new A() instanceof B);
+
+//use isAssignableFrom()，用来判断类型间是否有继承关系
+System.out.println(B.class.isAssignableFrom(A.class));
+ 
+//use isInstance()，用来判断对象是否是类的实例
+System.out.println(A.class.isInstance(new A()));
