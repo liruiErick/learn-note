@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -34,12 +35,12 @@ public class Main {
             row.setCurrencyCode2("JPY");
             row.setTradingCategory("決済");
             row.setBuyOrSell("買");
-            row.setContractedCount(0.00087385);
-            row.setContractedSingleCost(476970.73);
-            row.setContractedCost(417);
-            row.setAverageAcquisionCost(47400);
-            row.setProfitAndLostAmount(-3);
-            row.setManagementFee(-500);
+            row.setContractedCount(BigDecimal.valueOf(0.00087385));
+            row.setContractedSingleCost(BigDecimal.valueOf(476970.73));
+            row.setContractedCost(BigDecimal.valueOf(417));
+            row.setAverageAcquisionCost(BigDecimal.valueOf(47400));
+            row.setProfitAndLostAmount(BigDecimal.valueOf(-3));
+            row.setManagementFee(BigDecimal.valueOf(-500));
             row.setNewContractedId("100454031");
 
             transactionData.add(row);

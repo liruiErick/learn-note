@@ -2,6 +2,7 @@ package CreatePDF;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -15,73 +16,112 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 public class PDF {
 
+    /** 基本パス */
     private final String BASE_PATH = System.getProperty("user.dir");
+
+    /** テンプレートファイルパス */
+    private final String TEMPLATE_PATH = "/template/template.pdf";
+
+    /** フォントファイルパス */
+    private final String FONT_PATH = "/font/HGRSKP.TTF";
+
+    /** ページの端からの内容の距離 */
     private final float PADDING = 20;
-    private final float TABLE_GRID_HEIGHT = 20;
+
+    /** テーブルの中で行の高さ */
+    private final float TABLE_ROW_HEIGHT = 20;
+
+    /** テーブルの中で行の開始Y座標 */
+    private final float TABLE_ROW_START_TOP = 204;
+
+    /** セル分割線のX座標 */
     private final float[] TABLE_GTID_COORD = {51, 71.5f, 121.4f, 213.3f, 259.1f, 294.3f, 329.45f, 356.45f, 383.5f,
         443.75f, 497.45f, 560.6f, 610.95f, 658.1f, 710.45f, 771.4f};
 
-    private PDFData pdfData;
-    private DecimalFormat format;
-    private PDPageContentStream cs;
-    private PDDocument doc;
-    private COSDictionary pageCOSObject;
-    private PDRectangle rect;
+    /** format オブジェクト参照 */
+    private final DecimalFormat format = new DecimalFormat("#,###.##");
+
+    /** フォントオブジェクト参照 */
     private PDFont font;
 
-    private int curDrawRow;
-    private float pageWidth;
-    private float pageHeight;
-    private float tableTop;
-    private float tableBottom;
-    private double totalProfitAndLostAmount;
-    private double totalManagementFee;
-    private boolean isRepeatHeader;
+    /** pageContentStream参照 */
+    private PDPageContentStream cs;
 
-    {
-        format = new DecimalFormat(",###.##");
-    }
+    /** ドキュメント参照 */
+    private PDDocument doc;
+
+    /** pageCOSObject参照 */
+    private COSDictionary pageCOSObject;
+
+    /** PDFページサイズ */
+    private PDRectangle rect;
+
+    /** PDFページ高さ */
+    private float pageHeight;
+
+    /** テーブルの中で現在の行の上部Y座標 */
+    private float curRowTop;
+
+    /** テーブルの中で現在の行の下部Y座標 */
+    private float curRowBottom;
+
+    /** 損益金額会計 */
+    private BigDecimal totalProfitAndLostAmount;
+
+    /** 建玉管理料会計 */
+    private BigDecimal totalManagementFee;
+
+    /** 先頭の内容を繰り返すかどうか */
+    private boolean isRepeatHeader;
 
     /**
      * PDF生成
-     * @param outputPath 出力パス
-     * @param data PDFデータ
+     * @param outputPath   出力パス
+     * @param pdfData      PDFデータ
      * @param repeatHeader オプション、先頭の内容を繰り返すかどうか。デフォルトは false。
      * @throws IOException
      */
-    public void create(String outputPath, PDFData data, boolean repeatHeader) throws IOException {
-        pdfData = data;
-        ArrayList<TransactionData> tableData = pdfData.getTransactionData();
+    public void create(String outputPath, PDFData pdfData, boolean repeatHeader) throws IOException {
         isRepeatHeader = repeatHeader;
-        curDrawRow = 0;
-        totalProfitAndLostAmount = 0; // 損益金額会計
-        totalManagementFee = 0; // 建玉管理料会計
 
+        // 損益金額と建玉管理料を会計
+        ArrayList<TransactionData> tableData = pdfData.getTransactionData();
+        totalProfitAndLostAmount = BigDecimal.ZERO;
+        totalManagementFee = BigDecimal.ZERO;
         for (int i = 0, rowCount = tableData.size(); i < rowCount; i++) {
             TransactionData row = tableData.get(i);
-            totalProfitAndLostAmount += row.getProfitAndLostAmount();
-            totalManagementFee += row.getManagementFee();
+            totalProfitAndLostAmount = totalProfitAndLostAmount.add(row.getProfitAndLostAmount());
+            totalManagementFee = totalManagementFee.add(row.getManagementFee());
         }
 
-        File file = new File(BASE_PATH + "/template/template.pdf");
+        // load テンプレートファイル
+        File file = new File(BASE_PATH + TEMPLATE_PATH);
         doc = PDDocument.load(file);
 
-        // フォントの問題を解決する
-        font = PDType0Font.load(doc, new File(BASE_PATH + "/font/HGRSKP.TTF"));
+        // 日本語フォントの問題を解決する
+        font = PDType0Font.load(doc, new File(BASE_PATH + FONT_PATH));
 
         try {
+            // ページに必要な情報を取得する
             PDPage page = doc.getPage(0);
             rect = page.getBBox();
-            pageWidth = rect.getWidth();
             pageHeight = rect.getHeight();
             pageCOSObject = new COSDictionary(page.getCOSObject());
 
+            // 最初のページの contentStream
             cs = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, false);
-            draw();
+
+            // 開始描く
+            draw(pdfData);
+
+            // contentStream を閉める
             cs.close();
+
+            // PDF保存する
             doc.save(outputPath);
 
         } finally {
+            // ファイルフローを閉める
             doc.close();
         }
     }
@@ -90,92 +130,125 @@ public class PDF {
         create(outputPath, data, false);
     }
 
-    private void draw() throws IOException {
+    /**
+     * PDF描く
+     * @param pdfData      PDFデータ
+     * @param startRow     開始描くのインデックス
+     * @throws IOException
+     */
+    private void draw(PDFData pdfData, int startRow) throws IOException {
+        // 先頭を描く
         cs.beginText();
-
         writeName(pdfData.getUserName());
         writeStartEndDate(pdfData.getStartDate(), pdfData.getEndDate());
         writeRightTopInfo(pdfData.getCreateDate(), pdfData.getStoreId(), pdfData.getAccountId());
-        writeStatistics(totalProfitAndLostAmount, totalManagementFee, totalProfitAndLostAmount + totalManagementFee);
-
+        writeStatistics(totalProfitAndLostAmount, totalManagementFee, totalProfitAndLostAmount.add(totalManagementFee));
         cs.endText();
 
-        drawTable();
+        // テーブルを描く
+        ArrayList<TransactionData> tableData = pdfData.getTransactionData();
+        int endRow = drawTable(tableData, startRow);
+
+        // テーブルが描くって終了したかどうかを判断する
+        if (endRow < tableData.size()) {
+            // テーブルが終了していない場合、先頭からもう一度描画を開始する
+            draw(pdfData, endRow);
+        }
     }
 
-    private void drawTable() throws IOException {
-        int fontSize = 8;
-        float x;
-        tableTop = pageHeight - 204;
+    private void draw(PDFData pdfData) throws IOException {
+        draw(pdfData, 0);
+    }
 
-        cs.setStrokingColor(128, 128, 128);
-        cs.setNonStrokingColor(0, 0, 0);
-        cs.setFont(font, fontSize);
+    /**
+     * テーブル描く
+     * @param tableData    テーブルデータ
+     * @param startRow     開始描画の行のインデックス
+     * @return             描画行されたインデックスをかえします
+     * @throws IOException
+     */
+    private int drawTable(ArrayList<TransactionData> tableData, int startRow) throws IOException {
+        int fontSize = 8; // フォントのサイズ
+        curRowTop = pageHeight - TABLE_ROW_START_TOP;
 
-        ArrayList<TransactionData> tableData = pdfData.getTransactionData();
+        cs.setStrokingColor(128, 128, 128); // 線の色
+        cs.setNonStrokingColor(0, 0, 0); // フォントの色
+        cs.setFont(font, fontSize); // フォントのサイズ
 
-        for (int rowCount = tableData.size(); curDrawRow < rowCount; curDrawRow++) {
-            tableBottom = tableTop - TABLE_GRID_HEIGHT;
-            if (tableBottom < PADDING) {
+        int rowCount = tableData.size();
+        for (int i = startRow; i < rowCount; i++) {
+            curRowBottom = curRowTop - TABLE_ROW_HEIGHT;
+
+            if (curRowBottom < PADDING) {
+                // このページがいっぱいの場合は、新しいページを作成した。
                 createNewPageContentStream();
 
                 if (isRepeatHeader) {
-                    draw();
-                    break;
+                    // 先頭の内容を繰り返す必要がある場合は
+                    // ここに戻ると現在描画の行のインデックス
+                    return i;
                 }
 
-                tableTop = pageHeight - PADDING;
-                tableBottom = tableTop - TABLE_GRID_HEIGHT;
+                // 先頭を繰り返す必要がない場合は
+                // ここに新しいページの描画データをリセットする
+                curRowTop = pageHeight - PADDING;
+                curRowBottom = curRowTop - TABLE_ROW_HEIGHT;
                 cs.setStrokingColor(128, 128, 128);
                 cs.setNonStrokingColor(0, 0, 0);
                 cs.setFont(font, fontSize);
+
                 // 一番上の線を描く
-                cs.moveTo(TABLE_GTID_COORD[0], tableTop);
-                cs.lineTo(TABLE_GTID_COORD[TABLE_GTID_COORD.length - 1], tableTop);
+                cs.moveTo(TABLE_GTID_COORD[0], curRowTop);
+                cs.lineTo(TABLE_GTID_COORD[TABLE_GTID_COORD.length - 1], curRowTop);
             }
 
             // 一番下の線を描く
-            cs.moveTo(TABLE_GTID_COORD[0], tableBottom);
-            cs.lineTo(TABLE_GTID_COORD[TABLE_GTID_COORD.length - 1], tableBottom);
+            cs.moveTo(TABLE_GTID_COORD[0], curRowBottom);
+            cs.lineTo(TABLE_GTID_COORD[TABLE_GTID_COORD.length - 1], curRowBottom);
             // 一番左の線を描く
-            x = TABLE_GTID_COORD[0];
-            cs.moveTo(x, tableTop);
-            cs.lineTo(x, tableBottom);
+            cs.moveTo(TABLE_GTID_COORD[0], curRowTop);
+            cs.lineTo(TABLE_GTID_COORD[0], curRowBottom);
             cs.stroke();
 
-            TransactionData row = tableData.get(curDrawRow);
+            TransactionData row = tableData.get(i);
 
             // beginText() 前に必ず stroke()
             cs.beginText();
-            newLineAt(TABLE_GTID_COORD[1] - 3, tableBottom + 6, String.valueOf(curDrawRow + 1), "right", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[1], TABLE_GTID_COORD[2]), tableBottom + 6, row.getDeliveryDate(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[2], TABLE_GTID_COORD[3]), tableBottom + 6, row.getTradeDate(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[3], TABLE_GTID_COORD[4]), tableBottom + 6, row.getContractedId(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[4], TABLE_GTID_COORD[5]), tableBottom + 6, row.getCurrencyCode1(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[5], TABLE_GTID_COORD[6]), tableBottom + 6, row.getCurrencyCode2(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[6], TABLE_GTID_COORD[7]), tableBottom + 6, row.getTradingCategory(), "center", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[7], TABLE_GTID_COORD[8]), tableBottom + 6, row.getBuyOrSell(), "center", fontSize);
-            newLineAt(TABLE_GTID_COORD[9] - 3, tableBottom + 6, numberToString(row.getContractedCount()), "right", fontSize);
-            newLineAt(TABLE_GTID_COORD[10] - 3, tableBottom + 6, numberToString(row.getContractedSingleCost()), "right", fontSize);
-            newLineAt(TABLE_GTID_COORD[11] - 3, tableBottom + 6, numberToString(row.getContractedCost()), "right", fontSize);
-            newLineAt(TABLE_GTID_COORD[12] - 3, tableBottom + 6, numberToString(row.getAverageAcquisionCost()), "right", fontSize);
-            newLineAt(TABLE_GTID_COORD[13] - 3, tableBottom + 6, numberToString(row.getProfitAndLostAmount()), "right", fontSize);
-            newLineAt(TABLE_GTID_COORD[14] - 3, tableBottom + 6, numberToString(row.getManagementFee()), "right", fontSize);
-            newLineAt(getCenterValue(TABLE_GTID_COORD[14], TABLE_GTID_COORD[15]), tableBottom + 6, row.getNewContractedId(), "center", fontSize);
+            // テーブルデータの描画を開始する
+            newLineAt(TABLE_GTID_COORD[1] - 3, curRowBottom + 6, String.valueOf(i + 1), "right", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[1], TABLE_GTID_COORD[2]), curRowBottom + 6, row.getDeliveryDate(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[2], TABLE_GTID_COORD[3]), curRowBottom + 6, row.getTradeDate(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[3], TABLE_GTID_COORD[4]), curRowBottom + 6, row.getContractedId(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[4], TABLE_GTID_COORD[5]), curRowBottom + 6, row.getCurrencyCode1(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[5], TABLE_GTID_COORD[6]), curRowBottom + 6, row.getCurrencyCode2(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[6], TABLE_GTID_COORD[7]), curRowBottom + 6, row.getTradingCategory(), "center", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[7], TABLE_GTID_COORD[8]), curRowBottom + 6, row.getBuyOrSell(), "center", fontSize);
+            newLineAt(TABLE_GTID_COORD[9] - 3, curRowBottom + 6, numberToString(row.getContractedCount()), "right", fontSize);
+            newLineAt(TABLE_GTID_COORD[10] - 3, curRowBottom + 6, numberToString(row.getContractedSingleCost()), "right", fontSize);
+            newLineAt(TABLE_GTID_COORD[11] - 3, curRowBottom + 6, numberToString(row.getContractedCost()), "right", fontSize);
+            newLineAt(TABLE_GTID_COORD[12] - 3, curRowBottom + 6, numberToString(row.getAverageAcquisionCost()), "right", fontSize);
+            newLineAt(TABLE_GTID_COORD[13] - 3, curRowBottom + 6, numberToString(row.getProfitAndLostAmount()), "right", fontSize);
+            newLineAt(TABLE_GTID_COORD[14] - 3, curRowBottom + 6, numberToString(row.getManagementFee()), "right", fontSize);
+            newLineAt(getCenterValue(TABLE_GTID_COORD[14], TABLE_GTID_COORD[15]), curRowBottom + 6, row.getNewContractedId(), "center", fontSize);
             cs.endText();
 
             for (int j = 0, colCount = 15; j < colCount; j++) {
                 // 右の線を描く
-                x = TABLE_GTID_COORD[j + 1];
-                cs.moveTo(x, tableTop);
-                cs.lineTo(x, tableBottom);
+                cs.moveTo(TABLE_GTID_COORD[j + 1], curRowTop);
+                cs.lineTo(TABLE_GTID_COORD[j + 1], curRowBottom);
             }
             cs.stroke();
 
-            tableTop = tableBottom;
+            curRowTop = curRowBottom;
         }
+
+        return rowCount + 1;
     }
 
+    /**
+     * 新しいページを作成する
+     * @throws IOException
+     */
     private void createNewPageContentStream() throws IOException {
         PDPage page = isRepeatHeader ? new PDPage(new COSDictionary(pageCOSObject)) : new PDPage(rect);
         doc.addPage(page);
@@ -183,6 +256,11 @@ public class PDF {
         cs = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, false);
     }
 
+    /**
+     * 名前を描く
+     * @param name         名前
+     * @throws IOException
+     */
     private void writeName(String name) throws IOException {
         cs.setFont(font, 14);
         cs.setNonStrokingColor(0, 0, 0);
@@ -190,6 +268,12 @@ public class PDF {
         newLineAt(200, pageHeight - 100, name, "right", 14);
     }
 
+    /**
+     * 開始日付と終了日付を描く
+     * @param startDate    開始日付
+     * @param endDate      終了日付
+     * @throws IOException
+     */
     private void writeStartEndDate(String startDate, String endDate) throws IOException {
         cs.setFont(font, 8);
         cs.setNonStrokingColor(0, 0, 0);
@@ -198,17 +282,31 @@ public class PDF {
         newLineAt(255, pageHeight - 183, endDate, "right", 8);
     }
 
-    private void writeRightTopInfo(String createDate, String shopNum, String accountNum)
+    /**
+     * 右上隅の情報を描く
+     * @param createDate   作成日付
+     * @param storeId      部店ID
+     * @param accountId    口座番号
+     * @throws IOException
+     */
+    private void writeRightTopInfo(String createDate, String storeId, String accountId)
         throws IOException {
         cs.setFont(font, 8);
         cs.setNonStrokingColor(0, 0, 0);
         // 中揃え
         newLineAt(530, pageHeight - 62, createDate, "center", 8);
-        newLineAt(635, pageHeight - 62, shopNum, "center", 8);
-        newLineAt(740, pageHeight - 62, accountNum, "center", 8);
+        newLineAt(635, pageHeight - 62, storeId, "center", 8);
+        newLineAt(740, pageHeight - 62, accountId, "center", 8);
     }
 
-    private void writeStatistics(double count1, double count2, double count3) throws IOException {
+    /**
+     * 統計を描く
+     * @param count1       統計数字１
+     * @param count2       統計数字２
+     * @param count3       統計数字３
+     * @throws IOException
+     */
+    private void writeStatistics(BigDecimal count1, BigDecimal count2, BigDecimal count3) throws IOException {
         cs.setFont(font, 8);
         // 右揃え
         String text = numberToString(count1, true);
@@ -219,29 +317,51 @@ public class PDF {
         newLineAt(765, pageHeight - 170, text, "right", 8);
     }
 
-    private String numberToString(double num, boolean isMoney) throws IOException {
-        if (num >= 0) {
-            cs.setNonStrokingColor(0, 0, 0);
-        } else {
+    /**
+     * 数字を文字に変換する
+     * @param num          数字
+     * @param isMoney      お金のためにフォーマットされていますか
+     * @return             書式設定された文字を返します
+     * @throws IOException
+     */
+    private String numberToString(BigDecimal num, boolean isMoney) throws IOException {
+        if (num.compareTo(BigDecimal.valueOf(0)) < 0) {
             cs.setNonStrokingColor(255, 0, 0);
+        } else {
+            cs.setNonStrokingColor(0, 0, 0);
         }
         return isMoney ? toMoney(num) : String.valueOf(num);
     }
 
-    private String numberToString(double num) throws IOException {
+    private String numberToString(BigDecimal num) throws IOException {
         return numberToString(num, false);
     }
 
+    /**
+     * フォントの幅を取得する
+     * @param text         テキスト
+     * @param fontSize     フォントサイズ
+     * @return             テキストの幅を返します
+     * @throws IOException
+     */
     private float getStringWidth(String text, int fontSize) throws IOException {
-        // フォントの幅を取得する
         return font.getStringWidth(text) / 1000 * fontSize;
     }
 
+    /**
+     * テキストを描く
+     * @param x            X座標
+     * @param y            Y座標
+     * @param text         テキスト
+     * @param align        アライメント、値の範囲は、"left"、"center"、"right"。デフォルトは"left"。
+     * @param fontSize     アライメントを指定する場合は、フォントサイズを指定する必要もあります。
+     * @throws IOException
+     */
     private void newLineAt(float x, float y, String text, String align, int fontSize)
         throws IOException {
-        if (align == "center") {
+        if (align.equals("center")) {
             x -= getStringWidth(text, fontSize) / 2;
-        } else if (align == "right") {
+        } else if (align.equals("right")) {
             x -= getStringWidth(text, fontSize);
         }
 
@@ -252,10 +372,21 @@ public class PDF {
         cs.setNonStrokingColor(0, 0, 0);
     }
 
-    private String toMoney(double num) {
+    /**
+     * 数値を金額形式にフォーマットする
+     * @param num 数字
+     * @return    書式付きの数値を返します
+     */
+    private String toMoney(BigDecimal num) {
         return format.format(num);
     }
 
+    /**
+     *
+     * @param a 開始値
+     * @param b 終了値
+     * @return  中間値に返します
+     */
     private float getCenterValue(float a, float b) {
         return (b - a) / 2 + a;
     }

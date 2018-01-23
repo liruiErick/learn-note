@@ -1,6 +1,7 @@
 package CreatePDF;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class TransactionData implements Serializable {
 
@@ -23,22 +24,22 @@ public class TransactionData implements Serializable {
     private String buyOrSell;
 
     /** 約定数量 */
-    private double contractedCount;
+    private BigDecimal contractedCount;
 
     /** 約定単価 */
-    private double contractedSingleCost;
+    private BigDecimal contractedSingleCost;
 
     /** 約定金額 */
-    private double contractedCost;
+    private BigDecimal contractedCost;
 
     /** 平均取得単価 */
-    private double averageAcquisionCost;
+    private BigDecimal averageAcquisionCost;
 
     /** 損益金額 */
-    private double profitAndLostAmount;
+    private BigDecimal profitAndLostAmount;
 
     /** 建玉管理料 */
-    private double managementFee;
+    private BigDecimal managementFee;
 
     /** 約定番号 */
     private String contractedId;
@@ -133,84 +134,84 @@ public class TransactionData implements Serializable {
     /**
      * @return contractedCount
      */
-    public double getContractedCount() {
+    public BigDecimal getContractedCount() {
         return contractedCount;
     }
 
     /**
      * @param contractedCount セットする contractedCount
      */
-    public void setContractedCount(double contractedCount) {
+    public void setContractedCount(BigDecimal contractedCount) {
         this.contractedCount = contractedCount;
     }
 
     /**
      * @return contractedSingleCost
      */
-    public double getContractedSingleCost() {
+    public BigDecimal getContractedSingleCost() {
         return contractedSingleCost;
     }
 
     /**
      * @param contractedSingleCost セットする contractedSingleCost
      */
-    public void setContractedSingleCost(double contractedSingleCost) {
+    public void setContractedSingleCost(BigDecimal contractedSingleCost) {
         this.contractedSingleCost = contractedSingleCost;
     }
 
     /**
      * @return contractedCost
      */
-    public double getContractedCost() {
+    public BigDecimal getContractedCost() {
         return contractedCost;
     }
 
     /**
      * @param contractedCost セットする contractedCost
      */
-    public void setContractedCost(double contractedCost) {
+    public void setContractedCost(BigDecimal contractedCost) {
         this.contractedCost = contractedCost;
     }
 
     /**
      * @return averageAcquisionCost
      */
-    public double getAverageAcquisionCost() {
+    public BigDecimal getAverageAcquisionCost() {
         return averageAcquisionCost;
     }
 
     /**
      * @param averageAcquisionCost セットする averageAcquisionCost
      */
-    public void setAverageAcquisionCost(double averageAcquisionCost) {
+    public void setAverageAcquisionCost(BigDecimal averageAcquisionCost) {
         this.averageAcquisionCost = averageAcquisionCost;
     }
 
     /**
      * @return profitAndLostAmount
      */
-    public double getProfitAndLostAmount() {
+    public BigDecimal getProfitAndLostAmount() {
         return profitAndLostAmount;
     }
 
     /**
      * @param profitAndLostAmount セットする profitAndLostAmount
      */
-    public void setProfitAndLostAmount(double profitAndLostAmount) {
+    public void setProfitAndLostAmount(BigDecimal profitAndLostAmount) {
         this.profitAndLostAmount = profitAndLostAmount;
     }
 
     /**
      * @return managementFee
      */
-    public double getManagementFee() {
+    public BigDecimal getManagementFee() {
         return managementFee;
     }
 
     /**
      * @param managementFee セットする managementFee
      */
-    public void setManagementFee(double managementFee) {
+    public void setManagementFee(BigDecimal managementFee) {
         this.managementFee = managementFee;
     }
 
