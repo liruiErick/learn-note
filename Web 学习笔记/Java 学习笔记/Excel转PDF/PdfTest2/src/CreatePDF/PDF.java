@@ -99,6 +99,12 @@ public class PDF {
         doc = PDDocument.load(file);
 
         // 日本語フォントの問題を解決する
+        // File fontFile = new File("C:/Windows/Fonts/msgothic.ttc");
+        // try (TrueTypeCollection collection = new TrueTypeCollection(fontFile)) {
+        //     // Font名から取得
+        //     font = PDType0Font.load(doc, collection.getFontByName("MS-PGothic"), true);
+
+        // 日本語フォントの問題を解決する
         font = PDType0Font.load(doc, new File(BASE_PATH + FONT_PATH));
 
         try {
