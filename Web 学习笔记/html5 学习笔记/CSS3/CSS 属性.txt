@@ -339,7 +339,20 @@ box-sizing:
 	border-box; /* width、height 表示 边框+内边距+内容区域 的宽高 */
 
 
-
+/* 媒体元素（video、image等）内容的填充方式 */
+/* 特征表现与 background-size 类似 */
+/* IE不支持，Edge15及以下不支持 */ 
+object-fit:
+	fill; /* 中文释义“填充”。默认值。替换内容拉伸填满整个content box, 不保证保持原有的比例 */
+	contain; /* 中文释义“包含”。保持原有尺寸比例。保证替换内容尺寸一定可以在容器里面放得下。因此，此参数可能会在容器内留下空白 */
+	cover; /* 中文释义“覆盖”。保持原有尺寸比例。保证替换内容尺寸一定大于容器尺寸，宽度和高度至少有一个和容器一致。因此，此参数可能会让替换内容（如图片）部分区域不可见 */
+	none; /*  中文释义“无”。保持原有尺寸比例。同时保持替换内容原始尺寸大小 */
+	scale-down; /* 中文释义“降低”。就好像依次设置了none或contain, 最终呈现的是尺寸比较小的那个 */
+	
+/* 媒体元素（video、image等）内容的位置 */
+/* 特征表现与 background-position 一致 */
+/* IE不支持，Edge15及以下不支持 */ 
+object-position: right 20px bottom 10px;
 
 
 

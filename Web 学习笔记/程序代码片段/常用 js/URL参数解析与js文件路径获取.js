@@ -161,9 +161,8 @@ function combinePath(path, filePath) {
 // 当加载该js文件时会立即执行其中的语句，而执行此语句时所获取到的js文件数目-1正好就是该js文件，因为页面后面的js文件还没有加载。
 function getSelfPath() {
 	var js = document.scripts,
-		curJs = js[js.length - 1],
-		path = curJs.src.substring(0, curJs.src.lastIndexOf('/') + 1);
-	return path;
+		curJs = js[js.length - 1];
+	return curJs.src.substring(0, curJs.src.lastIndexOf('/') + 1);
 }
 
 

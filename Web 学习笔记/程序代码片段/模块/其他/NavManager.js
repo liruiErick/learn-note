@@ -197,13 +197,17 @@
 
                     if (self._curIndex !== i) {
 
+                        var index = -1;
                         if (self._hasNavItem && self._$anchor.is($section)) {
-                            var index = self._$anchor.index($section);
-                            $.each(self._navArr, function(i, $navs) {
-                                $navs.removeClass(self._navActiveClass);
-                                $navs.eq(index).addClass(self._navActiveClass);
-                            });
+                            index = self._$anchor.index($section);
                         }
+
+                        $.each(self._navArr, function(i, $navs) {
+                            $navs.removeClass(self._navActiveClass);
+                            if (index >= 0) {
+                                $navs.eq(index).addClass(self._navActiveClass);
+                            }
+                        });
 
                         if (self._curIndex >= 0) {
                             try {
