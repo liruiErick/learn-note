@@ -1,2 +1,18 @@
 ﻿// 数字转字符串
 String.valueOf(123);
+
+// 字符串比较时，不能直接使用 == 来判断，要使用 .equals() 方法来判断
+new String("abc") == "abc"       // false
+new String("abc").equals("abc")  // true
+
+// 将字符串转成 byte 数组
+"abc".getBytes("UTF-8");
+"あいうえお".getBytes("shift-jis"); // 日文编码
+
+
+// 字符串替换，原来的字符串不发生改变
+String s = "abatbac"；
+String s1 = s.replace('a'，'1')； // 替换字符（不支持正则表达式）
+String s1 = s.replaceAll("ba"，"12")； // 替换字符串
+String s1 = s.replaceFirst("ba"，"12")； // 替换第一个出现的字符串
+

@@ -1,0 +1,10 @@
+﻿    public static String join(Object[] o, String flag) {
+        StringBuffer strBuff = new StringBuffer();
+
+        for(int i = 0 , len = o.length; i < len; i++) {
+            strBuff.append(String.valueOf(o[i]));
+            if (i < len - 1) strBuff.append(flag);
+        }
+
+        return strBuff.toString();
+    }
