@@ -165,14 +165,12 @@ slider.destroy();
 		$win.on('resize', this._resize);
 
 		if (is_mobile) {
-
 			if (this.hasPrevBtn) {
 				this.$prevBtn.on('touchend', this.prevPage);
 			}
 			if (this.hasNextBtn) {
 				this.$nextBtn.on('touchend', this.nextPage);
 			}
-
 		} else {
 			if (this.hasPrevBtn) {
 				this.$prevBtn.on('click', this.prevPage);
@@ -205,6 +203,8 @@ slider.destroy();
 	};
 
 	p._removeEvent = function() {
+        $win.off('resize', this._resize);
+
 		if (is_mobile) {
 			if (this.hasPrevBtn) {
 				this.$prevBtn.off('touchend', this.prevPage);
