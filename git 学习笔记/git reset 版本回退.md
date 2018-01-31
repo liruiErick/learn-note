@@ -17,5 +17,7 @@ $ git push origin HEAD --force
 
 
 `HEAD` 最近一个提交
-`HEAD^` 上一次
+`HEAD~0` 最近一个提交
+`HEAD^` 最近两个提交
+`HEAD~1` 最近两个提交
 `<commit_SHA>`  每次 commit 的 SHA 值，可以用 git log 看到，也可以在页面上 commit 标签页里找到。
