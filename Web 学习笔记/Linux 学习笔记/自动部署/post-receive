@@ -1,0 +1,24 @@
+#!/bin/sh
+
+unset GIT_DIR # 还原环境变量
+
+DeployPath="../local" # 相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
+
+{ # try
+    cd $DeployPath
+} || { # catch
+    echo "Error, Server update fail!"
+    exit 1
+}
+
+{ # try
+    git reset --hard origin/master
+    git clean -f
+    git pull origin master
+} || { # catch
+    echo "Error, Server update fail!"
+    exit 1
+}
+
+echo "Server update done."
+exit 0
