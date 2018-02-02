@@ -1,4 +1,4 @@
-﻿## 免密码接远程连服务器
+## 免密码接远程连服务器
 
 密钥是免登录连接服务器的通行证。如果本地已经存在并且不想另外生成的话，可以跳过此步。
 
@@ -97,7 +97,7 @@ pre-applypatch.sample     pre-receive.sample
 
 unset GIT_DIR # 还原环境变量
 
-DeployPath="../../www" # 相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
+DeployPath="../../www" # 服务器项目目录，相对于 REPO_NAME.git 的路径（不是 hooks 文件夹）
 
 { # try
     cd $DeployPath
@@ -145,7 +145,7 @@ chown -R git:git /home/USER/www
 cannot open .git/FETCH_HEAD:Permission denied
 ```
 
-### 更新本机的仓库源
+### 添加的仓库源
 
 在本地仓库添加这个服务器上的远程仓库源，这里将其命名为 `deploy`，和托管代码的中央仓库 `origin` 区分开。
 
