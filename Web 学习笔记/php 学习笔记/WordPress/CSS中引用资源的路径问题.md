@@ -20,6 +20,6 @@ PHP代码不能在.css文件中运行，但是可以使用内联样式，例如�
 
 ```css
 .class-name {
-  background-image: url("images/file.jpg")
+  background-image: url("images/file.jpg");
 }
 ```

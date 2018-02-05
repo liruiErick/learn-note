@@ -85,6 +85,11 @@ urlencode($url); // 返回编码后的结果
 urldecode($url); // 返回解码后的结果 
 
 
+// for 循环
+for ($i=0; $i<=10; $i++) {
+  echo "数字是：$i <br>";
+} 
+
 // 遍历对象
 foreach ($_G as $value) {
 	echo "<br>".$value;
