@@ -263,7 +263,7 @@
     function allowScroll(elem, testHor) {
         var st = elem.scrollTop;
         elem.scrollTop += (st > 0) ? -1 : 1;
-        if (elem.scrollTop != st) {
+        if (elem.scrollTop !== st) {
             elem.scrollTop = st;
             return true;
         }
@@ -272,7 +272,7 @@
 
         var sl = elem.scrollLeft;
         elem.scrollLeft += (sl > 0) ? -1 : 1;
-        if (elem.scrollLeft != sl) {
+        if (elem.scrollLeft !== sl) {
             elem.scrollLeft = sl;
             return true;
         }
@@ -292,11 +292,6 @@
     // 判断是否为函数
     function isFunction(func) {
         return typeof func === 'function';
-    }
-
-    // 判断对象是否为jQuery对象
-    function isJQ(jq) {
-        return jq instanceof jQuery;
     }
 
     return NavManager;
