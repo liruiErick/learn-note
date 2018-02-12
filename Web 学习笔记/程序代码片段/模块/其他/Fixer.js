@@ -50,13 +50,6 @@
                 if (!this._$container.length) this._$container = null;
             }
 
-            if (this._$container) {
-                this._maxScrollTop = this._$container.offset().top + this._$container.height() - this._$fixer.outerHeight(true) - this._options.offset;
-                this._fixerAbsTop = this._maxScrollTop - this._$fixer.offsetParent().offset().top + this._$fixer.position().top + this._options.offset;
-            }
-
-            this._fixerTop = this._$fixer.offset().top - this._options.offset; // 获取锁定对象的初始顶部位
-
             var fixerPosition = this._$fixer.css('position');
 
             if (fixerPosition === 'static' || fixerPosition === 'relative') {
@@ -67,6 +60,7 @@
             this._initProxy();
             this._scroll();
             this._addEvent();
+            this.update();
         },
 
         _addEvent: function() {
@@ -146,6 +140,15 @@
                     this[p] = $.proxy(this, p);
                 }
             }
+        },
+
+        update: function() {
+            if (this._$container) {
+                this._maxScrollTop = this._$container.offset().top + this._$container.height() - this._$fixer.outerHeight(true) - this._options.offset;
+                this._fixerAbsTop = this._maxScrollTop - this._$fixer.offsetParent().offset().top + this._$fixer.position().top + this._options.offset;
+            }
+
+            this._fixerTop = this._$fixer.offset().top - this._options.offset; // 获取锁定对象的初始顶部位
         },
 
         destroy: function() {
