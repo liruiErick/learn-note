@@ -43,8 +43,6 @@
         constructor: Fixer,
 
         _init: function() {
-            this._fixed = false;
-
             if (this._options.container) {
                 this._$container = $(this._options.container);
                 if (!this._$container.length) this._$container = null;
@@ -58,7 +56,6 @@
             }
 
             this._initProxy();
-            this._scroll();
             this._addEvent();
             this.update();
         },
@@ -143,12 +140,22 @@
         },
 
         update: function() {
+            this._fixed = false;
+
+            this._$fixer.css({
+                'margin-top': '',
+                'position': '',
+                'top': ''
+            });
+
             if (this._$container) {
                 this._maxScrollTop = this._$container.offset().top + this._$container.height() - this._$fixer.outerHeight(true) - this._options.offset;
                 this._fixerAbsTop = this._maxScrollTop - this._$fixer.offsetParent().offset().top + this._$fixer.position().top + this._options.offset;
             }
 
             this._fixerTop = this._$fixer.offset().top - this._options.offset; // 获取锁定对象的初始顶部位
+
+            this._scroll();
         },
 
         destroy: function() {
