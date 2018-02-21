@@ -1,0 +1,106 @@
+﻿// 清空指定表中指定字段的值
+UPDATE `pre_portal_article_tag` SET hot_count = ''
+
+// 删除指定表中指定字段值为空的数据
+DELETE FROM `pre_portal_article_tag` WHERE hot_count = ''
+
+// 文章标题批量修改
+if($_G['uid'] == 1){
+	$update_title = DB::fetch_all("SELECT * FROM ".DB::table('portal_article_title')." where title like '%【PC游戏】%'");
+
+	foreach($update_title as $key => $value){
+		C::t('portal_article_title')->update($value['aid'], array('title' => str_replace("【PC游戏】","",$value['title'])));
+	}
+}
+
+
+// 统计所有标签
+if($_G['uid'] == 1){
+	$count = DB::fetch_first("SELECT count(*) as counts FROM ".DB::table('portal_article_title'));
+	for($i = 0; $i <= ceil($count['counts'] / 10); $i++){
+		$start = 10 * $i;
+		$batch = DB::fetch_all("SELECT catid, tag_ids FROM ".DB::table('portal_article_title') . " where tag_ids <> '' limit $start , 10");
+		if(!empty($batch)){
+			foreach($batch as $key => $value){
+				if(strlen($value['tag_ids']) > 0){
+					$tag_query = DB::fetch_all("SELECT id, hot_count FROM ".DB::table('portal_article_tag')." where id in ($value[tag_ids])");
+					foreach($tag_query as $k => $v){
+						$channel_count = unserialize($v['hot_count']);
+						if(isset($channel_count[$value['catid']])){
+							$channel_count[$value['catid']] ++;
+						}else{
+							$channel_count[$value['catid']] = 1;
+						}
+						$sql_arr = serialize($channel_count);
+						DB::query("UPDATE " . DB::table('portal_article_tag') . " SET hot_count = '$sql_arr' WHERE id = $v[id]");
+					}
+				}
+			}
+		}
+	}
+}
+
+
+// 合并名称近似的标签
+if($_G['uid'] == 1){
+	$keyword = 'VR%AR';
+	$ids = 467;
+	$tag_info = DB::fetch_all("SELECT id FROM " . DB::table('portal_article_tag') . " WHERE `name` LIKE '$keyword'");
+
+	$counts = DB::fetch_first("SELECT count(*) as counts FROM " . DB::table('portal_article_title'));
+
+	for($i = 0; $i <= ceil($counts['counts'] / 10); $i++) {
+		$start = 10 * $i;
+		$tag_ids = DB::fetch_all("SELECT aid, tag_ids FROM " . DB::table('portal_article_title') ." limit $start, 10");
+		foreach($tag_info as $key => $value){
+			foreach($tag_ids as $k => $v){
+				if(!$v['tag_ids']) continue;
+				$arr = explode(',', $v['tag_ids']);
+				$article_id = $v['aid'];
+				foreach($arr as $ak => $av){
+
+					if($value['id'] == $av){
+						$arr[$ak] = $ids;
+					}
+				}
+				$arr = array_unique($arr);
+				$arr = implode(",", $arr);
+				DB::query("UPDATE " . DB::table('portal_article_title') . " SET tag_ids = '$arr' WHERE aid = '$article_id'");
+			}
+			if($ids != $value['id']){
+				DB::query("DELETE FROM " . DB::table('portal_article_tag') . " WHERE id = $value[id]");
+			}
+		}
+	}
+}
+
+
+
+// 如果文章的tag_ids中id对应的标签不存在，则删除该id
+if($_G['uid'] == 1){
+
+	$counts = DB::fetch_first("SELECT count(*) as counts FROM " . DB::table('portal_article_title'));
+
+	for($i = 0; $i <= ceil($counts['counts'] / 10); $i++) {
+		$start = 10 * $i;
+		$tag_ids = DB::fetch_all("SELECT aid, tag_ids FROM " . DB::table('portal_article_title') ." limit $start, 10");
+
+		foreach($tag_ids as $k => $v){
+			if(!$v['tag_ids']) continue;
+			$arr = explode(',', $v['tag_ids']);
+			$article_id = $v['aid'];
+			foreach($arr as $ak => $av){
+				$tag_info = DB::fetch_first("SELECT * FROM " . DB::table('portal_article_tag') . " WHERE id = $av");
+				if(empty($tag_info)){
+					unset($arr[$ak]);
+				}
+			}
+			if($arr){
+				$arr = implode(",", $arr);
+				DB::query("UPDATE " . DB::table('portal_article_title') . " SET tag_ids = '$arr' WHERE aid = '$article_id'");
+			}else{
+				DB::query("UPDATE " . DB::table('portal_article_title') . " SET tag_ids = '' WHERE aid = '$article_id'");
+			}
+		}
+	}
+}
