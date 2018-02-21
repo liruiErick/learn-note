@@ -125,7 +125,7 @@
 			}
 			var i = $children.index($target);
 			gotoItem(i);
-		}
+		};
 
 		self.gotoItem = gotoItem;
 		self.update = update;
