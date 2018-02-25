@@ -7,16 +7,17 @@
 		define(['jquery.animate', 'DragEvent'], factory);
 	} else {
 		root.bjj = root.bjj || {};
-		root.bjj.anchorScroll = factory(root.jQuery, root.bjj.DragEvent);
+		root.bjj.anchorScroll = factory(root.jQuery);
 	}
 
-}(this, function($, DragEvent) {
+}(this, function($) {
 	'use strict';
 
 	var $win = $(window),
 		$doc = $(allowScroll(document.documentElement) ? document.documentElement : document.body);
 
 	var defaultOptions = {
+        	anchor: 'a[href^="#"]', // 被应用滑动效果的锚点选择器或者 jQuery 对象，默认为所有锚点链接
             offset: 0, // 屏幕滑动的偏移量，一般为头部的高度
             duration: 600, // 区块间滑动的持续时间
             easing: '' // 区块间滑动的 jQuery 缓动函数
@@ -62,9 +63,9 @@
 		}
 
 		// 导航栏锚点跳转缓动。简单写法，仅支持 id 名
-		$('a[href^="#"]').click(function() {
+		$(opt.anchor).on('click', function() {
 			var href = this.getAttribute('href');
-			if (href.indexOf('##') >= 0) return;
+            if (!href.match(/^#[^#]/)) return;
 			var $target = $(href);
 			if ($target.length) {
 				setScrollTop($target, opt.duration);
@@ -75,7 +76,7 @@
 		// 页面初始化时跳至指定区域
 		// 要求window.location.search为一个页面区块的id名
 		var hash = window.location.hash;
-		if (hash && hash.indexOf('##') < 0) {
+		if (hash && hash.match(/^#[^#]/)) {
 			var $targetSection = $(hash);
 			if ($targetSection.length) {
 				setScrollTop($targetSection, 0);

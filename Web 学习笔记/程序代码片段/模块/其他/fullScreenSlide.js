@@ -94,7 +94,7 @@
 		// 导航栏锚点跳转缓动。简单写法，仅支持 id 名
 		$('a[href^="#"]').click(function() {
 			var href = this.getAttribute('href');
-			if (href.indexOf('##') >= 0) return;
+            if (!href.match(/^#[^#]/)) return;
 			var $target = $(href);
 			if ($target.length) {
 				setScrollTop($target, 1000);

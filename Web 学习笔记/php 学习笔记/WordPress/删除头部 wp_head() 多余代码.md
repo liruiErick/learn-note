@@ -19,6 +19,15 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0); // rel=pre
 remove_action('wp_head', 'feed_links', 2); // 文章和评论 feed 
 remove_action('wp_head', 'feed_links_extra', 3);// 额外的 feed，例如 category, tag 页
 
+// <link rel='https://api.w.org/' href='http://localhost/test/wordpress/index.php/wp-json/' />
+remove_action('wp_head','rest_output_link_wp_head');
+
+// <script type='text/javascript' src='http://localhost/test/wordpress/wp-includes/js/wp-embed.min.js?ver=4.9.4'></script>
+remove_action('wp_head','wp_oembed_add_host_js');
+
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+
 remove_action('wp_head', 'wp_generator'); // WordPress 版本信息
 remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0 ); // rel=shortlink
 remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));

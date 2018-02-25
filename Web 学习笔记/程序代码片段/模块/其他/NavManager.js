@@ -17,33 +17,32 @@
 }(this, function($) {
     'use strict';
 
-        /**
-         * 默认回调
-         * this 指向 NavManager 的实例对象
-         * @param {Number} index   区块在区块列表中的索引
-         * @param {DOM}    section 区块的DOM对象
-         */
-    var noop = function(index, section) {},
+    /**
+     * 默认回调
+     * this 指向 NavManager 的实例对象
+     * @param {Number} index    区块在区块列表中的索引
+     * @param {jQuery} $section 区块的 jQuery 对象
+     * @param {jQuery} $anchor  区块的对应锚点的 jQuery 对象。如果没有对应的锚点链接，则为 null
+     */
+    var noop = function(index, $section, $anchor) {},
 
         defaultOptions = {
             offset: 0, // 屏幕滑动的偏移量，一般为头部的高度
-            nav: '', // 导航项的选择器或 jQuery 对象。
-                    // 如果有多个导航，比如同时有顶部导航和右侧导航，那么每个导航项的选择器以英文“,”隔开，或者将他们放入数组。
+            nav: '', // 导航项的选择器或 jQuery 对象。每个导航通过链接通过 href="#id" 的形式来指定对应的区块
+            // 如果有多个导航，比如同时有顶部导航和右侧导航，那么每个导航项的选择器以英文“,”隔开，或者将他们放入数组。
             section: '', // 页面上每个区块的选择器或 jQuery 对象。
-                        // 每个区块选择器以英文“,”隔开，或者将他们放入数组。
-            anchor: '', // 每个导航对应的区选择器或 jQuery 对象。
-                        // 每个区块选择器以英文“,”隔开，或者将他们放入数组。
-                        // 如果不指定，则默认与 section 相同。
 
             navActiveClass: 'active', // 导航项焦点类名
+            enterPosition: 'middle', // 判断区块进入屏幕时相对于屏幕的位置，取值分别为 'top'、'middle'、'bottom'
+            enterPositionOffset: 0, // 为进入位置指定一个偏移量
             duration: 600, // 区块间滑动的持续时间
             easing: '', // 区块间滑动的 jQuery 缓动函数
 
             // this 指向当前 NavManager 实例
-            onEnter: noop, // 进入区块时的回调，并将当前区块的索引以及DOM对象作为参数传入
-            onLeave: noop, // 离开区块时的回调，并将当前离开区块的索引以及DOM对象作为参数传入
-            onStart: noop, // 滑动开始时的回调，并将当前区块的索引以及DOM对象作为参数传入
-            onEnd: noop // 滑动结束后的回调，并将当前区块的索引以及DOM对象作为参数传入
+            onEnter: noop, // 进入区块时的回调
+            onLeave: noop, // 离开区块时的回调
+            onStart: noop, // 滑动开始时的回调
+            onEnd: noop // 滑动结束后的回调
         };
 
     /**
@@ -63,21 +62,13 @@
         constructor: NavManager,
 
         _init: function() {
-            var self = this,
-                opt = this._options;
+            var opt = this._options;
 
-            // 处理配置信息
-            if (isString(opt.nav)) {
-                this._navArr = opt.nav.split(',');
-            } else if (!isArray(opt.nav)) {
-                this._navArr = [opt.nav];
+            if (isArray(opt.nav)) {
+                this._$nav = $($.map(opt.nav, function(n) { return $(n)[0]; }));
+            } else {
+                this._$nav = $(opt.nav);
             }
-
-            this._navArr = $.map(this._navArr, function(n) {
-                var $navs = $(n);
-                if (!self._hasNavItem) self._hasNavItem = !!$navs.length;
-                return $navs;
-            });
 
             if (isArray(opt.section)) {
                 this._$section = $($.map(opt.section, function(n) { return $(n)[0]; }));
@@ -85,20 +76,14 @@
                 this._$section = $(opt.section);
             }
 
-            this._sections = $.map(this._$section, function(n) { return $(n); })
-
-            if (!opt.anchor) {
-                this._$anchor = this._$section;
-            } else if (isArray(opt.anchor)) {
-                this._$anchor = $($.map(opt.anchor, function(n) { return $(n)[0]; }));
-            } else {
-                this._$anchor = $(opt.anchor);
-            }
+            this._sections = $.map(this._$section, function(n) { return $(n); });
 
             this._offset = opt.offset;
+            this._navActiveClass = opt.navActiveClass;
+            this._enterPosition = opt.enterPosition;
+            this._enterPositionOffset = opt.enterPositionOffset;
             this._duration = opt.duration;
             this._easing = opt.easing;
-            this._navActiveClass = opt.navActiveClass;
 
             this._onEnter = opt.onEnter;
             this._onLeave = opt.onLeave;
@@ -120,34 +105,23 @@
         },
 
         _addEvent: function() {
-            var self = this;
-            $.each(this._navArr, function(i, $navs) {
-                $navs.on('click', self._onClickNav);
-            });
-
+            this._$nav.on('click', this._onClickNav);
             this._$win.on('resize', this._resize);
             this._$win.on('scroll', this._scroll);
         },
 
         _removeEvent: function() {
-            var self = this;
-            $.each(this._navArr, function(i, $navs) {
-                $navs.off('click', self._onClickNav);
-            });
-
+            this._$nav.off('click', this._onClickNav);
             this._$win.off('resize', this._resize);
             this._$win.off('scroll', this._scroll);
         },
 
         _onClickNav: function(e) {
-            var index = -1;
-            $.each(this._navArr, function(i, $navs) {
-                index = $navs.index(e.currentTarget);
-                if (index >= 0) return false;
-            });
-
-            if (index >= 0) {
-                this._setScrollTop(this._$anchor.eq(index), this._duration);
+            var href = e.currentTarget.getAttribute('href');
+            if (!href.match(/^#[^#]/)) return;
+            var $target = $(href);
+            if ($target.length) {
+                this._setScrollTop($target, this._duration);
                 return false;
             }
         },
@@ -159,10 +133,11 @@
 
             if (this._$win.scrollTop() === scrollTop) return;
 
-            this._animating = true;
+            self._animating = true;
+            var $anchor = this._getAnchor($target);
 
             try {
-                this._onStart(targetIndex, $target[0]);
+                this._onStart(targetIndex, $target, $anchor);
             } catch(err) {
                 throw err;
             }
@@ -173,7 +148,7 @@
                 self._animating = false;
 
                 try {
-                    self._onEnd(targetIndex, $target[0]);
+                    self._onEnd(targetIndex, $target, $anchor);
                 } catch(err) {
                     throw err;
                 }
@@ -184,7 +159,23 @@
             var self = this,
                 winTop = this._$win.scrollTop(),
                 winBottom = winTop + this._winHeight,
-                winHalfTop = winTop + this._offset + (this._winHeight - this._offset) * 0.5;
+                reference,
+                curSectionIndex,
+                $curSection;
+
+            switch(this._enterPosition) {
+                case 'top':
+                    reference = winTop + this._offset;
+                    break;
+                case 'middle':
+                    reference = winTop + this._offset + (this._winHeight - this._offset) * 0.5;
+                    break;
+                case 'bottom':
+                    reference = winBottom;
+                    break;
+            }
+
+            reference += this._enterPositionOffset;
 
             // 判断当前滑到到哪个区块
             $.each(this._sections, function(i, $section) {
@@ -193,46 +184,39 @@
                 // 当页面顶部进入窗口高度的一半时，将该页面算作当前页面。
                 // 如果当前区块是最后一个，那么当区块底部与窗口底部平齐时，将该区块算作当前区块。
                 if ((i === self._maxIndex && winBottom >= bottom)
-                || (winHalfTop >= top && winHalfTop < bottom)) {
-
-                    if (self._curIndex !== i) {
-
-                        var index = -1;
-                        if (self._hasNavItem && self._$anchor.is($section)) {
-                            index = self._$anchor.index($section);
-                        }
-
-                        $.each(self._navArr, function(i, $navs) {
-                            $navs.removeClass(self._navActiveClass);
-                            if (index >= 0) {
-                                $navs.eq(index).addClass(self._navActiveClass);
-                            }
-                        });
-
-                        if (self._curIndex >= 0) {
-                            try {
-                                self._onLeave(self._curIndex, self._sections[self._curIndex][0]);
-                            } catch(err) {
-                                throw err;
-                            }
-                        }
-
-                        try {
-                            self._onEnter(i, self._sections[i][0]);
-                        } catch(err) {
-                            throw err;
-                        }
-
-                        self._curIndex = i;
-                    }
-
-                    // 由于最后一个区块可能是网页的脚步，而网页的脚步未必是全屏的
-                    // 因此，如果是倒数第二个区块满足以上条件，也要再去检查最后一个区块，而不是跳出循环
-                    if (i !== self._maxIndex - 1) {
-                        return false;
-                    }
+                    || (reference >= top && reference < bottom)) {
+                    curSectionIndex = i;
+                    $curSection = $section;
                 }
             });
+
+            if (!$curSection) return;
+
+            var $anchor = self._getAnchor($curSection);
+            self._$nav.removeClass(self._navActiveClass);
+            if ($anchor) $anchor.addClass(self._navActiveClass);
+
+            if (this._curIndex >= 0) {
+                try {
+                    self._onLeave(this._curIndex, this._sections[this._curIndex], $anchor);
+                } catch(err) {
+                    throw err;
+                }
+            }
+
+            try {
+                self._onEnter(curSectionIndex, self._sections[curSectionIndex], $anchor);
+            } catch(err) {
+                throw err;
+            }
+
+            this._curIndex = curSectionIndex;
+        },
+
+        _getAnchor: function($section) {
+            var id = $section.attr('id');
+            if (id) return this._$nav.filter('[href="#' + id + '"]');
+            return null;
         },
 
         _resize: function() {
@@ -277,7 +261,6 @@
             return true;
         }
     }
-
 
     // 判断对象是否为数组
     function isArray(obj) {
