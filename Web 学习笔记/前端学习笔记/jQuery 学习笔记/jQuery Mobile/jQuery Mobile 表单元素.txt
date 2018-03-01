@@ -1,0 +1,90 @@
+﻿jQuery Mobile 会自动为 HTML5 表单添加优异的便于触控的外观。
+
+当与 jQuery Mobile 表单打交道时，应该了解以下信息：
+1、<form> 元素必须设置 method 和 action 属性
+2、每个表单元素必须设置唯一的 "id" 属性。该 id 在站点的页面中必须是唯一的。这是因为 jQuery Mobile 的单页面导航模型允许许多不同的“页面”同时呈现。
+3、每个表单元素必须有一个标记（label）。请设置 label 的 for 属性来匹配元素的 id。
+
+如需隐藏 label，可以使用类 class="ui-hidden-accessible"。
+
+如果需要 label 和表单元素在宽屏幕上同行显示，可以用带有 data-role="fieldcontain" 属性的 <div> 或 <fieldset> 元素来包装 label 或表单元素：
+
+<form method="post" action="demoform.asp">
+  <div data-role="fieldcontain">
+    <label for="fname">First name:</label>
+    <input type="text" name="fname" id="fname">
+    <label for="lname">Last name:</label>
+    <input type="text" name="lname" id="lname">
+  </div>
+</form>
+
+提示：fieldcontain 属性基于页面宽度来设置 label 和表单控件的样式。当页面宽度大于 480px 时，它会自动将 label 与表单控件放置于同一行。当小于 480px 时，label 会被放置于表单元素之上。
+
+如需避免 jQuery Mobile 自动为表单元素设置样式，请使用 data-role="none" 属性：
+<input type="text" name="fname" id="fname" data-role="none">
+
+
+
+* jQuery Mobile 表单元素的一些特性
+
+// 多行文本框，文本框会自动扩大，以适应您输入的文本行。
+<textarea></textarea>
+
+
+// 单选按钮
+可以用 data-role="controlgroup" 属性来组合这些按钮：
+
+<form method="post" action="demoform.asp">
+  <fieldset data-role="controlgroup" data-type="horizontal">
+    <legend>请选择您的性别：</legend>
+      <label for="male">男性</label>
+      <input type="radio" name="gender" id="male" value="male">
+      <label for="female">女性</label>
+      <input type="radio" name="gender" id="female" value="female">	
+  </fieldset>
+  <input type="submit" data-inline="true" value="提交">
+</form>
+
+
+// 自定义下拉列表菜单
+IOS 与 Android 设备定义了不同的下拉列表菜单的呼出方式。
+如果您希望在所有移动设备上显示一致外观的选择菜单，可以使用 jQuery Mobile 的自定义选择菜单，data-native-menu="false" 属性：
+<select name="day" id="day" data-native-menu="false">
+
+jQuery Mobile 可以将下拉列表菜单包装成一个切换开关
+如需创建切换，可以为 <select> 元素创建 data-role="slider" 属性，并添加两个 <option> 元素：
+
+<select name="switch" id="switch" data-role="slider">
+  <option value="on">On</option>
+  <option value="off">Off</option>
+</select>
+
+
+// HTML5 range 控件
+<input type="range" name="points" id="points" value="50" min="0" max="100">
+
+使用下列属性来规定限定：
+max - 规定允许的最大值
+min - 规定允许的最小值
+step - 规定合法的数字间隔
+value - 规定默认值
+
+如果希望突出显示截止滑块值的这段轨道，可以添加 data-highlight="true"：
+<input type="range" data-hightlight="true">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

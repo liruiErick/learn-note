@@ -1,0 +1,285 @@
+﻿text  单行输入字段，默认20个字符
+
+radio  单选按钮
+
+checkbox  复选框
+
+password  密码输入框
+
+button  普通按钮
+
+image  图片按钮
+
+hidden  隐藏的输入字段
+
+submit  提交按钮，可提交form表单数据
+
+reset  重置按钮，可重置form表单数据
+
+file  浏览按钮，用于上传文件
+
+
+
+* 定义多个可选的下拉列表
+<select name="multiple">
+	<option value="val1">选项1</option>
+	<option value="val2">选项2</option>
+	<option value="val3" selected>选项3</option>
+</select>
+
+// 为下拉列表分组
+<select name="day" id="day">
+	<optgroup label="工作日">
+		<option value="mon">星期一</option>
+		<option value="tue">星期二</option>
+		<option value="wed">星期三</option>
+		<option value="thu">星期四</option>
+		<option value="fri">星期五</option>
+	</optgroup>
+	<optgroup label="周末">
+		<option value="sat">星期六</option>
+		<option value="sun">星期日</option>
+	</optgroup>
+</select>
+
+// 多选下拉列表
+multiple 属性规定 <select> 可同时选择多个选项。
+提示：可以把 multiple 属性与 size 属性配合使用，来定义可见选项的数目。
+<select multiple="multiple" size="4"></select>
+
+在不同操作系统中，选择多个选项的差异：
+对于 windows：按住 Ctrl 按钮来选择多个选项
+对于 Mac：按住 command 按钮来选择多个选项
+由于上述差异的存在，同时由于需要告知用户可以使用多项选择，对用户更友好的方式是使用复选框。
+
+// 下拉列表的 js 操作
+下拉列表的 DOM 对象有一个 options 属性，该属性表示列表中所有 option 选项的 DOM 对象所组成的数组。
+可以用以下方法创建一个选项：
+select.options[0] = new Option(text, value);
+
+select对象有下列属性和方法
+disabled //设置或返回是否应禁用下拉列表。
+form //返回对包含下拉列表的表单的引用。
+id //设置或返回下拉列表的 id。
+vlaue // 被选中下拉选项的 value。
+length //返回下拉列表中的选项数目。将该属性设为0，可以清空 option 选项。
+multiple //设置或返回是否选择多个项目。
+name //设置或返回下拉列表的名称。
+selectedIndex //设置或返回下拉列表中被选项目的索引号。若允许多重选择，则仅会返回第一个被选选项的索引号。
+size //设置或返回下拉列表中的可见行数。
+tabIndex //设置或返回下拉列表的 tab 键控制次序。
+type //返回下拉列表的表单类型。
+
+add(option, before); //向下拉列表添加一个选项。
+// option 必需，是 option 或 optgroup 元素
+// before 可选，该参数为一个 select 对象中的 option 对象或者其索引，表示第一个参数的 option 会被插入到该参数指定的 option 之前。如果是 IE 浏览器，则只支持传入索引
+remove(index); //从下拉列表中删除指定索引的选项。
+blur(); //从下拉列表移开焦点。
+focus(); //在下拉列表上设置焦点。
+
+option对象有下列属性
+defaultSelected //返回 selected 属性的默认值。
+disabled //设置或返回选项是否应被禁用。
+form //返回对包含该元素的 <form> 元素的引用。
+id //设置或返回选项的 id。
+value //设置或返回选项的值。
+text //设置或返回选项的纯文本值。
+index //返回下拉列表中某个选项的索引位置。
+label //设置或返回选项的标记 （仅用于选项组）。
+selected //设置或返回 selected 属性的值。
+
+注意，在Webkit以及IE浏览器中，select 内容无法通过 css 中的 text-align: right 来实现右对齐
+解决方法：
+1) 使用样式 direction: rtl;
+2) 也可以借助 html 的 dir 属性来实现。例如：<select dir="rtl"></select>
+
+
+
+
+* 多行输入文本框
+// IE10及以上浏览器会自动为该元素预置 resize:both; 样式，如果需要禁用自动调整可以使用 resize:none; 覆盖该样式
+<textarea rows="3" cols="20"></textarea>
+rows  规定 textarea 的可见行数。
+cols  规定 textarea 的可见宽度。
+wrap  规定当在表单中提交时，文本区域（text area）中的文本如何换行。其值如下：
+	soft  当在表单中提交时，textarea 中的文本不换行。默认值。
+	hard  当在表单中提交时，textarea 中的文本换行（包含换行符）。当使用 "hard" 时，必须规定 cols 属性。
+
+// 根据内容文本自动增高
+<textarea style="overflow-y:hidden;" onpropertychange="this.style.height=this.scrollHeight + 'px'" oninput="this.style.height=this.scrollHeight + 'px'"></textarea>
+
+
+* 传统按钮
+<button type="button">确定</button>  普通按钮
+<button type="submit">提交</button>  提交按钮
+<button type="reset">重置</button>  重置按钮
+// 设置按钮的标签名称
+button对象.innerHTML="确定";
+
+请始终为按钮规定 type 属性。Internet Explorer 的默认类型是 "button"，而其他浏览器中（包括 W3C 规范）的默认值是 "submit"。
+
+
+* 标签
+<label for="被绑定的input元素id">标签</label>
+// 使用单选按钮时，需要用相同的 name 将多个单选框绑定在一起
+<input type="radio" checked="checked" name="sex" id="man"><label for="man">先生</label>
+<input type="radio"  name="sex" id="woman"><label for="woman">女士</label>
+// label默认会绑定子元素中的第一个表单元素
+// 当非表单元素触发的click事件冒泡到label层时，label都会使自己绑定的表单元素单独再触发一次click事件
+// 当表单元素触发的click事件冒泡到label层时，label会忽略它
+// 但在IOS中，只要是非label绑定表单元素触发的click事件冒泡到label层时，label都会使自己绑定的表单元素单独再触发一次click事件
+
+// 在js中label对象的control属性表示被label绑定的表单元素对象，该属性是个只读属性
+label对象.control;
+
+
+* form 元素的 DOM 属性
+accept-charset; //属性规定表单提交时使用的字符编码。常用值：
+//	UTF-8 - Unicode 字符编码
+//	ISO-8859-1 - 拉丁字母表的字符编码
+
+action; //规定提交表单的 url 地址。
+
+enctype; //属性规定在将表单数据发送到服务器之前如何对其进行编码。包含值如下：
+//	application/x-www-form-urlencoded - 在发送前编码所有字符（默认）
+//	multipart/form-data - 不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。
+//	text/plain - 空格转换为 "+" 加号，但不对特殊字符编码。
+
+method; //规定用于发送 form-data 的 HTTP 方法。
+//	get - 默认。将表单数据（form-data）以名称/值对的形式附加到 URL 中：URL?name=value&name=value。
+//	post - 以 HTTP post 事务的形式发送表单数据（form-data）。
+
+name; //规定表单的名称。
+
+target; //规定在何处打开 action URL。
+//	_blank - 在新窗口/选项卡中打开。
+//	_self - 在同一框架中打开。（默认）
+//	_parent - 在父框架中打开。
+//	_top - 在整个窗口中打开。
+//	framename - 在指定的 iframe 中打开。
+
+
+
+* form 元素的 DOM 操作
+// 可以在表单元素中使用事件属性将表单元素的 DOM 属性传递给函数，例如：
+<form>
+	<input type="button" id="submit" onClick="countGame(this.form)" value="开始游戏">
+</form>
+// 在获取到表单元素的 DOM 对象后，可以直接使用表单元素中的 input 元素 id 名或者 name 名作为属性来访问，例如
+form 元素的 DOM 对象.input元素的 id == input 元素的 DOM 对象
+form 元素的 DOM 对象.input元素的 name == input 元素的 DOM 对象
+// 同时表单中的元素也可以反向获得表单元素的 DOM 对象
+input 元素的 DOM 对象.form == form 元素的 DOM 对象
+
+
+
+* 表单提交
+XMLHttpRequest Level2 添加了一个新的接口——FormData 。
+【 主要用于发送表单数据,但也可以独立使用于传输键控数据。与普通的Ajax相比，它能异步上传二进制文件 】
+
+浏览器兼容性
+Chrome         7+
+Firefox(Gecko) 4.0(2.0)+
+IE             10+
+Opera          12+
+Safari         5+
+
+FormData 对象，可以把form中所有表单元素的name与value组成一个queryString，提交到后台。
+// 创建一个FormData空对象，然后使用append方法添加key/value
+var formdata = new FormData();  
+formdata.append('name','fdipzone');  
+formdata.append('gender','male'); 
+ 
+在使用Ajax提交时，使用FormData对象可以减少拼接queryString的工作量。
+var formData = new FormData(document.getElementById('form')); 
+$.ajax({
+    url: 'server.php',
+    type: 'POST',
+    data: formData,
+    dataType: 'JSON',
+});
+
+另外，还可以利用form元素对象的getFormData方法生成它！(2017年6月9日测试，chrome 并不支持该方法)
+var formData = document.getElementById("form").getFormData()
+
+
+
+
+* input 元素的 name 属性
+// 在表单数据被传递到服务器时，作为该 input 元素 value 的 key 被传递，例如：
+<form action="/example/html/form_action.asp" method="get">
+	<input type="text" name="fullname" value="baijunjie" />
+	<input type="text" name="email" value="625603381@qq.com" />
+	<input type="submit" value="Submit" />
+</form>
+// 表单提交后传递到服务器的值为：
+fullname=baijunjie&email=625603381%40qq.com
+
+
+* input 元素的 readonly 属性
+readonly 属性规定输入字段为只读。
+只读字段是不能修改的。不过，用户仍然可以使用 tab 键切换到该字段，还可以选中或拷贝其文本。
+readonly 属性可以防止用户对值进行修改
+readonly 属性可与 <input type="text"> 或 <input type="password"> 配合使用。
+
+
+* input 元素的 maxlength 属性
+maxlength 属性规定输入字段的最大长度，以字符个数计。
+maxlength 属性与 <input type="text"> 或 <input type="password"> 配合使用。
+
+
+* input 元素的 tabindex 属性
+tabindex 接受一个整数，规定元素的 tab 键控制次序（当 tab 键用于导航时）。
+如果设置值为负数，则将禁止该元素被 tab 键正向切换，即在 PC 端无法通过 tab 键自动选中。
+但如果已经有 tabindex 为负值的元素成为焦点，那么 tab 键将会选中比其负值大的元素作为下一个焦点，即 -2 会被 tab 到 -1
+注释：以下元素支持 tabindex 属性：<a>, <area>, <button>, <input>, <object>, <select> 以及 <textarea>。
+注意：IOS虚拟键盘可以正反向切换input，但依次设置页面中 input 的 tabindex 为 -1、-2、-3...后，IOS将无法进行正向切换
+
+
+
+* 关于file
+<input type="file" accept="video/*" />浏览时只显示指定文件类型
+<input type="file" accept="image/jpeg, image/x-png, image/gif" />浏览时显示多个文件类型
+accept属性列表：
+accept=".xls, .xlsx" // 可直接写文件的扩展名
+accept="application/vnd.ms-excel" // Excel Files 2003-2007 (.xls)
+accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // Excel Files 2010 (.xlsx)
+accept="application/msexcel"
+accept="application/msword"
+accept="application/pdf"
+accept="application/poscript"
+accept="application/rtf"
+accept="application/x-zip-compressed"
+accept="audio/basic"
+accept="audio/x-aiff"
+accept="audio/x-mpeg"
+accept="audio/x-pn/realaudio"
+accept="audio/x-waw"
+accept="image/gif"
+accept="image/jpeg"
+accept="image/tiff"
+accept="image/x-ms-bmp"
+accept="image/x-photo-cd"
+accept="image/x-png"
+accept="image/x-portablebitmap"
+accept="image/x-portable-greymap"
+accept="image/x-portable-pixmap"
+accept="image/x-rgb"
+accept="text/html"
+accept="text/plain" // Text Files (.txt)
+accept="video/quicktime"
+accept="video/x-mpeg2"
+accept="video/x-msvideo"
+
+这个就可以实现选择具体的数据类型，但是有兼容问题，我在测试的时候只有Opera，Chrome能用，火狐和IE都不兼容
+
+// 通过按钮打开file
+// 注意，必须通过具体DOM元素的click事件才可以打开file
+// 直接触发file的click是无效的，
+// 另外通过document、body这些容器上的点击事件来打开file也是无效的
+$("#upload").on("click", function() {
+	$("#file").click();
+});
+
+
+

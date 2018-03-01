@@ -1,4 +1,0 @@
-﻿Easing 动画效果扩展:
-http://gsgd.co.uk/sandbox/jquery/easing/
-https://github.com/gdsmith/jquery.easing
-目前版本(1.3)

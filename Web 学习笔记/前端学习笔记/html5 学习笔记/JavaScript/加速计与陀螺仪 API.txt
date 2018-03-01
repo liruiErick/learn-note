@@ -1,0 +1,174 @@
+﻿* 用CSS判断横屏竖屏问题。CSS代码如下：
+
+1、
+@media (orientation: portrait) { } 横屏
+@media (orientation: landscape) { } 竖屏
+ 
+2、
+<link rel="stylesheet" media="all and (orientation:portrait)" href="portrait.css">横屏
+<link rel="stylesheet" media="all and (orientation:landscape)" href="landscape.css">竖屏
+
+
+
+* 用JavaScript判断横屏竖屏问题。JavaScript代码如下：
+
+//判断手机横竖屏状态：
+function hengshuping(){
+	if(window.orientation==180||window.orientation==0){
+		alert("竖屏状态！")
+	}
+	if(window.orientation==90||window.orientation==-90){
+		alert("横屏状态！")
+	}
+}
+window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", hengshuping, false);
+ 
+//移动端的浏览器一般都支持window.orientation这个参数，通过这个参数可以判断出手机是处在横屏还是竖屏状态。
+从而根据实际需求而执行相应的程序。通过添加监听事件onorientationchange，进行执行就可以了。
+
+
+
+
+* Screen Orientation API是一个能让Web开发者能控制屏幕旋转方向的API
+
+目前主流的浏览器都已经部分支持或决定支持该API
+FireFox 26和IE 11都支持了lockOrientation和unlockOrientation API
+Crosswalk 4（基于Chromium的Web Runtime）也支持了该API
+Android上的Chrome也正在实现该API
+
+// 锁定屏幕为竖屏模式，不能设备如何旋转，屏幕都不会切换到横屏模式。
+window.screen.lockOrientation(["portrait-primary", "portrait-secondary"]);
+// 锁定屏幕为横屏模式，无能设备如何旋转，屏幕都不会切换到竖屏模式。
+window.screen.lockOrientation(["landscape-primary", "landscape-secondary"]);
+// 取消屏幕的锁屏，屏幕回到原始状态，
+window.screen.unlockOrientation();
+
+另外需要注意的是Screen Orientation API的文档规范还处于开发阶段，浏览器的实现可能带有前缀。
+例如Firefox带有moz前缀，IE带有ms前缀。在使用前我们需要添加一些代码，保持更好的兼容性。
+
+window.screen.lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+window.screen.unlockOrientation = screen.unlockOrientation|| screen.mozUnLockOrientation || screen.msUnLockOrientation;
+
+
+
+* 加速计与陀螺仪 DeviceOrientation API
+
+<script>
+// DeviceOrientation将底层的方向传感器和运动传感器进行了高级封装，提供了DOM事件的支持。
+// 这个特性包括两个事件：
+// 1、deviceorientation：封装了方向传感器数据的事件，可以获取手机静止状态下的方向数据（手机所处的角度、方位和朝向等）。
+// 2、devicemotion：封装了运动传感器的事件，可以获取手机运动状态下的运动加速度等数据。
+// 使用这两个事件，可以很能够实现重力感应、指南针等有趣的功能。
+
+// 现在在很多Native应用中有一个非常常见而时尚的功能 —— 摇一摇，摇一摇找人、摇一摇看新闻、摇一摇找金币...
+// 也许在android或者ios的客户端上对这个功能你已经很了解了，但是现在，我将告诉你如何在手机网页上实现摇一摇的功能。
+
+// 陀螺仪 —— deviceorientation 事件：事件对象包含着每个轴相对于设备静止状态下发生变化的信息。
+// 设备坐标系的概念：x 轴方向是从左往右，y 轴方向是从下往上，z 轴方向是从后往前。
+// 包含以下属性：
+// beta: 在围绕 x 轴旋转时（即前后旋转时），x 轴的度数差。介于 -90 - 90 度之间。正面或者背面朝上时都为 0 度。头朝上为正 90 度，头朝下为 -90 度。
+// gamma: 在围绕 y 轴旋转时（即扭转设备时），y 轴的度数差。介于 -180 - 180 度之间。正面朝上时为 0 度，背面朝上时为 180 或 -180 度。左侧朝下为 -90 度，右侧朝下为 90 度。
+// alpha: 在围绕 z 轴旋转时（即左右旋转时），z 轴的度数差。介于 0 - 360 度之间。顶部指向正北时，为 0 或 360 度。正面朝上时，延 Z 轴旋转的角度与指北针的角度相加为 360 度。
+// 当设备正面朝上静止放在水平桌面时，beta、gamma 为 0 度，alpha 为 360 度。
+// 当设备背面朝上静止放在水平桌面时，beta 为 0 度，gamma、alpha 为 180 度。
+// webkitCompassHeading：与正北方向的角度差值。正北为 0 度，正东为 90 度，正南为 180 度，正西为 270 度。因为 0 度是正北，所以叫指北针，不是指南针。
+// webkitCompassAccuracy：指北针的精确度，表示偏差为正负多少度。一般是10。
+
+// 加速计 —— devicemotion 事件：返回设备关于加速度和旋转的相关信息，其中加速度的数据包含以下三个方向：
+// x：横向贯穿手机屏幕；
+// y：纵向贯穿手机屏幕；
+// z：垂直手机屏幕。
+// 鉴于有些设备没有排除重力的影响，所以该事件会返回两个属性：
+// 1、accelerationIncludingGravity(含重力的加速度)
+// 2、acceleration(排除重力影响的加速度)
+// 这三个方向值的特点如下：
+// 手机屏幕向上水平放置时： (x,y,z) = (0, 0, -10)
+// 当手机顶部抬起时：y减小，且为负值
+// 当手机底部抬起时：y增加，且为正值
+// 当手机右侧抬起时：x减小，且为负值
+// 当手机左侧抬起时：x增加，且为正值
+// 手机屏幕向上水平放置时，z= -10
+// 手机屏幕竖直放置时，      z=  0
+// 手机屏幕向下水平放置时，z=  10
+// 当y变为-5时， 手机画面切换为竖向
+// 当x变为-5时， 手机画面切换为横向
+
+// 首先在页面上要监听运动传感事件 
+function init(){
+　　if (window.DeviceMotionEvent) {
+　　　　// 移动浏览器支持运动传感事件
+　　　　window.addEventListener('devicemotion', deviceMotionHandler, false);
+　　　　$("#yaoyiyaoyes").show();
+　　} else{
+　　　　// 移动浏览器不支持运动传感事件
+　　　　$("#yaoyiyaono").show();
+　　} 
+}
+
+// 那么，我们如何计算用户是否是在摇动手机呢？可以从以下几点进行考虑：
+// 1、其实用户在摇动手机的时候始终都是以一个方向为主进行摇动的；
+// 2、用户在摇动手机的时候在x、y、z三个方向都会有相应的想速度的变化；
+// 3、不能把用户正常的手机运动行为当做摇一摇（手机放在兜里，走路的时候也会有加速度的变化）。
+// 从以上三点考虑，针对三个方向上的加速度进行计算，间隔测量他们，考察他们在固定时间段里的变化率，而且需要确定一个阀值来触发摇一摇之后的操作。
+
+// 首先，定义一个摇动的阀值
+var SHAKE_THRESHOLD = 3000;
+// 定义一个变量保存上次更新的时间
+var last_update = 0;
+// 紧接着定义x、y、z记录三个轴的数据以及上一次出发的时间
+var x;
+var y;
+var z;
+var last_x;
+var last_y;
+var last_z;
+
+// 为了增加这个例子的一点无聊趣味性，增加一个计数器
+var count = 0;
+
+function deviceMotionHandler(e) {
+　　// 获取含重力的加速度
+　　var acceleration = e.accelerationIncludingGravity; 
+
+　　// 获取当前时间
+　　var curTime = new Date().getTime(); 
+　　var diffTime = curTime - last_update;
+　　// 固定时间段
+　　if (diffTime > 100) {
+　　　　last_update = curTime; 
+
+　　　　x = acceleration.x; 
+　　　　y = acceleration.y; 
+　　　　z = acceleration.z; 
+
+　　　　var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000; 
+
+　　　　if (speed > SHAKE_THRESHOLD) { 
+　　　　　　// TODO:在此处可以实现摇一摇之后所要进行的数据逻辑操作
+　　　　　　count++;
+　　　　　　$("#yaoyiyaoyes").hide();
+　　　　　　$("#yaoyiyaoresult").show();
+　　　　　　$("#yaoyiyaoresult").html("摇你妹!第" + count + "个了！");
+　　　　}
+
+　　　　last_x = x; 
+　　　　last_y = y; 
+　　　　last_z = z; 
+　　} 
+} 
+</script>
+<div id="yaoyiyaono" style="font-size:20px;margin:10px;line-height:35px;display:none;">
+　　兄弟，如果您看到了我，说明您现在还不能摇，不是说您没有资格用我，而是：</br>
+　　1、如果您使用PC机的浏览器，那可就不对了，我只爱手机浏览器；</br>
+　　2、如果您是Android手机，那不好意思告诉你，android自带的浏览器抛弃了我，您可以用UCWeb、chrome等第三方浏览器；</br>
+　　3、如果您都不属于以上两种情况，那我只有告诉您：您改换手机啦！！！</br>
+</div>
+<div id="yaoyiyaoyes" style="font-size:20px;margin:10px;line-height:50px;display:none;">
+　　兄弟，摇一个吧，说不定有一个清纯的妹子等着你呢!
+</div>
+<div id="yaoyiyaoresult" style="font-size:20px;margin:10px;line-height:50px;display:none;"></div>
+<script>
+$(document).ready(function(){
+init();
+});
+</script>

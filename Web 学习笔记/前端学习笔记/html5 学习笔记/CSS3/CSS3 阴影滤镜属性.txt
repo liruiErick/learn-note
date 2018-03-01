@@ -1,0 +1,175 @@
+﻿/* 文本阴影 */
+text-shadow: 5px 5px 10px #CCC;
+/* 前两个参数为阴影在x,y上的偏斜，正值表示向右下延伸 */
+/* 第三个参数为阴影的羽化程度 */
+
+/* 定义多重阴影，实现火焰效果 */
+text-shadow: 0 0 4px white, 
+    		0 -5px 4px #ff3, 
+    		2px -10px 6px #fd3, 
+    		-2px -15px 11px #f80, 
+    		2px -25px 18px #f20;
+/* IE10及以上浏览器还有第四个参数，表示向四周扩散的像素值 */
+/* 当color为transparent时，如果第四个参数值为0，或不填，则阴影将无法显示 */
+
+
+
+/* 块阴影，支持多重阴影，包含6个参数，可选择性的省略为使用参数 */
+box-shadow: inset 5px 5px 20px 10px #CCC;
+/* 第一、二个参数为阴影在x,y上的偏斜，正值表示向右下延伸 */
+/* 第三个参数为阴影的羽化程度 */
+/* 第四个参数为向四周扩散的像素值 */
+/* 第五个参数为颜色值 */
+/* 第六个参数为阴影类型，默认值为空表示外阴影，inset 表示内阴影 */
+
+/* 用于兼容不同核心的浏览器 */
+-webkit-box-shadow: 5px 5px 20px 10px #CCC inset;
+-moz-box-shadow: 5px 5px 20px 10px #CCC inset;
+
+
+
+/* CSS3滤镜（Webkit专用） */
+/* 以下滤镜属性可同时选择多个搭配使用 */
+-webkit-filter:
+	opacity(0.2); /* 透明度，取值0.0~1.0 */
+	grayscale(1); /* 灰度，取值0.0~1.0，默认值为1，即100% */
+	sepia(1); /* 褪色效果，即老照片效果，取值0.0~1.0，默认值为1，即100% */
+	invert(1); /* 反色，取值0.0~1.0，默认值为1，即100% */
+	brightness(0.5); /* 亮度，取值0.0~1.0，默认值为1，即100% */
+	hue-rotate(90deg); /* 色相旋转，取值0deg~360deg，默认为0deg */
+	saturate(0.5); /* 饱和度，默认值为1，即100%，2表示200% */
+	contrast(2); /* 对比度，默认值为1，即100%，2表示200% */
+	blur(5px); /* 模糊度，像素越大模糊度越高 */
+	drop-shadow(10px 10px 5px #ccc); /* 阴影，参数分别为水平偏斜、垂直偏斜、羽化度、颜色值 */
+
+
+/* 背景滤镜（仅苹果IOS9系统浏览器支持）*/
+/* 该属性是为元素背后覆盖的内容实现滤镜效果，因此运用该属性的元素背景应该使用半透明，不然永远看不到效果 */
+backdrop-filter是在Filter Level2提出来的。其取值和filter Level1中filter属性的属性值一样，包括：
+-webkit-backdrop-filter:
+	opacity()
+	grayscale()
+	sepia()
+	invert()
+	brightness()
+	hue-rotate()
+	saturate()
+	contrast()
+	blur()
+	drop-shadow()
+
+/* 利用 backdrop-filter 实现毛玻璃效果 */
+background-color: rgba(255,255,255,.5);
+-webkit-backdrop-filter: saturate(180%) blur(20px);
+
+使用了@supports属性来做一个条件判断，当浏览器支持backdrop-filter属性，就有效果：
+@supports (-webkit-backdrop-filter: none) {
+	.Box-header {
+		background-color: rgba(255,255,255,.6);
+		-webkit-backdrop-filter: blur(10px);
+	}
+}
+
+
+/* filter() 函数（仅苹果IOS9系统浏览器支持） */
+filter()函数接受两个参数：
+filter(<url>, <filter-function-list>)
+
+其中<url>是指一个图像，<filter-function-list>是一个过滤器。这两者结合在一起将会返回一个处理过的新图像。如：
+.element {
+	background: filter(url(path/to/img.jpg), blur(5px));
+}
+
+
+
+/* 滤镜属性（IE6-9专用） */
+filter: /* IE6,IE7 */
+-ms-filter: /* IE8 */
+
+/* 通道滤镜，可设置多个参数，分别实现不同效果 */
+filter:alpha(参数1=参数值, 参数2=参数值, ...);
+/* opacity 开始时的透明度，取值0~100，默认为0 */
+/* finishopacity 结束时的透明度，取值0~100 */
+/* style 设置渐变样式，0为无渐变，1为直线渐变，2为圆形渐变，3为矩形渐变 */
+/* startx 设置透明渐变开始点的x坐标，其数值作为对象宽度的百分比处理，默认值为0 */
+/* starty 设置透明渐变开始点的y坐标，其数值作为对象宽度的百分比处理，默认值为0 */
+/* finishx 设置透明渐变结束点的x坐标，其数值作为对象宽度的百分比处理，默认值为0 */
+/* finishy 设置透明渐变结束点的y坐标，其数值作为对象宽度的百分比处理，默认值为0 */
+
+/* 模糊滤镜 */
+filter:progid:DXImageTransform.Microsoft.Blur(pixelradius=5); /* 有效 */
+filter:blur(add=布尔值, direction=方向值, strength=强度值); /* IE降级测试无效，IETester有效 */
+/* add 设置是否显示原始图片 */
+/* direction 设置模糊的方向，0（上），45（右上），90（右），135（右下），180（下），225（左下），270（左），315（左上） */
+/* strength 设置模糊强度，只能使用整数来指定，取值范围为自然数，默认为5 */
+
+/* 色度滤镜，使对象中的指定颜色透明 */
+filter:chroma(color=颜色代码或颜色关键字);
+
+/* 阴影滤镜 */
+filter:progid:DXImageTransform.Microsoft.dropShadow(color=颜色代码, offX=X偏斜(无单位), offY=Y偏斜(无单位), positive=true);
+/* color 阴影颜色，支持#AARRGGBB */
+/* positive 一个布尔值，默认值为 true 表示为元素实体部分创建阴影，false 表示为元素镂空部分创建阴影 */
+
+/* 渐进阴影滤镜 */
+filter:progid:DXImageTransform.Microsoft.shadow(color=颜色代码, direction=阴影方向, strength=强度值);
+/* color 阴影颜色，不支持#AARRGGBB */
+/* direction 设置阴影的方向，0（上），45（右上），90（右），135（右下），180（下），225（左下），270（左），315（左上） */
+/* strength 设置阴影宽度，只能使用整数来指定，取值范围为自然数，默认为8 */
+
+/* 翻转滤镜 */
+filter:FlipH; /* 水平翻转 */
+filter:FlipV; /* 垂直翻转 */
+
+/* 发光滤镜 */
+filter:progid:DXImageTransform.Microsoft.Glow(color=颜色代码, strength=强度值1~255);
+/* color 阴影颜色，不支持#AARRGGBB */
+
+/* 马赛克滤镜 */
+filter:progid:DXImageTransform.Microsoft.Pixelate(maxsquare=3); 
+/* maxsquare 表示马赛克强度，1为最强，2为最弱，从2开始逐渐增加强度 */
+
+/* 灰度滤镜（IE10-11只能使用js实现灰度效果） */
+filter:Gray;
+
+/* 底片效果滤镜 */
+filter:Invert;
+
+/* X光效果滤镜 */
+filter:Xray;
+
+/* 遮罩滤镜 */
+filter:Mask(color=遮罩颜色);
+
+/* 波形滤镜 */
+filter:wave(add=布尔值, freq=自然数, lightStrength=高光强度值, phase=角度值, strength=强度值);
+/* add 表示是否把对象按照波浪形式打乱 */
+/* freq 设置波动的个数，值自然数 */
+/* lightStrength 设置波浪效果的光照强度。从0到100。0表示最弱，100表示最强 */
+/* phase 波浪的起始相角。从0到100的百分数值。例如：25相当于90度，而50则相当于180度 */
+/* strength 设置波浪摇摆的幅度，值自然数 */
+
+/* 背景渐变滤镜 */
+filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColorStr=#AARRGGBB, endColorStr=#AARRGGBB);
+/* GradientType表示渐变类型，0为默认值，表示垂直渐变，1表示水平渐变 */
+
+/* 旋转滤镜 */
+/* rotation 的取值只有0、1、2、3四个旋转值，分别代表0度（3点钟方向）、90度、180度、270度 */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+/* filter 的详细属性设置 */
+filter: progid:DXImageTransform.Microsoft.BasicImage(enabled=?, grayScale=?, mirror=?, opacity=?, Xray=?);
+	enabled /* 布尔值，ture表示激活滤镜，flase表示仅用滤镜 */
+	grayScale /* 布尔值，1表示灰色显示，0表示原色显示 */
+	mirror /* 布尔值，1表示镜像显示，0表示正常显示 */
+	opacity /* 浮点数，0.0~1.0设置不透明度 */
+	Xray /* 布尔值，1表示X光效果显示，0表示正常显示 */
+
+/* 矩阵滤镜 */
+filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.7660444431189777, M12=-0.6427876096865394, M21=0.6427876096865398, M22=0.7660444431189779)";
+/* 可以变换任意角度，参数如下 */
+/* M11=cos(roation),M12=-sin(roation),M21=sin(roation),M22=cos(roation) */
+
+
+
+/* 火狐专用的灰度滤镜（Firefox 4+） */
+filter: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale');

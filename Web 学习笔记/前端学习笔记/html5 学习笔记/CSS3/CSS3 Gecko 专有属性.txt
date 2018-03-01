@@ -1,0 +1,25 @@
+﻿* Gecko核心属性
+
+/* 复制一个元素作为背景图片 */
+div {
+	width: 被复制元素宽度;
+	height: 被复制元素高度;
+	background-image: -moz-element(被复制元素的 ID);
+}
+/* 使用该方法也可以模拟倒影 */
+/* 火狐浏览器无法生成透明色的渐变倒影，因此背景色必须与渐变色一致 */
+/* 此为白色底的渐变，可根据需要修改颜色 */
+#image {
+	position: relative;
+}
+#image:after {
+	content: "";
+	background-image: -moz-linear-gradient(center top, #FFF,#FFF 30%, rgba(255,255,255,0.9) 65%, rgba(255, 255, 255, 0.7)),
+		-moz-element(#image);
+	transform: scaleY(-1);
+	position: absolute;
+	width: 被复制元素宽度;
+	height: 被复制元素高度;
+	top: 被复制元素高度;
+	left: 0px;
+}

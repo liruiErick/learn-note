@@ -1,0 +1,168 @@
+﻿* 使用静态方法播放一个音乐
+createjs.Sound.alternateExtensions = ["mp3"];
+createjs.Sound.addEventListener("fileload", loadHandler);
+createjs.Sound.registerSound("path/to/mySound.ogg", "sound");
+function loadHandler(event) {
+	var instance = createjs.Sound.createInstance("sound");
+	instance.addEventListener("complete", handleComplete);
+	instance.volume = 0.5;
+	instance.play("none",0,0,-1);
+}
+
+
+
+* createjs.Sound 的静态方法
+
+registerSound(src, [id], [data], [preload=true], [basePath]); //注册一个音频，返回注册音频的 sound 对象。如果源无法解析或没有插件可以被初始化，则返回false。
+// src  一个字符串，代表音频的 src 路径。
+// [id]  可为该音频注册一个 ID 名。
+// [data]  音频加载完成后传入回调函数中的 event.data 对象。
+// [preload=true]  是否使用内部预加载。即如果该音频没有外部预加载，那么将在内部预加载该音频。
+// [basePath]  用于指定音频的基路径。
+
+removeSound(src, [basePath]); //删除一个音频，这里 src 也可以为该音频注册时设置的 ID 名。
+
+registerManifest(manifest, [basePath]); //批量注册音频，返回每个注册音频的 sound 对象所组成的数组。
+// manifest  一个包含若干 {src:srcURI, id:ID, data:Data} 对象的数组。
+// [basePath]  用于指定所有音频的基路径。
+
+removeManifest(manifest, [assetPath]); //批量删除音频，该操作会导致被删除音频停止播放，返回每个被删除音频是否成功的布尔值所组成的数组。
+
+removeAllSounds(); //删除所有注册的音频，该操作会导致所有注册音频停止播放。
+
+// 注册插件，传入一个注册音效插件列表的数组，按优先级顺序。返回一个布尔值，表示是否初始化成功。
+registerPlugins([createjs.WebAudioPlugin, createjs.HTMLAudioPlugin, createjs.FlashPlugin]);
+
+// 传入该声音完整的 src 路径，也可以使该音频的 ID。开始播放音频，并返回一个该音频的 SoundInstance 实例。
+play(src, [interrupt="none"|options], [delay=0], [offset=0], [loop=0], [volume=1], [pan=0]); 
+// src  一个字符串，代表用于 audio 的 src 路径或 ID 名。
+// [interrupt="none"|options]  一个字符串或者对象
+	// 设置音频中断行为，默认值为 createjs.Sound.INTERRUPT_NONE 或 "none"。
+	// 这个参数可以是一个对象，它包含的任何或所有可选属性的名字，其中包括：中断，延迟，偏移，循环，音量和平移。
+// [delay=0]  指定音频开始播放的延迟时间，单位毫秒。
+// [offset=0]  指定音频开始播放的位置，单位毫秒。
+// [loop=0]  指定音频的循环次数，0表示不循环，-1表示无限循环。
+// [volume=1]  指定音频的播放音量，取值在 0.0~1.0 之间。
+// [pan=0]  设置左右声道的偏移，取值在 -1.0~1.0 之间。-1代表左声道，1代表右声道。
+
+initializeDefaultPlugins(); //初始化默认插件，并返回一个布尔值，表示是否初始化成功。默认插件为 "WebAudioPlugin" 其次是 "HTMLAudioPlugin"。
+
+createInstance(src); //传入该音频完整的 src 路径，也可以使该音频的 ID，也可以使用，创建一个该音频的 SoundInstance 实例。
+loadComplete(src); //传入该音频完整的 src 路径，也可以使该音频的 ID。返回一个布尔值，用于表示该音频是否加载完成。
+isReady(); //返回一个布尔值，用于表示音频是否已经初始化，且插件已被激活。
+
+getMute(); //返回一个布尔值，表示当前是否全局静音。
+setMute(Boolean); //设置当前是否全局静音。
+getVolume(); //返回一个全局的总音量值，范围为 0.0~1.0。
+setVolume(value); //设置当前是否全局的总音量值，范围为 0.0~1.0。
+stop(); //当前全局所有音频重置并停止。
+
+getCapabilities(); //获取当前激活插件的功能列表对象，包含以下属性：
+// panning: 是否支持左右声道
+// volume: 是否支持调节音量
+// tracks: 可以播放音频的最大数量。如果没有限制，则返回-1。
+// mp3: 是否支持mp3
+// ogg: 是否支持ogg
+// wav: 是否支持wav
+// mpeg: 是否支持mpeg
+// m4a: 是否支持m4a
+// mp4: 是否支持mp4
+// aiff: 是否支持aiff
+// wma: 是否支持wma
+// mid: 是否支持mid
+getCapability(key); //传入以上属性的 key 名，返回一个布尔值，表示当前激活插件是否支持该功能。
+
+
+
+* createjs.Sound 的静态属性
+
+activePlugin; //返回当前激活的插件。如果没有被激活的插件，则返回null。
+alternateExtensions; //设置一个备用的音频格式（扩展名）数组。如果浏览器无法解析指定的音频文件格式，则会在同目录下依次寻找备用的音频格式（扩展名）替代。
+defaultInterruptBehavior; //设置音频中断行为。默认值为 createjs.Sound.INTERRUPT_NONE 或 "none"。
+
+// 静态常量
+INTERRUPT_ANY 或者 "any"  表示如果同一路径的音频同时播放达到一定数量后，那么终止其后的所有同路径音频的播放。
+INTERRUPT_EARLY 或者 "early"  表示如果同一路径的音频同时播放达到一定数量后，那么终止播放前一个的音频。
+INTERRUPT_LATE 或者 "late"  表示如果同一路径的音频同时播放达到一定数量后，那么终止播放最先播放的音频。
+INTERRUPT_NONE 或者 "none"  不终止音频播放。
+PLAY_FAILED 或者 "playFailed"  表示音频当前的播放状态为失败。
+PLAY_FINISHED 或者 "playFinished"  表示音频当前的播放状态为播放完成。
+PLAY_INITED 或者 "playInited"  表示音频当前的播放状态为正在初始化。
+PLAY_INTERRUPTED 或者 "playInterrupted"  表示音频当前的播放状态为被中断。
+PLAY_SUCCEEDED 或者 "playSucceeded"  表示音频当前的播放状态为成功，即正在播放或暂停。
+SUPPORTED_EXTENSIONS  为 createjs.Sound.alternateExtensions 属性的默认值。该值为 ["mp3", "ogg", "mpeg", "wav", "m4a", "mp4", "aiff", "wma", "mid"]。
+
+// 浏览器判断
+BrowserDetect.isFirefox; //火狐
+BrowserDetect.isOpera; //欧鹏
+BrowserDetect.isChrome; //谷歌
+BrowserDetect.isIOS; //苹果IOS
+BrowserDetect.isAndroid; //安卓
+BrowserDetect.isBlackberry; //黑莓
+
+
+
+* createjs.Sound 的专有事件
+
+fileload; //当一个音频文件在加载完成时触发该事件。
+	// 该事件 event 对象包含以下专有属性：
+	src; //被加载音频的源路径。
+	id; //如果音频注册了 ID，则返回该 ID。如果没有注册，则返回 undefined。
+	data; //音频文件注册时携带的 data 对象。
+
+
+
+
+>>>>>>>>>> SoundInstance 扩展自 EventDispatcher <<<<<<<<<<
+
+* SoundInstance 属性
+
+src; //音频的源路径。
+uniqueId; //如果音频注册了 ID，则返回该 ID。如果没有注册，则返回 -1。
+playState; //音频播放前返回 null。音频播放后返回该音频实例的播放状态。详见 createjs.Sound 的静态常量。
+
+volume; //设置或返回该音频实例的音量值，范围为 0.0~1.0。较低版本的浏览器可能不支持，所以请使用 getVolume() 和 setVolume() 方法。
+pan; //设置或返回该音频实例左右声道的偏移，取值在 -1.0~1.0 之间。-1代表左声道，1代表右声道。较低版本的浏览器可能不支持，所以请使用 getPan() 和 setPan() 方法。
+
+gainNode; //作用不详，详见官方文档。
+panNode; //作用不详，详见官方文档。
+sourceNode; //作用不详，详见官方文档。
+
+
+
+* SoundInstance 方法
+
+SoundInstance(src, owner); //构造函数，初始化一个音频实例。
+// 第一个参数为该音频的 src 路径
+// 第二个参数为用于创建该音频实例的插件
+
+getDuration(); //返回该音频实例的时长，单位为毫秒。
+getPosition(); //返回该音频实例的播放头位置，单位为毫秒。
+setPosition(value); //设置该音频实例的播放头位置，单位为毫秒。
+getMute(); //返回一个布尔值，表示该音频实例是否静音。
+setMute(Boolean); //设置该音频实例是否静音。
+getVolume(); //返回该音频实例的音量值，范围为 0.0~1.0。
+setVolume(value); //设置该音频实例的音量值，范围为 0.0~1.0。
+getPan(); //返回该音频实例左右声道的偏移，取值在 -1.0~1.0 之间。-1代表左声道，1代表右声道。
+setPan(value); //设置该音频实例左右声道的偏移，取值在 -1.0~1.0 之间。-1代表左声道，1代表右声道。
+
+play([interrupt="none"|options], [delay=0], [offset=0], [loop=0], [volume=1], [pan=0]); //使该音频实例开始播放。参数详见 createjs.Sound.play()。
+pause(); //如果该音频实例正在播放，则暂停。
+resume(); //如果该音频实例被暂停，则继续播放。
+stop(); //该音频实例重置并停止播放。
+
+
+
+* SoundInstance 的专有事件
+
+succeeded; //当音频文件加载成功开始播放时触发该事件。
+complete; //当音频文件全部播放完成时触发该事件。
+failed; //当音频文件播放失败时触发该事件，该事件大多数是因为音频文件的 src 路径错误引起。
+interrupted; //当音频文件播放被中断时触发该事件。
+loop; //每当音频文件循环播放时触发该事件。
+
+
+
+
+
+

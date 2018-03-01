@@ -1,0 +1,4 @@
+﻿Color animation 色彩动画扩展:
+http://www.bitstorm.org/jquery/color-animation/
+https://github.com/MilesOkeefe/jquery.animate-colors
+目前版本(1.8)

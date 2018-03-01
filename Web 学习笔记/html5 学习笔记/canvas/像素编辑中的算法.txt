@@ -1,7 +1,0 @@
-* 灰度算法
-gray = (red*30 + green*59 + blue*11 + 50) * 0.01;
-// 然后将该值赋予每一个像素的颜色值
-red = gray;
-green = gray;
-blue = gray;
-

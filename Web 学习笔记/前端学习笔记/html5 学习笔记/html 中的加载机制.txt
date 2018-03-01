@@ -1,0 +1,253 @@
+﻿* 浏览器加载和渲染html的顺序
+
+
+一、浏览器加载和渲染html的顺序
+
+1. IE下载的顺序是从上到下，渲染的顺序也是从上到下，下载和渲染是同时进行的。
+2. 在渲染到页面的某一部分时，其上面的所有部分都已经下载完成（并不是说所有相关联的元素都已经下载完）
+3. 如果遇到语义解释性的标签嵌入文件（JS脚本，CSS样式），那么此时IE的下载过程会启用单独连接进行下载。
+4. 并且在下载后进行解析，解析过程中，停止页面所有往下元素的下载。阻塞加载
+5. 样式表在下载完成后，将和以前下载的所有样式表一起进行解析，解析完成后，将对此前所有元素（含以前已经渲染的）重新进行渲染。
+6. JS、CSS中如有重定义，后定义函数将覆盖前定义函数
+
+
+二、JS的加载
+
+1. 不能并行下载和解析（阻塞下载）
+2. 当引用了JS的时候，浏览器发送1个js request就会一直等待该request的返回。因为浏览器需要1个稳定的DOM树结构，而JS中很有可能有代码直接改变了DOM树结构，比如使用 document.write 或 appendChild，甚至是直接使用的location.href进行跳转，浏览器为了防止出现JS修改DOM树，需要重新构建DOM树的情况，所以 就会阻塞其他的下载和呈现。
+
+
+三、如何加快HTML页面加载速度
+
+1. 页面减肥
+页面的肥瘦是影响加载速度最重要的因素
+删除不必要的空格、注释
+将inline的script和css移到外部文件
+可以使用HTML Tidy来给HTML减肥，还可以使用一些压缩工具来给JavaScript减肥
+
+2. 减少文件数量
+减少页面上引用的文件数量可以减少HTTP连接数
+许多JavaScript、CSS文件可以合并最好合并，人家财帮子都把自己的JavaScript. functions和Prototype.js合并到一个base.js文件里去了
+
+3. 减少域名查询
+DNS查询和解析域名也是消耗时间的，所以要减少对外部JavaScript、CSS、图片等资源的引用，不同域名的使用越少越好
+
+4. 缓存重用数据
+使用缓存吧
+
+5. 优化页面元素加载顺序
+首先加载页面最初显示的内容和与之相关的JavaScript和CSS
+然后加载DHTML相关的东西
+像什么不是最初显示相关的图片、flash、视频等很肥的资源就最后加载
+
+6. 减少inline JavaScript的数量
+浏览器parser会假设inline JavaScript会改变页面结构，所以使用inline JavaScript开销较大
+不要使用document.write()这种输出内容的方法，使用现代W3C DOM方法来为现代浏览器处理页面内容
+
+7. 使用现代CSS和合法的标签
+使用现代CSS来减少标签和图像，例如使用现代CSS+文字完全可以替代一些只有文字的图片
+使用合法的标签避免浏览器解析HTML时做“error correction”等操作，还可以被HTML Tidy来给HTML减肥
+
+8. Chunk your content
+不要使用嵌套tables
+<table>
+  <table>
+    <table>
+      ..
+    <table>
+  <table>
+<table>
+而使用非嵌套tables或者divs
+<table>...</table>
+<table>...</table>
+<table>...</table>
+将基于大块嵌套的tables的layout分解成小tables，这样显示时不用加载整个页面(或大table)的内容
+
+9. 指定图像和tables的大小
+如果浏览器可以立即决定图像或tables的大小，那么它就可以马上显示页面而不要重新做一些布局安排的工作
+这不仅加快了页面的显示，也预防了页面完成加载后布局的一些不当的改变
+image使用height和width
+table使用table-layout: fixed并使用col和colgroup标签指定columns的width
+
+10. 根据用户浏览器明智的选择策略
+IE、Firefox、Safari等等等等
+
+11. 页面结构的例子
+· HTML
+
+    · HEAD
+
+        · LINK ...
+        CSS files required for page appearance. Minimize the number of files for performance while keeping unrelated CSS in separate files for maintenance.
+
+        · SCRIPT. ...
+        JavaScript. files for functions required during the loading of the page, but not any DHTML that can only run after page loads.
+        Minimize the number of files for performance while keeping unrelated JavaScript. in separate files for maintenance.
+
+    · BODY
+    · User visible page content in small chunks (tables / divs) that can be displayed without waiting for the full page to download.
+
+        · SCRIPT. ...
+        Any scripts which will be used to perform. DHTML. DHTML script. typically can only run after the page has completely loaded and all necessary objects have been initialized. There is no need to load these scripts before the page content. That only slows down the initial appearance of the page load.
+        Minimize the number of files for performance while keeping unrelated JavaScript. in separate files for maintenance.
+        If any images are used for rollover effects, you should preload them here after the page content has downloaded.
+
+
+四、HTML页面加载和解析流程
+
+1. 用户输入网址（假设是个html页面，并且是第一次访问），浏览器向服务器发出请求，服务器返回html文件； 
+2. 浏览器开始载入html代码，发现＜head＞标签内有一个＜link＞标签引用外部CSS文件； 
+3. 浏览器又发出CSS文件的请求，服务器返回这个CSS文件； 
+4. 浏览器继续载入html中＜body＞部分的代码，并且CSS文件已经拿到手了，可以开始渲染页面了； 
+5. 浏览器在代码中发现一个＜img＞标签引用了一张图片，向服务器发出请求。此时浏览器不会等到图片下载完，而是继续渲染后面的代码； 
+6. 服务器返回图片文件，由于图片占用了一定面积，影响了后面段落的排布，因此浏览器需要回过头来重新渲染这部分代码； 
+7. 浏览器发现了一个包含一行Javascript代码的＜script＞标签，赶快运行它； 
+8. Javascript脚本执行了这条语句，它命令浏览器隐藏掉代码中的某个＜div＞ （style.display=”none”）。杯具啊，突然就少了这么一个元素，浏览器不得不重新渲染这部分代码； 
+9. 终于等到了＜/html＞的到来，浏览器泪流满面…… 
+10. 等等，还没完，用户点了一下界面中的“换肤”按钮，Javascript让浏览器换了一下＜link＞标签的CSS路径； 
+11. 浏览器召集了在座的各位＜div＞＜span＞＜ul＞＜li＞们，“大伙儿收拾收拾行李，咱得重新来过……”，浏览器向服务器请求了新的CSS文件，重新渲染页面。
+
+
+五、Yahoo对网页设计性能的建议，个人感觉是说得非常好的。
+
+  英文版：http://developer.yahoo.com/performance/rules.html
+  中文翻译：http://www.cnblogs.com/smjack/archive/2009/02/24/1396895.html
+
+
+
+
+
+
+
+* JS，CSS，Img在html中是怎么加载的：
+
+1) 老的浏览器（IE7，Firefox2）加载的机制很简答，就是一个一个加载
+
+比如有5个外部文件，分别为：test1.js、test2.js、style.css、iframe.html、img.png。
+其加载顺序为：test1.js、test2.js、style.css、iframe.html、img.png。
+JS 文件加载完后还需要执行一遍，其他类型的文件方能加载。style.css, iframe.html, img.png是同时加载的。
+
+该方法的缺点就是，不同类型的资源文件不能同时加载，影响网页加载效率。
+
+
+2) 新版浏览做了一些改进，不同的JS文件及样式文件可以同时加载，但图片文件等会block掉。
+
+所以，在很多JS的书籍中，都建议我们将JS文件放到最后加载，这样不会影响页面的呈现效果。
+以上所写，都是关于JS存储到外部文件的情形，JS直接写到页面中的效果与外部文件类似。
+解决JS阻止其他文件加载的问题，为了提升网页加载速度，可以做一下优化：
+JS文件动态加载，意思是什么时候用再去加载这个JS文件。动态加载的方法有：
+
+1. 通过Ajax加载JS，并调用Eval来实现。
+2. 通过创建JS的SCIPRT节点，并设置SRC资源来源来实现。
+3. 将JS wrap到一个iframe中，并加载Iframe。
+4. 用document.write直接写JS代码。
+
+以上方法，加载JS时，要注意JS文件间的依赖性。
+
+
+3) 不同元素之间的开始加载的时机也有所不同：
+
+1. 图像元素只要设置了src属性就会开始下载。
+2. <script>元素在设置了src属性，并将该元素添加到文档后，才会开始下载JavaScript文件。
+3. <link>元素在指定href属性，并将该元素添加到文档档后，才会开始下载样式表。
+
+
+
+
+
+
+* 防止阻塞加载的属性
+
+<script defer="defer">
+	alert(document.getElementById("p1").firstChild.nodeValue);
+</script>
+defer 属性规定是否对脚本执行进行延迟，直到页面加载为止。（但是仅有IE9及以下的浏览器支持）
+
+<script src="demo_async.js" async="async"></script>
+async 属性规定一旦脚本可用，则会异步执行。（HTML5新增）
+注释：async 属性仅适用于外部脚本（只有在使用 src 属性时）。
+
+注释：
+没有 async 属性，script 将立即获取（下载）并执行，然后才继续后面的处理，这期间阻塞了浏览器的后续处理。
+如果有 async 属性，那么 script 将被异步下载并执行，同时浏览器继续后续的处理。
+HTML4 中就有了 defer 属性，它提示浏览器这个 script 不会产生任何文档元素（没有document.write），因此浏览器会继续后续处理和渲染。
+如果没有 async 属性 但是有 defer 属性，那么 script 将在页面 parse 之后执行。
+如果同时设置了二者，那么 defer 属性主要是为了让不支持 async 属性的老浏览器按照原来的 defer 方式处理，而不是同步方式。
+
+
+
+
+
+
+* src 和 href 的区别
+
+两者之间虽然有区别，但也可以混着用。
+
+src用于替换当前元素，href用于在当前文档和引用资源之间确立联系。
+
+src是source的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+
+<script src ="js.js"></script>
+当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。
+这也是为什么将js脚本放在底部而不是头部。
+
+href是Hypertext Reference的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，如果我们在文档中添加：
+
+<link href="common.css" rel="stylesheet"/>
+那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。
+这也是建议使用link方式来加载css，而不是使用@import方式的原因所在。
+
+
+
+
+
+
+
+* jQuery.ready() 与 window.onload
+
+jQuery.ready() 用的不是 window.onload
+$(document).ready 是仅当DOM加载完成时执行回调，不包括样式表，图片，flash。也就是 HTML5 中 DOMContentLoaded 事件触发时执行
+而 window.onload 是在页面全部加载完成时，包括一些资源比如图片。
+所以 window.onload 比 $(document).ready 更延后一些。
+
+但是测试中发现，如果 jQuery.ready() 的调用在页面的 DOMContentLoaded 事件之后，那么 jQuery.ready() 将会在 onload 事件时触发
+因为 jQuery.ready() 时会检测 document.readyState 的状态，如果发现状态不为 "complete"，就会同时为 document 注册 "DOMContentLoaded" 事件，为 window 注册 "load" 事件
+如果在这次注册事件之前 "DOMContentLoaded" 已经触发，那么 jQuery.ready() 就只能等到 "load" 事件时才会被触发了。
+这个问题是在使用 require.js 异步加载 jQuery 文件时发现的，它会导致所有异步调用的 jQuery.ready() 实际变为 onload
+
+window.onload 自然不必说，是浏览器自身支持的。
+但是 $(document).ready 看了一下源代码。
+他根据的是 document.body 对象去判断的。
+如果 if(!document.body) 为 true，就说明此时页面还未加载完成
+所以他就用 setTimeout 方法，重新执行一遍。
+直到 if(!document.body) 为 false，就说明页面加载完成了，此时再去回调。
+
+值得注意的是，样式文件加载中时是有阻断机制的，但是样式文件渲染页面时却是异步的。
+在大量使用 CSS3 的一些低效率选择器时，会导致样式没有完全渲染完毕时就执行了 jQuery.ready()。
+这个问题使得一些对元素的位置获取时，可能获取到的是样式渲染前的位置，从而导致程序运作出现不理想的效果。
+解决方法是在调用这些程序代码时采用延时机制，如下：
+window.setTimeout(init, 0);
+
+
+
+
+
+* html 加载过程中的状态
+<!-- 从开始加载文档时 document.readyState 的值就为 loading -->
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div>
+<!-- 逐步加载并渲染css -->
+</div>
+<script src="main.js"></script>
+<!-- 在加载过程中，正常的 script 标签引入的 js 会阻塞文档继续加载，直到 js 加载完并执行后，才继续向下加载。此时 document.readyState 的值一直为 loading -->
+<!-- 如果是异步加载的 js 文件，那么这些 js 将会在 document.readyState 的值变为 interactive 后被执行 -->
+</body>
+<html>
+<!-- 到文档加载完成时 document.readyState 的值任然为 loading -->
+<!-- 紧接着触发 DOMContentLoaded 事件，document.readyState 的值变为 interactive -->
+<!-- 当文档中所有的资源全部加载完成时（包括样式表，图片，flash）触发 load 事件，document.readyState 的值变为 complete -->

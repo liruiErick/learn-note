@@ -1,0 +1,131 @@
+﻿配置URL Scheme
+
+字段名：urlScheme
+
+描述：配置应用的URL Scheme，该scheme用于从浏览器或其他应用中启动本应用，并且可以传递参数数据。此字段云编译有效。
+
+配置后，外部浏览器页面里面就可以通过a标签链接打开应用：
+
+<a href="myscheme://?param1=xxx&param2=xxx">测试打开应用</a>
+配置示例：
+
+<preference name="urlScheme" value="myscheme" />
+注意：value的值必须是小写，否则将不起作用。
+
+
+
+配置可被检测的URL Scheme
+
+字段名：querySchemes
+
+描述：iOS9中对检测应用是否安装的方法做了限制，只允许检测在Info.plist中配置过的白名单列表里面的应用。所以若代码里面调用了api.appInstalled等方法来检测应用是否安装，那么需要进行额外的配置才能得到期望的结果。此字段云编译有效。
+
+配置示例：
+
+//多个值之间用英文逗号隔开
+<preference name="querySchemes" value="scheme1,scheme2" />
+注意：已经对常用的如微信、qq、新浪微博、支付宝等应用的URL Scheme进行了配置，其它应用的则需要开发者自己进行配置。
+
+
+
+appintent
+本应用被其他应用调起来时（Android平台也可以通过Activity打开），收到相关数据的回调，字符串类型
+
+在任意页面中注册该监听后，如果本应用被其他应用调起，将触发该监听函数，同时将传给该应用的数据回调给网页
+
+callback(ret)
+
+ret:
+
+描述：其他应用或Activity传给本应用的数据
+内部字段：
+
+{
+    iosUrl:''            //其他应用打开本应用的url，只iOS有效，字符串类型
+    sourceAppId:''         //其他应用的包名，iOS平台有可能为空字符串，字符串类型
+    appParam:{}            //其他应用传递过来的参数，JSON或字符串类型（IOS是一个JSON对象，安卓是一个字符串，例如："{href=http://www.vrwanjia.cn}"）
+}
+
+
+示例代码
+
+api.addEventListener({
+	name:'appintent'
+},function(ret,err){
+	var href = '';
+	if (typeof ret.appParam === 'object') { // IOS设备中，参数直接为一个对象
+		href = ret.appParam.href;
+	} else { // 安卓中，参数是一个字符串形式，例如："{href=http://www.vrwanjia.cn}"
+		var param = ret.appParam.match(/\{(\S*)\}/i);
+		if (param && param[1]) {
+			href = parseQueryString(param[1])['href'];
+		}
+	}
+
+	if (href) {
+		initUrl = decodeURIComponent(href);
+		api.execScript({
+			frameName: 'main',
+			script: 'window.location.href = "' + initUrl + '";'
+		});
+	}
+});
+
+// 将url参数解析为对象
+function parseQueryString(url) {
+	var obj = {};
+	var a = url.split('&');
+	for(var i = 0, l = a.length; i < l; i++) {
+		var b = a[i].split('=');
+		obj[b[0]] = b[1];
+	}
+	return obj;
+}
+
+
+
+<script type="text/javascript">
+!function() {
+	var client = navigator.appVersion.match(/VRWJClient\s?(\d+[\.\d]*)?/);
+
+	if (!client) {
+		var is_mobile = !!navigator.userAgent.match(/mobile/i);
+
+		if (is_mobile) {
+			window.setTimeout(function(){ // 这里计时器是为了防止在某些浏览器中a链接的跳转会阻断后续js的执行
+				// 伪造a链接点击
+				var gotoApp = document.createElement('a');
+				gotoApp.href = 'vrwanjia://?href=' + encodeURIComponent(window.location.href); // 拿到参数后需要用 decodeURIComponent() 反编译
+				gotoApp.click();
+			}, 0);
+			window.setTimeout(function(){
+				// 如果没有打开，则表明未安装app，这时提醒下载app
+				if (isLocalStorageSupported()) {
+					var opened = window.sessionStorage.getItem('vrwj-opened');
+					if (!opened) {
+						window.sessionStorage.setItem('vrwj-opened', true);
+						if (window.confirm('亲，为了方便您日后登录我们网站，是否愿意安装我们的APP呢？')) {
+							var ifm = document.createElement('iframe');
+							ifm.src = '/static/vrwanjia/app/install_check.html';
+							ifm.style.display = 'none';
+							document.body.appendChild(ifm);
+						}
+					}
+				}
+
+				function isLocalStorageSupported() {
+					var testKey = 'test',
+						storage = window.sessionStorage;
+					try {
+						storage.setItem(testKey, 'testValue');
+						storage.removeItem(testKey);
+						return true;
+					} catch (error) {
+						return false;
+					}
+				}
+			}, 3000);
+		}
+	}
+}();
+</script>

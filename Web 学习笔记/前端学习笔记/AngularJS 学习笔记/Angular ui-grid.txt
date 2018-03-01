@@ -1,0 +1,82 @@
+﻿版本：4.0.1 
+文档：http://ui-grid.info/docs/#/api/
+
+配置项
+
+$scope.gridOptions = {
+	enableSorting: true, // 是否启用排序
+	enableRowHeaderSelection: true, // 是否启用行选择
+	enableSelectAll: true, // 是否启用选择全部
+	enableColumnResizing: true, // 是否启用列重置（每页宽度可以自动调节）
+	
+	enablePagination: true, // 是否启用分页控制器（分页控制器只是禁用状态，还是会显示出来）
+	enablePaginationControls: true, // 是否移除分页控制器
+	paginationPageSizes: [10, 20, 30], // 可选择的分页条数
+	paginationPageSize: 10, // 默认的分页条数
+	minRowsToShow: 11.15, // 表格框体内一次显示的条数（可以设置为小数，目的是消除纵向滚动条）
+	
+	enableHorizontalScrollbar: true, // 是否启用横向滚动条
+	enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER, // 禁用纵向滚动条，默认为 ALWAYS（uiGridConstants 通过依赖注入获取）
+	
+	rowHeight: 30, // 设置行高，默认30。
+	excessColumns: 10, // 预加载列数（避免滚动过快时，产生的空白列）
+	excessRows: 20, // 预加载行数（避免滚动过快时，产生的空白行）
+	
+	useCustomPagination: true, // 禁用客户端分页，使用自定义控制。需要监听	paginationChanged 事件
+	useExternalPagination: true, // 使用服务器分页，默认是 false
+	totalItems: 1000, // 使用服务器分页时，要指定的项目总数
+	paginationCurrentPage: 1, // 设置当前页
+	
+	columnDefs: [{ // 列设置
+		field: 'id', // 该列显示数据在 data 对象中的 key 
+		name: '操作', // 列头的名称。如果是英单词，会对单词做大小写转换
+		displayName: '操作', // 和 name 作用相同。但不会处理英文单词
+		width: 100, // 列宽，也可以是百分比
+		minWidth: 100, // 最小列宽，只有在 width 为百分比时有效
+		maxWidth: 600, // 最大列宽，只有在 width 为百分比时有效
+		pinnedLeft: true, // 是否锁定在左侧
+		
+		type: 'date', // 定义数据类型
+		cellFilter: 'data: "yyyy-mm-dd"', // 格式化日期
+		
+		cellTemplate: '<i class="icon"></i>', // 列单元格中的内容模板
+		cellClass: 'hc-center', // 列单元格的类名
+		
+		enableSorting: true, // 是否启用排序
+		enableRowSelection: true, // 是否启用行选择
+		enableSelectAll: true, // 是否启用选择全部
+		enableColumnResizing: true, // 是否启用列重置
+		enableCellEdit: false, // 是否启用列编辑
+		enableColumnMenu: true, // 是否显示控制菜单
+		
+	}],
+	
+	data: [], // 数据数组
+	
+	onRegisterApi: function(gridApi) {
+		$scope.gridApi = gridApi;
+		gridApi.pagination.on.paginationChanged($scope, function(curPage, pageSize) {
+			getList(curPage, pageSize);
+		});
+		
+		gridApi.selection.on.rowSelectionChanged($scope, function(row, event) {
+			// 单选
+		});
+		
+		gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows, event) {
+			// 全选
+		});
+	}
+}
+
+
+html 调用指令
+
+<div ui-grid="gridOptions"
+     ui-grid-pinning
+     ui-grid-selection
+     ui-grid-cellnav
+     ui-grid-pagination
+     ui-grid-resize-columns
+     ui-grid-edit>
+</div>

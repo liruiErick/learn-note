@@ -1,0 +1,512 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>事件详解</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<style>
+@charset "utf-8";
+body, div, dl, dt, dd, ul, ol, li, form, fieldset, input, textarea, blockquote, th, td { margin: 0; padding: 0; }
+table { bordre-collapse: collapse; boder-spacing: 0; }
+img { border: 0; }
+ol, ul { list-style: none; }
+a { text-decoration: none; color: #000; }
+a:hover { color: #cc3333; }
+.fl { float: left; }
+.fr { float: right; }
+.cl { clear: both; }
+.tl { text-align: left; }
+.tr { text-align: right; }
+.tc { text-align: center; }
+.bold { font-weight: bold; }
+.rel { position: relative; }
+.abs { position: absolute; }
+.none { display: none; }
+.inline { display: inline; }
+.vm { vertical-align: middle; }
+.vt { vertical-align: top; }
+.vb { vertical-align: bottom; }
+.hide { visibility: hidden; }
+.ma { margin: 0 auto; }
+.pon { cursor: pointer; }
+.oh { overflow: hidden; }
+.w100p { width: 100%; }
+.h100p { height: 100%; }
+.top { top: 0px; }
+.right { right: 0px; }
+.bottom { bottom: 0px; }
+.left { left: 0px; }
+.tdl { text-decoration: underline; }
+.opacity5 { filter: alpha(opacity=50); opacity: 0.5; }
+.opacity1 { filter: alpha(opacity=1); opacity: 1; }
+.cc0000 { color: #cc0000; }
+body { background: url("1_mainbg.gif") repeat-x #FFFFFF; color: #000000; font-family: Microsoft YaHei, "微软雅黑", Lucida, Verdana, Hiragino Sans GB, STHeiti, WenQuanYi Micro Hei, SimSun, sans-serif; font-size: 12px; line-height: 24px; }
+.button { background: url("2_button.gif"); width: 68px; height: 22px; line-height: 22px; color: #fff; cursor: pointer; border-width: 0px; }
+/**顶部**/
+.top-div { height: 107px; width: 1200px; margin: 0 auto; position: relative; }
+.logo-div { padding: 10px 0 0 0; }
+.search-div { position: absolute; right: 0px; top: 30px; width: 612px; height: 36px; background: url(3_new-searchbar-broad.png) no-repeat; }
+.hot-search-div { position: absolute; right: 0px; top: 69px; width: 604px; height: 18px; line-height: 18px; overflow: hidden; }
+.reg-login { position: absolute; right: 0px; top: 4px; line-height: 18px; }
+.reg-login .href { background: url(4_index-to-bt.gif); height: 18px; width: 60px; text-align: center; color: #ffffff; display: inline-block; margin: 0; }
+.reg-login .login:hover { color: #ffffff; font-weight: bold; }
+.search-div .left { float: left; padding: 9px 0 0 7px; _padding: 12px 0 0 7px; }
+.search-div .left .input { width: 424px; border: 0px; height: 16px; line-height: 16px; color: #cccccc; }
+.search-div .right { float: left; padding: 8px 0 0 56px; _padding: 9px 0 0 56px; }
+.search-div .right a { color: #ffffff; font-weight: bold; }
+/**导航结束**/ /**二级导航**/
+.sub-nav-div { position: absolute; line-height: 24px; height: 24px; left: 600px; top: 79px; z-index: 100; padding-bottom: 5px; width: auto; filter: alpha(opacity=0); opacity: 0; }
+#subNavImg { position: absolute; top: 23px; left: 20px; }
+.sub-nav-div ul li { background: url("8_sub-nav-center-bg.gif"); padding: 0 6px 0 6px; float: left; }
+.sub-nav-div ul li.left { width: 4px; height: 24px; padding: 0; background: url("9_sub-nav-left-bg.gif") no-repeat; overflow: hidden; }
+.sub-nav-div ul li.right { width: 4px; height: 24px; padding: 0; overflow: hidden; background: url("10_sub-nav-right-bg.gif") no-repeat; ; }
+/**二级导航结束**/ /**公告时间**/
+.date-div { clear: both; padding: 7px 0 0 0; margin: 0 auto; width: 1001px; }
+/**公告时间结束**/ /**主架构**/
+.main-div { margin: 0 auto; width: 1200px; }
+.main-div .left-div { width: 912px; float: left; }
+.main-div .right-div { float: right; width: 280px; }
+/**主架构结束**/ /**右架构列表**/
+.right-demo-div .content ul li { background: url("11_dot1.gif") no-repeat 3px 10px; text-indent: 10px; }
+.tag-container { background: #ffffff; padding: 3px 0 7px 0; }
+.tag-div { border: 1px solid #cccccc; background: url(12_mvr_bg.png) repeat-x #ffffff; word-wrap: break-word; word-break: normal; white-space: normal; }
+.tag-div .tag2 { border: 1px solid #ffffff; }
+.tag-div .tag2 .title { padding: 4px 0 0 4px; }
+.tag-div .tag2 .title div { border-left: 5px solid #ff0000; text-indent: 4px; font-weight: bold; }
+.tag-div .tag2 .content { padding: 5px 6px 10px 3px; }
+.tag-div .tag2 .content a { display: inline-block; border-right: 3px solid #cccccc; line-height: 12px; padding-right: 8px; padding-left: 6px; margin-bottom: 5px; _margin-bottom: 10px; }
+.tag-div .tag2 .content2 ul { padding: 0 10px 8px 6px; line-height: 22px; }
+.tag-div .tag2 .content3 { padding: 6px 0 8px 10px; line-height: 22px; }
+.tag-div .tag2 .content3 .list { padding: 4px 10px 10px 0px; }
+.tag-div .tag2 .content3 .list .left { width: 52px; float: left; }
+.tag-div .tag2 .content3 .list .left img { border: 1px solid #cccccc; }
+.tag-div .tag2 .content3 .list .right { width: 195px; float: left; padding-left: 5px; }
+.tag-div .tag2 .content2 ul li { background: url("12_dot1.gif") no-repeat 3px 9px; padding-left: 12px; width: 252px; height: 22px; word-break: keep-all; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+/**右架构列表结束**/ /**公共分布条样式**/
+.page-ul li { border: 1px solid #9d9d9d; height: 27px; margin-left: 5px; float: left; }
+.page-ul li a { background: url(13_pagebg.gif); border: 1px solid #ffffff; height: 25px; padding: 0 6px 0 6px; display: inline-block; }
+.page-ul li a.active { background: #ff0000; border: 1px solid #ff0000; color: #fff; font-weight: bold; }
+.page-ul li a.active:hover { background: #ff0000; border: 1px solid #ff0000; color: #fff; font-weight: bold; }
+.page-ul li a:hover { background: #ff9933; color: #fff; }
+/**公共分布条样式结束**/ /**底部**/
+.footer-div { width: 1001px; margin: 0 auto; text-align: center; padding: 20px 0 20px 0; }
+/**底部结束**/
+.main-div .left-div { width: 854px; float: left; overflow: hidden; }
+.main-div .right-div { float: right; width: 338px; }
+.tag-div .tag2 .content2 ul { padding: 0 0 3px 3px; }
+.tag-div .tag2 .content2 ul li { background: url("13_dot1.gif") no-repeat 0px 9px; padding-left: 6px; width: 324px; height: 22px; word-break: keep-all; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+h1 { font-family: "Microsoft YaHei", "黑体"; font-size: 24px; line-height: 30px; padding: 0; margin: 0; }
+.content-title { padding: 6px 0 0 0; }
+.content-title h1 { line-height: 42px; }
+.content-info { }
+.content-info .time { color: #999999; font-family: Arial; line-height: 30px; }
+.content-info .kind { color: #C62C1E; font-weight: bold; font-size: 14px; }
+.content-info a { color: #C62C1E; font-weight: bold; font-size: 14px; }
+.content-content { padding: 20px 10px; word-wrap: break-word; word-break: normal; white-space: normal; }
+.content-file ul li { float: left; background: #cccccc; padding: 0px 20px 0 20px; margin-right: 20px; }
+.content-yj { width: 826px; text-align: right; padding: 0 14px 30px 0; }
+.content-yj span { color: #777777; }
+.content-xg { border-top: 1px solid #C62C1E; width: 854px; padding: 13px 0 13px 0; }
+.content-xg .xglj { padding-bottom: 4px; line-height: 32px; }
+.content-xg ul li { float: left; width: 416px; padding-right: 10px; line-height: 22px; height: 22px; overflow: hidden; }
+.content-message { border-top: 1px solid #C62C1E; width: 840px; }
+.content-message .pl { padding: 4px 0 13px 0; }
+.content-message .message { border-top: 1px dotted #cccccc; padding: 0 0 12px 0; width: 700px; }
+.content-message .message .image { padding: 18px 0 0 0; float: left; }
+.content-message .message .text { padding: 12px 0 0 15px; float: left; width: 640px; }
+.content-message .message .text p { padding: 0; margin: 0; }
+.message-form { padding-left: 5px; }
+.message-form .title { border: 1px solid #C62C1E; width: 480px; }
+.message-form .text { border: 1px solid #C62C1E; width: 480px; height: 100px; font-size: 12px; line-height: 22px; }
+.message-form .code { border: 1px solid #C62C1E; width: 40px; }
+.pt6 { padding-top: 6px; }
+.download_div { padding: 25px 0 25px 0; }
+.download_div .dt_1 { font-size: 14px; font-weight: bold; line-height: 30px; }
+.download_div .dt_2 { line-height: 18px; padding: 6px 20px 6px 20px; background: #c3c3c3; }
+.tag-div .tag2 .content3 .list .right { width: 245px; }
+.tag-div .tag2 .content3 .list { padding: 4px 10px 2px 0px; }
+.top-div, .nav-div, .main-div { width: 1001px; }
+.main-div { font-size: 14px; }
+.main-div .left-div { width: 686px; overflow: hidden; }
+.main-div .right-div { width: 302px; overflow: hidden; }
+.tag-div .tag2 .content2 ul li { width: 280px; background: url("14_dot1.gif") no-repeat 0px 11px; height: 26px; line-height: 26px; }
+.tag-div .tag2 .content2 ul li a { color: #4CB7EA; font-family: "微软雅黑"; font-weight: bolder; }
+.tag-div .tag2 .content2 ul li a:hover { color: #646464; }
+.tag-div .tag2 .content3 .list .right { width: 221px; }
+</style>
+</head>
+
+<body>
+<div class="w100p">
+	<div class="main-div">
+		<div class="left-div">
+			<div class="content-content" id="verydemo_content_div">
+				<div class="c_t">
+					<h1> <span >第</span><span>13</span><span >章事件</span> </h1>
+					<p class="MsoNormal"><span>       JavaScript</span><span >与</span><span>HTML</span><span >之间的交互是通过事件实现的。事件，就是文档或浏览器窗口中发生的一些特定交互的瞬间。可以使用侦听器（或处理程序）来预订事件，以便事件发生时执行相应的代码。</span></p>
+					<h2> <span>13.1 </span><span >事件流</span> </h2>
+					<p class="MsoNormal"><span>       </span><span >事件流描述的是从页面中接收事件的顺序。</span></p>
+					<h4> <span>1.3.1.1 </span><span >事件冒泡</span> </h4>
+					<p class="MsoNormal"><span>       IE</span><span >的事件流叫做事件冒泡（</span><span>event
+						bubbling</span><span >），即事件开始时由最具体的元素（文档中嵌套层次最深的那个节点）接收，然后逐级向上传播到较为不具体的节点（文档）。</span></p>
+					<h4> <span>13.1.2 </span><span >事件捕获</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >事件捕获</span><span>(event
+						capturing)</span><span >的思想是不太具体的节点应该更早接收到事件，而最具体的节点应该最后接收到事件。事件捕获的用意在于在事件到达预定目标之前捕获它。</span><span><br>
+						</span><span class="4Char"><span >13.1.3 DOM</span></span><span class="4Char"><span >事件流</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >“</span></span><span class="4Char"><span >DOM2</span></span><span class="4Char"><span >级事件”规定的事件流包括三个阶段：事件捕获阶段、处于目标阶段和事件冒泡阶段。</span></span><span class="4Char"><span ></span></span></p>
+					<h2> <span class="4Char"><span >13.2 </span></span><span class="4Char"><span >事件处理程序</span></span><span class="4Char"><span ></span></span> </h2>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >事件就是用户或浏览器自身执行某种动作。诸如</span></span><span class="4Char"><span >click</span></span><span class="4Char"><span >、</span></span><span class="4Char"><span >load</span></span><span class="4Char"><span >和</span></span><span class="4Char"><span >mouseover</span></span><span class="4Char"><span >，都是事件的名字。而响应某个事件的函数就叫做事件处理程序（或事件侦听器）。事件处理程序的名字以“</span></span><span class="4Char"><span >on</span></span><span class="4Char"><span >”开头。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >13.2.1 HTML</span></span><span class="4Char"><span >事件处理程序</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >某个元素支持的每种事件，都可以使用一个与相应事件处理程序同名的</span></span><span class="4Char"><span >HTML</span></span><span class="4Char"><span >特性来指定。这个特性的值应该是能够执行的</span></span><span class="4Char"><span >JavaScript</span></span><span class="4Char"><span >代码。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >事件处理程序中的代码在执行时，有权访问全局作用域中的任何代码。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >13.2.2 DOM0</span></span><span class="4Char"><span >级事件处理程序</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >通过</span></span><span class="4Char"><span >JavaScript</span></span><span class="4Char"><span >指定事件处理程序的传统方式，就是将一个函数赋值给一个事件处理程序属性。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >使用</span></span><span class="4Char"><span >DOM0</span></span><span class="4Char"><span >级方法指定事件处理程序被认为是元素的方法。因此，这时候的事件处理程序是在元素的作用域中运行；换句话说，程序中的</span></span><span class="4Char"><span >this</span></span><span class="4Char"><span >引用当前元素。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >以这种方式添加的事件处理程序会在事件流的冒泡阶段被处理。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >也可以删除通过</span></span><span class="4Char"><span >DOM0</span></span><span class="4Char"><span >级方法指定的事件处理程序，只要将事件处理程序属性的值设置为</span></span><span class="4Char"><span >null</span></span><span class="4Char"><span >即可。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >如果你使用</span></span><span class="4Char"><span >HTML</span></span><span class="4Char"><span >指定事件处理程序，那么</span></span><span class="4Char"><span >onclick</span></span><span class="4Char"><span >属性的值就是一个包含着同名</span></span><span class="4Char"><span >HTML</span></span><span class="4Char"><span >特性中指定的代码的函数。而将相应的属性设置为</span></span><span class="4Char"><span >null</span></span><span class="4Char"><span >，也可以删除以这种方式指定的事件处理程序。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >13.2.3 DOM2</span></span><span class="4Char"><span >级事件处理程序</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >“</span></span><span class="4Char"><span >DOM2</span></span><span class="4Char"><span >级事件”定义了两个方法，用于处理指定和删除事件处理程序的操作：</span></span><span class="4Char"><span >addEventListener()</span></span><span class="4Char"><span >和</span></span><span class="4Char"><span >removeEventListener()</span></span><span class="4Char"><span >。所有的</span></span><span class="4Char"><span >DOM</span></span><span class="4Char"><span >节点中都包含这两个方法，并且它们都接受</span></span><span class="4Char"><span >3</span></span><span class="4Char"><span >个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。最后这个布尔值</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >参数如果是</span></span><span class="4Char"><span >true</span></span><span class="4Char"><span >，表示在捕获阶段调用事件处理程序；如果是</span></span><span class="4Char"><span >false</span></span><span class="4Char"><span >，表示在冒泡阶段调用事件处理程序。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >与</span></span><span class="4Char"><span >DOM0</span></span><span class="4Char"><span >级方法一样，这里添加的事件处理程序也是在其依附的元素作用域中运行。使用</span></span><span class="4Char"><span >DOM2</span></span><span class="4Char"><span >级方法添加事件处理程序的主要好处是可以添加多个事件处理程序。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >通过</span></span><span class="4Char"><span >addEventListener()</span></span><span class="4Char"><span >添加的事件处理程序只能使用</span></span><span class="4Char"><span >removeEventListener()</span></span><span class="4Char"><span >来移除；移除时传入的参数与添加处理程序时使用的参数相同。这也意味着通过</span></span><span class="4Char"><span >addEventKListener()</span></span><span class="4Char"><span >添加的匿名函数将无法移除。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       </span></span><span class="4Char"><span >大多数情况下，都是将事件处理程序添加到事件流的冒泡阶段，这样可以最大限度地兼容各种浏览器。最好只在需要在事件到达目标之前截获它的时候将事件处理程序添加到捕获阶段。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span class="4Char"><span >       IE9</span></span><span class="4Char"><span >、</span></span><span class="4Char"><span >Firefox</span></span><span class="4Char"><span >、</span></span><span class="4Char"><span >Safari</span></span><span class="4Char"><span >、</span></span><span class="4Char"><span >Chrome</span></span><span class="4Char"><span >和</span></span><span class="4Char"><span >Opera</span></span><span class="4Char"><span >支持</span></span><span class="4Char"><span >DOM2</span></span><span class="4Char"><span >级事件处理程序。</span></span><span class="4Char"><span ></span></span></p>
+					<h4> <span>13.2.4 IE</span><span >事件处理程序</span> </h4>
+					<p class="MsoNormal"><span class="4Char"><span >       IE</span></span><span class="4Char"><span >实现了与</span></span><span class="4Char"><span >DOM</span></span><span class="4Char"><span >中类似的两个方法：</span></span><span class="4Char"><span >attachEvent()</span></span><span class="4Char"><span >和</span></span><span class="4Char"><span >detachEvent()</span></span><span class="4Char"><span >。这个方法接受相同的两个参数：事件处理程序名称与事件处理程序函数。由于</span></span><span class="4Char"><span >IE8</span></span><span class="4Char"><span >及早更早版本只支持事件冒泡，所以通过</span></span><span class="4Char"><span >attachEvent()</span></span><span class="4Char"><span >添加的事件处理程序都会被添加到冒泡阶段。</span></span><span class="4Char"><span ></span></span></p>
+					<p class="MsoNormal"><span>       </span><span >在</span><span>IE</span><span >中使用</span><span>attachEvent()</span><span >与使用</span><span>DOM0</span><span >级方法的主要区别在于事件处理程序的作用域。在使用</span><span>DOM0</span><span >级方法的情况下，事件处理程序会在其所属元素的作用域内运行；在使用</span><span>attachEvent()</span><span >方法的情况下，事件处理程序会在全局作用域运行，因此</span><span>this</span><span >等于</span><span>window</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >与</span><span>DOM</span><span >不同的是，这些事件处理程序不是以添加它们的顺序执行的，而是以想法的顺序被触发。</span></p>
+					<p class="MsoNormal"><span>       </span><span >使用</span><span>attachEvent()</span><span >添加的事件可以通过</span><span>detachEvent()</span><span >来移除，条件是必须提供相同的参数。与</span><span>DOM</span><span >方法一样，这也意味着添加的匿名函数将不能被移除。</span></p>
+					<p class="MsoNormal"><span>       </span><span >支持</span><span>IE</span><span >事件处理程序的浏览器有</span><span>IE</span><span >和</span><span>Opera</span><span >。</span></p>
+					<h4> <span>13.2.5 </span><span >跨浏览器的事件处理程序</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >要保证处理事件的代码能在大多数浏览器下一致地运行，只需关注冒泡阶段。</span></p>
+					<h2> <span>13.3 </span><span >事件对象</span> </h2>
+					<p class="MsoNormal"><span>       </span><span >在触发</span><span>DOM</span><span >上的某个事件时，会产生一个事件对象</span><span>event</span><span >，这个对象中包含着所有与事件有关的信息。包括导致事件的元素、事件的类型以及其他与特定事件相关的信息。</span></p>
+					<h4> <span>13.3.1 DOM</span><span >中的事件对象</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >兼容</span><span>DOM</span><span >的浏览器会将一个</span><span>event</span><span >对象传入到事件处理程序中。无论指定事件处理程序时使用什么方法（</span><span>DOM0</span><span >级或</span><span>DOM2</span><span >级），都会传入</span><span>event</span><span >对象。</span></p>
+					<p class="MsoNormal"><span>       event</span><span >对象包含与创建它的特定事件有关的属性和方法。</span></p>
+					<table >
+						<tr>
+							<td width="140" ><p ><strong><span >属性</span><span>/</span></strong><strong><span >方法</span><span></span></strong></p></td>
+							<td width="76" ><p ><strong><span >类型</span><span></span></strong></p></td>
+							<td width="66" ><p ><strong><span >读</span><span>/</span></strong><strong><span >写</span><span></span></strong></p></td>
+							<td width="286" ><p ><strong><span >说明</span><span></span></strong></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>bubbles</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >表明事件是否冒泡</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>cancelable</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >表明是否可以取消事件的默认行为</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>currentTarget</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Element</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >其事件处理程序当前正在处理事件的那个元素</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>defaultPrevented</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >为</span><span>true</span><span >表示已经调用了</span><span>preventDefault()</span><span >（</span><span>DOM3</span><span >级事件中新增）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>detail</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Integer</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >与事件相关的细节信息</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>evnetPhase</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Integer</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >调用事件处理程序的阶段：</span><span>1</span><span >表示捕获阶段，</span><span>2</span><span >表示“处于目标”，</span><span>3</span><span >表示冒泡阶段</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>preventDefault()</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Function</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >取消事件的默认行为。如果</span><span>cancelable</span><span >是</span><span>true</span><span >，则可以使用这个方法</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>stopImmediatePropagation()</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Function</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >取消事件的进一步捕获或冒泡，同时阻止任何事件处理程序被调用（</span><span>DOM3</span><span >级事件中新增）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>stopPropagation()</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Function</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >取消事件的进一步捕获或冒泡。如果</span><span>bubbles</span><span >为</span><span>true</span><span >，则可以使用这个方法</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>target</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Element</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >事件的目标</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>trusted</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >为</span><span>true</span><span >表示事件是浏览器生成的。为</span><span>false</span><span >表示事件是由开发人员通过</span><span>JavaScript</span><span >创建的（</span><span>DOM3</span><span >级事件中新增）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>type</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>String</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >被触发的事件的类型</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>view</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>AbstractView</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >与事件关联的抽象视图。等同与发生事件的</span><span>window</span><span >对象</span></p></td>
+						</tr>
+					</table>
+					<p class="MsoNormal"><span>       </span><span >在事件处理程序内部，对象</span><span>this</span><span >始终等于</span><span>currentTarget</span><span >的值，而</span><span>target</span><span >则只包含事件的实际目标，如果直接将事件处理程序指定给了目标元素，则</span><span>this</span><span >、</span><span>currentTarget</span><span >和</span><span>target</span><span >包含相同的值。</span></p>
+					<p class="MsoNormal"><span>       </span><span >要阻止特定事件的默认行为，可以使用</span><span>preventDefault()</span><span >方法。</span></p>
+					<p class="MsoNormal"><span>       </span><span >只有</span><span>cancleable</span><span >属性设置为</span><span>true</span><span >的事件，才可以使用</span><span>preventDefault()</span><span >来取消其默认行为。</span></p>
+					<p class="MsoNormal"><span>       </span><span >事件对象的</span><span>eventPhase</span><span >属性，可以用来确定事件当前正位于事件流的哪个阶段。如果是在捕获阶段调用的事件处理程序，那么，</span><span>eventPhase</span><span >等于</span><span>1,</span><span >；如果事件处理程序处于目标对象上，则</span><span>eventPhase</span><span >等于</span><span>2</span><span >；如果是在冒泡阶段调用的事件处理程序，</span><span>eventPhase</span><span >等于</span><span>3</span><span >。这里要注意的是，尽管“处于目标”发生在冒泡阶段，但</span><span>eventPhase</span><span >仍然一直等于</span><span>2</span><span >。</span></p>
+					<h4> <span>13.3.2  IE</span><span >中的事件对象</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >在使用</span><span>DOM0</span><span >级方法添加事件处理程序时，</span><span>event</span><span >对象作为</span><span>window</span><span >对象的一个属性存在。如果事件处理程序是使用</span><span>attachEvent()</span><span >添加的，那么就会有一个</span><span>event</span><span >对象作为参数被传入事件处理程序函数中。</span></p>
+					<p class="MsoNormal"><span>       </span><span >如果是通过</span><span>HTML</span><span >特性指定的事件处理程序，那么还可以通过一个名叫</span><span>evnet</span><span >的变量来访问</span><span>event</span><span >对象（与</span><span>DOM</span><span >中的事件模型相同）。</span></p>
+					<table >
+						<tr>
+							<td width="140" ><p ><strong><span >属性</span><span>/</span></strong><strong><span >方法</span><span></span></strong></p></td>
+							<td width="76" ><p ><strong><span >类型</span><span></span></strong></p></td>
+							<td width="66" ><p ><strong><span >读</span><span>/</span></strong><strong><span >写</span><span></span></strong></p></td>
+							<td width="286" ><p ><strong><span >说明</span><span></span></strong></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>cancelBubble</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >读</span><span>/</span><span >写</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >默认值为</span><span>false</span><span >，但将其设置为</span><span>true</span><span >就可以取消事件冒泡（与</span><span>DOM</span><span >中的</span><span>stopPropagation()</span><span >方法的作用相同）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>returnValue</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Boolean</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >读</span><span>/</span><span >写</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >默认值为</span><span>true</span><span >，但将其设置为</span><span>false</span><span >就可以取消事件的默认行为（与</span><span>DOM</span><span >中的</span><span>preventDefault()</span><span >方法的作用相同）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>srcElement</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>Element</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >事件的目标（与</span><span>DOM</span><span >中的</span><span>target</span><span >属性相同）</span></p></td>
+						</tr>
+						<tr>
+							<td width="140" ><p class="MsoNormal"><span>type</span></p></td>
+							<td width="76" ><p class="MsoNormal"><span>String</span></p></td>
+							<td width="66" ><p class="MsoNormal"><span >只读</span></p></td>
+							<td width="286" ><p class="MsoNormal"><span >被触发的事件的类型</span></p></td>
+						</tr>
+					</table>
+					<h4> <span>13.3.3 </span><span >跨浏览器的事件对象</span> </h4>
+					<h2> <span>13.4 </span><span >事件类型</span> </h2>
+					<h4> <span>13.4.1 UI</span><span >事件</span> </h4>
+					<p class="MsoNormal"><span>       UI</span><span >事件指的是那些不一定与与用户操作有关的事件。这些事件在</span><span>DOM</span><span >规范出现之前，都是以这种或那种形式存在的，而在</span><span>DOM</span><span >规范中保留是为了向后兼容。现有的</span><span>UI</span><span >事件如下：</span></p>
+					<p class="MsoNormal"><span >（</span><span>1</span><span >）</span><span>DOMActivate</span><span >：表示元素已经被用户操作（通过鼠标或键盘）激活。这个事件在</span><span>DOM3</span><span >级事件中被废弃，但</span><span>Firefox2+</span><span >和</span><span>Chrome</span><span >支持它。考虑到不同浏览器实现的差异，不建议使用这个事件。</span></p>
+					<p class="MsoNormal"><span >（</span><span>2</span><span >）</span><span>load</span><span >：当页面完全加载后在</span><span>window</span><span >上面触发，当所有框架都加载完毕时在框架上面触发，当图像都加载完毕时在</span><span>&lt;img&gt;</span><span >元素上面触发，或者当嵌入的内容加载完毕时在</span><span>&lt;object&gt;</span><span >元素上面触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>3</span><span >）</span><span>unload</span><span >：当页面完全卸载后在</span><span>window</span><span >上面触发，当所有框架都卸载后在框架集上面触发，或者当嵌入的内容卸载完毕后在</span><span>&lt;object&gt;</span><span >元素上面触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>4</span><span >）</span><span>abort</span><span >：当用户停止下载过程时，如果嵌入的内容没有加载完，则在</span><span>&lt;object&gt;</span><span >元素上面触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>5</span><span >）</span><span>error</span><span >：当发生</span><span>JavaScript</span><span >错误时在</span><span>window</span><span >上面触发，当无法加载图像时在</span><span>&lt;img&gt;</span><span >元素上面触发，当无法加载嵌入内容时在</span><span>&lt;object&gt;</span><span >元素上面触发，或者当有一或多个框架无法加载时在框架集上面触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>6</span><span >）</span><span>select</span><span >：当用户选择文本框（</span><span>&lt;input&gt;</span><span >或</span><span>&lt;textarea&gt;</span><span >）中的一或多个字符时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>7</span><span >）</span><span>resize</span><span >：当窗口或框架的大小变化时在</span><span>window</span><span >或框架上面触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>8</span><span >）</span><span>scroll</span><span >：当用户滚动带滚动条的元素中的内容时，在该元素上面触发。</span><span>&lt;body&gt;</span><span >元素中包含所加载页面的滚动条。</span></p>
+					<p class="MsoNormal"><span>       </span><span >注意：根据“</span><span>DOM2</span><span >级事件”规范，应该在</span><span>document</span><span >而非</span><span>window</span><span >上面触发</span><span>load</span><span >事件。但是，所有浏览器都在</span><span>window</span><span >上面实现了该事件，以确保向后兼容。</span></p>
+					<p class="MsoNormal"><span>       </span><span >注意：新图像元素不一定要从添加到文档后才开始下载，只要设置了</span><span>src</span><span >属性就会开始下载。</span></p>
+					<p class="MsoNormal"><span>       </span><span >与图像不同，只有在设置了</span><span>&lt;script&gt;</span><span >元素的</span><span>src</span><span >属性并将该元素添加到文档后，才会开始下载</span><span>JavaScript</span><span >文件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >与</span><span>&lt;script&gt;</span><span >节点类似，在未指定</span><span>href</span><span >属性并将</span><span>&lt;link&gt;</span><span >元素添加到文档之前也不会开始下载样式表。</span></p>
+					<p class="MsoNormal"><span>       </span><span >关于何时会触发</span><span>resize</span><span >事件，不同浏览器有不同的机制。</span><span>IE</span><span >、</span><span>Safari</span><span >、</span><span>Chrome</span><span >和</span><span>Opra</span><span >会在浏览器窗口变化了</span><span>1</span><span >像素时就触发</span><span>resize</span><span >事件，然后随着变化不断重复触发。</span><span>Firefox</span><span >则只会在用户停止调整浏览器大小时才会触发</span><span>resize</span><span >事件。</span></p>
+					<h4> <span>13.4.2 </span><span >焦点事件</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >焦点事件会在页面获得或失去焦点时触发。利用这些事件并与</span><span>document.hasFocus()</span><span >方法及</span><span>document.activeElement</span><span >属性配合，可以知晓用户在页面上的行踪。有一下</span><span>6</span><span >个焦点事件。</span></p>
+					<p class="MsoNormal"><span >（</span><span>1</span><span >）</span><span>blur</span><span >：在元素失去焦点时触发。这个事件不会冒泡；所有浏览器都支持它。</span></p>
+					<p class="MsoNormal"><span >（</span><span>2</span><span >）</span><span>DOMFocusIn</span><span >：在元素获得焦点时触发。这个事件与</span><span>HTML</span><span >事件</span><span>focus</span><span >等价，但它冒泡。只有</span><span>Opra</span><span >支持这个事件。</span><span>DOM3</span><span >级事件废弃了</span><span>DOMFocusIn</span><span >，选择了</span><span>focusin</span><span >。</span></p>
+					<p class="MsoNormal"><span >（</span><span>3</span><span >）</span><span>DOMFocusOut</span><span >：在元素失去焦点时触发。这个事件是</span><span>HTML</span><span >事件</span><span>blur</span><span >的通用版本。只有</span><span>Opra</span><span >支持这个事件。</span><span>DOM3</span><span >级事件废弃了</span><span>DOMFocusOut</span><span >，选择了</span><span>focusout</span><span >。</span></p>
+					<p class="MsoNormal"><span >（</span><span>4</span><span >）</span><span>focus</span><span >：在元素获得焦点时触发。这个事件不会冒泡；所有浏览器都支持它。</span></p>
+					<p class="MsoNormal"><span >（</span><span>5</span><span >）</span><span>focusin</span><span >：在元素获得焦点时触发。这个事件与</span><span>HTML</span><span >事件</span><span>focus</span><span >等价，但它冒泡。支持这个事件的浏览器有</span><span>IE5.5+</span><span >、</span><span>Safari5.1+</span><span >、</span><span>Opra11.5+</span><span >和</span><span>Chrome</span><span >。</span></p>
+					<p class="MsoNormal"><span >（</span><span>6</span><span >）</span><span>focusout</span><span >：在元素失去焦点时触发。这个事件是</span><span>HTML</span><span >事件</span><span>blur</span><span >的通用版本。支持这个事件的浏览器有</span><span>IE5.5+</span><span >、</span><span>Safari5.1+</span><span >、</span><span>Opra11.5+</span><span >和</span><span>Chrome</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >当焦点从页面中的一个元素移动到另一个元素，会依次触发下列事件：</span></p>
+					<p class="MsoNormal"><span >（</span><span>1</span><span >）</span><span>focusout </span><span >在失去焦点的元素上触发</span></p>
+					<p class="MsoNormal"><span >（</span><span>2</span><span >）</span><span>focusin </span><span >在获得焦点的元素上触发</span></p>
+					<p class="MsoNormal"><span >（</span><span>3</span><span >）</span><span>blur </span><span >在失去焦点的元素上触发</span></p>
+					<p class="MsoNormal"><span >（</span><span>4</span><span >）</span><span>DOMFocusOut </span><span >在失去焦点的元素上触发</span></p>
+					<p class="MsoNormal"><span >（</span><span>5</span><span >）</span><span>focus </span><span >在获得焦点的元素上触发</span></p>
+					<p class="MsoNormal"><span >（</span><span>6</span><span >）</span><span>DOMFocusIn </span><span >在获得焦点的元素上触发</span></p>
+					<h4> <span>13.4.3 </span><span >鼠标与滚轮事件</span> </h4>
+					<p class="MsoNormal"><span>       DOM3</span><span >级事件中定义了</span><span>9</span><span >个鼠标事件，简介如下。</span></p>
+					<p class="MsoNormal"><span >（</span><span>1</span><span >）</span><span>click</span><span >：在用户单机主鼠标按钮（一般是左边的按钮）或者按下回车键时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>2</span><span >）</span><span>dblclick</span><span >：在用户双击主鼠标按钮（一般是左边的按钮）时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>3</span><span >）</span><span>mousedown</span><span >：在用户按下了任意鼠标按钮时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>4</span><span >）</span><span>mouseenter</span><span >：在鼠标光标从元素外部首次移动到元素范围之内时触发。这个事件不冒泡，而且在光标移动到后代元素上不会触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>5</span><span >）</span><span>mouseleave</span><span >：在位于元素上方的鼠标光标移动到元素范围之外时触发。这个事件不冒泡，而且在光标移动到后代元素上不会触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>6</span><span >）</span><span>mousemove</span><span >：当鼠标指针在元素内部移动时重复地触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>7</span><span >）</span><span>mouseout</span><span >：在鼠标指针位于一个元素上方，然后用户将其移入另一个元素时触发。又移入的另一个元素可能位于前一个元素的外部，也可能是这个元素的子元素。</span></p>
+					<p class="MsoNormal"><span >（</span><span>8</span><span >）</span><span>mouseover</span><span >：在鼠标指针位于一个元素外部，然后用户将其首次移入另一个元素边界之内时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>9</span><span >）</span><span>mouseup</span><span >：在用户释放鼠标按钮时触发。</span></p>
+					<p ><span>1.</span><span >客户区坐标位置</span></p>
+					<p ><span >鼠标事件都是在浏览器视口中的特定位置上发生的。这个位置信息保存在事件对象的</span><span>clientX</span><span >和</span><span>clientY</span><span >属性中。</span></p>
+					<p ><span>2.</span><span >页面坐标位置</span></p>
+					<p ><span >通过客户区坐标能够知道鼠标是在视口中什么位置发生的，而页面坐标通过事件对象的</span><span>pageX</span><span >和</span><span>pageY</span><span >属性，能告诉你事件是在页面中的什么位置发生的。换句话说，这两个属性表示鼠标光标在页面中的位置，因此坐标是从页面本身而非视口的左边和顶边计算的。</span></p>
+					<p ><span >在页面没有滚动的情况下，</span><span>pageX</span><span >和</span><span>pageY</span><span >的值与</span><span>clientX</span><span >和</span><span>clientY</span><span >的值相等。</span></p>
+					<p ><span>3.</span><span >屏幕坐标位置</span></p>
+					<p ><span >鼠标事件发生时，不仅有相对于浏览器窗口的位置，还有一个相对于整个电脑屏幕的位置。而通过</span><span>screenX</span><span >和</span><span>screenY</span><span >属性就可以确定鼠标事件发送时鼠标指针相对于整个屏幕的坐标信息。</span></p>
+					<p ><span>4.</span><span >修改键</span></p>
+					<p ><span >虽然鼠标事件主要是使用鼠标来触发的，但在按下鼠标时键盘上的某些键的状态也可以影响到所要采取的操作。</span></p>
+					<p ><span>DOM</span><span >为此规定了</span><span>4</span><span >个属性，表示这些修改键的状态：</span><span>shiftKey</span><span >、</span><span>ctrlKey</span><span >、</span><span>altkey</span><span >和</span><span>metaKey</span><span >。这些属性中包含的都是布尔值，如果相应的键被按下了，则值为</span><span>true</span><span >，否则为</span><span>false</span><span >。</span></p>
+					<p ><span>5.</span><span >相关元素</span></p>
+					<p ><span>6.</span><span >鼠标按钮</span></p>
+					<p ><span >对于</span><span>mousedown</span><span >和</span><span>mouseup</span><span >事件来说，在其</span><span>event</span><span >对象存在一个</span><span>button</span><span >属性，表示按下或释放的按钮。</span><span>DOM</span><span >的</span><span>button</span><span >属性可能有如下</span><span>3</span><span >个值：</span><span>0</span><span >表示主鼠标按钮，</span><span>1</span><span >表示中间的鼠标按钮（鼠标滚轮按钮）</span><span>2</span><span >表示次鼠标按钮。</span></p>
+					<p ><span>7.</span><span >更多的事件信息</span></p>
+					<p ><span>8.</span><span >鼠标滚轮事件</span></p>
+					<p ><span >与</span><span>mousewheel</span><span >事件对应的</span><span>event</span><span >对象除包含鼠标的所有标准信息外，还包含一个特殊的</span><span>wheelDelta</span><span >属性。当用户向前滚动鼠标滚轮时，</span><span>wheelDelta</span><span >是</span><span>120</span><span >的倍数；当用户向后滚动鼠标滚轮时，</span><span>wheelDelta</span><span >是</span><span>-120</span><span >的倍数。</span></p>
+					<p class="MsoNormal"><span>       9.</span><span >触摸设备</span></p>
+					<p class="MsoNormal"><span>       10.</span><span >无障碍性问题</span></p>
+					<h4> <span>13.3.4 </span><span >键盘与文本事件</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >有</span><span>3</span><span >个键盘事件，简述如下：</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>keydown</span><span >：当用户按下键盘上的任意键时触发，而且如果按住不放的话，会重复触发此事件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>2</span><span >）</span><span>keypress</span><span >：当用户按下键盘上的字符键时触发，而且如果按住不放的话，会重复触发此事件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>3</span><span >）</span><span>keyup</span><span >：当用户释放键盘上的键时触发。</span></p>
+					<p class="MsoNormal"><span>       </span><span >只有一个文本事件：</span><span>textInput</span><span >。这个事件是对</span><span>keypress</span><span >的补充，用意是在将文本显示给用户之前更容易拦截文本。在文本插入文本框之前会触发</span><span>textInput</span><span >事件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >键盘事件与鼠标事件一样，都支持相同的修改键。</span></p>
+					<p class="MsoNormal"><span>       1.</span><span >键码</span></p>
+					<p class="MsoNormal"><span>       </span><span >在发生</span><span>keydown</span><span >和</span><span>keyup</span><span >事件时，</span><span>event</span><span >对象的</span><span>keyCode</span><span >属性中会包含一个代码，与键盘上一个特定的键对应。</span></p>
+					<p class="MsoNormal"><span>       2.</span><span >字符编码</span></p>
+					<p class="MsoNormal"><span>       </span><span >发生</span><span>keyprees</span><span >事件意味着按下的键会影响到屏幕中文本的显示。在所有浏览器中，按下能够输入或删除字符的键都会触发</span><span>keypress</span><span >事件；</span></p>
+					<p class="MsoNormal"><span>       IE9</span><span >、</span><span>Firefox</span><span >、</span><span>Chrome</span><span >和</span><span>Safari</span><span >的</span><span>event</span><span >对象都支持一个</span><span>charCode</span><span >的属性，这个属性只有在发生</span><span>keypress</span><span >事件时才包含值，而且这个值是按下的那个键所代表字符的</span><span>ASCII</span><span >编码。此时的</span><span>keyCode</span><span >通常等于</span><span>0</span><span >或者也可能等于所按键的键码。</span></p>
+					<p class="MsoNormal"><span>       3.DOM3</span><span >级变化</span></p>
+					<p class="MsoNormal"><span>       DOM3</span><span >级事件中的键盘事件，不再包含</span><span>charCode</span><span >属性，而是包含两个新属性：</span><span>key</span><span >和</span><span>char</span><span >。</span></p>
+					<p class="MsoNormal"><span>       4.textInput</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       </span><span >与</span><span>keypress</span><span >的不同：（</span><span>1</span><span >）只有可编辑区域才能触发</span><span>textInput</span><span >（</span><span>2</span><span >）只会在用户按下能够输入的实际字符的键才会被触发。</span></p>
+					<p class="MsoNormal"><span>       5.</span><span >设备中的键盘事件</span></p>
+					<h4> <span>13.4.5 </span><span >复合事件</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >复合事件（</span><span>composition
+						event</span><span >）是</span><span>DOM3</span><span >级事件中新添加的一类事件，用于处理</span><span>IME</span><span >的输入序列。</span><span>IME</span><span >（</span><span>Input Method Editor</span><span >，输入法编辑器）可以让用户输入在物理键盘上找不到的字符。复合事件就是针对检测和处理这种输入而设计的。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>compositionstart</span><span >：在</span><span>IME</span><span >的文本复合系统打开时触发，表示要开始输入了。</span></p>
+					<p ><span >（</span><span>2</span><span >）</span><span>compositionupdate</span><span >：在向输入字段中插入新字符时触发。</span></p>
+					<p ><span >（</span><span>3</span><span >）</span><span>compositionend</span><span >：在</span><span>IME</span><span >的文本复合系统关闭时触发，表示返回正常键盘的输入状态。</span></p>
+					<h4> <span>13.6 </span><span >变动事件</span> </h4>
+					<p class="MsoNormal"><span>       DOM2</span><span >级的变动（</span><span>mutation</span><span >）事件能在</span><span>DOM</span><span >中的某一部分发生变化时给出提示。变动事件是为</span><span>XML</span><span >或</span><span>HTML DOM</span><span >设计的，并不特定于某种语言。</span><span>DOM2</span><span >级定义了如下变动事件：</span></p>
+					<p class="MsoNormal"><span >（</span><span>1</span><span >）</span><span>DOMSubtreeModified</span><span >：在</span><span>DOM</span><span >结构中发生的任何变化时触发。这个事件在其他任何事件触发后都会触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>2</span><span >）</span><span>DOMNodeInserted</span><span >：在一个节点作为子节点被插入到另一个节点中时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>3</span><span >）</span><span>DOMNodeRemoved</span><span >：在节点从其父节点中被移除时触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>4</span><span >）</span><span>DOMNodeInsertedIntoDocument</span><span >：在一个节点被直接插入文档或通过子树间接插入到文档之后触发。这个事件在</span><span>DOMNodeInserted</span><span >之后触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>5</span><span >）</span><span>DOMNodeRemovedFromDocument</span><span >：在一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发。这个事件在</span><span>DOMNodeRemoved</span><span >之后触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>6</span><span >）</span><span>DOMAttrModified</span><span >：在特性被修改之后触发。</span></p>
+					<p class="MsoNormal"><span >（</span><span>7</span><span >）</span><span>DOMCharacterDataModified:</span><span >在文本节点的值发生变化时触发。</span></p>
+					<h4> <span>13.4.7 HTML5</span><span >事件</span> </h4>
+					<p class="MsoNormal"><span>       1.contextmenu</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       2.beforeunload</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       3.DOMContentLoad</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       4.readystatechange</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       </span><span >支持</span><span>readystatechange</span><span >事件的每个对象都有一个</span><span>readyState</span><span >属性，可能包含下列</span><span>5</span><span >个值中的一个。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>uninitialized</span><span >（未初始化）：对象存在但尚未初始化。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>2</span><span >）</span><span>loading</span><span >（正在加载）：对象正在加载数据。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>3</span><span >）</span><span>loaded</span><span >（加载完毕）：对象加载数据完成。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>4</span><span >）</span><span>interactive</span><span >（交互）：可以操作对象了，但还没有完全加载。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>5</span><span >）</span><span>complete</span><span >（完成）：对象已经加载完毕。</span></p>
+					<p class="MsoNormal"><span>       </span><span >这些状态看起来很直观，但并非所有对象都会经历</span><span>readyState</span><span >的这几个阶段。换句话说，如果某个阶段不适用某个对象，则该对象完全可能跳过该阶段；并没有规定哪个阶段适用于哪个对象。</span></p>
+					<p class="MsoNormal"><span>       5.pageshow</span><span >和</span><span>pagehide</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       Firefox</span><span >和</span><span>Opera</span><span >有一个特性，名叫“往返缓存”（</span><span>back-forward cache</span><span >，或</span><span>bfcache</span><span >），可以在用户使用浏览器的“后退”和“前进”按钮时加快页面的转换速度。这个缓存中不仅保存着页面数据，还保存了</span><span>DOM</span><span >和</span><span>JavaScript</span><span >的状态；实际上是将整个页面都保存在了内存里。如果页面位于</span><span>bfcache</span><span >中，那么再次打开该页面时就不会触发</span><span>load</span><span >事件。</span></p>
+					<p class="MsoNormal"><span>       pageshow</span><span >，这个事件在页面显示时触发，无论该页面是否来自</span><span>bfcache</span><span >。在重新加载的页面中，</span><span>pageshow</span><span >会在</span><span>load</span><span >事件触发后触发；而对于</span><span>bfcache</span><span >中的页面，</span><span>pageshow</span><span >会在页面状态完全恢复的那一刻触发。另外要注意的是，虽然这个事件的目标是</span><span>document</span><span >，但必须将其事件处理程序添加到</span><span>window</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >除了通常的属性之外，</span><span>pageshow</span><span >事件的</span><span>event</span><span >对象还包含一个名为</span><span>persisted</span><span >的布尔值属性。如果页面被保存在了</span><span>bfcache</span><span >中，则这个属性的值为</span><span>true</span><span >；否则这个属性的值为</span><span>false</span><span >。</span></p>
+					<p class="MsoNormal"><span>       pagehide</span><span >事件会在浏览器卸载页面的时候触发，而且是在</span><span>unload</span><span >事件之前触发。与</span><span>pageshow</span><span >事件一样，</span><span>pagehide</span><span >在</span><span>document</span><span >上面触发，但其事件处理程序必须要添加到</span><span>window</span><span >对象。对于</span><span>pagehide</span><span >事件，如果页面在卸载之后会被保存在</span><span>bfcache</span><span >中，那么</span><span>persisted</span><span >的值也会被设置为</span><span>true</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >指定了</span><span>onunload</span><span >事件处理程序的页面会被自动排除在</span><span>bfcache</span><span >之外，即使事件处理程序是空的。原因在于，</span><span>onunload</span><span >最常用于撤销在</span><span>onload</span><span >中所执行的操作，而跳过</span><span>onload</span><span >后再次显示页面很可能就会导致页面不正常。</span></p>
+					<p ><span>6.haschange</span><span >事件</span></p>
+					<p ><span>HTML5</span><span >新增了</span><span>haschange</span><span >事件，以便在</span><span>URL</span><span >的参数列表（及</span><span>URL</span><span >中“</span><span>#</span><span >”号后面的所有字符串）发生变化时通知开发人员。</span></p>
+					<p ><span >必须要把</span><span>haschange</span><span >事件处理程序添加给</span><span>window</span><span >对象，然后</span><span>URL</span><span >参数列表只要变化就会调用它。此时的</span><span>event</span><span >对象应该额外包含两个属性：</span><span>oldURL</span><span >和</span><span>newURL</span><span >。这两个属性分别保存着参数列表变化前后的完整</span><span>URL</span><span >。</span></p>
+					<h4> <span>13.4.8 </span><span >设备事件</span> </h4>
+					<p class="MsoNormal"><span>       1.orientationchange</span><span >事件</span></p>
+					<p class="MsoNormal"><span>       </span><span >移动</span><span>Safari</span><span >的</span><span>window.orientation</span><span >属性中可能包含</span><span>3</span><span >个值：</span><span>0</span><span >表示肖像模式，</span><span>90</span><span >表示向左旋转的横向模式（“主屏幕”按钮在右侧），</span><span>-90</span><span >表示向右旋转的横向模式（“主屏幕”按钮在左侧）。</span></p>
+					<p class="MsoNormal"><span>       </span><span >只要用户改变了设备的查看模式，就会触发</span><span>orientationchange</span><span >事件。此时的</span><span>event</span><span >对象不包含任何有价值的信息。</span></p>
+					<p class="MsoNormal"><span>       </span><span >所有的</span><span>ios</span><span >设备都支持</span><span>orientationchange</span><span >事件和</span><span>window.orientation</span><span >属性。</span></p>
+					<p ><span>2.MozOrientation</span><span >事件</span></p>
+					<p ><span>Firefox3.6</span><span >为检测设备的方向引入了一个名为</span><span>MozOrientation</span><span >的新事件。（前缀</span><span>Moz</span><span >表示这是特定于浏览器开发商的事件，不是标准事件）当设备的加速计检测到设备方向改变时，就会触发这个事件。</span></p>
+					<p ><span>3.deviceorientation</span><span >事件</span></p>
+					<p ><span>deviceorientation</span><span >事件的意图是告诉开发人员设备在空间中朝向哪儿，而不是如何移动。</span></p>
+					<p ><span >触发</span><span>deviceorientation</span><span >事件时，事件对象中包含着每个轴相对于设备静止状态下发生变化的信息。事件对象包含以下</span><span>5</span><span >个属性。</span></p>
+					<p ><span >（</span><span>1</span><span >）</span><span>alpha</span><span >：在围绕</span><span>z</span><span >轴旋转时（即左右旋转时），</span><span>y</span><span >轴的度数差；是一个介于</span><span>0</span><span >到</span><span>360</span><span >之间的浮点数。</span></p>
+					<p ><span >（</span><span>2</span><span >）</span><span>beta</span><span >：在围绕</span><span>x</span><span >轴旋转时（即前后旋转时），</span><span>z</span><span >轴的度数差；是一个介于</span><span>-180</span><span >到</span><span>180</span><span >之间的浮点数。</span></p>
+					<p ><span >（</span><span>3</span><span >）</span><span>gamma</span><span >：围绕</span><span>y</span><span >轴旋转时（即扭转设备时），</span><span>z</span><span >轴的度数差；是一个介于</span><span>-90</span><span >到</span><span>90</span><span >之间的浮点数。</span></p>
+					<p ><span >（</span><span>4</span><span >）</span><span>absolute</span><span >：布尔值，表示设备是否返回一个绝对值。</span></p>
+					<p ><span >（</span><span>5</span><span >）</span><span>compassCalibrated</span><span >：布尔值，表示设备的指南针是否校准过。</span></p>
+					<p ><span>4.devicemotion</span><span >事件</span></p>
+					<p ><span>devicemotion</span><span >事件是要告诉开发人员设备什么时候移动，而不仅仅是设备方向如何改变。</span></p>
+					<p ><span >触发</span><span>devicemotion</span><span >事件时，事件对象包含以下属性。</span></p>
+					<p ><span >（</span><span>1</span><span >）</span><span>acceleration</span><span >：一个包含</span><span>x</span><span >、</span><span>y</span><span >和</span><span>z</span><span >属性的对象，在不考虑重力的情况下，告诉你在每个方向上的加速度。</span></p>
+					<p ><span >（</span><span>2</span><span >）</span><span>accelerationIncludingGravity</span><span >：一个包含</span><span>x</span><span >、</span><span>y</span><span >和</span><span>z</span><span >属性的对象，在考虑</span><span>z</span><span >轴自然重力加速度的情况下，告诉你在每个方向上的加速度。</span></p>
+					<p ><span >（</span><span>3</span><span >）</span><span>interval</span><span >：以毫秒表示的时间值，必须在另一个</span><span>devicemotion</span><span >事件触发前传入。这个值在每个事件中应该是一个常量。</span></p>
+					<p ><span >（</span><span>4</span><span >）</span><span>rotationRate</span><span >：一个表示方向的</span><span>alpha</span><span >、</span><span>beta</span><span >和</span><span>gamma</span><span >属性的对象。</span></p>
+					<p class="MsoNormal"><span> </span></p>
+					<h4> <span>13.4.9 </span><span >触摸与手势事件</span> </h4>
+					<p class="MsoNormal"><span>       1.</span><span >触摸事件</span></p>
+					<p class="MsoNormal"><span>       </span><span >触摸事件会在用户手指放在屏幕上面时、在屏幕上滑动时或从屏幕上移开时触发。具体来说，有以下几个触摸事件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>touchstart</span><span >：当手指触摸屏幕时触发；即使已经有一个手指放在了屏幕上也会触发。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>2</span><span >）</span><span>touchmove</span><span >：当手指在屏幕上滑动时连续地触发。在这个事件发生期间，调用</span><span>preventDefault()</span><span >可以阻止滚动。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>3</span><span >）</span><span>touchend</span><span >：当手指从屏幕上移开时触发。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>4</span><span >）</span><span>touchcancel</span><span >：当系统停止跟踪触摸时触发。关于此事件的确切触发时间，文档中没有明确说明。</span></p>
+					<p class="MsoNormal"><span>       </span><span >上面这几个事件都会冒泡，也都可以取消。虽然这些触摸事件没有在</span><span>DOM</span><span >规范中定义，但它们却是以兼容</span><span>DOM</span><span >的方式实现的。因此，每个触摸事件的</span><span>event</span><span >对象都提供了在鼠标事件中常见的属性：</span><span>bubbles</span><span >、</span><span>cancelable</span><span >、</span><span>view</span><span >、</span><span>clientX</span><span >、</span><span>clientY</span><span >、</span><span>screenX</span><span >、</span><span>screenY</span><span >、</span><span>detail</span><span >、</span><span>altKey</span><span >、</span><span>shiftKey</span><span >、</span><span>ctrlkey</span><span >和</span><span>metaKey</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >除了常见的</span><span>DOM</span><span >属性外，触摸事件还包含下列三个用于跟踪触摸的属性。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>touches</span><span >：表示当前跟踪的触摸操作的</span><span>Touch</span><span >对象的数组。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>2</span><span >）</span><span>targetTouches</span><span >：特定于事件目标的</span><span>Touch</span><span >对象的数组。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>3</span><span >）</span><span>changeTouches</span><span >：表示紫上次触摸以来发生了什么改变的</span><span>Touch</span><span >对象的数组。</span></p>
+					<p class="MsoNormal"><span>       </span><span >每个</span><span>Touch</span><span >对象包含下列属性。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>1</span><span >）</span><span>clientX</span><span >：触摸目标在视口中的</span><span>x</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>2</span><span >）</span><span>cilentY</span><span >：触摸目标在视口中的</span><span>y</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>3</span><span >）</span><span>identifier</span><span >：标示触摸的唯一</span><span>ID</span><span >。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>4</span><span >）</span><span>pageX</span><span >：触摸目标在页面中的</span><span>x</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>5</span><span >）</span><span>pageY</span><span >：触摸目标在页面中的</span><span>y</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>6</span><span >）</span><span>screenX</span><span >：触摸目标在屏幕中的</span><span>x</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>7</span><span >）</span><span>screenY</span><span >：触摸目标在屏幕中的</span><span>y</span><span >坐标。</span></p>
+					<p class="MsoNormal"><span>       </span><span >（</span><span>8</span><span >）</span><span>target</span><span >：触摸的</span><span>DOM</span><span >节点目标。</span></p>
+					<p ><span>2.</span><span >手势事件</span></p>
+					<p ><span>iOS2.0</span><span >中的</span><span>Safari</span><span >还引入了一组手势事件。当两个手指触摸屏幕时就会产生手势，手势通常会改变显示项的大小，或者旋转显示项。有三个手势事件，分别介绍如下。</span></p>
+					<p ><span >（</span><span>1</span><span >）</span><span>gesturestart</span><span >：当一个手指以及按在屏幕上而另一个手指又触摸屏幕时触发。</span></p>
+					<p ><span >（</span><span>2</span><span >）</span><span>gesturechange:</span><span >当触摸屏幕的任何一个手指的位置发生变化时触发。</span></p>
+					<p ><span >（</span><span>3</span><span >）</span><span>gestureend</span><span >：当任何一个手指从屏幕上面移开时触发。</span></p>
+					<p ><span >只有两个手指都触摸到事件的接收容器时才会触发这些事件。</span></p>
+					<p ><span >触摸事件和手势事件之间存在某种关系。当一个手指放在屏幕上时，会触发</span><span>touchstart</span><span >事件。如果另一个手指又放在了屏幕上，则会先触发</span><span>gesturestart</span><span >事件，随后触发基于该手指的</span><span>touchstart</span><span >事件。如果一个或两个手指在屏幕上滑动，将会触发</span><span>gesturechange</span><span >事件。但只要有一个手指移开，就会触发</span><span>gesureend</span><span >事件，紧接着又会触发基于该手指的</span><span>touchend</span><span >事件。</span></p>
+					<p ><span >与触摸事件一样，每个手势事件的</span><span>event</span><span >对象都包含着标准的鼠标事件属性。此外，还包含两个额外的属性：</span><span>rotation</span><span >和</span><span>scale</span><span >。其中，</span><span>rotation</span><span >属性表示手指变化引起的旋转角度，负值表示逆时针旋转，正值表示顺时针旋转（该值从</span><span>0</span><span >开始）。而</span><span>scale</span><span >属性表示两个手指间距离的变化情况（例如向内会缩短距离）；这个值从</span><span>1</span><span >开始，并随距离拉大而增长，随距离缩短而减小。</span></p>
+					<h2> <span>13.5 </span><span >内存和性能</span> </h2>
+					<p class="MsoNormal"><span>       </span><span >在</span><span>JavaScript</span><span >中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能。导致这一问题的原因是多方面的。首先，每个函数都是对象，都会占用内存；内存中的对象越多，性能就越差。其次，必须实现指定所有事件处理程序而导致的</span><span>DOM</span><span >访问次数，会延迟整个页面的交换就绪时间。</span></p>
+					<h4> <span>13.5.1 </span><span >事件委托</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >对“事件处理程序过多”问题的解决方案就是事件委托。事件委托利用了事件冒泡，只指定一个事件处理程序，就可以管理某一类型的所有事件。</span></p>
+					<p class="MsoNormal"><span>       </span><span >最适合采用事件委托技术的事件包括：</span><span>click</span><span >、</span><span>mousedown</span><span >、</span><span>mouseup</span><span >、</span><span>keydown</span><span >、</span><span>keyup</span><span >和</span><span>keypress</span><span >。</span></p>
+					<h4> <span>13.5.2 </span><span >移除事件处理程序</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >每当将事件处理程序指定给元素时，运行中的浏览器代码与支持页面交互的</span><span>JavaScript</span><span >代码之间就会建立一个连接。这种连接越多，页面执行起来就越慢。在不需要的时候移除事件处理程序，也是解决这个问题的一种方案。</span></p>
+					<p class="MsoNormal"><span>       </span><span >注意，在事件处理程序中删除按钮也能阻止事件冒泡。目标元素在文档中是事件冒泡的前提。</span></p>
+					<p class="MsoNormal"><span>       </span><span >一般来说，最好的做法是在页面卸载之前，先通过</span><span>onunload</span><span >事件处理程序移除所有事件处理程序。</span></p>
+					<h2> <span>13.6 </span><span >模拟事件</span> </h2>
+					<h4> <span>13.6.1 DOM</span><span >中的事件模拟</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >可以在</span><span>document</span><span >对象上使用</span><span>createEvent()</span><span >方法创建</span><span>event</span><span >对象。这个方法接收一个参数，即表示要创建的事件类型的字符串。在</span><span>DOM2</span><span >级中，所有这些字符串都是用英文复数形式，而在</span><span>DOM3</span><span >级中都变成了单数。这个字符串可以是下列几个字符串之一。</span></p>
+					<p ><span >（</span><span>1</span><span >）</span><span>UIEvents</span><span >：一般化的</span><span>UI</span><span >事件。鼠标事件和键盘事件都继承自</span><span>UI</span><span >事件。</span><span>DOM3</span><span >级中是</span><span>UIEvent</span><span >。</span></p>
+					<p ><span >（</span><span>2</span><span >）</span><span>MouseEvents</span><span >：一般化的鼠标事件。</span><span>DOM3</span><span >级中是</span><span>MouseEvent</span><span >。</span></p>
+					<p ><span >（</span><span>3</span><span >）</span><span>MutationEvents</span><span >：一般化的</span><span>DOM</span><span >变动事件。</span><span>DOM3</span><span >级中是</span><span>MutationEvent</span><span >。</span></p>
+					<p ><span >（</span><span>4</span><span >）</span><span>HTMLEvents</span><span >：一般化的</span><span>HTML</span><span >事件。没有对应的</span><span>DOM3</span><span >级事件（</span><span>HTML</span><span >事件被分散到其他类别中。）</span></p>
+					<p ><span >在创建了</span><span>event</span><span >对象之后，还需要使用与事件有关的信息对其进行初始化。每种类型的</span><span>event</span><span >对象都有一个特殊的方法，为它传入适当的数据就可以初始化该</span><span>event</span><span >对象。不同类型的这个方法的名字也不相同，具体要取决于</span><span>createEvent()</span><span >中使用的参数。</span></p>
+					<p ><span >模拟事件的最后一步就是要触发事件。这一步需要使用</span><span>dispatchEvent()</span><span >方法，所有支持事件的</span><span>DOM</span><span >节点都支持这个方法。调用</span><span>dispatchEvent()</span><span >方法时，需要传入一个参数，即表示要触发事件的</span><span>event</span><span >对象。触发事件之后，该事件就跻身“官方事件”之列了，因而能够照样冒泡并引发相应事件处理程序的执行。</span></p>
+					<h4> <span>13.6.2 IE</span><span >中的事件模拟</span> </h4>
+					<p class="MsoNormal"><span>       </span><span >在</span><span>IE8</span><span >及之前版本中模拟事件与在</span><span>DOM</span><span >中模拟事件的思路相似：先创建</span><span>event</span><span >对象，然后为其指定相应的信息，然后再使用该对象来触发事件。当然，</span><span>IE</span><span >在实现每个步骤时都采用了不一样的方式。</span></p>
+					<p class="MsoNormal"><span>       </span><span >调用</span><span>document.createEventObject()</span><span >方法可以在</span><span>IE</span><span >中创建</span><span>event</span><span >对象。但与</span><span>DOM</span><span >方式不同的是，这个方法不接受参数，结果会返回一个通用的</span><span>event</span><span >对象。然后，你必须手工为这个对象添加所有必要的信息（没有方法来辅助完成这一步骤）。最后一步就是在目标上调用</span><span>fireEvent()</span><span >方法，这个方法接受两个参数：事件处理程序的名称和</span><span>event</span><span >对象。在调用</span><span>fireEvent()</span><span >方法时，会自动为</span><span>event</span><span >对象添加</span><span>srcElement</span><span >和</span><span>type</span><span >属性；其他属性则都是必须通过手工添加的。</span></p>
+					<h2> <span>13.7 </span><span >小结</span> </h2>
+					<p class="MsoNormal"><span>       </span><span >在使用事件时，需要考虑如下一些内存和性能方面的问题：</span></p>
+					<p ><span >（</span><span>1</span><span >）有必要限制一个页面中事件处理程序的数量，数量太多会导致占用大量内存，而且也会让用户感觉页面反应不够灵敏。</span></p>
+					<p ><span >（</span><span>2</span><span >）建立在事件冒泡机制之上的事件委托技术，可以有效减少事件处理程序的数量。</span></p>
+					<p ><span >（</span><span>3</span><span >）建议在浏览器卸载页面之前移除页面中的所有事件处理程序。</span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

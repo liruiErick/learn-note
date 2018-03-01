@@ -1,0 +1,423 @@
+﻿要确定浏览器是否支持DOM规定的HTML事件，可以使用如下代码：
+var isSupported = document.implementation.hasFeature("HTMLEvents", "2.0");
+只有根据DOM2级事件实现这些事件的浏览器才返回true，以非标准方式支持这些事件的浏览器会返回false;
+
+
+* 添加监听器
+
+addEventListener()函数语法：
+elementObject.addEventListener(eventName,handle,useCapture);
+// 第一个参数为监听的事件类型字符串，一般为事件属性名去掉"on"。
+// 第二个参数为监听器函数。
+// 第三个参数可选，设定是否在捕获阶段就响应事件，默认为false。
+监听对象.addEventListener("mousemove", onmousemove, flase);
+
+attachEvent()函数语法：
+elementObject.attachEvent(eventName,handle);
+监听对象.attachEvent("onmousemove", onmousemove);
+
+// addEventListener()是标准的绑定事件监听函数的方法，是W3C所支持的，Chrome、FireFox、Opera、Safari、IE9.0及其以上版本都支持该函数。
+// 但是，IE8.0及其以下版本不支持该方法，它使用attachEvent()来绑定事件监听函数。所以，这种绑定事件的方法必须要处理浏览器兼容问题。
+// 兼容方法：
+function on(obj,type,handle){
+    try{  // Chrome、FireFox、Opera、Safari、IE9.0及其以上版本
+        obj.addEventListener(type,handle,false);
+    }catch(e){
+        try{  // IE8.0及其以下版本
+            obj.attachEvent('on' + type,handle);
+        }catch(e){  // 早期浏览器
+            obj['on' + type] = handle;
+        }
+    }
+}
+
+
+
+* 移除监听器
+removeEventListener(eventName, handle, useCapture); //W3C标准
+detachEvent(eventName, handle); //IE8.0及其以下版本使用该方法
+
+
+
+* 自定义事件
+
+// 新建一个事件，必须分为两步写，否则会报错：
+var evt = document.createEvent("HTMLEvents"); //经测试，"Events" 与 "Event" 同样可以正常创建事件。
+evt.initEvent(eventType, canBubble, cancelable); //IE8及以下浏览器不支持该方法。IE9及以上浏览器中，这三个参数都是必填项，否则报错。
+// eventType   字符串值，事件的类型。
+// canBubble   事件是否冒泡。
+// cancelable  是否可以用 preventDefault() 方法取消事件。
+
+// 还可以创建其他事件对象
+参数		事件接口	初始化方法
+HTMLEvents	HTMLEvent	iniEvent()
+MouseEvents	MouseEvent	iniMouseEvent()
+UIEvents	UIEvent		iniUIEvent()
+// 用该方法创建了 Event 对象以后，必须用上表中所示的初始化方法初始化对象。
+// IE8及以下浏览器不支持 document.createEvent() 方法，但是有 document.createEventObject() 方法，只是不支持自定义事件。（如果不支持自定义时间，不清楚该方法有何作用）
+
+// 派发事件
+元素节点.dispatchEvent(evt);
+// IE下私有的时间派发方法
+元素节点.fireEvent("onclick");
+
+注意：派发事件有阻断机制，派发事件后，当前代码会停止执行，等到监听事件的监听器代码执行完毕后，才会继续向下执行。
+
+
+
+* 事件
+// 在 javascript 中，如果以 DOM 对象属性的形式为添加事件，对应事件的属性名前需要加“on”。（注意，“on”后的事件名称需要全部小写）
+// 在 javascript 中，如果 DOM 对象执行下列事件名称相对应的方法（如：element.focus();），则会直接派发该事件。
+
+beforeonload  在文档加载之前触发的事件（HTML5事件）。该事件目前不清楚如何触发？
+
+beforeunload  在文档被卸载之前触发的事件（HTML5事件）。该事件只能在 window.onbeforeunload 属性上赋值来注册，addEventListener 方法注册无效。
+// 例如
+window.onbeforeunload = function() {
+	return "变更还未保存！"; // 当页面即将被关闭时弹出该内容
+}
+// 浏览器兼容情况
+IE(包括678)、Chrome、Safari 完美支持
+Firefox 不支持文字提醒信息
+Opera 不支持
+
+IE6,IE7 使用 onbeforeunload 遇到的bug
+凡是 <a> 标签 都会触发 onbeforeunload事件 包括 href=”javascript:void(0)” 这种。
+在IE6，IE7 下面 点击 里面的 a 标签，蛋疼的事情就发生了。
+解决方法：给这 a标签的 父级 添加 onclick=function(){return false} 即可，不过添加了这个之后 要确保 父级里面没有 input type=”checkbox” 的标签，否则会导致其无效不可点击。
+
+
+load  加载完成事件，比如在 <body>/window 上时，如果页面完全加载完成后才会触发该事件，包括样式表，图片，flash。
+// 该事件触发后 document.readyState 将变为 complete。注册事件仅对 window 有效，body 只能使用 onload 属性。
+
+unload  被卸载事件，比如在 <body>/window 上时，如果关闭页面就会触发该事件。
+// 注意，在该事件中设置 alert 来阻断浏览器关闭时无效的。如果有ajax请求什么的，都一定要同步调用（async:true），不然页面unload完资源就全部注销了。
+// 浏览器兼容情况
+IE6，IE7，IE8 中 刷新页面、关闭浏览器之后、页面跳转之后都会执行；
+IE9 刷新页面 会执行，页面跳转、关闭浏览器不能执行；
+firefox(包括firefox3.6) 关闭标签之后、页面跳转之后、刷新页面之后能执行，但关闭浏览器不能执行；
+Safari 刷新页面、页面跳转之后会执行，但关闭浏览器不能执行；
+Opera、Chrome 任何情况都不执行。
+
+// 不同元素之间的开始加载的时机也有所不同：
+1、图像元素只要设置了src属性就会开始下载。
+2、<script>元素在设置了src属性，并将该元素添加到文档后，才会开始下载JavaScript文件。
+3、<link>元素在指定href属性，并将该元素添加到文档档后，才会开始下载样式表。
+
+// 注意，ie6、ie7、ie8 中 <script> 不支持 onload 事件，这时候只能借助 readystatechange 事件
+script.onreadystatechange = function() {
+	if (script.readyState == "loaded" || script.readyState == "complete") {
+		script.onreadystatechange = null;
+		callback && callback();
+	}
+};
+
+DOMContentLoaded  仅当DOM加载完成时就会触发该事件，不包括样式表，图片，flash。（HTML5事件）
+// 该事件触发后 document.readyState 将变为 interactive。仅对 window 和 document 有效。
+// 注意，在文档加载完成后 DOMContentLoaded 则不会再触发，而 load 始终会触发一次。因此在异步加载的js中不适合使用 DOMContentLoaded 事件
+
+error  在加载文档或图像时发生错误事件
+abort  图像的加载被中断事件
+hashchange  当浏览器的 url 地址改变时触发该事件（HTML5事件）。该事件只能绑定在 window 上，同时 event 对象额外包含两个属性：oldURL和newURL。
+resize  窗口或框架被重新调整大小事件（只能在 window 上触发）
+storage  存储空间中WebStorage区域的数据发生变化时触发该事件
+message  当运行 postMessage(参数) 方法时触发该事件（event.data为该方法的参数）
+offline  当文档离线时触发该事件
+online  当文档上线时触发该事件
+blur  窗口失去焦点时触发该事件（一般在浏览器切换到其它标签页时，或者切换到其它应用窗口时）
+focus  窗口获得焦点时触发该事件（一般在浏览器切换回当前标签页时，或者从其它应用切换回当前浏览器窗口时）
+pagehide  当窗口隐藏时触发该事件（HTML5事件）
+pageshow  当窗口可见时触发该事件（HTML5事件）
+popstate  当窗口历史记录改变时触发该事件
+contextmenu  当触发右键上下文菜单时触发该事件（HTML5事件，若监听函数返回false，则不会出现右键上下文菜单）
+selectstart  元素对象被开始选中时触发该事件（和 select 不同处在于它不支持表单元素，而 select 仅支持表单元素的选择）
+
+// 鼠标事件（手机端无效）
+mousemove  鼠标在元素的边框及以内区域移动时触发该事件
+mouseover  鼠标移入元素的边框及以内区域时触发该事件
+mouseout  鼠标移出元素的边框及以内区域时触发该事件
+mouseenter  鼠标移入元素的边框及以内区域时触发该事件，移入子元素不会触发，相当于AS3的 ROLL_OVER
+mouseleave  鼠标移出元素的边框及以内区域时触发该事件，移出子元素不会触发，相当于AS3的 ROLL_OUT
+mousedown  鼠标在元素的边框及以内区域按下时触发该事件
+mouseup  鼠标在元素的边框及以内区域弹起时触发该事件
+mousewheel  鼠标在元素的边框及以内区域滚动滚轮时触发该事件，火狐使用的是 DOMMouseScroll 事件
+scroll  滚动条事件
+click  鼠标单击元素的边框及以内区域时触发该事件
+dblclick  鼠标双击元素的边框及以内区域时触发该事件
+
+// 触摸事件（pc端无效）
+touchstart  触摸开始事件
+touchmove  触摸移动事件（在事件处理函数中最好调用 preventDefault() 来阻止浏览器的默认移动行为，否则可能会影响到当前事件处理函数的执行）
+touchend  触摸结束事件（注意，并不等同于mouseup，无论手指滑动到哪里，都可以出发事件，且event.target永远指向touchstart时的event.target）
+touchcancel  当系统停止跟踪触摸时触发（经测试貌似IOS无法触发，而部分Android设备在手指滑动一段距离后抬起会触发该事件，但同时不会触发touchend）
+
+// 手势事件
+iOS 2.0 中的 Safari 还引入了一组手势事件。当两个手指触摸屏幕时就会产生手势,手势通常会改变 显示项的大小,或者旋转显示项。有三个手势事件,分别介绍如下。
+gesturestart  当一个手指已经按在屏幕上而另一个手指又触摸屏幕时触发。
+gesturechange  当触摸屏幕的任何一个手指的位置发生变化时触发。
+gestureend  当任何一个手指从屏幕上面移开时触发。
+只有两个手指都触摸到事件的接收容器时才会触发这些事件。
+在一个元素上设置事件处理程序，意味着两个手指必须同时位于该元素的范围之内，才能触发手势事件(这个元素就是目标)。
+由于这些事件冒泡，所以将事件处理程序放在文档上也可以处理所有手势事件。此时，事件的目标就是两个手指都位于其范围内的那个元素。
+触摸事件和手势事件之间存在某种关系。
+当一个手指放在屏幕上时，会触发 touchstart 事件。
+如果另一个手指又放在了屏幕上，则会先触发 gesturestart 事件，随后触发基于该手指的 touchstart 事件。
+如果一个或两个手指在屏幕上滑动,将会触发 gesturechange 事件。
+但只要有一个手指移开，就会触发 gestureend 事件，紧接着又会触发基于该手指的 touchend 事件。
+与触摸事件一样，每个手势事件的 event 对象都包含着标准的鼠标事件属性：bubbles、cancelable、view、clientX、clientY、screenX、screenY、detail、altKey、shiftKey、 ctrlKey 和 metaKey。
+此外，还包含两个额外的属性：rotation 和 scale。
+其中，rotation 属性表示手指变化引起的旋转角度，负值表示逆时针旋转，正值表示顺时针旋转(该值从 0 开始)。
+而 scale 属性表示两个手指间距离的变化情况(例如向内收缩会缩短距离)，这个值从 1 开始，并随距离拉大而增长，随距离缩短而减小。
+
+
+// 移动设备感应事件(html5新增)
+onorientationchange  当用户垂直或水平旋转其移动设备时触发。
+注释：由于 orientationchange 事件与 window 对象绑定，因此能够直接使用 window.orientation 属性来判断设备方向：
+window.orientation; //属性对 portrait 视图返回 0，对 landscape 视图返回 90 或 -90。
+
+// 键盘事件
+keydown  某个键盘按键被按下事件
+keyup  某个键盘按键被松开事件
+keypress  某个键盘按键被单击事件
+
+// 被拖动元素事件
+dragstart  当拖动操作开始时触发该事件
+drag  当拖动元素时触发该事件
+dragend  当拖动操作结束时触发该事件
+
+// 放置目标元素事件
+dragenter  当有效的放置目标感应到有元素被拖动到其范围时触发该事件（会多次触发）
+dragleave  当有效的放置目标感应到有元素被拖离其范围时触发该事件（会多次触发）
+dragover  当有效的放置目标感应到有元素被拖动到其上方时触发该事件（会多次触发）
+drop  当有效的放置目标允许放置被拖动元素时触发该事件
+
+// 以下事件多用于表单
+focus  当获得焦点时触发该事件（无论表单元素是否设置了readonly，该事件都能正常触发）
+blur  当失去焦点时触发该事件
+invalid  当元素无效时触发该事件
+select  当文本框中的文本被选取时触发该事件
+submit  当单击提交按钮时触发该事件
+reset  当单击重置按钮时触发该事件
+input  输入事件，多用于文本字段，当元素获得用户输入时触发该事件（IE不支持）
+propertychange  输入事件，多用于文本字段，当元素获得用户输入时触发该事件（IE专用）
+change  改变事件，多用于文本字段，当输入结束时，如果值变更则触发该事件。注意，使用js直接给value赋值的操作不会触发该事件。
+formchange  当表单改变时触发该事件
+forminput  当表单获得用户输入时触发该事件
+
+// 媒体事件
+abort  当发生中止事件时触发该事件
+canplay  当媒介能够开始播放但可能因缓冲而需要停止时触发该事件
+canplaythrough  当媒介能够无需因缓冲而停止即可播放至结尾时触发该事件
+durationchange  当媒介长度改变时触发该事件
+emptied  当媒介资源元素突然为空时（网络错误、加载错误等）触发该事件
+ended  当媒介已抵达结尾时触发该事件
+error  当在元素加载期间发生错误时触发该事件
+loadeddata  当加载媒介数据时触发该事件
+loadedmetadata  当媒介元素的持续时间以及其他媒介数据已加载时触发该事件
+loadstart  当浏览器开始加载媒介数据时触发该事件
+pause  当媒介数据暂停时触发该事件
+play  当媒介数据将要开始播放时触发该事件
+playing  当媒介数据已开始播放时触发该事件
+progress  当浏览器正在取媒介数据时触发该事件
+ratechange  当媒介数据的播放速率改变时触发该事件
+seeked  当媒介元素的定位属性不再为真且定位已结束时触发该事件
+seeking  当媒介元素的定位属性为真且定位已开始时触发该事件
+stalled  当取回媒介数据过程中（延迟）存在错误时触发该事件
+suspend  当浏览器已在取媒介数据但在取回整个媒介文件之前停止时触发该事件
+timeupdate  当媒介改变其播放位置时触发该事件
+volumechange  当媒介改变音量亦或当音量被设置为静音时触发该事件
+waiting  当媒介已停止播放但打算继续播放时触发该事件
+readystatechange  当就绪状态改变时触发该事件（HTML5事件）。该事件对象有一个 readyState 属性，可能包含以下五个值中的一个：
+	1）uninitialized（未初始化）：对象存在但尚未初始化。
+	2）loading（正在加载）：对象正在加载数据。
+	3）loaded（加载完毕）：对象加载数据完成。
+	4）interactive（交互）：可以操作对象了，但还没有完全加载。
+	5）complete（完成）：对象已经加载完毕。
+
+// 打印事件
+afterprint  在打印文档之后触发该事件
+beforeprint  在文档打印之前触发该事件
+beforeonload  在文档加载之前触发该事件
+
+
+// 变动事件（IE8及以下浏览器不支持）
+// DOM2级的变动（mutation）事件能在DOM中的某一部分发生变化时给出提示。
+DOMSubtreeModified  在DOM结构中发生的任何变化时触发。这个事件在其他任何事件触发后都会触发。
+DOMNodeInserted  在一个节点作为子节点被插入到另一个节点中时触发。
+DOMNodeRemoved  在节点从其父节点中被移除时触发。
+DOMNodeInsertedIntoDocument  在一个节点被直接插入文档或通过子树间接插入到文档之后触发。这个事件在DOMNodeInserted之后触发。
+DOMNodeRemovedFromDocument  在一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发。这个事件在DOMNodeRemoved之后触发。
+DOMAttrModified  在特性被修改之后触发。
+DOMCharacterDataModified  在文本节点的值发生变化时触发。
+// 使用下列代码可以检测出浏览器是否支持变动事件:
+var isSupported = document.implementation.hasFeature("MutationEvents", "2.0");
+
+
+
+* event属性（各浏览器通用）
+
+altKey  当事件被触发时，返回 "ALT" 是否被按下
+shiftKey  当事件被触发时，返回 "SHIFT" 键是否被按下
+ctrlKey  当事件被触发时，返回 "CTRL" 键是否被按下
+metaKey  当事件被触发时，返回 "meta" 键是否被按下（IE8及以下浏览器不支持）
+pageX  当事件被触发时，返回鼠标指针相对于文档的垂直坐标（IE8及以下浏览器不支持）
+pageY  当事件被触发时，返回鼠标指针相对于文档的垂直坐标（IE8及以下浏览器不支持）
+clientX  当事件被触发时，返回鼠标指针相对于窗口的水平坐标
+clientY  当事件被触发时，返回鼠标指针相对于窗口的垂直坐标
+screenX  当事件被触发时，返回鼠标指针相对于屏幕的水平坐标
+screenY  当事件被触发时，返回鼠标指针相对于屏幕的垂直坐标
+wheelDelta  返回页面的滚动方向，向上滚动为 +120，向下滚动为 -120。火狐的属性名为 detail 取值为 ±3。
+
+// 触摸事件的特有属性
+touches  返回一个包含当前位于屏幕上的所有手指的 Touch 对象的数组。
+targetTouches  返回一个包含位于当前事件对象（event.target）上手指的 Touch 对象的数组。
+changedTouches  返回一个包含当前事件手指的 Touch 对象的数组，数组的最后一个 Touch 对象为最后一次触摸屏幕的触摸点。
+// 一般的单点触摸情况下，该 Touch 数组只包含一个 Touch 对象。
+// 注意，在 touchend 事件中由于手指已经离开屏幕，因此只有 changedTouches 属性包含当前离开屏幕的 Touch 对象。
+// 由于 jQuery 在事件回调函数中的 event 对象是封装过的，如果需要访问原生的触摸事件对象，则需要用过 event.originalEvent 属性进行访问。
+
+// 每一个 Touch 对象都包含以下属性：
+identifier  标识触摸的唯一ID（包含0）。
+clientX/clientY
+pageX/pageY
+screenX/screenY
+target  触摸点的目标DOM对象
+webkitForce/force  触摸点的力度（实测为undefined）
+webkitRadiusX/radiusX  触摸点的水平半径（实测为undefined）
+webkitRadiusY/radiusY  触摸点的垂直半径（实测为undefined）
+webkitRotationAngle  触摸点的旋转角度？（实测为undefined）
+
+button  返回当事件被触发时，哪个鼠标按钮被点击
+// 一般情况下0、1、2分别代表左中右键
+// IE中1、4、2分别代表左中右键
+
+relatedTarget  返回与事件的目标节点相关的节点（IE不支持，IE中可以使用 toElement 代替）
+// 对于 mouseover / mouseenter 事件来说，该属性是鼠标指针移到目标节点上时所离开的那个节点。
+// 对于 mouseout / mouseleave 事件来说，该属性是离开目标时，鼠标指针进入的节点。
+// 对于其他类型的事件来说，这个属性没有用。
+
+
+
+* IE 支持的 event 属性（目前测试，谷歌和苹果浏览器均支持，但是火狐浏览器不支持）
+
+cancelBubble  如果事件处理函数想阻止事件继续冒泡，必须把该属性设为 true。（相当于 W3C 标准属性中的 stopPropagation()）
+keyCode  对于 keypress 事件，该属性声明了被敲击的键生成的 Unicode 字符码。对于 keydown 和 keyup 事件，它指定了被敲击的键的虚拟键盘码。虚拟键盘码可能和使用的键盘的布局相关。
+returnValue  如果设置了该属性，它的值比事件句柄的返回值优先级高。把这个属性设置为 fasle，可以取消发生事件的源元素的默认动作。（相当于 W3C 标准属性中的 preventDefault()）
+srcElement  对于生成事件的 Window 对象、Document 对象或 Element 对象的引用。（相当于 W3C 标准属性中的 target）
+fromElement  对于 mouseover 和 mouseout 事件，该属性引用移出鼠标的元素。
+toElement  对于 mouseover 和 mouseout 事件，该属性引用移入鼠标的元素。
+offsetX,offsetY  发生事件的地点在事件源元素的坐标系统中的 x 坐标和 y 坐标。（边框外侧左上角为0位）
+x,y  发生事件的地点相对于窗口的坐标。
+
+
+
+* W3C 标准 event 属性（IE8及以下浏览器不支持）
+
+bubbles  返回布尔值，指示事件是否是冒泡事件类型。
+cancelable  返回布尔值，指示事件是否拥有可取消的默认动作。
+currentTarget  返回其事件监听器触发该事件的元素。
+eventPhase  返回调用事件处理程序的阶段：1表示捕获阶段，2表示“处于目标”，3表示冒泡阶段。
+target  返回触发此事件的元素（事件的目标节点）
+timeStamp  返回这个事件被创建的时间，该时间为 1970 年 1 月 1 日至今的毫秒数。
+type  返回当前 Event 对象表示的事件的名称。
+evnetPhase  调用事件处理程序的阶段：1表示捕获阶段，2表示“处于目标”，3表示冒泡阶段。
+trusted  为true表示事件是浏览器生成的。为false表示事件是由开发人员通过JavaScript创建的。（DOM3级事件中新增，IE8及以下浏览器不支持）
+defaultPrevented  为true表示已经调用了preventDefault()。（DOM3级事件中新增，IE8及以下浏览器不支持）
+
+
+
+* W3C 标准 event 方法
+
+initEvent(); //初始化新创建的 Event 对象的属性（IE8及以下浏览器不支持）
+preventDefault(); //通知浏览器不要执行与事件关联的默认动作（比如在<a>链接的单击事件处理函数中调用，可以阻止链接的跳转动作）
+stopPropagation(); //阻止事件继续向父节点冒泡，但是仍然可以在同级节点中传播。（IE8及以下浏览器不支持）
+stopImmediatePropagation(); //阻止事件继续向父节点以及同级之后的节点冒泡。（DOM3级事件中新增，IE8及以下浏览器不支持）
+
+注意，如果事件处理函数返回值为 false，则相当于同时执行了 event.preventDefault() 和 event.stopPropagation()。
+event.returnValue = false; // 该属性设置为 false，其作用等同于 return false。但该属性已经被标准废除，尽量不要使用。
+
+
+
+* IE10+ 专有事件
+
+// 判断IE浏览器是否支持pointer事件
+var supportPointer = !!window.navigator.pointerEnabled || !!window.navigator.msPointerEnabled;
+
+Window.navigator.msPointerEnabled语句只会判断浏览器是否支持MSPointer相关的事件，而不会判断用户的设备是否支持触摸操作。
+目前只有在IE10上该对象不会返回undefined，其它版本的浏览器均视该对象不存在。
+如果你想判断用户的设备是否支持触摸操作，应该使用Window.navigator.msMaxTouchPoints，如果该对象存在并且返回的结果大于1，则表示设备支持触摸操作并且是支持多点触摸的。
+
+// 判断IE浏览器是否支持多点pointer事件
+// window.navigator.msMaxTouchPoints 属性可以返回最大支持的指针数
+var supportMultiPointer = window.navigator.maxTouchPoints && window.navigator.msMaxTouchPoints > 1;
+
+// 事件类型
+pointerdown   / MSPointerDown
+pointermove   / MSPointerMove
+pointerup     / MSPointerUp
+pointerover   / MSPointerOver
+pointerout    / MSPointerOut
+pointerenter  / MSPointerEnter
+pointerleave  / MSPointerLeave
+pointerhover  / MSPointerHover
+pointercancel / MSPointerCancel
+
+// event对象属性
+e.pointerType; // 判断指针类型，有以下3个常量
+// MSPOINTER_TYPE_TOUCH = "touch" || 2
+// MSPOINTER_TYPE_PEN = "pen" || 3
+// MSPOINTER_TYPE_MOUSE = "mouse" || 4
+
+e.currentPoint; // 返回当前事件的指针对象
+e.pointerId; // 返回当前事件的指针对象ID
+e.pressure; // 返回当前事件的指针对象的归一化压力值[0-1]
+e.width; // 返回接触点的CSS像素宽度
+e.height; // 返回接触点的CSS像素高度
+
+// 指针取消
+在使用触控或笔输入时，有时屏幕上的指针可能被取消。
+例如，如果你的屏幕不支持超过两个同时触控点，而你在屏幕上添加了第三个手指，那么其中一个触控点将被取消，因为硬件不能跟踪三个点。 
+指针取消由 MSPointerCancel 事件来指定。
+
+// 平移和缩放
+在执行平移和缩放期间，不会触发指针事件。
+在类似前面的画图应用程序示例的方案中，你可以在一个区域上禁用平移和缩放，这样就可以根据自己的需要使用这些事件。
+例如，这可通过使用级联样式表 (CSS) 来实现。
+.disablePanZoom {
+	-ms-touch-action : none ; /* for *IE10 */
+	touch-action : none ;
+}
+
+// 触控选择
+在 Internet Explorer 10 中，你可以通过在文本上方或附近点击来选中一个字。
+如果你想要禁用文本选择，请按照你在 Windows Internet Explorer 9 中的操作进行。
+element.addEventListener("selectstart", function(e) { e.preventDefault(); }, false);
+
+// 上下文菜单
+在 Windows Internet Explorer 中长按某些元素会显示一个固定的视件，指示将要显示的上下文菜单。
+如果抬起手指，将会显示上下文菜单。如果将手指拖到一边，视件将被取消且不显示该上下文菜单。
+如果你根本不需要上下文菜单，例如要求用户按下手指持续一段时间的游戏，则可能要禁用默认的上下文菜单和提示视件。
+若要执行此操作，只需取消两个事件。
+// Disables visual
+element.addEventListener("MSHoldVisual", function(e) { e.preventDefault(); }, false);
+// Disables menu
+element.addEventListener("contextmenu", function(e) { e.preventDefault(); }, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

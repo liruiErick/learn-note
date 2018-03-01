@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<!-- Canvas必须由属性来设置宽高，并且它不支持百分比值，默认宽高为300*150，如果用样式设置宽高，画布将会在默认宽高基础上被缩放 -->
+<canvas id="myCanvas" width="400" height="300" style="background:#ccc;">
+您的浏览器不支持canvas元素，请更新或更换您的浏览器。
+</canvas>
+<script type="text/javascript">
+	var canvas = document.getElementById("myCanvas");
+	var context=canvas.getContext("2d");
+
+	if (context){ 
+		context.fillStyle="red";
+		context.fillRect(50,25,100,100);
+		context.fillStyle="green";
+		context.globalCompositeOperation="xor";
+		//context.globalAlpha=0.5;	
+		context.beginPath();
+		context.arc(150,125,50,0,Math.PI*2,true);
+		context.closePath();
+		context.fill();
+	} else { 
+    	alert("您的浏览器不支持Canvas!"); 
+	}
+</script>
+</body>
+</html>
+

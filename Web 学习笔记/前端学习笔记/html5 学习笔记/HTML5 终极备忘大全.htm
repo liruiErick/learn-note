@@ -1,0 +1,1303 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML5终极备忘大全</title>
+<style>
+/*by zhangxinxu wordpress*//*common*/
+a { color: #34538b; text-decoration: none; }
+h2 a:visited { color: #486aaa; }
+a:hover { color: #147; text-decoration: underline; }
+a[target='_blank']:after { content: '⤴'; display: inline-block; font-weight: normal; font-size: 12px; }
+p, form, ul, ol { margin: 0; padding: 0; list-style-type: none; }
+img { border: 0; max-width: 100%; }
+.clear { clear: both; }
+.center { text-align: center; }
+.hidden { display: none; }
+hr { display: none; }
+.ml2 { margin-left: 2px; }
+.ml5 { margin-left: 5px; }
+.ml10 { margin-left: 10px; }
+.ml20 { margin-left: 20px; }
+.mr2 { margin-right: 2px; }
+.mr5 { margin-right: 5px; }
+.mr10 { margin-right: 10px; }
+.mr20 { margin-right: 20px; }
+.mt2 { margin-top: 2px; }
+.mt5 { margin-top: 5px; }
+.mt10 { margin-top: 10px; }
+.mt20 { margin-top: 20px; }
+.mb2 { margin-bottom: 2px; }
+.mb5 { margin-bottom: 5px; }
+.mb10 { margin-bottom: 10px; }
+.mb20 { margin-bottom: 20px; }
+.nowrap { white-space: nowrap; }
+.imgpad { padding: 3px; border: 1px solid #ccc; box-shadow: 1px 2px 3px rgba(0,0,0,.5); }
+.g { color: #999; }
+.l { float: left; }
+.r { float: right; }
+.trans { transition: all 0.3s ease; }
+html, body { _width: 100%; _height: 100%; _overflow: hidden; margin: 0; padding: 0; }
+body { display: block; _font-size: 0; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; background: #fff; color: #333; }
+.entry p { padding: 8px 0; }
+.params_table { background: #a0b3d6; font-size: 12px; }
+.params_table th { border: 3px solid #fff; background: #f0f3f9; text-align: center; }
+.params_table td { padding: 2px 4px; border: 3px solid #fff; background: #f9f9f9; line-height: 20px; }
+.params_table tr:hover { opacity: 0.8; filter: Alpha(opacity=80); }
+</style>
+</head>
+<body>
+<div id="content" class="ml10 mr10">
+	<h2>HTML5终极备忘大全（图片版+文字版）</h2>
+	<div class="entry">
+		<h3>一、文字备忘之标签</h3>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table">
+			<caption>
+			<strong>HTML5中新增的标签</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">&lt;article&gt;</th>
+					<td>定义文章</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;aside&gt;</th>
+					<td>定义页面内容旁边的内容</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;audio&gt;</th>
+					<td>定义声音内容</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;canvas&gt;</th>
+					<td>定义图形</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;command&gt;</th>
+					<td>定义一个控制按钮</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;datagrid&gt;</th>
+					<td>指树或表格状数据格式中的动态数据</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;datalist&gt;</th>
+					<td>定义一个下拉列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;details&gt;</th>
+					<td>定义一个元素的细节</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dialog&gt;</th>
+					<td>定义会话或人的交谈</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;embed&gt;</th>
+					<td>定义额外的交互内容或插件</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;figcaption&gt;</th>
+					<td>定义指定元素的标题</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;figure&gt;</th>
+					<td>定义一组媒体内容，以及他们的标题</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;footer&gt;</th>
+					<td>为章节或页面定义一个底部</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;header&gt;</th>
+					<td>为章节或页面定义一个头部</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;hgroup&gt;</th>
+					<td>定义文档中某段落的信息</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;keygen&gt;</th>
+					<td>定义表单生成的关键</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;mark&gt;</th>
+					<td>定义被标记的文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;meter&gt;</th>
+					<td>定义预定义范围内的测量</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;nav&gt;</th>
+					<td>定义导航链接</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;output&gt;</th>
+					<td>定义某种类型的输出</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;progress&gt;</th>
+					<td>定义任意种类任务的进程</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;rp&gt;</th>
+					<td>定义浏览器不支持ruby元素的替代者</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;rt&gt;</th>
+					<td>定义ruby注释的解释</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;ruby&gt;</th>
+					<td>定义 ruby 注释（中文注音或字符）。</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;section&gt;</th>
+					<td>定义章节</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;source&gt;</th>
+					<td>定义媒体资源</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;summary&gt;</th>
+					<td>定义某"detail"元素的头部</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;time&gt;</th>
+					<td>定义日期/时间</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;video&gt;</th>
+					<td>定义视频</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;wbr&gt;</th>
+					<td>定义可能的换行</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>HTML5支持且同时存在于HTML4中的标签</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">&lt;!– …–&gt;</th>
+					<td>定义注释</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;!DOCTYPE&gt;</th>
+					<td>定义文档类型</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;a&gt;</th>
+					<td>定义超链接</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;abbr&gt;</th>
+					<td>定义缩写</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;address&gt;</th>
+					<td>定义地址元素</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;area&gt;</th>
+					<td>定义图片地图的某区域</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;b&gt;</th>
+					<td>定义加粗文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;base&gt;</th>
+					<td>定义整个页面的基础URL</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;bdo&gt;</th>
+					<td>定义文本显示的方向</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;blockquote&gt;</th>
+					<td>定义一个长引用</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;body&gt;</th>
+					<td>定义主体元素</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;br&gt;</th>
+					<td>插入单个的换行</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;button&gt;</th>
+					<td>定义按钮</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;caption&gt;</th>
+					<td>定义表格的标题</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;cite&gt;</th>
+					<td>定义引用</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;code&gt;</th>
+					<td>定义计算机代码文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;col&gt;</th>
+					<td>定义表格列的属性</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;colgroup&gt;</th>
+					<td>定义表格列的组</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dd&gt;</th>
+					<td>定义个定义描述</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;del&gt;</th>
+					<td>定义删除文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dfn&gt;</th>
+					<td>定义个定义项</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;div&gt;</th>
+					<td>定义文档章节</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dl&gt;</th>
+					<td>定义定义列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dt&gt;</th>
+					<td>定义定义项</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;em&gt;</th>
+					<td>定义强调文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;fieldset&gt;</th>
+					<td>定义控件组</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;form&gt;</th>
+					<td>定义表单</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;h1&gt;到&lt;h6&gt;</th>
+					<td>定义头部1到头部6</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;head&gt;</th>
+					<td>定义文档信息</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;hr&gt;</th>
+					<td>定义水平线</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;html&gt;</th>
+					<td>定义个html文档</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;i&gt;</th>
+					<td>定义倾斜文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;iframe&gt;</th>
+					<td>定义内联替代窗口（框架）</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;img&gt;</th>
+					<td>定义个图片</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;input&gt;</th>
+					<td>定义输入域</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;ins&gt;</th>
+					<td>定义插入文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;kbd&gt;</th>
+					<td>定义键盘文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;label&gt;</th>
+					<td>定义表单控件的标签</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;legend&gt;</th>
+					<td>定义控件组的标题</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;li&gt;</th>
+					<td>定义列表项</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;link&gt;</th>
+					<td>定义相关资源</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;map&gt;</th>
+					<td>定义图片地图</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;menu&gt;</th>
+					<td>定义菜单列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;meta&gt;</th>
+					<td>定义元信息</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;noscript&gt;</th>
+					<td>定义无脚本章节</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;object&gt;</th>
+					<td>定义内嵌对象</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;ol&gt;</th>
+					<td>定义一个有序列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;optgroup&gt;</th>
+					<td>定义个选项组</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;option&gt;</th>
+					<td>定义下拉列表选项</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;p&gt;</th>
+					<td>定义段落</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;params&gt;</th>
+					<td>定义object的参数</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;pre&gt;</th>
+					<td>定义预格式化文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;q&gt;</th>
+					<td>定义短引用</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;s&gt;</th>
+					<td>定义不再正确的文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;samp&gt;</th>
+					<td>定义简单的计算机代码</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;script&gt;</th>
+					<td>定义脚本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;select&gt;</th>
+					<td>定义可选择列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;small&gt;</th>
+					<td>定义小点的文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;span&gt;</th>
+					<td>定义文档章节</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;strong&gt;</th>
+					<td>定义强调的文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;style&gt;</th>
+					<td>定义一个样式定义</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;sub&gt;</th>
+					<td>定义下标文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;sup&gt;</th>
+					<td>定义上标文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;table&gt;</th>
+					<td>定义表格</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;tbody&gt;</th>
+					<td>定义表格的主体</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;td&gt;</th>
+					<td>定义表格单元格</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;textarea&gt;</th>
+					<td>定义文本域</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;tfoot&gt;</th>
+					<td>定义表格底部</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;th&gt;</th>
+					<td>定义表格头</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;thead&gt;</th>
+					<td>定义表格头</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;title&gt;</th>
+					<td>定义文档的标题</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;tr&gt;</th>
+					<td>定义表格行</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;ul&gt;</th>
+					<td>定义无序列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;var&gt;</th>
+					<td>定义变量</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>HTML5不支持的标签</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">&lt;acronym&gt;</th>
+					<td>在HTML4.01中定义首字母缩略词</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;applet&gt;</th>
+					<td>定义内嵌的小应用程序</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;basefont&gt;</th>
+					<td>定义文档中基本的字体属性</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;big&gt;</th>
+					<td>让文字变大点</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;center&gt;</th>
+					<td>居中显示文字或内容</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;dir&gt;</th>
+					<td>定义目录列表</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;font&gt;</th>
+					<td>指定字体种类，大小，颜色等</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;frame&gt;</th>
+					<td>在框架集中定义独有的窗体</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;frameset&gt;</th>
+					<td>定义框架集，包含多个窗体</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;noframe&gt;</th>
+					<td>当浏览器不支持框架的时候显示文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;strike&gt;</th>
+					<td>定义删除线文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;tt&gt;</th>
+					<td>定义电传打字机文本</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;u&gt;</th>
+					<td>定义下划线文字</td>
+				</tr>
+				<tr>
+					<th scope="row">&lt;xmp&gt;</th>
+					<td>定义格式化的文字</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>二、HTML5文字备忘之全局属性</h3>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table">
+			<caption>
+			<strong>HTML5新添加全局属性</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">contenteditable</th>
+					<td><p>指定是否允许用户编辑内容</p>
+						<p><strong>true | false</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">contextmenu</th>
+					<td><p>定义元素的上下文菜单</p>
+						<p><strong>menu id</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">draggable</th>
+					<td><p>指定是否允许用户拖拽元素</p>
+						<p><strong>true|false|auto</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">dropzone</th>
+					<td><p>指定当拖拽数据放开的时候会发生什么</p>
+						<p><strong>copy|move|link</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">hidden</th>
+					<td><p>指定元素不相干</p>
+						<p><strong>hidden</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">spellcheck</th>
+					<td><p>指定是否元素要进行拼写检查</p>
+						<p><strong>true | false</strong></p></td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>已存在的全局属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">accesskey</th>
+					<td><p>指定访问元素的快捷键</p>
+						<p><strong>字符</strong>(character)</p></td>
+				</tr>
+				<tr>
+					<th scope="row">class</th>
+					<td><p>指定元素的类名（为样式表）</p>
+						<p><strong>类名</strong>(classname)</p></td>
+				</tr>
+				<tr>
+					<th scope="row">dir</th>
+					<td><p>指定元素文本内容的对齐方向</p>
+						<p><strong>ltr|rtl</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">id</th>
+					<td><p>为元素指定唯一的id</p>
+						<p><strong>id</strong></p></td>
+				</tr>
+				<tr>
+					<th scope="row">lang</th>
+					<td><p>为元素内容指定语言代码</p>
+						<p><strong>语言代码</strong>(language code)</p></td>
+				</tr>
+				<tr>
+					<th scope="row">style</th>
+					<td><p>指定元素的内联样式</p>
+						<p><strong>样式定义</strong>(style definition)</p></td>
+				</tr>
+				<tr>
+					<th scope="row">tabindex</th>
+					<td><p>指定元素的tab顺序</p>
+						<p><strong>数值</strong>(nubmer)</p></td>
+				</tr>
+				<tr>
+					<th scope="row">title</th>
+					<td><p>指定元素额外的信息</p>
+						<p><strong>文本</strong>(text)</p></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>三、HTML5文字备忘之事件属性</h3>
+		<p><strong>1. window对象</strong></p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>window新增事件属性</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onafterprint</th>
+					<td>在文档打印之后执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onbeforeprint</th>
+					<td>在文档打印之前执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onbeforeloaded</th>
+					<td>在文档加载完毕之前执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onerror</th>
+					<td>当错误发生时执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onhaschange</th>
+					<td>当文档发生改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmessage</th>
+					<td>当该信息被触发的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onoffline</th>
+					<td>当文档离线的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ononline</th>
+					<td>当文档上线的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onpagehide</th>
+					<td>当窗体隐藏的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onpageshow</th>
+					<td>当窗体显示的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onpopstate</th>
+					<td>当窗体历史改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onredo</th>
+					<td>当文档执行恢复上一次操作的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onresize</th>
+					<td>当窗体大小改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onstorage</th>
+					<td>当文档加载ok的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onondo</th>
+					<td>当文档执行恢复之前一次操作的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onunload</th>
+					<td>当用户离开文档的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>window已存在事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onblur</th>
+					<td>当窗体失去焦点的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onfocus</th>
+					<td>当窗体获得焦点的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onload</th>
+					<td>当文档加载完毕的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<p><strong>2. form表单的事件属性</strong></p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>form表单新增事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">oncontextmenu</th>
+					<td>当上下文菜单被触发的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onformchange</th>
+					<td>当表单发生改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onforminput</th>
+					<td>当表单获得用户输入时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">oninput</th>
+					<td>当元素获得用户输入的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">oninvalid</th>
+					<td>当元素验证无效的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong> form表单已支持事件属性</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onblur</th>
+					<td>当元素失去焦点的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onchange</th>
+					<td>当元素改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onfocus</th>
+					<td>当元素获得焦点的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onselect</th>
+					<td>当元素被选择的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onsubmit</th>
+					<td>当表单被提交的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>HTML5不支持的form表单事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onreset</th>
+					<td>当表单重置的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<p><strong>3. 键盘事件</strong></p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>已存在的键盘事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onkeydown</th>
+					<td>当键按下的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onkeypress</th>
+					<td>当键按下并释放的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onkeyup</th>
+					<td>当键抬起的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<p><strong>4. 鼠标事件</strong></p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>HTML5新增鼠标事件属性</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">ondrag</th>
+					<td>当元素被拖拽的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ondragend</th>
+					<td>当元素拖拽操作结束的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ondragenter</th>
+					<td>当元素拖拽进入释放对象的时候</td>
+				</tr>
+				<tr>
+					<th scope="row">ondragleave</th>
+					<td>当元素拖拽离开释放对象的时候</td>
+				</tr>
+				<tr>
+					<th scope="row">ondragover</th>
+					<td>当元素拖拽经过释放对象的时候</td>
+				</tr>
+				<tr>
+					<th scope="row">ondragstart</th>
+					<td>当元素拖拽操作开始的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ondrop</th>
+					<td>当拖拽元素被放开的时候</td>
+				</tr>
+				<tr>
+					<th scope="row">onmouswheel</th>
+					<td>当鼠标滑轮滚动的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onscroll</th>
+					<td>当元素的滚动条滚动的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>已存在的鼠标事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onclick</th>
+					<td>当鼠标点击的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ondbclick</th>
+					<td>当鼠标双击的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmousedown</th>
+					<td>当鼠标按下的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmousemove</th>
+					<td>当鼠标移动的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmouseout</th>
+					<td>当鼠标移出元素的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmouseover</th>
+					<td>当属性进入元素的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onmouseup</th>
+					<td>当鼠标抬起的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<p><strong>5. 媒体事件</strong></p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>HTML5中新增媒体事件</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">oncanplay</th>
+					<td>当媒体可以播放的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">oncanplaythrough</th>
+					<td>当媒体可以播放到最后的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ondurationchange</th>
+					<td>当媒体长度改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onemptied</th>
+					<td>当媒体资源元素变成空的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onended</th>
+					<td>当媒体已经到达最后的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onerror</th>
+					<td>当加载元素发生错误的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onloadeddata</th>
+					<td>当媒体数据加载完毕的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onloadedmetadata</th>
+					<td>当媒体元素的持续时间加载完毕的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onloadstart</th>
+					<td>当浏览器开始加载媒体数据的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onpause</th>
+					<td>当媒体数据暂停的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onplay</th>
+					<td>当媒体数据继续开始播放的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onplaying</th>
+					<td>当媒体数据已经开始播放的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onprogress</th>
+					<td>在浏览器正在获取媒体数据的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onratechange</th>
+					<td>当媒体数据播放比率发生改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onreadystatechange</th>
+					<td>当ready-state发生改变的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onseeked</th>
+					<td>当元素的seeking属性不是true的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onseeking</th>
+					<td>当元素的seeking属性是true的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onstalled</th>
+					<td>当获取元素数据发生错误的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onsuspend</th>
+					<td>当浏览器停止获取媒体数据的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">ontimeupdate</th>
+					<td>当媒体改变其播放位置的时候执行</td>
+				</tr>
+				<tr>
+					<th scope="row">onvolumechange</th>
+					<td>当媒体音量大小发生改变的时候执行，包括无声</td>
+				</tr>
+				<tr>
+					<th scope="row">onwaiting</th>
+					<td>当媒体元素停止播放的时候</td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20">
+			<caption>
+			<strong>已存在的媒体事件属性</strong><br>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="row">onabort</th>
+					<td>碰到abort的时候执行</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>四、HTML5文字备忘之浏览器的准备情况</h3>
+		<p><strong>支持：</strong><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"><br>
+			<strong>不支持：</strong><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"><br>
+			<strong>部分支持：</strong><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></p>
+		<p><strong>注：</strong>下表格最右侧三栏指移动设备上的浏览器支持情况。</p>
+		<table width="100%" border="0" cellspacing="1" cellpadding="0" class="params_table mt20 mb20">
+			<caption>
+			<strong>HTML5文字备忘之浏览器的准备情况</strong>
+			</caption>
+			<tbody>
+				<tr>
+					<th scope="col">&nbsp;</th>
+					<th scope="col"><img alt="IE" src="http://www.zhangxinxu.com/css3/img/IE.png">
+						<p>8</p>
+					</th>
+					<th scope="col"><img alt="Firefox" src="http://www.zhangxinxu.com/css3/img/Firefox.png">
+						<p>3.6</p>
+					</th>
+					<th scope="col"><img alt="Chrome" src="http://www.zhangxinxu.com/css3/img/Chrome.png">
+						<p>9.0</p>
+					</th>
+					<th scope="col"><img alt="Safari" src="http://www.zhangxinxu.com/css3/img/Safari.png">
+						<p>5.0</p>
+					</th>
+					<th scope="col"><img alt="Opera" src="http://www.zhangxinxu.com/css3/img/Opera.png">
+						<p>11.0</p>
+					</th>
+					<th scope="col">&nbsp;</th>
+					<th scope="col"><img alt="Android" src="http://www.zhangxinxu.com/css3/img/Android.png">
+						<p>2.3</p>
+					</th>
+					<th scope="col"><img alt="Safari" src="http://www.zhangxinxu.com/css3/img/Safari.png">
+						<p>4.5</p>
+					</th>
+					<th scope="col"><img alt="Opera" src="http://www.zhangxinxu.com/css3/img/Opera.png">
+						<p>10.0</p>
+					</th>
+				</tr>
+				<tr>
+					<th scope="row">Details &amp; Summary元素</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">WebGL – 3D Canvas 制图</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">HTML5中内联SVG</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Datalist元素</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Progress &amp; Meter</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">classList(DOMTokenList)</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Ruby注解</th>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">表单验证</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Session历史管理</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">HTML5表单特征</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">拖拽和拖放</th>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">contenteditable属性</th>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Canvas的文本API</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Audio元素</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Video元素</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">dataset &amp; data – 属性</th>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">新语义元素</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="部分支持" title="部分支持" src="http://www.zhangxinxu.com/study/image/part.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Canvas(基本支持)</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">Hash改变事件</th>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">离线web应用程序</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">getElementsByClassName</th>
+					<td align="center"><img alt="不支持" title="不支持" src="http://www.zhangxinxu.com/study/image/error.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center">&nbsp;</td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+					<td align="center"><img alt="支持" title="支持" src="http://www.zhangxinxu.com/study/image/ok.gif"></td>
+				</tr>
+				<tr>
+					<th scope="row">总支持率</th>
+					<td align="center">21%</td>
+					<td align="center">55%</td>
+					<td align="center">85%</td>
+					<td align="center">67%</td>
+					<td align="center">64%</td>
+					<td align="center">&nbsp;</td>
+					<td align="center">51%</td>
+					<td align="center">50%</td>
+					<td align="center">36%</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+﻿注意！当 canvas 的宽高属性被重置的时候，所有的绘图上下文设置都将被重置，绘制出的图像也将被清除
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+// 设置下一个绘制图形的组合模式
+ctx.globalCompositeOperation="source-over";
+
+// 以下模式中，未绘制部分为 canvas 背景色，并且受到透明度的影响
+
+"source-over"  默认，新图形覆盖旧图形
+
+"destination-over"  旧图形覆盖新图形
+
+"source-atop"  绘制旧图形，再绘制新图形与旧图形的重叠部分，且新图形覆盖旧图形
+
+"destination-atop"  绘制新图形，再绘制新图形与旧图形的重叠部分，且旧图形覆盖新图形
+
+"source-in"  绘制新图形与旧图形的重叠部分，且只绘制新图形部分
+
+"destination-in"  绘制新图形与旧图形的重叠部分，且只绘制旧图形部分
+
+"source-out"  绘制新图形与旧图形的不重叠部分，且只绘制新图形部分
+
+"destination-out"  绘制新图形与旧图形的不重叠部分，且只绘制旧图形部分（擦除效果）
+
+"lighter"  新旧图形重叠部分颜色加色处理
+
+"darker"  新旧图形重叠部分颜色减色处理
+
+"copy"  只保留新图形（目前支持的浏览器很少）
+
+"xor"  绘制新图形与旧图形的不重叠部分
+
+
+// 剪切路径
+ctx.beginPath();
+ctx.arc(150,150,130,0,Math.PI*2,true);
+// 裁切路径后，之前的路径相当于一个图形遮罩，之后绘制的图形只在该圆形区域内显示
+// 如果之前的路径没有闭合，则剪切时会视为自动闭合
+ctx.clip();
+
+
+// 设置阴影，以下属性值为float值
+// 必须在绘制的图形之前设置阴影才会有效果，只要是在设置阴影之前绘制的图形均不会有阴影效果
+ctx.shadowOffsetX = 3;//正值表示向右延伸，默认值为0
+ctx.shadowOffsetY = 3;//正值表示向下延伸，默认值为0
+ctx.shadowBlur = 2;//阴影的羽化程度，默认值为0
+ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+// 清除阴影
+ctx.clearShadow();
+
+
+// 绘制文本
+// 设置字体样式
+ctx.font = "bold 45px 黑体";
+// 设置文本对齐方式
+ctx.textAlign = "center";
+// 设置文本的基线
+ctx.textBaseline = "middle"; //表示文本基线位于文本正方形空间的中间位置，默认值为"alphabetic"
+ctx.fillStyle = "white";
+// 第一个参数为要绘制文本
+// 第二、三个参数为绘制文本的坐标。锚点默认在文本的左下角，会根据对齐方式产生变化
+// 第四个参数为可选参数，用于设置文本的最大宽度，如果文本的实际宽度超过最大宽度，则文本会被横向压缩
+ctx.fillText("HTML5+CSS3", 30, 30, 300);
+ctx.strokeStyle = "Red";
+ctx.strokeText("HTML5+CSS3",30, 30, 300);
+
+// 测量文字的宽度
+var str = "以上字符串的宽度为：";
+// 返回一个TextMetrics对象
+var tm = ctx.measureText(str); // 返回值是一个对象，但里面只有一个属性：width
+ctx.fillText(str,10,80);
+ctx.fillText(tm.width, tm.width, 80);
+
+
+// 填充图案
+var img = new Image();
+img.src = "图片路径";
+// 设置当图片加载完成后执行的函数
+img.onload = function(){
+	// 创建图案  
+	// 第一个参数也可以是一个Canvas对象或者Video对象
+	// 第二个参数用于设置平铺类型，分别为"repeat"、"repeat-y"、"repeat-x"、"no-repeat"。
+	var ptn = ctx.createPattern(img,"repeat");
+	ctx.fillStyle = ptn;
+	ctx.fillRect(0,0,600,600);
+};
+
+
+// 绘制图片
+var img = new Image();
+img.src = "图片路径";
+// 设置当图片加载完成后执行的函数
+img.onload = function(){
+	var width = this.naturalWidth; // 获取图片的真实宽度
+	var height = this.naturalHeight; // 获取图片的真实高度
+	// 第一个参数也可以是一个Canvas对象或者Video对象
+	// 绘制图片到指定位置，绘制的图片大小为原始大小，与img对象的宽高缩放无关
+	ctx.drawImage(img, x, y);
+	// 绘制图片到指定位置，并设置宽高（绘制出的内容会被缩放为指定的宽高）
+	ctx.drawImage(img, x, y, width, height);
+	// 绘制图片的切片（切割图片是在图片实际宽高的基础上切割，并不会受到 img 的宽高属性的影响）
+	// sx,sy为源图被切割区域的起始坐标
+	// sw,sh为源图被切割区域的宽和高
+	// dx,dy为切割下来的图像放置在Canvas中的坐标
+	// dw,dh为切割下来的图像放置在Canvas中的宽和高
+	ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+};
+
+
+// 创建图像数据
+// 以指定的尺寸（以像素计）创建新的 ImageData 对象
+var imgData=ctx.createImageData(width,height);
+// 创建与指定的另一个 ImageData 对象尺寸相同的新 ImageData 对象（不会复制图像数据）
+var imgData=ctx.createImageData(imageData);
+// 复制画布上指定矩形的像素数据
+var imgData=ctx.getImageData(10,10,50,50);
+// 获取 imgData 对象的宽和高
+imgData.width;
+imgData.height;
+// data 属性为一个图像数据数组，其中每4个元素组成一个像素的rgba颜色值。
+// 可以对该像素数据进行像素颜色的编辑，每种颜色的取值范围为0~255。
+// 例如，遍历每一个像素的rgba颜色值：
+for (var i=0; i<imgData.data.length; i+=4) {
+	red=imgData.data[i];
+	green=imgData.data[i+1];
+	blue=imgData.data[i+2];
+	alpha=imgData.data[i+3];
+}
+
+
+// 将图像数据放回画布，参数设置如下：
+// imgData  规定要放回画布的 ImageData 对象。
+// x  ImageData 对象左上角的 x 坐标，即在画布上放置图像的位置，以像素计。
+// y  ImageData 对象左上角的 y 坐标，即在画布上放置图像的位置，以像素计。
+// 以下四个参数为可选参数，但是必须同时设置，缺一不可：
+// dirtyX  从 ImageData 对象的 x 点处开始绘制，以像素计。
+// dirtyY  从 ImageData 对象的 y 点处开始绘制，以像素计。
+// dirtyWidth  绘制 ImageData 对象的指定宽度部分。
+// dirtyHeight  绘制 ImageData 对象的指定高度部分。
+ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+
+
+// 将canvas转换成数据地址，可用图片对象加载。
+var dataURL = canvas.toDataURL();
+var img = new Image();
+img.src = dataURL;
+// 关于toDataURL(type, ratio)函数：
+// 参数type在image/png，image/jpeg，image/svg+xml等 MIME类型中选择（可以不填，默认是image/png）。
+// 如果是type="image/jpeg"，则可以有第二个参数，第二个参数ratio的值在0-1之间，表示JPEG的质量等级，否则使用浏览器内置默认质量等级。
+
+
+
+
+
+

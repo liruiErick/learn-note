@@ -1,0 +1,86 @@
+通过 itms-services 协议，发布或者分享 iOS 应用程序
+
+导读：itms-services 协议常用于 iOS 企业应用的无线部署，这可在不使用 iTunes 的情况下将内部软件发布或者分享给用户。
+一、前期准备资料：
+1、应用程序 (.ipa) 文件（使用了企业级预置描述文件）；
+2、清单 (.plist) 文件（xml格式的清单描述文件）。
+
+二、准备清单 (.plist) 文件：
+我们的清单文件时一个xml格式的文件，可以参考如下代码：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+   <key>items</key>
+   <array>
+       <dict>
+           <key>assets</key>
+           <array>
+               <dict>
+                   <key>kind</key>
+                   <string>software-package</string>
+                   <key>url</key>
+                   <string>http://domain/app.ipa</string>
+               </dict>
+               <dict>
+                   <key>kind</key>
+                   <string>display-image</string>
+                   <key>needs-shine</key>
+                   <true/>
+                   <key>url</key>
+                   <string>http://domain/logo/logo.png</string>
+               </dict>
+           </array>
+           <key>metadata</key>
+           <dict>
+               <key>bundle-identifier</key>
+               <string>domain</string>
+               <key>bundle-version</key>
+               <string>1.0.0</string>
+               <key>kind</key>
+               <string>software</string>
+               <key>subtitle</key>
+               <string>App Subtitle</string>
+               <key>title</key>
+               <string>App Title</string>
+           </dict>
+       </dict>
+   </array>
+</dict>
+</plist>
+描述文件需要注意的三个地方：
+1、两个 url 地址，即 software-package 和 display-image 的 URL，前者是所要安装的 ipa 地址，后者是安装时桌面显示的 logo 图标。
+2、metadata里需要修改 bundle-identifier 和 bundle-version，具体是什么就不用介绍了，但是要注意一定要跟所安装的 ipa 包内容一致，不然无法安装成功。
+3、可以修改title和subtitle，定制安装时弹出框的内容。
+
+三、ipa格式应用的分享或者发布
+可以使用以下两种方式提供下载：
+第1种是点击下载，在网页中加入如下的链接就行了：
+<a href="itms-services://?action=download-manifest&url=http://domain/manifest.plist">下载App</a>
+备注：请勿使用应用程序 (.ipa) 的 Web 链接方式提供下载。当打开清单文件（manifest.plist）时，设备会下载该 .ipa。虽然 URL 的协议部分是 itms-services，但 iTunes Store 并不参与此过程。
+第2种是通过JavaScript自动下载，参考代码：
+<script>
+        var url = "http://domain/manifest.plist";
+        window.location = "itms-services://?action=download-manifest&url=" + url;
+</script>
+备注：此代码放到 html 标签的 head 标记中，这样就会自动提示下载和安装了。
+
+四、设定服务器 MIME 类型
+配置 Web 服务器的MIME 类型，以便正确地传输清单文件（.plist）和应用程序文件(.ipa)。
+1、对于 OS X Server，将以下 MIME 类型添加到 Web 服务的“MIME Types”（MIME 类型）设置中：
+application/octet-stream ipa
+text/xml plist
+2、对于 MS 的 IIS，使用 IIS Manager 在服务器的“属性”页面中添加 MIME 类型：
+.ipa application/octet-stream
+.plist text/xml
+
+
+iOS7.1中，通过itms-services://方式安装ipa已经发生了改变，.plist文件必须是https://的，.ipa文件的链接则依然可以是http://的。
+
+目前的解决方案大致有以下几种：
+
+Dropbox大法。
+把plist文件放到Dropbox上，生成一个https的下载链接。
+用StarSSL之类的免费SSL服务获得SSL证书，来加密你的服务器。
+没钱的穷屌丝可以自建CA，生成自签名SSL证书加密你的服务器，然后为你的CA建一个profile，profile扔到你的http服务器，用户点击即可进行安装。详情请猛击：http://stackoverflow.com/a/22767699
+更多作者的实践请见:https://laoyur.com/?p=414

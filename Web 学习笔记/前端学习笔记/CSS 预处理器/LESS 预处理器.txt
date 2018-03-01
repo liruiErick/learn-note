@@ -1,0 +1,337 @@
+LESS安装分为两种：客户端和服务器端安装。
+
+在此下载 less.js 文件
+http://lesscss.org/
+http://lesscss.net/
+
+第三方工具：
+Windows
+http://winless.org/
+Mac（实际编译时发现不支持 max() min() 函数）
+http://incident57.com/less/
+跨平台（实际编译时 luma() 函数计算有误）
+http://koala-app.com/
+
+客户端安装：
+<link rel="stylesheet/less" type="text/css" href="css/styles.less">
+<script src="js/less.js" type="text/javascript"></script>
+
+需要注意的是：
+1、在引入“.less”文件中，“link”的“rel”属性要设置为“stylesheet/less”。
+2、LESS源文件一定要在“less.js”引入之前引入，这样才能保证LESS源文件正确编译解析。
+3、“less.js”在 Chrome 的常规模式下无法工作，Chrome 要在快捷方式的目标后追加 --allow-file-access-from-files 才行。
+
+需要特别注意的是：
+1、LESS1.4不再包含es5-shim，因此要兼容IE低版本，请在引用less.js之前手工引入es5-shim.js
+2、由于less.js会通过ajax拉取.less文件，故必须在http(s)协议下使用，即直接双击打开是无法生效的
+3、由于less.js会通过ajax拉取.less文件，故.less文件不可以跨域使用，否则会无法生效（当然，可以通过在服务端设置CORS来解决）
+4、由于.less对于IIS来说是一个陌生的后缀，高版本IIS会阻止访问，返回404，解决方案是为.less文件添加MIME为text/css，或者更简单，改后缀为.css即可
+
+如果您需要在IE6、7、8中使用，请先在引入less.js前先引入es5-shim.js
+https://github.com/es-shims/es5-shim
+该JS的作用是让IE6、7、8兼容符合ECMAScript新规范的API
+
+高级设置
+可以引入less.js之前通过创建一个全局less对象的方式来指定参数，例如：
+<script type="text/javascript">
+    less = {
+        env: "development", // 或者"production"
+        async: false,       // 异步加载导入的文件
+        fileAsync: false,   // 使用文件协议访问页面时异步加载导入的文件
+        poll: 1000,         // 在监视模式下，每两次请求之间的时间间隔（ms）
+        functions: {},      // user functions, keyed by name
+        dumpLineNumbers: "comments", // 或者"mediaQuery"，或者"all"
+        relativeUrls: false,// 是否调整相对路径
+                            // 如果为false，则url已经是相对入口less文件的
+                            // entry less file
+        rootpath: ":/a.com/"// 添加到每个url开始处的路径
+    };
+</script>
+<script src="less.js" type="text/javascript"></script>
+
+监视模式
+监视模式是一种在客户端（浏览器）使用时的特性，它会在样式文件有更新时自动刷新页面。
+在URL中加入#!watch并刷新页面即可开启监视模式。你也可以通过在console中运行less.watch()来开启监视模式。
+
+修改变量
+使用modifyVars可以在运行时修改LESS变量。当用新的变量值调用了这个函数时，LESS文件将会被重新编译，但不会被重新加载。一个基本的用法示例：
+less.modifyVars({
+    '@buttonFace': '#5B83AD',
+    '@buttonText': '#D9EEF2'
+});
+
+
+* LESS中导入外部的样式文件：
+在 CSS 中，用 @import 来导入样式的做法会增加 HTTP 的请求。
+但是在 CSS 预处理器中的导入 @import 规则和 CS S的有所不同，它只是在语义上导入不同的文件，但最终结果是生成一个CSS文件。
+并且 @import 可出现在任何位置，而不像 CSS 的 @import 那样只能放在文件第一行。
+注意：不带扩展名或带非.less的扩展名均被视为less文件;
+
+另外 @import 还提供了6个可选配置项(分别为reference,inline,less,css,once,multiple)，用来改变引入文件的特性。
+下面为各配置项的具体说明：
+1. @import (reference) "文件路径"; 
+　　将引入的文件作为样式库使用，因此文件中样式不会被直接编译为css样式规则。当前样式文件通过extend和mixins的方式引用样式库的内容。
+   注意，该引入方式会使外部less文件中定义的 @keyframes 动画无法生成，因此慎用。 
+2. @import (inline) "文件路径"; 
+　　用于引入与less不兼容的css文件，通过inline配置告知编译器不对引入的文件进行编译处理，直接输出到最终输出。注意：引入的文件和当前文件会被编译为一个样式样式
+3. @import (less) "文件路径"; 
+　　默认使用该配置项，表示引入的文件为less文件。
+4. @import (css) "文件路径"; 
+　　表示当前操作为CSS中的@import操作。当前文件会输出一个样式文件，而被引入的文件自身为一个独立的样式文件
+5. @import (once) "文件路径"; 
+　　默认使用该配置项，表示对同一个资源仅引入一次。
+6. @import (multiple) "文件路径"; 
+　　表示对同一资源可引入多次
+
+
+* LESS中用“@”符号定义变量，后面跟变量名称，并且支持运算符：
+@red: #f00;
+@fontsize: 12px;
+@full_page: 960px;
+@half_page: (@full_page - 100) / 2; //注意，减法运算符前必须加空格
+body {
+	width: @full_page;
+}
+h1 {
+	color: @red;
+	font-size: @fontsize + 10px;
+}
+h2 {
+	color: @red - #666;
+	border: (@half_page / 2) solid @red”;
+}
+//注意，LESS 不支持不同单位间值的运算。如果使用不同单位的值进行运算，那么只会单纯的计算出数值，然后使用第一个值的单位。
+
+
+* LESS中字符串插入
+在引号中引用变量需要通过 @{name} 来调用
+@base_url = 'http://www.domainname.com';
+background-image: url("@{base_url}/images/background.png");
+格式化函数
+%(string, arguments ...)
+Example:(%a 与 %d 好像没有区别)
+format-a-d: %("repetitions: %a file: %d", 1 + 2, "directory/file.less");
+// => format-a-d: "repetitions: 3 file: "directory/file.less"";
+format-a-d-upper: %('repetitions: %A file: %D', 1 + 2, "directory/file.less");
+// => format-a-d-upper: "repetitions: 3 file: %22directory%2Ffile.less%22";
+format-s: %("repetitions: %s file: %s", 1 + 2, "directory/file.less");
+// => format-s: "repetitions: 3 file: directory/file.less";
+format-s-upper: %('repetitions: %S file: %S', 1 + 2, "directory/file.less");
+// => format-s-upper: "repetitions: 3 file: directory%2Ffile.less";
+
+
+
+* LESS中的数组
+@border: 1px solid #0080ff;
+@list: apple, pear, coconut, orange;
+// 获取变量长度
+length(@border); // 输出: 3
+length(@list); // 输出: 4
+extract(@list, 3); // 输出: coconut
+
+
+
+* LESS中选择器嵌套和属性嵌套：
+section {
+	margin: 10px;
+	width: @half_page;
+	nav {
+		height: 25px;
+		a {
+			color: @red;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+等同于：
+section {
+	margin:10px;
+}
+section nav {
+	height:25px;
+}
+section nav a {
+	color: #0982c1;
+}
+section nav a:hover {
+	text-decoration: underline;
+}
+
+
+* LESS中定义混合更像是定义一个类选择器，也可以在混合中设置默认值（类似于函数）：
+.border-radius(@amount: 5px) {
+	-moz-border-radius: @amount;
+	-webkit-border-radius: @amount;
+	border-radius: @amount;
+}
+h1 {
+	.border-radius(2px);
+}
+// 也可以调用混合时传入指定的参数
+.border(@color: #ddd, @width: 1px) {
+	-moz-border-radius: @amount;
+	-webkit-border-radius: @amount;
+	border-radius: @amount;
+}
+h1 {
+	.border(@width: 2px);
+}
+
+
+* LESS中的命名空间：
+建了一个名为“default”的样式分组
+#defaults {
+	.nav_list() { … }
+	.button() { … }
+	.quote() { … }
+}
+简单的调用
+nav ul {
+	#defaults > .nav_list;
+}
+
+
+* 作用域（scope）：
+作用域是程序中的一个标准，LESS中也是。如果在样式表的root级声明一个变量，它在整个文档中都是可以调用的。
+然而，如果在一个选择器，比如id或者class中，重新定义了这个变量，那么重新定义后的新值就只能在这个选择器中可用了。
+@color: #00c; /* 蓝色 */
+#header {
+	@color: #c00; /* 红色 */
+	border: 1px solid @color; /* 红色边框 */
+}
+#footer {
+	border: 1px solid @color; /*蓝色边框 */
+}
+
+
+* LESS中使用继承选择器，那么这个选择器就会继承另一个选择器的所有样式：
+.grid {
+  border: 1px solid #ccc;
+}
+.header {
+  .grid;
+  border-width: 2px;
+}
+
+
+* LESS中自带一些颜色梯度函数：
+fade(@color, 20%); /* 返回@color的透明度为0.2的颜色值 */
+lighten(@color, 10%); /* 返回的颜色在@color基础上变亮10% */
+darken(@color, 10%); /* 返回的颜色在@color基础上变暗10% */
+saturate(@color, 10%); /* 返回的颜色在@color基础上饱和度增加10% */
+desaturate(@color, 10%); /* 返回的颜色在@color基础上饱和度降低10% */
+fadein(@color, 10%); /* 返回的颜色在@color基础上渐显增加10% */ 
+fadeout(@color, 10%); /* 返回的颜色在@color基础上渐隐增加10% */
+spin(@color, 10); /* 返回的颜色在@color基础上色调增加10 */
+spin(@color, -10); /* 返回的颜色在@color基础上色调减少10 */
+hue(@color); /* 返回的颜色@color的色调 */
+saturation(@color); /* 返回的颜色@color的饱和 */
+lightness(@color); /* 返回的颜色@color的明度 */
+hsl(hue(@color), 45%, 90%); /* 返回的颜色@color的色调和它自己的饱和度和明度 */
+mix(@color1, @color2[, @weight: 50%]); /* 返回的颜色是@color1和@color2两者的混合色，@weight 为倾向于第一个色值的比例 */
+
+
+* LESS中的条件语句：
+利用When以及<、>、=、<=、>=是十分简单和方便的（相当于 if 语句）
+.mixin (@a) when (@a >= 10) { 
+	background-color: black; 
+} 
+.mixin (@a) when (@a < 10) { 
+	background-color: white; 
+} 
+.class1 { .mixin(12); } /* 返回黑色 */
+.class2 { .mixin(6); } /* 返回白色 */
+
+而且提供了很多类型检查函数来辅助条件表达式，例如：iscolor、isnumber、isstring、iskeyword、isurl等等。
+.mixin (@a) when (iscolor(@a)) { 
+	background-color: black; 
+} 
+.mixin (@a) when (isnumber(@a)) { 
+	background-color: white; 
+} 
+.class1 { .mixin(red); } /* 返回黑色 */
+.class2 { .mixin(6); } /* 返回白色 */
+
+LESS的条件表达式同样支持 AND（并且）和 OR（或者）以及 NOT（非）来组合条件表达式
+.smaller (@a, @b) when (@a > @b) { 
+	background-color: black; 
+} 
+.math (@a) when (@a > 10) and (@a < 20) { 
+	background-color: red; 
+} 
+.math (@a) when (@a < 10), (@a > 20) {  /* “,”表示或者 */
+	background-color: blue; 
+} 
+.math (@a) when not (@a = 10)  { 
+	background-color: yellow; 
+} 
+.math (@a) when (@a = 10)  { 
+	background-color: green; 
+}
+.testSmall { .smaller(30, 10); } /* 返回黑色 */
+.testMath1 { .math(15); } /* 返回红色和黄色 */
+.testMath2 { .math(7); } /* 返回蓝色和黄色 */
+.testMath3 { .math(10); } /* 返回绿色 */
+
+在LESS语言中并没有现在的循环语句，可是像其条件语句一样，通过when来模拟出他的循环功能。
+.loopingClass (@index) when (@index > 0) {
+	.myclass@{index} {
+		z-index: @index;
+	}
+	// 递归
+	.loopingClass(@index - 1);
+}
+// 停止循环
+.loopingClass(0) {}
+// 输出
+.loopingClass(3);
+/* 转译出的CSS */
+.myclass3 {z-index: 3;}
+.myclass2 {z-index: 2;}
+.myclass1 {z-index: 1;}
+
+
+* LESS中的javascript的表达式：
+/* 在样式表中必须使用反单引号（`）将Javascript表达式括起来，表达式才会生效 */
+@string: `'mydomain'.toUpperCase()`; /* @string == 'MYDOMAIN' */
+/* 在引号中引用变量需要通过 @{name} 来调用 */
+/* 通过使用（~）符号，可以将字符串编译为非字符串 */
+@url: ~'url(www.`@{string}.toLowerCase()`.com/img/logo.jpg)'; /* @url == url(www.mydomain.com/img/logo.jpg) */
+/* 获取文档的高度（貌似只有在客户端编译时才会有效） */
+@height: `document.body.clientHeight`;  /* @height == 窗口高度值（不含单位） */
+
+
+* LESS中的注解：
+LESS中允许两种注释写法。
+标准的CSS注释，/* comment */，是有效的，而且能够通过处理并正确输出。
+行注释，// comment，同样可以用，但是不能够通过处理也不能被输出。
+
+
+* LESS中的转义(Escaping)：
+有时候需要引入一个值，它是无效的CSS语法或者LESS不能识别，通常是一些IE的Hack，要避免抛出异常并破坏LESS，就将需要避开它们。
+/* 通过使用（~）符号，可以将字符串编译为非字符串 */
+.class {
+	filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=20)";
+}
+/* 实际上会输出下面的代码 */
+.class {
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=20);
+}
+
+
+* LESS中的循环
+根据参数长度循环
+@len: length(@url);
+.loop(@i) {
+	@src: extract(@url, @i);
+	background-image+: data-uri(@src);
+	& when (@i < @len) {
+		.loop(@i+1);
+	}
+}
+.loop(1);
+
+
+

@@ -1,0 +1,125 @@
+﻿>>>>>>>>>> DisplayObject 扩展自 EventDispatcher <<<<<<<<<<
+
+* DisplayObject 方法
+
+addEventListener(type, listener, [useCapture]); //为显示对象注册事件监听
+removeEventListener(type, listener, [useCapture]); //为显示对象移除事件监听
+removeAllEventListeners([type]); //移除显示对象的全部事件监听，或者移除参数指定的事件监听
+on(type, listener, [scope], [once=false], [data], [useCapture=false]); //为显示对象注册事件监听（addEventListener的简写版）
+off(type, listener, [useCapture]); //为显示对象移除事件监听（removeEventListener的简写版）
+hasEventListener(type); //返回该显示对象是否注册了指定类型的监听
+willTrigger(type); //返回该显示对象以及其祖先对象是否注册了指定类型的监听
+dispatchEvent(new createjs.Event("customEvent",true)); //派发自定义事件
+
+clone(); //克隆一个显示对象的副本
+set({x:100, y:100, alpha:0.5}); //快捷设置该显示对象的相关属性，多用于方法链中
+isVisible(); //返回显示对象是否可见
+toString(); //返回显示对象的字符串形式
+
+hitTest(x, y); //判断指定以该显示对象为父级的局部坐标是否与该显示对象相交。（仅对非 Container 的 DisplayObject 对象有效，Container 中该方法被重写）
+globalToLocal(x, y); //返回一个 Point 对象，将一个全局坐标转换为以该显示对象为父级的局部坐标
+localToGlobal(x, y); //返回一个 Point 对象，将一个以该显示对象为父级的局部坐标转换为全局坐标
+localToLocal (x, y, target); //返回一个 Point 对象，将一个以该显示对象为父级的局部坐标转换为以参数指定的目标显示对象为父级的局部坐标
+
+cache(x, y, width, height, [scale=1]); //缓存显示对象的指定区域，详见官方文档
+updateCache(compositeOperation); //根据 compositeOperation 指定的绘图组合模式，刷新显示对象的当前缓存
+uncache(); //清除显示对象的当前缓存
+
+getStage(); //返回当前显示对象所在的 stage 对象
+getMatrix(); //返回当前显示对象的 Matrix2D 对象
+getBounds(); //返回当前显示对象相对与父级坐标系统的 Rectangle 对象（实际测试中返回的数据不准确）
+setBounds(x, y, width, height); //设置显示对象相对于父级坐标系统的边界
+
+// 设置显示对象的变换矩阵
+setTransform([x=0], [y=0], [scaleX=1], [scaleY=1], [rotation=0], [skewX=0], [skewY=0], [regX=0], [regY=0]);
+getTransformedBounds(); //详见官方文档
+getConcatenatedMatrix(); //详见官方文档
+getCacheDataURL(); //详见官方文档
+updateContext (ctx); //详见官方文档
+
+
+
+* DisplayObject 属性
+
+x; //设置或返回相对于父级的x坐标
+y; //设置或返回相对于父级的y坐标
+regX; //设置或返回显示对象的注册点在自身坐标系统中的X坐标
+regY; //设置或返回显示对象的注册点在自身坐标系统中的Y坐标
+alpha; //设置或返回显示对象的透明度
+rotation; //设置或返回显示对象的旋转角度
+scaleX; //设置或返回显示对象在X轴上的缩放比例
+scaleY; //设置或返回显示对象在Y轴上的缩放比例
+skewX; //设置或返回显示对象水平方向的倾斜值
+skewY; //设置或返回显示对象垂直方向的倾斜值
+nominalBounds; //返回当前显示对象相对与父级坐标系统的 Rectangle 对象
+
+cursor; //一个字符串，设置或返回鼠标指针类型（类型的命名和CSS的相同，但是不支持自定义图片）。只有执行了该方法 stage.enableMouseOver() 鼠标样式才会生效。
+filters; //一个滤镜数组，设置或返回滤镜
+shadow; //一个 Shadow 对象，设置或返回显示对象的阴影
+id; //DisplayObject 对象的唯一 ID
+mask; //设置或返回一个 Shape 对象，用于作为显示对象的遮罩。（该 Shape 对象不能添加进显示列表中，否则只会显示 Shape，而不显示被遮罩对象）
+hitArea; //设置或返回一个 DisplayObject 对象，在 Container 对象的 hitTest 方法中会被使用到，默认值为 null。
+
+visible; //一个布尔值，设置或返回显示对象是否显示，默认为 true。
+mouseEnabled; //一个布尔值，设置或返回显示对象是否响应鼠标交互，默认为 true。
+tickEnabled; //一个布尔值，设置或返回显示对象自身以及子对象是否响应 tick 事件，默认为 true。（关闭不必要的 tick 事件，可以提高性能）
+name; //返回显示对象的实例名
+parent; //返回显示对象的父级对象
+
+cacheCanvas; //如果缓存激活，则返回显示对象缓存的 canvas 对象，否则返回 null。
+cacheID; //如果缓存激活，则返回显示对象缓存的ID号。
+
+compositeOperation; //canvas 绘制图形的组合模式，详见官方文档
+suppressCrossDomainErrors; //详见官方文档
+
+
+
+
+>>>>>>>>>> text 扩展自 DisplayObject <<<<<<<<<<
+
+* text 方法
+
+Text ([text], [font], [color]); //构造函数，初始化一个文本对象。
+getMeasuredWidth(); //返回多行文本如果不换行时可能的宽度
+getMeasuredHeight(); //返回多行文本行数乘以 lineHeight（如果指定）或 getMeasuredLineHeight 近似行高的值
+getMeasuredLineHeight(); //返回文本的近似行高（不是 lineHeight 值），这是基于一个“M”的字符乘以1.2，它提供了一个近似线高度为大多数字体的测量宽度
+
+
+
+* text 属性
+
+font; //设置文本字体，如同CSS的 font 属性，任何CSS的有效值都可以接受，如："bold 36px Arial"
+color; //设置文本颜色，如："#000"
+textAlign; //设置文本的对齐方式（相当于定位注册点的位置）。
+//如果定义右对齐，那么文本将以右上角为注册点。如果居中对齐，那么文本将以上边缘中心点为注册点。值有"start"、"end"、"left"、"right"、"center"，默认为"left"。
+//其中"start"与"left"效果相同，"end"与"right"效果相同。
+
+text; //设置文本内容
+lineHeight; //设置文本行高
+lineWidth; //设置文本行宽，文本超过行宽才会自动换行
+maxWidth; //设置文本的最大宽度，如果文本超出该值将会被缩放
+textBaseline; //设置文本基线位置，即文本的垂直对齐点，值有"top"、"hanging"、"middle"、"alphabetic"、"ideographic"、"bottom"。
+outline; //设置文本的轮廓线，相当于加粗效果
+
+
+
+
+>>>>>>>>>> Bitmap 扩展自 DisplayObject <<<<<<<<<<
+
+* Bitmap 方法
+
+Bitmap(Image | HTMLCanvasElement | HTMLVideoElement | String); //构造函数，初始化一个位图对象。
+
+
+
+* Bitmap 属性
+
+image; //设置或返回一个源图对象，可以是 Image | HTMLCanvasElement | HTMLVideoElement 其中一种。
+sourceRect; //一个 Rectangle 对象，指定源图像绘制的区域。如果省略，则绘制整个图像将。
+snapToPixel; //一个布尔值，设置或返回是否对齐像素，默认为 true。
+
+
+
+
+
+

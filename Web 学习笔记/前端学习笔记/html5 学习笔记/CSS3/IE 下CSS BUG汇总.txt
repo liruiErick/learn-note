@@ -1,0 +1,223 @@
+﻿* IE下用js为color设置数字值将会被转化为颜色值，而其他浏览器则视为无效值。
+
+* rgba 颜色值
+IE8及以下浏览器不支持 rgba 颜色值，如果背景颜色需要使用透明值，则必须使用IE渐变滤镜来实现。
+
+* opacity 透明度
+IE8及以下浏览器不支持 opacity 属性，可以借助 ie7.js 或者 jQuery 等库可以帮助 IE8 支持 opacity 属性，但有时会出现子元素无法继承的 BUG，此时必须为子元素单独设置 opacity 属性。
+但在 IE6 下，即使借助 ie7.js 或者 jQuery 等库也不支持。
+
+* !important
+在没有<!DOCTYPE>的声明的情况下，在同一个选择器样式下（即同一个大括号里面），IE6，IE7，IE8对!important的解析都是无效的。
+只要有声明文档类型的不管是html4，xhtml1.0，还有html5，则只有ie6对!important的解析无效。
+
+* IE下 jsp 页面要注意文档顶部声明必须是
+<!DOCTYPE HTML>
+而不能是
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+否则部分页面样式会失效
+
+* IE下不支持颜色模式为非RGB模式的jpg图片。
+
+* IE下 <a> 链接中的 img 会有蓝色边框，需要在样式中设置 border:0。
+
+* IE10及以下浏览器 <a> 链接如果内容为空，那么将会被浏览器无视，无法被点击。解决办法是添加一个完全透明的背景色
+
+* IE下输入文本框会有隐形的 2px 边框（看上去像 1px），以及 1px 的 padding，可以通过 IE Hack 来解决。
+
+* IE下输入文本框 height:auto 时不会受到 line-height 的影响，因此为了表现一直，必须设置 height 等于 line-height。
+
+* IE9及以下浏览器输入文本框的文本不会跟随 height 垂直居中，因此为了表现一直，必须设置 line-height 等于 height 让文本居中。
+
+* IE9及以上浏览器输入文本框的 line-height 为默认值，即100%时，如果字体大小为 14px，那么文本的上边缘会被遮住。
+解决方法是通过设置 line-height 为 110%，可以解决此问题。同时还解决了在 IE8 及以下浏览器中文本上下 padding 不对称的问题
+
+* zoom:1 在IE下设置缩放比例，可以触发IE的 hasLayout 属性，使元素可以设置宽高，看起来更像是 float/inline-block 元素，能够解决一些层级上的 BUG。
+
+* 在使用了 ie9.js 的项目了发现，自定义消除右边框类时，IE8 有个bug，用 .noborder { border-right: none !important; } 这种写法来增加权重会无效
+必须使用该属性的子属性： .noborder { border-right-style: none !important; }
+
+
+
+* IE6-7 下的问题及 BUG：
+
+1、IE6 不支持几乎所有的属性选择器、类选择器
+	解决方法：可以借助 ie7.js 库来实现（ie9.js 版）
+
+2、IE6 <a> 链接的 color 属性不支持 inherit 继承
+	解决方法：可以借助 ie7.js 库来实现（ie9.js 版）
+
+3、IE6-7 不支持 inline-block，但是如果设置了该值会触发IE的 hasLayout 属性，会让行内元素看似 inline-block 元素，但是块级元素完全无效。
+	解决方法：
+		1. 可使用 float:left; 代替 display:inline-block;
+		2. 可使用 *display:inline;*zoom:1; 代替 display:inline-block;
+
+4、IE6-7 不支持 display:table，且表格的 display 属性可能为 ""
+
+5、IE6 不支持 png 格式的图片，只支持 gif 的 png8 格式
+	解决方法：
+		1. 单独为 IE6 准备一张 gif 的 png8 格式的图片，然后利用 IE6 Hack 替换
+		2. 在标签样式中插入 filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=’image.png’, sizingMethod=’scale’);
+		注意事项:
+			1) AlphaImageLoader难以实现插入图片<img src=”.png”/>透明
+			2) AlphaImageLoader方法用于背景图片上,实现background-image的效果
+			3) AlphaImageLoader IE8不支持
+			4) 因为IE7支持AlphaImageLoader,避免冲突建议使用CSS hack区分开,只针对IE6使用
+
+6、IE6 以上版本 ul ol 会有默认的 margin-top/bottom=1em 和 padding-left=40px，而 IE6 下 padding-left=40px 变成了 margin-left=40px，且相对于父容器 margin-top 无效 
+	解决方法：在 css 中重置他们的 margin 和 padding 为 0
+
+7、IE6 以上版本 p dl 会有默认的 margin-top/bottom=1em，而 IE6 下相对于父容器 margin-top 无效
+	解决方法：在 css 中重置他们的 margin 为 0
+
+8、IE6 以上版本 h1~h6 会有默认的 margin-top/bottom 值，而 IE6 下相对于父容器 margin-top 无效
+	解决方法：在 css 中重置他们的 margin 为 0
+
+9、IE6 浮动元素间会有 3px 的间距
+	解决方法：
+		1. * html 浮动元素选择器 {margin-right:-3px;}
+		这是由于只有 IE6 以及以下版本认为 * 才是最外层元素，而 html 为 * 的子元素，因此只有 IE6 以及以下版本才会识别 * html 样式
+		2. 浮动元素选择器 {_margin-right:-3px;}
+		在属性名前加下划线，则只有 IE6 以及以下版本可以解析
+
+10、IE6 元素的字体大小会影响到该元素的最小高度值，也就是说 height 不会低于字体大小
+	解决方法：
+		1. 必要时将该元素的 font-size 设为 0
+		2. 将该元素设置为 overflow: hidden
+
+11、IE6 不支持小数值，所有设置的小数值都会被转化成整数值。
+
+12、IE6 列表 li 中的内容是一个 display: block 的锚点(anchor)时，列表元素之间的空格将不会被忽略而是额外的一行夹在每个 li 之间
+	解决方法：
+		1. 就是在li a 样式中加入 zoom:1
+		2. 就是在li 样式中加入 display:inline 
+		3. 就是将<li>标签写成一行
+		4. 就是在li a 样式中加入width:100%或者一个宽度值
+
+13、IE6-7下，li 列表间底部会有 3px 间距
+	解决方法：在<li>上加 float:left; width:100%;
+
+14、IE6 一个外部的 relative 定位 div，内部一个 absolute 定位的 div，如果外部 div 的宽或高是奇数，那么内部 div 的绝对定位会有 1px 的 BUG
+
+15、IE6 链接伪类（:hover）CSS背景图片有闪动BUG，主要原因ie会再一次请求这张图片，或者说图片没被缓存
+	解决方法：添加以下IE6专用代码，让IE6缓存CSS背景图片至本地，这样a:hover时IE6就不会再重新向服务器请求加载背景图片了
+	<!–[if IE 6]>  
+	<script type=”text/javascript”>  
+	document.execCommand(”BackgroundImageCache”, false, true);   
+	</script>  
+	<![endif]–>  
+
+16、IE6 满足下面条件就会引起注释下面的样式不起作用：
+	1) css有中文注释
+	2) css为ANSI编码
+	3) html为utf-8编码
+	解决方法：
+	1. 去掉中文注释，用英文注释
+	2. 统一css 和 html 的编码
+	建议采用第二种解决方法
+	ps： css为uft-8  html 为ANSI 不会出现失效的情况。
+
+17、IE6 不支持 position:fixed 属性。所以我们只能通过JS模拟和CSS Hack等方法来实现。
+	解决方法：.fixed {
+		position:absolute;
+		top:expression(eval(document.documentElement.scrollTop));
+	}
+
+18、IE6 除 body 外，所有元素都不支持 background-attachment:fixed 属性
+	解决方法：可以借助 ie7.js 或者 jQuery 等库来实现
+
+19、IE6 浮动层之间有注释文字的话，之前那个浮动层的内容文字就有可能遭遇一个“隐形”的复制，但是代码里查看文字可并没有多出来。
+	原因：由注释造成文字溢出，属于IE6的BUG，溢出文字的字数=注释的条数*2-1，这里的字数在中文或英文数字时都成立。注释坐在位置与溢出位置、区块的浮动以及文字区块的固定宽度有必然联系。
+	解决办法：
+		1. 不放置注释。最简单、最快捷的解决方法；
+		2. 注释不要放置于2个浮动的区块之间；
+		3. 将文字区块包含在新的<div></div>之间，如：<div style=”float:right;width:400px”><div>↓这就是多出来的那只猪</div></div>；
+		4. 去除文字区块的固定宽度，与3有相似之处；
+		5. 在后面加一个<br />或者空格；（不推荐）
+		6. 使用IE注释格式，如：<!–[if !IE]>Put your commentary in here<![endif]–>
+		7. 给盒子加position:relative;属性
+
+20、IE6 不支持 overflow:visible，如果内容元素超出了该元素的大小，即使定义了元素宽高值，也会被内容撑开
+	解决办法：设定元素为 overflow:hidden; 这样就可以使宽高值有效。
+		但是同时又延伸出一个BUG，就是该元素的 background-position 属性如果使用的是关键字或者百分比，那么位置的参照宽高不是该元素的宽高值，而是内容元素的宽高值。
+		后经测试发现，在块元素上设置 overflow:hidden; 且宽度值为 auto 时，即使该元素宽度已经等于父元素宽度，但只要内容超出，一样会撑开该元素。而其他浏览器下则不会。
+
+21、IE6 浮动元素相对于父容器的 margin-left/right 值会变成实际指定值的两倍
+
+22、IE6 当元素A与元素B通过 margin 负值部分重叠时，被遮挡元素的整条边框会被隐藏
+	解决方法：给两个元素设置 position:absolute，使他们脱离文档书，并为遮挡元素设置 z-index
+
+23、IE6 form 元素会有 margin-bottom:19px 的底边距
+
+24、IE6 在用flash插入flv视频时，IE不能识别相对路径，只能识别绝对路径
+
+25、IE6-7下，元素浮动时，如果元素前有其他元素，则会换行后再浮动
+	解决方法：
+		1. 为IE6-7专门设置 *magin-top:负值
+		2. 如果可以的话，让浮动元素前的元素也浮动显示
+
+26、IE6-7下，当父元素的直接子元素或者下级子元素的样式拥有 position:relative; 属性时，父元素的 overflow:hidden; 属性就会失效。
+	解决方法：在父元素中也使用 position:relative; 即可解决该bug
+
+27、IE6-7下，<a> 链接与 <object> 重叠使用时，如果 <a> 链接内容为空，将无法被点击到
+	解决方法：
+		为 <a> 链接单独设置 hack 样式 *background:#fff;*filter:alpha(opacity=0);
+		但是由于 IE6 不支持透明，因此这个方法也只能解决 IE7 的问题，IE6 暂时无解。
+		如果页面中的广告位需要兼容 IE6，那么最好使用 GIF 动态图片代替
+
+28、IE6-7下，<a> 链接中如果包含块元素，那么块元素会阻挡鼠标与 <a> 链接的交互，使鼠标无法变成小手状态。
+
+29、IE6 下凡是同时设置了 filter: XXX; 和 position: absolute; 的元素，在高度设置为 100% 时，高度将变为和字体大小相等。
+	解决方法：尽量不要使这三个属性值同时出现
+
+30、IE6 下如果元素的子元素为空，或者子元素为绝对定位，那么该元素将无法被 padding 值撑开。
+
+31、IE6 下当非块元素（也包括块元素浮动或者绝对定位）的宽度为自动时，如果该元素的子元素为块元素且宽度也为自动，那么此时子元素的宽度定位会越过该元素，直接达到该元素最近的定宽祖先元素（或非浮动非绝对定位的块元素）的宽度值
+	解决方法：可以的话，为IE6单独设置子元素为行内块元素
+
+32、IE6 不支持 min-width、min-height、max-width、max-height。
+	解决方法：使用IE6-7专有的表达式设置高度 _height: expression(this.scrollHeight > 300 ? "300px" : "auto");
+
+33、IE6-7下，如果父元素是靠 absolute 定位，然后同时设置 top 和 bottom 来达到一个高度，且此时 height 是 auto，那么子元素高度 100% 将无效。
+	解决方法：
+		1. 如果可以的话，设置子元素为 absolute 或者 fixed 定位。
+		2. 使用 IE9.js 做兼容处理。但是同时会有一个 bug，就是在 IE7 下，子元素的高度将会在初始化时被写死，之后将不会跟随父元素的调整而变化。
+
+34、IE6-7下，如果为 body 设置了宽度并且左右 margin 自动居中，那么当页面窗口大小横向变化时，所有 relative 定位元素会变得看上去像是 fixed 定位的元素，导致布局错乱。
+	解决方法：将 body 设置为  relative 定位。
+
+35、IE6-7下，table 内的子元素中不支持为非 td、th 之外的的子元素设置边框
+
+
+
+
+
+
+* IE Hack
+
+* html Hack
+由于只有 IE6 以及以下版本认为 * 才是最外层元素，而 html 为 * 的子元素，因此只有 IE6 以及以下版本才会识别 * html 样式
+例如：* html ul li {margin-right:-3px;}
+
+_Hack
+在属性名前加下划线，则只有 IE6 以及以下版本可以解析
+例如：ul li {_margin-right:-3px;}
+
+*Hack
+在属性名前加星号，则只有 IE7 以及以下版本可以解析
+例如：ul li {*padding-left:30px;}
+
+\9Hack
+在属性值后加\9，则只有 IE6-10 浏览器可以识别该值
+例如：div {padding-left:50px\9;}
+
+假如 IE6、IE7、IE8 以及非 IE6-10 浏览器的DIV元素的左外边距均不一致。可以作如下设置便可以解决此类问题：
+div {
+	padding-left:80px;	//解析到此处==>所有的非 IE6-10 浏览器均设置为80px
+	padding-left:60px\9;	//解析到此处==>所有的 IE6-10 均设置为60px
+	*padding-left:50px;	//解析到此处==>IE6和IE7设置为50px
+	_padding-left:30px;	//解析到此处==>IE6设置为30px
+}
+注：顺序一定不能错。
+
+

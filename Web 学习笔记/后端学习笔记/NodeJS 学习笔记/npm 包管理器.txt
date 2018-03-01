@@ -1,0 +1,186 @@
+﻿初始化 package.json 文件
+npm init
+快速初始化
+npm init -y
+
+注意！
+在MAC上使用命令行报类似以下错误:
+Error: EACCES: permission denied, access '/usr/local/lib/node_modules' npm ERR! at Error (native)
+
+原因: 执行命令行命令时没有获得管理员权限
+解决办法: 在命令前面加上 sudo 即可，然后输入电脑的管理员密码操作即可完成.
+
+
+## nodejs更新
+
+node有一个模块叫n（这名字可够短的。。。），是专门用来管理node.js的版本的。
+首先安装n模块：
+npm install -g n
+
+第二步：
+升级node.js到最新稳定版
+n stable
+
+n后面也可以跟随版本号比如：
+n v0.10.26
+或
+n 0.10.26
+
+
+## 更新 npm 版本
+npm install -g npm
+
+
+## 几个npm的常用命令：
+
+npm -v                 #显示版本，检查npm 是否正确安装。
+npm install <name>     #安装模块
+npm install -g <name>  #全局安装模块
+npm list               #列出已安装模块
+npm show <name>        #显示模块详情
+
+
+#### 安装模块
+npm install
+安装当前目录package.json文件中配置的dependencies与devDependencies模块
+npm install --production
+安装当前目录package.json文件中配置的dependencies模块
+
+#### 安装原模块的某个 Fork 版本
+npm install <Fork所有人>/<模块>
+Example:
+npm install baijunjie/react-native-search-bar
+
+#### 安装本地的模块文件
+npm install <tarball file>
+Example:
+npm install ./package.tgz
+
+#### 安装指定URL的模块
+npm install <tarball url>
+Example:
+npm install https://github.com/indexzero/forever/tarball/v0.5.6
+
+#### 安装本地文件系统中指定的目录包含的模块
+npm install <folder>
+
+#### 安装并更新package.json中的版本配置
+npm install <name> [–save|–save-dev|–save-optional]
+其中：
+添加–save 参数安装的模块的名字及其版本信息会出现在package.json的dependencies选项中（简写 -S）
+添加–save-dev 参数安装的模块的名字及其版本信息会出现在package.json的devDependencies选项中（简写 -D）
+添加–save-optional 参数安装的模块的名字及其版本信息会出现在package.json的optionalDependencies选项中
+
+#### 安装模块的config的tag配置中含有指定tag的版本
+npm install <name>@<tag>
+Example:
+npm install sax@latest
+
+#### 安装模块的指定版本
+npm install <name>@<version>
+Example:
+npm install underscore@1.5.2
+
+#### 安装模块指定版本号范围内的某一个版本
+npm install <name>@<version range>
+Example:
+npm install async@”>=0.2.0 <0.2.9″
+
+#### –force强制拉取远程资源，即使本地已经安装这个模块
+Example:
+npm install underscore –force
+
+#### -g或–global全局安装模块，如果没有这个参数，会安装在当前目录的node_modules子目录下
+Example:
+npm install -g express
+
+#### 设置npm配置
+npm config set <key> <value> [–global]
+使用–global参数，设置全局配置
+Example:
+设置代理
+npm config set proxy=http://proxy.tencent.com:8080
+设置npm的镜像地址
+npm config set registry http://npm.oa.com
+
+#### 获取npm配置
+npm config get <key>
+Example:
+获取npm当前镜像地址
+npm config get registory
+
+#### 删除模块
+npm rm <name>
+npm r <name>
+npm uninstall <name>
+npm un <name>
+注意：不会删除package.json文件dependencies选项中对应的依赖配置
+
+#### 更新模块
+npm update [-g] [<name> [<name> … ]]
+更新指定name列表中的模块。-g参数更新全局安装的模块。
+如果没有指定name，且不是在某个模块内，会更新当前目录依赖的所有包都会被更新（包括全局和模块内）；
+如果当前目录在某个模块目录内，会更新该模块依赖的模块，所以不指定name直接运行npm update时，最好在某个模块内运行，以免更新到其他不想更新的模块。
+
+#### 执行脚本
+npm start [<name>]
+npm stop [<name>]
+npm test [<name>] 等
+运行package的start脚本，该脚本写在package.json文件scripts的start字段中。
+该字段的值可以是当前系统控制台可执行的脚本，也可以是当前系统可执行文件的路径。
+如果不传name参数，则执行当前目录下package.json文件中定义的脚本。
+
+
+
+## npm介绍
+
+1、说明：npm（node package manager）nodejs的包管理器，用于node插件管理（包括安装、卸载、管理依赖等）；
+
+2、使用npm安装插件：命令提示符执行npm install <name> [-g] [--save-dev]；
+    2.1、<name>：node插件名称。例：npm install gulp-less --save-dev
+    2.2、-g：全局安装。将会安装在C:\Users\Administrator\AppData\Roaming\npm，并且写入系统环境变量；  非全局安装：将会安装在当前定位目录；  全局安装可以通过命令行在任何地方调用它，本地安装将安装在定位目录的node_modules文件夹下，通过require()调用；
+    2.3、--save：将保存配置信息至package.json（package.json是nodejs项目配置文件）；
+    2.4、-dev：保存至package.json的devDependencies节点，不指定-dev将保存至dependencies节点；
+    2.5、为什么要保存至package.json？因为node插件包相对来说非常庞大，所以不加入版本管理，将配置信息写入package.json并将其加入版本管理，其他开发者对应下载即可（命令提示符执行npm install，则会根据package.json下载所有需要的包）。
+
+3、使用npm卸载插件：npm uninstall <name> [-g] [--save-dev]  PS：不要直接删除本地插件包
+
+4、使用npm更新插件：npm update <name> [-g] [--save-dev]
+    4.1、更新全部插件：npm update [--save-dev]
+
+5、查看npm帮助：npm help
+
+6、当前目录已安装插件：npm list
+
+PS：npm安装插件过程：从http://registry.npmjs.org下载对应的插件包（该网站服务器位于国外，所以经常下载缓慢或出现异常），解决办法往下看↓↓↓↓↓↓。
+
+
+
+## 选装cnpm
+
+1、说明：
+因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，如果npm的服务器在中国就好了，所以我们乐于分享的淘宝团队干了这事。
+32个攒！来自官网：“这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为10分钟一次以保证尽量与官方服务同步。”
+
+2、官方网址：http://npm.taobao.org；
+
+3、安装：命令提示符执行
+npm install cnpm -g --registry=https://registry.npm.taobao.org
+注意：安装完后最好查看其版本号cnpm -v或关闭命令提示符重新打开，安装完直接使用有可能会出现错误；
+
+注：cnpm跟npm用法完全一致，只是在执行命令时将npm改为cnpm（以下操作将以cnpm代替npm）。
+
+其实也可以不安转 cnpm，直接通过传参的形式，临时改变注册源进行安装
+npm install --registry=https://registry.npm.taobao.org
+
+
+
+
+## 发布自己的 npm 模块
+
+1) 创建项目 git 仓库
+2) 将项目克隆到本地，并 cd 到项目目录下
+3) $ npm init 创建 package.json
+4) $ npm adduser / $ npm login 添加或者登陆 npm 账户
+5) $ npm publish 发布项目  
+6) $ npm --force unpublish [包名] 删除项目  

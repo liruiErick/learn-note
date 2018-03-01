@@ -1,0 +1,153 @@
+﻿* 导入外部样式（页面加载前引入）
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/orange.css" media="screen" title="orange" />
+<link rel="alternate stylesheet" type="text/css" href="/css/blue.css" media="screen" title="blue" />
+[1]rel:用来声明链接对象的作用或者类型。"stylesheet"表示链接一个默认的css，而"alternate stylesheet"则表示备选的css。
+[2]href:引用css的文件路径。
+[3]type:文件类型
+[4]media:应用的设备，"screen"是说明应用在屏幕上。
+[5]title:是css的名称。
+
+
+* 在样式元素中（或者css文件中）用import引用其他css（但是会增加 http 请求）
+<style type="text/css">
+@import url(style.css);
+</style>
+
+
+* 导入外部js文件
+<script src="JavaScript.js"></script>
+
+
+* 内部js
+<script> 可执行的 JavaScript 代码 </script>
+<noscript> 你的浏览器不支持 JavaScript! </noscript>
+// 注意，在IE9及以上浏览器中，如果<script>标签声明了src属性，则标签内的代码不会执行
+// 如果是在IE9及以下浏览器中，<script>标签内的代码会在src属性指向的外部代码加载前执行
+
+
+* 添加一个网页小图标
+<link rel="icon" href="img/favicon.ico"><!-- IE11 -->
+<link rel="icon" type="image/x-icon" href="img/favicon.ico"><!-- IE9 -->
+<link rel="shortcut icon" href="img/favicon.ico">
+// 添加一个放置在 apple 设备主屏幕上的快捷图标
+<link rel="apple-touch-icon" href="img/apple-icon.png">
+// 添加一个放置在 android 设备主屏幕上的快捷图标
+<link rel="apple-touch-icon-precomposed" href="img/apple-icon.png">
+
+
+* 关联网页作者的网址和信箱
+<link rev="made" href="mailto:625603381@qq.com">
+<link rev="made" href="http://www.djb.cn/">
+rev  正向关联
+made  网页作者
+href  网址或信箱
+
+
+* 禁用页面缓存的方法
+// 客户端<meta>声明方法（jsp页面中使用没有效果）：
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-store">
+<meta http-equiv="expires" content="0">
+// jsp页面中添加如下代码：
+<%
+	response.setHeader("Cache-Control","no-store");
+	response.setDateHeader("Expires", 0);
+	response.setHeader("Pragma","no-cache"); 
+%>
+// asp服务器端代码：
+<%
+	Response.ExpiresAbsolute = now()-1
+	Response.Expires = 0
+	Response.CacheControl = "no-cache"
+%>
+
+
+
+* 在 jsp 页面中引入html页面（如公共头部脚部等）
+在 jsp 页面中需要引入的位置写上：
+<%@ include file="common-head.jsp" %>
+该语句意思是引入静态文本(html、jsp)，在JSP页面被转化成servlet之前和它融和到一起。
+如果引入的 html、jsp 页面出现乱码，则必须将引入的 html 转换为 jsp 文件，并在页面顶部写上：
+<%@ page pageEncoding="utf-8"%>
+
+
+* 浏览器兼容前缀
+// CSS中，需要在样式属性名前加上以下字段：
+Gecko内核（火狐浏览器）  -moz-
+Webkit内核（苹果、谷歌浏览器）  -webkit-
+Presto内核（Opera浏览器）  -o-
+IE8内核  -ms-
+例如：-webkit-transition: -webkit-transform 2s;
+// js中，除需要在样式属性名前加上以下字段外（注意大小写），原样式属性名首字母需改为大写：
+Gecko内核（火狐浏览器）  Moz
+Webkit内核（苹果、谷歌浏览器）  webkit / Webkit (貌似都支持)
+Presto内核（Opera浏览器）  O
+IE8内核  ms
+例如：div.style.webkitTransition = "-webkit-transform 2s";
+
+
+* IE9 及以下浏览器专用的条件判断，其它浏览器只会当做注释对待
+
+lte：就是Less than or equal to的简写，也就是小于或等于的意思。
+lt ：就是Less than的简写，也就是小于的意思。
+gte：就是Greater than or equal to的简写，也就是大于或等于的意思。
+gt ：就是Greater than的简写，也就是大于的意思。
+! ：就是不等于的意思，跟javascript里的不等于判断符相同
+
+<!--[if !IE]><!-->
+根据条件判断，这不是Internet Explorer 9 或更低版本
+<!--><![endif]-->
+
+<!--[if ! lt IE 9]><!-->
+根据条件判断，这不是Internet Explorer 9 以下版本
+<!--><![endif]-->
+
+<!--[if ! lte IE 8]><!-->
+根据条件判断，这不是Internet Explorer 8 或以下版本
+<!--><![endif]-->
+
+<!--[if lt IE 9]>
+根据条件判断，这是Internet Explorer 9 以下版本
+<![endif]-->
+
+<!--[if lte IE 8]>
+根据条件判断，这是Internet Explorer 8 或更低版本
+<![endif]-->
+
+<!--[if IE 6]>
+根据条件判断，这是Internet Explorer 6
+<![endif]-->
+
+<!--[if gt IE 6]>
+根据条件判断，这是Internet Explorer 6 以上版本
+<![endif]-->
+
+<!--[if gte IE 6]>
+根据条件判断，这是Internet Explorer 6 或更高版本
+<![endif]-->
+
+
+
+
+* 常用转义字符
+
+显示		说明				实体名称		实体编号
+		半方大的空白		&ensp;		&#8194;
+		全方大的空白		&emsp;		&#8195;
+		不断行的空白格		&nbsp;		&#160;
+<		小于				&lt;		&#60;
+>		大于				&gt;		&#62;
+&		&符号			&amp;		&#38;
+"		双引号			&quot;		&#34;
+©		版权				&copy;		&#169;
+®		已注册商标		&reg;		&#174;
+™		商标（美国）		™			&#8482;
+×		乘号				&times;		&#215;
+÷		除号				&divide;	&#247;
+
+&#09; — 制表符Horizontal tab
+&#10; — 换行Line feed
+&#13; — 回车Carriage Return
+&#32; — Space
+

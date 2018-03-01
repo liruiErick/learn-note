@@ -1,0 +1,171 @@
+﻿所有 JavaScript 全局对象、函数以及变量均自动成为 window 对象的成员。
+全局变量是 window 对象的属性。
+全局函数是 window 对象的方法。
+甚至 HTML DOM 的 document 也是 window 对象的属性之一。
+
+
+* window 方法
+// 在编写时可以不使用 window 这个前缀。
+window.open(URL,name,features,replace); //打开新窗口，参数如下：
+// URL  一个可选的字符串，声明了要在新窗口中显示的文档的 URL。如果省略了这个参数，或者它的值是空字符串，那么新窗口就不会显示任何文档。
+// name  一个可选的字符串，可声明窗口的打开方式，默认为"_blank"（在新窗口中打开）。如果该参数指定为"_self"（在自身窗口中打开）。
+//		该字符还可以声明了新窗口的名称。这个名称可以用作标记 <a> 和 <form> 的属性 target 的值。
+//		如果该参数指定了一个已经存在的窗口，那么 open() 方法就不再创建一个新窗口，而只是返回对指定窗口的引用，在这种情况下，features 将被忽略。
+// features  一个可选的字符串，该字符串是一个由逗号分隔的特征列表，声明了新窗口要显示的标准浏览器的特征。如果省略该参数，新窗口将具有所有标准特征。特征设置如下：
+//		channelmode=yes|no|1|0  是否使用剧院模式显示窗口。默认为 no。
+//		directories=yes|no|1|0  是否添加目录按钮。默认为 yes。
+//		fullscreen=yes|no|1|0  是否使用全屏模式显示浏览器。默认是 no。处于全屏模式的窗口必须同时处于剧院模式。
+//		location=yes|no|1|0  是否显示地址字段。默认是 yes。
+//		menubar=yes|no|1|0  是否显示菜单栏。默认是 yes。
+//		resizable=yes|no|1|0  窗口是否可调节尺寸。默认是 yes。
+//		scrollbars=yes|no|1|0  是否显示滚动条。默认是 yes。
+//		status=yes|no|1|0  是否添加状态栏。默认是 yes。
+//		titlebar=yes|no|1|0  是否显示标题栏。默认是 yes。
+//		toolbar=yes|no|1|0  是否显示浏览器的工具栏。默认是 yes。
+//		left=pixels  窗口的 x 坐标。以像素计。
+//		top=pixels  窗口的 y 坐标。以像素计。
+//		width=pixels  窗口的文档显示区的宽度。以像素计。
+//		height=pixels  窗口文档显示区的高度。以像素计。
+// replace  一个可选的布尔值。规定了装载到窗口的 URL 是在窗口的浏览历史中创建一个新条目，还是替换浏览历史中的当前条目。true 为替换浏览历史中的当前条目，false 为在浏览历史中创建新的条目。
+
+window.close(); //关闭当前窗口。
+window.moveBy(x,y); //窗口相对其当前位置移动指定像素（对于浏览器的标签窗口无效）。
+window.moveTo(x,y); //将窗口移动到指定屏幕坐标（对于浏览器的标签窗口无效）。
+window.resizeBy(width,height); //窗口相对其当前大小按照指定的像素调整窗口的大小，参数可以为负值。
+window.resizeTo(width,height); //调整当前窗口的尺寸为指定像素。
+window.scrollBy(xnum,ynum); //文档相对其当前位置向指定方向滚动指定像素数。
+window.scrollTo(xpos,ypos); //文档内容滚动到指定的坐标。
+window.focus(); //把键盘焦点给予一个窗口。
+window.blur(); //把键盘焦点从该窗口移开。
+
+
+* window 属性
+// 在编写时可以不使用 window 这个前缀。
+window.HTMLElement; //所有 DOM 对象的基类。
+window.frames; //返回窗口中所包含的window窗口集合。
+window.length; //返回窗口中所包含的window窗口数量。
+window.opener; //可返回对创建该窗口的 Window 对象的引用。
+window.parent; //返回父窗口的引用。
+window.top; //返回最顶层的窗口的引用。
+window.closed; //返回指定的窗口是否已经关闭。
+window.defaultStatus; //设置或返回窗口状态栏中的默认文本。
+window.status; //设置窗口状态栏的文本，显示这条消息的时间是有限的，直到其他的消息将它覆盖，或者用户把鼠标移动到窗口的其他区域为止。
+window.name; //设置或返回窗口的名称。
+window.status; //设置窗口状态栏的文本。
+window.devicePixelRatio; //返回设备屏幕的 device-pixel-ratio。输出宽高 / 物理宽高 = device-pixel-ratio。（IE 不支持）
+window.outerwidth; //返回整个浏览器的宽度（包括工具栏/滚动条），值为不带单位的字符串形式（IE8及以下不支持）。
+window.outerheight; //返回整个浏览器的高度（包括工具栏/滚动条），值为不带单位的字符串形式（IE8及以下不支持）。
+window.pageXOffset; //返回窗口显示区左上角相对于当前文档页面的 X 位置（IE8及以下不支持）。
+window.pageYOffset; //返回窗口显示区左上角相对于当前文档页面的 Y 位置（IE8及以下不支持）。
+window.scrollX; //IOS 设备专用，返回水平方向上滚动条的值，即窗口显示区左上角相对于当前文档页面的 X 位置
+window.scrollY; //IOS 设备专用，返回垂直方向上滚动条的值，即窗口显示区左上角相对于当前文档页面的 Y 位置
+
+// 获取页面的 scrollLeft、scrollTop 的兼容写法
+window.pageXOffset || document.documentElement.scrollLeft;
+window.pageYOffset || document.documentElement.scrollTop;
+
+// 以下属性为只读整数。返回整个浏览器的左上角在屏幕上的的 x 坐标和 y 坐标。
+// IE、Safari 和 Opera 支持 screenLeft 和 screenTop。
+// 而 Firefox 和 Safari 支持 screenX 和 screenY。
+// Chrome Android 不支持
+window.screenLeft;
+window.screenTop;
+window.screenX;（IE8及以下不支持）
+window.screenY;（IE8及以下不支持）
+
+
+* 浏览器窗口内部的宽和高（不包括工具栏/滚动条）（只读属性）
+// 对于Internet Explorer、Chrome、Firefox、Opera 以及 Safari：
+window.innerWidth;
+window.innerHeight;
+// 对于 Internet Explorer 标准模式下：
+document.documentElement.clientHeight;
+document.documentElement.clientWidth;
+// 对于 Internet Explorer 混杂模式下：
+document.body.clientHeight;
+document.body.clientWidth;
+// 获取浏览器窗口的大小（涵盖所有浏览器）
+var w = window.innerWidth
+|| document.documentElement.clientWidth
+|| document.body.clientWidth;
+var h = window.innerHeight
+|| document.documentElement.clientHeight
+|| document.body.clientHeight;
+
+
+* window.screen 对象
+// 在编写时可以不使用 window 这个前缀
+screen.availWidth; //可用的屏幕宽度(除 Windows 任务栏之外)。
+screen.availHeight; //可用的屏幕高度(除 Windows 任务栏之外)。
+screen.width; //返回显示器屏幕的物理宽度。(某些设备返回的是屏幕输出宽度）
+screen.height; //返回显示器屏幕的物理高度。(某些设备返回的是屏幕输出高度）
+screen.pixelDepth; //返回显示屏幕的颜色分辨率（像素/比特）。
+screen.bufferDepth; //设置或返回调色板的比特深度。
+screen.colorDepth; //返回目标设备或缓冲器上的调色板的比特深度。
+screen.deviceXDPI; //返回显示屏幕的每英寸水平点数。
+screen.deviceYDPI; //返回显示屏幕的每英寸垂直点数。
+screen.logicalXDPI; //返回显示屏幕每英寸的水平方向的常规点数。
+screen.logicalYDPI; //返回显示屏幕每英寸的垂直方向的常规点数。
+screen.fontSmoothingEnabled; //返回用户是否在显示控制面板中启用了字体平滑。
+screen.updateInterval; //设置或返回屏幕的刷新率。
+
+
+* window.location 对象
+// 在编写时可以不使用 window 这个前缀。
+// 以下大部分属性同样适用于<a>元素
+location.hash; //设置或返回从井号(#)开始的 URL（锚）。返回值带(#)，设置值时不需要带(#)。
+location.host; //设置或返回域名和当前 URL 的端口号。（192.168.20.44:8080 或者 www.w3school.com.cn）注意结尾不带"/"
+location.hostname; //设置或返回 web 主机的域名。（192.168.20.44 或者 www.w3school.com.cn）注意结尾不带"/"
+location.href; //设置或返回当前页面的完整URL（协议+域名+路径+文件名+参数）。
+location.pathname; //设置或返回当前页面的路径和文件名（不包含域名，如：/tiy/t.asp）。
+location.port; //设置或返回 web 主机的端口 （80 或 443，没有则返回空的字符串）。
+location.protocol; //设置或返回所使用的 web 协议（http: 或 https:）。
+location.search; //设置或返回从问号(?)开始的 URL（查询部分）。返回值带(?)，设置值时不需要带(?)。
+location.assign("http://www.w3school.com.cn"); //方法加载新的文档。（和 href 作用相同）
+location.reload(); //相当于刷新页面，如果参数为true，则表示绕过缓存强制刷新页面。
+location.replace(newURL); //用一个新文档取代当前文档。当使用该方法时，不会在History对象中生成一个新的记录，新的URL将覆盖History对象中的当前记录。
+// document 也拥有同样的属性，只不过是只读的，该属性表示当前页面或框架内页面的 loaction 属性。
+
+// 注意，当 hash 和 search 同时存在时，hash 必须位于 search 之后
+// 如果 hash 在 search 之前，那么“?”以及之后的值都将会被看做 hash 值的一部分，而 search 值为空。
+
+// 获取当前的页面原始URL：
+var url = location.protocol + "//" + location.host + location.pathname;
+
+
+* window.history 对象
+// 在编写时可以不使用 window 这个前缀
+history.length; //返回浏览器历史列表中的 URL 数量。
+history.back(); //与在浏览器点击后退按钮相同。
+history.forward(); //与在浏览器中点击按钮向前相同。
+history.go(number|URL); //URL参数为要访问的URL或URL的子串，而number参数为要访问的URL在历史列表中的相对位置，比如-1代表前一个页面。
+
+
+* window.navigator 对象
+// 在编写时可以不使用 window 这个前缀
+// navigator 对象的信息具有误导性，不应该被用于检测浏览器版本，这是因为：
+// navigator 数据可被浏览器使用者更改，且浏览器无法报告晚于浏览器发布的新操作系统。
+navigator.appCodeName; //返回浏览器代号。
+navigator.appName; //返回浏览器名称，IE浏览器会返回"Microsoft Internet Explorer"。
+navigator.appVersion; //返回浏览器版本字符串，IE9浏览器版本为"5.0"，IE9以下浏览器版本为"4.0"。
+navigator.cookieEnabled; //返回是否启用cookie的布尔值。
+navigator.onLine; //返回指明系统是否处于脱机模式的布尔值。
+navigator.platform; //返回操作系统名称。
+navigator.cpuClass; //返回浏览器系统的 CPU 等级。
+navigator.browserLanguage; //返回当前浏览器的语言。
+navigator.userAgent; //返回用户代理头信息，相当于navigator.appCodeName的值之后加上斜线和navigator.appVersion的值构成的。
+navigator.browserLanguage; //返回当前浏览器的语言。
+navigator.systemLanguage; //返回系统默认语言。
+navigator.userLanguage; //返回系统的自然语言设置。
+navigator.geolocation; //返回一个定位对象。
+navigator.standalone; //IOS中浏览器直接访问站点时，navigator.standalone为false。从主屏启动webapp时，navigator.standalone为true。
+
+
+* 判断窗口是否为浏览器正在显示的当前标签页窗口
+window.addEventListener('blur', function() {
+	document.title = "离开";
+}, false);
+window.addEventListener('focus', function() {
+	document.title = "回来";
+}, false);
+

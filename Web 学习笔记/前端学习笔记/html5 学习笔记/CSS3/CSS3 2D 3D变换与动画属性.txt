@@ -1,0 +1,241 @@
+﻿/* 设置2D/3D变换（IE8及以下浏览器不支持） */
+/* Internet Explorer 10 和 Firefox 支持 W3C 标准写法的变换 */
+/* Internet Explorer 9 需要前缀 -ms- */
+/* Chrome 和 Safari 需要前缀 -webkit- */
+/* Opera 仍然不支持 3D 转换（它只支持 2D 转换） */
+/* transform 会触发手机的GPU加速功能，从而提升性能 */
+/* 所有变换默认都基于元素的中心位置（所有变换对行内元素无效，不包括行内块元素） */
+/* 每次改变 transform 所包含的值时，相当于先还原元素的变换，再根据新值重新变换元素，而非在原先变换的基础上再变换 */
+transform:
+	none; /* 不变换 */
+	perspective(800px); /* 定义透视距离，相当于距离观察者的距离，只有定义了此属性，元素才会呈现透视效果 */
+	matrix(1,0,0,1,tx,ty); /* 设置2D变换矩阵，使用6个值的3*2矩阵 */
+	matrix3d(sx,0,0,0,0,sy,0,0,0,0,sz,0,0,0,0,1); /* 设置3D变换矩阵，使用16个值的4*4矩阵 */
+	rotate(15deg); /* 2D旋转，设置旋转角度 */
+	rotate3d(vx,vy,vz,15deg); /* 3D旋转，vx、vy、vz为-1.0~1.0之间的向量，这3个向量组成3D坐标轴上的点，用于规定元素延0位到该点形成的轴旋转指定角度 */
+	/* （rotate3d()在safari浏览器中，会将>180度或者<-180角的角度转化成>-180度<180度的角度，而Z轴旋转时，会将180度转化为-180度） */
+	rotateX(15deg); /* 3D旋转，设置X轴旋转角度，从X轴右侧（正方向）观看，角度为顺正逆负（translateYZ的方向会随之改变） */
+	rotateY(15deg); /* 3D旋转，设置Y轴旋转角度，从Y轴下方（正方向）观看，角度为顺正逆负（translateXZ的方向会随之改变） */
+	rotateZ(15deg); /* 3D旋转，设置Z轴旋转角度，从Z轴前方（正方向）观看，角度为顺正逆负（translateXY的方向会随之改变） */
+	translate(10px, 10px); /* 设置XY轴偏斜，可以为百分比，百分比是基于自身的margin盒的宽和高（会影响到元素在文档中的实际位置） */
+	translate3d(10px, 10px ,10px); /* 设置XYZ轴偏斜 */
+	translateX(10px); /* 设置X轴偏斜 */
+	translateY(10px); /* 设置Y轴偏斜 */
+	translateZ(10px); /* 设置Z轴偏斜，值越大离观察者越进，值越小离观察者越远（祖先级元素必须设置透视距离，且自身或者父级元素定义了3D空间属性，才会生效） */
+	scale(1.0, 1.0); /* 设置XY轴缩放（相当于缩放整个坐标系，比如：缩放0.8后，偏斜100px只相当于缩放前的80px。但是不会改变元素宽高的实际像素值） */
+	scale3d(1.0, 1.0 ,1.0); /* 设置XYZ轴缩放 */
+	scaleX(1.0); /* 设置X轴缩放 */
+	scaleY(1.0); /* 设置Y轴缩放 */
+	scaleZ(1.0); /* 设置Z轴缩放 */
+	skew(10deg, 10deg); /* 设置倾斜度，IE下可能需要这样写 -ms-transform: skewX(@x) skewY(@y); */
+	skewX(10deg); /* 设置X倾斜度 */
+	skewY(10deg); /* 设置Y倾斜度 */
+	/* 需要注意的是，设置了 skew 后，在 IOS 设备上会造成像素画边缘，这时可以设置 -webkit-backface-visibility: hidden; 来隐藏它 */
+/* 可同时设置多个变换属性值 */
+/* 在同时设置多个变换属性值时需要格外注意，在前面设置的变换属性值会先被执行，然后在以变换的基础上依次执行后面的变换属性值 */
+transform: rotate(15deg) scale(1.5, 1.5) skew(5deg, 8deg) translate(5px, -2px);
+
+/* 兼容不同浏览器 */
+-webkit-transform:
+-moz-transform:
+-ms-transform:
+-o-transform:
+transform:
+
+/* 设置变换的参考点，参数分别为x,y,z三个坐标轴，默认为元素中心 */
+/* x,y可以是百分比、em、px等具体像素值，z只能是具体像素值 */
+transform-origin: 100px 100px; /* 设置2D变换的参考点 */
+transform-origin: 100px 100px 200px; /* 设置3D变换的参考点 */
+/* x,y也可以分别是left、center、right和top、center、bottom关键字 */
+transform-origin: top left; /* 设置2D变换的参考点 */
+transform-origin: top left 200px; /* 设置3D变换的参考点 */
+
+/* 定义透视距离，相当于距离观察者的距离，只有元素的父级定义了此属性，该元素才会呈现透视效果 */
+/* 值越小透视效果越明显 */
+perspective: 800px;
+
+/* 定义透视点的位置，必须设置在元素的父级，默认为元素中心 */
+/* x,y可以是百分比、em、px等具体像素值，z只能是具体像素值 */
+perspective-origin: 100px 100px;
+/* x,y也可以分别是left、center、right和top、center、bottom关键字 */
+perspective-origin: top left;
+/* 注意，translate 不会受到 perspective-origin 的影响 */
+
+/* 定义3D空间，只有元素的父级定义了此属性，子元素才会据现透视关系呈现先后次序 */
+transform-style:
+	flat; /* 子元素不保留其 3D 位置 */
+	preserve-3d;  /* 子元素将保留其 3D 位置 */
+
+/* 定义元素旋转到背向屏幕时是否显示，hidden不显示，visible显示 */
+-webkit-backface-visibility:hidden;	/* Chrome 和 Safari */
+-moz-backface-visibility:hidden; 	/* Firefox */
+-ms-backface-visibility:hidden; 	/* Internet Explorer 10+ */
+backface-visibility:hidden;         /* 各浏览器暂不支持 */
+	
+
+
+
+
+/* 过渡动画（IE9及以下浏览器不支持） */
+transition: <property> <duration> <animation type> <delay>
+/* 可同时定义多个过渡属性 */
+transition: background-color .5s ease-in,
+	color .3s ease-out;
+
+/* 兼容所有浏览器（safari浏览器目前不支持 all，必须把需要实现过度的属性逐个列出） */
+transition: all .3s;
+-o-transition: all .3s;
+-webkit-transition: all .3s;
+-moz-transition: all .3s;
+
+/* 子属性 */
+/* 定义指定属性值变化时发生过渡 */
+transition-property: background-color;
+
+/* 过渡动画持续时间，单位为s（秒）或者ms(毫秒) */
+transition-duration: .3s;
+
+/* 过渡延迟时间，单位为s（秒）或者ms(毫秒)。即使延迟为0也必须带单位，否则动画无效 */
+transition-delay: 1s;
+
+/* 缓动过渡 */
+/* 另外还可以设置 steps，使动画只播放关键帧，即动画播放没有补间，与animation缓动函数相同 */
+transition-timing-function:
+	ease; /* 逐渐变慢，默认值，ease函数等同于贝塞尔曲线cubic-bezier(0.25, 0.1, 0.25, 1.0) */
+	linear; /* 匀速，linear 函数等同于贝塞尔曲线cubic-bezier(0.0, 0.0, 1.0, 1.0) */
+	ease-in; /* 加速，ease-in 函数等同于贝塞尔曲线cubic-bezier(0.42, 0, 1.0, 1.0) */
+	ease-out; /* 减速，ease-out 函数等同于贝塞尔曲线cubic-bezier(0, 0, 0.58, 1.0) */
+	ease-in-out; /* 加速然后减速，ease-in-out 函数等同于贝塞尔曲线cubic-bezier(0.42, 0, 0.58, 1.0) */
+	cubic-bezier(); /* 该值允许你去自定义一个时间曲线，特定的cubic-bezier曲线。 */
+	/* cubic-bezier(x1, y1, x2, y2)四个值特定于曲线上的控制点P1和控制点P2。所有值需在0.0~1.0区域内，否则无效 */
+
+
+
+
+
+/* 复杂动画（IE9及以下浏览器不支持） */
+/* Internet Explorer 10、Firefox 以及 Opera 支持 animation 属性 */
+/* Safari 和 Chrome 支持替代的 -webkit-animation 属性 */
+animation: name duration timing-function delay iteration-count direction;
+
+/* 兼容所有浏览器 */
+-webkit-animation:
+-moz-animation:
+-o-animation:
+animation:
+
+/* 定义CSS3动画名称 */
+animation-name: CSS3动画名称;
+
+/* 定义动画的播放时间，单位为s（秒）或者ms(毫秒) */
+animation-duration: 20s;
+
+/* 定义动画的延迟时间，单位为s（秒）或者ms(毫秒)。即使延迟为0也必须带单位，否则动画无效 */
+/* 注意，延迟是一次性的，对于循环动画，也只延迟一次 */
+animation-delay: 1s;
+
+/* 定义动画的播放次数，默认值为1，infinite表示无限循环 */
+animation-iteration-count: infinite;
+
+/* 定义动画的缓动函数，与transition缓动函数相同 */
+/* 另外还可以设置 steps，使动画只播放关键帧，即动画播放没有补间 */
+animation-timing-function:
+	step-start; /* 动画在播放过程中始终保持在当前关键帧的结束状态，等同于 steps(1, start) */
+	step-end; /* 动画在播放过程中始终保持在当前关键帧的开始状态，等同于 steps(1, end) */
+	steps(<number>[, [ start | end ] ]?);
+	/* 第一个参数 number 为每个关键帧指定间隔数，相当于又将每个关键帧分割为 n 个关键帧 */
+	/* 第二个参数默认为end，设置每一步的状态，start为每一步保持在当前关键帧的结束状态，end为每一步保持在当前关键帧的开始状态 */
+
+/* 定义动画是否应该轮流反向播放，默认值为normal表示正常播放，alternate表示轮流反向播放 */
+animation-direction: alternate;
+
+/* 设定动画的播放与暂停，主要用于js控制，paused暂停，running播放 */
+animation-play-state: paused;
+
+/* 定义动画开始前或结束后的属性填充模式 */
+animation-fill-mode:
+	none; /* 不改变默认行为 */
+	backwards; /* 向前填充，在 animation-delay 所指定的一段时间内，在动画开始之前，元素处于keyframe的"from"或"0%"关键帧的状态 */
+	forwards; /* 向后填充，表示动画结束后，元素处于keyframe的"to"或"100%"关键帧的状态 */
+	both; /* 向前和向后填充模式都被应用 */
+
+/* 调用动画，并为其设置关键帧 */
+@keyframes CSS3动画名称 {
+	/* 设置第1个关键帧为开始位置 */
+	from {
+		transform: rotateX(0deg);
+		animation-timing-function: ease; /* 可以同时设置在前往下一帧过程中的缓动函数 */
+	}
+	/* 设置第2个关键帧为中间位置 */
+	50% {
+		transform: rotateX(180deg);
+		animation-timing-function: linear; /* 改变缓动函数 */
+	}
+	/* 设置第3个关键帧为结束间位置 */
+	to {
+		transform: rotateX(360deg);
+		animation-timing-function: ease; /* 该缓动函数只有在倒序播放时才会生效 */
+	}
+}
+/* 兼容所有浏览器 */
+@-webkit-keyframes CSS3动画名称 {} /* Chrome 4.0-43.0、Opera 15.0-29.0、iOS Safari 3.2-8.1、Android 2.1-4.0 */
+@-moz-keyframes CSS3动画名称 {} /* Firefox 5.0-15.0 */
+@keyframes CSS3动画名称 {} /* Firefox 16.0+、IE 10.0+ */
+
+
+
+
+/* CSS动画事件回调 */
+// Chrome, Safari 和 Opera
+webkitAnimationEnd
+webkitTransitionEnd
+// 标准语法
+animationend
+transitionend
+
+事件的event对象包含一个propertyName的专有属性：
+event.propertyName; // 表示触发该事件属性名
+
+//捕捉animationEnd事件
+element.addEventListener('animationend', end, false); //animationend 事件将在动画执行结束时执行一次，无限循环的动画不会触发该事件
+//捕捉transitionEnd事件
+element.addEventListener('transitionend', end, false); //transitionend 事件将在元素的每个样式属性值发生改变之后触发一次。
+
+注意，该事件是冒泡事件，如果一个元素和自己的子元素同事注册了该事件，当子元素触发事件时，该元素也会触发事件。
+奇葩的一点是，该事件无法通过 .stopPropagation() 方法取消冒泡。
+因此，如果需要避免这种情况发生，需要在事件处理函数中判断事件源对象与事件注册对象是否相同。
+
+另外，如果元素为隐藏状态，则无法触发 transitionend 事件，并且 transition 会停止
+
+
+// 获取浏览器对应的事件名
+var prefix = '',
+	transitionEnd,
+	animationEnd;
+
+(function() {
+
+	var eventPrefix,
+		vendors = { Webkit: 'webkit', Moz: '', O: 'o' },
+		testEl = document.documentElement,
+		normalizeEvent = function(name) { return eventPrefix ? eventPrefix + name : name.toLowerCase() };
+
+	for (var i in vendors) {
+		if (testEl.style[i + 'TransitionProperty'] !== undefined) {
+			prefix = '-' + i.toLowerCase() + '-';
+			eventPrefix = vendors[i];
+			break;
+		}
+	}
+
+	transitionEnd = normalizeEvent('TransitionEnd');
+	animationEnd = normalizeEvent('AnimationEnd');
+
+})();
+
+注意，如果浏览器不支持 transitionEnd 事件，那么可以用计时器来兼容
+window.setTimeout(callback, transitionDelay);
+
+
+
+

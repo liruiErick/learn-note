@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>3D立方体</title>
+<style>
+body {
+	background-color: black;
+	background-image: -webkit-gradient(radial,
+	50% 500, 1,
+	50% 500, 400,
+	from(rgba(255, 255, 255, 0.3)),
+	to(rgba(255, 255, 255, 0)));
+	background-repeat: no-repeat;
+}
+#stage {
+	width: 100%;
+	height: 900px;
+	-webkit-perspective: 800;
+	-webkit-perspective-origin: 50% 100px;
+}
+#rotate {
+	position: relative;
+	margin: 300px auto;
+	width: 200px;
+	height: 200px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-webkit-transform-style: preserve-3d;
+	/*-webkit-transition: -webkit-transform .5s ease-out;
+	-webkit-animation: spin 8s infinite linear; */
+}
+#rotate > div {opacity: 0.5;}
+@-webkit-keyframes spin {
+from {-webkit-transform: rotateY(0);}
+to {-webkit-transform: rotateY(-360deg);}
+}
+.plane {
+	background-color: rgba(255, 255, 255, 0.6);
+	position: absolute;
+	height: 200px;
+	width: 200px;
+	border: 1px solid white;
+	font-size: 150px;
+	color: black;
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	-webkit-border-radius: 12px;
+	-webkit-transition: -webkit-transform 2s, opacity 2s;
+}
+/* ---------- 立方体样式 ------------- */
+.cube > .plane:nth-child(1) {-webkit-transform: scale3d(1.2, 1.2, 1.2) translateZ(100px);}
+.cube > .plane:nth-child(2) {-webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(90deg) translateZ(100px);}
+.cube > .plane:nth-child(3) {-webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(180deg) translateZ(100px);}
+.cube > .plane:nth-child(4) {-webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(-90deg) translateZ(100px);}
+.cube > .plane:nth-child(5) {-webkit-transform: scale3d(1.2, 1.2, 1.2) rotateX(90deg) translateZ(100px);}
+.cube > .plane:nth-child(6) {-webkit-transform: scale3d(1.2, 1.2, 1.2) rotateX(-90deg) translateZ(100px);}
+.cube > .plane:nth-child(7) {-webkit-transform: scale3d(0.8, 0.8, 0.8) translateZ(100px);}
+.cube > .plane:nth-child(8) {-webkit-transform: scale3d(0.8, 0.8, 0.8) rotateY(90deg) translateZ(100px);}
+.cube > .plane:nth-child(9) {-webkit-transform: scale3d(0.8, 0.8, 0.8) rotateY(180deg) translateZ(100px);}
+.cube > .plane:nth-child(10) {-webkit-transform: scale3d(0.8, 0.8, 0.8) rotateY(-90deg) translateZ(100px);}
+.cube > .plane:nth-child(11) {-webkit-transform: scale3d(0.8, 0.8, 0.8) rotateX(90deg) translateZ(100px);}
+.cube > .plane:nth-child(12) {-webkit-transform: scale3d(0.8, 0.8, 0.8) rotateX(-90deg) translateZ(100px);}
+/* ---------- 环形样式 ------------- */
+.loop > .plane:nth-child(1) {-webkit-transform: translateZ(380px);}
+.loop > .plane:nth-child(2) {-webkit-transform: rotateY(30deg) translateZ(380px);}
+.loop > .plane:nth-child(3) {-webkit-transform: rotateY(60deg) translateZ(380px);}
+.loop > .plane:nth-child(4) {-webkit-transform: rotateY(90deg) translateZ(380px);}
+.loop > .plane:nth-child(5) {-webkit-transform: rotateY(120deg) translateZ(380px);}
+.loop > .plane:nth-child(6) {-webkit-transform: rotateY(150deg) translateZ(380px);}
+.loop > .plane:nth-child(7) {-webkit-transform: rotateY(180deg) translateZ(380px);}
+.loop > .plane:nth-child(8) {-webkit-transform: rotateY(210deg) translateZ(380px);}
+.loop > .plane:nth-child(9) {-webkit-transform: rotateY(240deg) translateZ(380px);}
+.loop > .plane:nth-child(10) {-webkit-transform: rotateY(270deg) translateZ(380px);}
+.loop > .plane:nth-child(11) {-webkit-transform: rotateY(300deg) translateZ(380px);}
+.loop > .plane:nth-child(12) {-webkit-transform: rotateY(330deg) translateZ(380px);}
+</style>
+</head>
+<div id="stage">
+  <div id="rotate" class="cube">
+    <div class="plane">1</div>
+    <div class="plane">2</div>
+    <div class="plane">3</div>
+    <div class="plane">4</div>
+    <div class="plane">5</div>
+    <div class="plane">6</div>
+    <div class="plane">7</div>
+    <div class="plane">8</div>
+    <div class="plane">9</div>
+    <div class="plane">10</div>
+    <div class="plane">11</div>
+    <div class="plane">12</div>
+  </div>
+</div>
+<script>
+	var rotate = document.getElementById('rotate');
+	//rotate.style.webkitTransform = "rotateX(180deg) rotateY(180deg) rotateZ(180deg)";
+	//rotate.style.webkitTransform = "rotate3d(0,1,0,0deg)";
+	//alert(Math.sqrt(90/127))
+	//rotate.rx = 0;
+	rotate.ry = 0;
+	//rotate.rz = 0;
+	rotate.addEventListener("dblclick", ondblclick);
+	function ondblclick(e)
+	{
+		if (e.currentTarget.className == "cube")
+			e.currentTarget.className = "loop";
+		else
+			e.currentTarget.className = "cube";
+	}
+	
+	var isDown = false;
+	var newX, newY, oldX, oldY, dx;//, dy, rx, ry, rz;
+	//var x0, x90, x180, x270, y0, y90, y180, y270, z0, z90, z180, z270;
+	var str = "";
+	rotate.addEventListener("mousedown", onmousedown);
+	addEventListener("mouseup", onmouseup);
+	addEventListener("mousemove", onmousemove);
+	function onmousedown(e)
+	{
+		isDown = true;
+		newX = e.clientX;
+		newY = e.clientY;
+	}
+	function onmouseup(e)
+	{
+		isDown = false;
+	}
+	function onmousemove(e)
+	{
+		if (isDown)
+		{
+			oldX = newX;
+			oldY = newY;
+			newX = e.clientX;
+			newY = e.clientY;
+			
+			dx = (newX - oldX)*0.2;
+			//dy = newY - oldY;
+			rotate.ry += dx;
+			
+			rotate.style.webkitTransform = "rotateY("+rotate.ry+"deg)";
+			
+			/*rx = rotate.rx;
+			ry = rotate.ry;
+			rz = rotate.rz;
+			rx = angleTo180(rx);
+			ry = angleTo180(ry);
+			rz = angleTo180(rz);
+			
+			x0 = rx>=-45 && rx<45;
+			x90 = rx>=45 && rx<135;
+			x180 = rx>=135 || rx<-135;
+			x270 = rx>=-135 && rx<-45;
+			
+			y0 = ry>=-45 && ry<45;
+			y90 = ry>=45 && ry<135;
+			y180 = ry>=135 || ry<-135;
+			y270 = ry>=-135 && ry<-45;
+			
+			z0 = rz>=-45 && rz<45;
+			z90 = rz>=45 && rz<135;
+			z180 = rz>=135 || rz<-135;
+			z270 = rz>=-135 && rz<-45;
+			
+			if (x0 && y0 && z0)// 1->0
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y0 && z90)// 1->90
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y0 && z180)// 1->180
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y0 && z270)// 1->270
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y270 && z0)// 2->0
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x90 && y0 && z90)// 2->90
+			{
+				rotate.rx -= dy;
+				rotate.rz -= dx;
+			}
+			else if (x180 && y90 && z0)// 2->180
+			{
+				rotate.rx -= dy;
+				rotate.ry -= dx;
+			}
+			else if (x270 && y0 && z270)// 2->270
+			{
+				rotate.rx -= dy;
+				rotate.rz += dx;
+			}
+			else if (x0 && y180 && z0)// 3->0
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y180 && z270)// 3->90
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y180 && z180)// 3->180
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y180 && z90)// 3->270
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x0 && y90 && z0)// 4->0
+			{
+				rotate.rx -= dy;
+				rotate.ry += dx;
+			}
+			else if (x270 && y0 && z90)// 4->90
+			{
+				rotate.rx -= dy;
+				rotate.rz += dx;
+			}
+			else if (x180 && y270 && z0)// 4->180
+			{
+				rotate.rx -= dy;
+				rotate.ry -= dx;
+			}
+			else if (x90 && y0 && z270)// 4->270
+			{
+				rotate.rx -= dy;
+				rotate.rz -= dx;
+			}
+			else if (x270 && y0 && z0)// 5->0
+			{
+				rotate.rx -= dy;
+				rotate.rz += dx;
+			}
+			else if (x270 && y270 && z0)// 5->90
+			{//**********
+				rotate.rx -= dx;
+				//rotate.rx += dx;
+			}
+			else if (x270 && y180 && z0)// 5->180
+			{
+				rotate.rx -= dy;
+				rotate.rz -= dx;
+			}
+			else if (x270 && y90 && z0)// 5->270
+			{//**********
+				rotate.rx -= dy;
+				//rotate.rx -= dx;
+			}
+			else if (x90 && y0 && z0)// 6->0
+			{
+				rotate.rx -= dy;
+				rotate.rz -= dx;
+			}
+			else if (x90 && y90 && z0)// 6->90
+			{//**********
+				rotate.rx -= dy;
+				rotate.rz += dx;
+			}
+			else if (x90 && y180 && z0)// 6->180
+			{
+				rotate.rx -= dy;
+				rotate.rz += dx;
+			}
+			else if (x90 && y270 && z0)// 6->270
+			{//**********
+				rotate.rx -= dy;
+				//rotate.rx -= dx;
+			}*/
+
+			
+			/*dx = Math.abs(newX-oldX);
+			dy = Math.abs(newY-oldY);
+			dist = Math.sqrt(dx*dx+dy*dy);
+			rotate.r += dist;
+			
+			rotate.style.webkitTransform = "rotate3d("+1+","+1+","+1+","+rotate.r+"deg)";*/
+		}
+		
+		
+	}
+	//将角度换算成正负180度以内的角
+	function angleTo180(angle)
+	{
+		if (angle>180) angle-=360;
+		else if (angle<-180) angle+=360;
+		if (angle>180 || angle<-180) angle = angleTo180(angle);
+		return angle;
+	}
+</script>
+</body>
+</html>

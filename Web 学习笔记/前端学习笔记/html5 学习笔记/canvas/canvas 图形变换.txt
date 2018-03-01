@@ -1,0 +1,46 @@
+﻿注意！当 canvas 的宽高属性被重置的时候，所有的绘图上下文设置都将被重置，绘制出的图像也将被清除
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+// 保存当前Canvas状态。
+// 可以保存fillStyle、strokeStyle、globalAlpha、globalCompositeOperation的状态
+ctx.save();
+
+// 恢复Canvas的状态。
+// 由于canvas变化方法每次执行就会在前一次的基础上进行变换，因此有时需要保存坐标系变换前的状态，绘制完毕后再恢复
+ctx.restore();
+
+// 使坐标空间在前一个坐标空间的基础上偏移dx,dy
+ctx.translate(dx,dy);
+
+// 使坐标空间在前一个坐标空间的基础上旋转指定弧度
+// 坐标空间一旦发生旋转后，translate的dx,dy则不再垂直于Canvas，而是跟随旋转的方向变动
+ctx.rotate(Math.PI*0.1);
+
+// 使坐标空间在原有大小的基础上缩放sx,sy，即每一像素的实际大小被缩放，参数必须为正数
+ctx.scale(sx,sy);
+
+
+
+*2D矩阵变换
+
+ctx.transform(a,b,c,d,dx,dy);
+
+公式：
+新(x,y)=(x*a + y*c + dx, x*b + y*d + dy);
+
+// 移动坐标空间
+ctx.transform(1,0,0,1,dx,dy);
+ctx.transform(0,1,1,0,dx,dy);
+
+// 缩放
+ctx.transform(sx,0,0,sy,0,0);
+ctx.transform(0,sx,sy,0,0,0);
+
+// 旋转
+ctx.transform(cos,sin,-sin,cos,0,0);
+
+// 还原矩阵，再以新参数变换矩阵
+ctx.setTransform(a,b,c,d,dx,dy);
+
+

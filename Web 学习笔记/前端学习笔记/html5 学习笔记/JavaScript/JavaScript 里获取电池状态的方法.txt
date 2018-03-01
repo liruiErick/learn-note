@@ -1,0 +1,41 @@
+﻿从Mozilla Aurora 11起，火狐浏览器里实现了一些新功能，其中一个就是对电池状态接口的基本实现。
+这个很简单的接口能提供你关于电池当前电量，是否在充电等信息，以及一些电池状态变化事件。
+
+
+电池对象是存放在window.navigator.battery里，但因为这是火狐浏览器首次实现并提供这个接口，并未普及，你需要使用window.navigator.mozBattery这种写法。
+这个mozBattery对象有下列属性：
+
+charging: 表示当前电池设备是否在充电。如果电池没有充电，这个值为false。如果为true，表明电池正在充电。当前的API实现里不能得到是否充满的信息，也无法判断当前设备是否有电池。
+chargingTime: 是指距离电池充满还需要多久。
+dischargingTime: 电池已使用时间。
+level: 表示电量等级，从0到1.0。当这个值为0时，表示电量耗尽，系统即将关机。如果为1.0，则表示电池满电。
+
+针对这些状态，接口里提供了各自相应的事件，包括onchargingchange, onchargingtimechange, ondischargingtimechange, 和 onlevelchange。
+
+基本的用法很简单：
+
+// 获取电池对象!
+var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+
+// 显示一些有用属性值
+console.warn("电池充电状态: ", battery.charging); // true
+console.warn("电量水平: ", battery.level); // 0.58
+console.warn("电池使用时间: ", battery.dischargingTime);
+
+// 设置一些事件监听器
+battery.addEventListener("chargingchange", function(e) {
+	console.warn("电池充电状态变化: ", battery.charging);
+}, false);
+battery.addEventListener("chargingtimechange", function(e) {
+	console.warn("电池充电时间变化: ", battery.chargingTime);
+}, false);
+battery.addEventListener("dischargingtimechange", function(e) {
+	console.warn("电池使用时间变化: ", battery.dischargingTime);
+}, false);
+battery.addEventListener("levelchange", function(e) {
+	console.warn("电量水平变化: ", battery.level);
+}, false);
+
+
+为什么要使用这些电池编程接口？因为很多用浏览器封装的移动应用(非‘native’)需要知道系统的当前状态。
+有些CPU对电量很敏感，在处理某些特殊任务前要设备有足够的电量，App应事先提醒用户电量不足，请充电。

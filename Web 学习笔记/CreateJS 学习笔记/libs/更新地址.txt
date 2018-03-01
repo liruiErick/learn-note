@@ -1,4 +1,0 @@
-﻿http://createjs.com/
-
-CreateJS 2013.12.12 包含以下四个文件
-EaselJS 0.7.1, TweenJS 0.5.1, SoundJS 0.5.2, PreloadJS 0.4.1

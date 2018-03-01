@@ -1,0 +1,30 @@
+﻿### 查看当前目录下文件夹与文件的大小
+du -h --max-depth=1
+
+
+### 查看目录文件列表
+ls
+ls -a 查看全部文件，包括“.”前缀的隐藏文件
+
+
+### 创建文件夹
+mkdir 文件夹名称
+
+
+### 文件移动和重命名
+将/a目录移动到/b下，并重命名为c
+mv /a /b/c
+将一个名为abc的文件重命名为1234
+mv abc 1234
+
+
+### 删除文件及文件夹
+
+#### 删除文件夹实例：
+rm -rf /var/log/httpd/access
+将会删除/var/log/httpd/access目录以及其下所有文件、文件夹
+
+#### 删除文件使用实例：
+rm -f /var/log/httpd/access.log
+将会强制删除/var/log/httpd/access.log这个文件
+

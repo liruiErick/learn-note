@@ -1,3 +1,0 @@
-﻿jQuery:
-http://jquery.com/
-目前版本(1.11.2)
