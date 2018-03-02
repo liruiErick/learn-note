@@ -1,6 +1,6 @@
 ### 安装 Nginx
 
-```shell
+```
 $ yum install nginx
 or
 $ apt-get install nginx
@@ -10,7 +10,7 @@ $ apt-get install nginx
 
 安装完成后，可以先查看以下 Nginx 版本
 
-```shell
+```
 $ nginx -v
 ```
 
@@ -20,13 +20,13 @@ $ nginx -v
 
 跳转至 Nginx 的配置文件目录
 
-```shell
+```
 $ cd /etc/nginx/conf.d
 ```
 
 创建针对网站的配置文件，命名可以使用（域名+端口）的形式
 
-```shell
+```
 $ sudo vi idguanjia-com-8510.conf
 ```
 
@@ -58,7 +58,7 @@ server {
 
 保存文件并退出，然后执行以下命令，对文件进行检测
 
-```shell
+```
 $ sudo nginx -t
 ```
 
@@ -70,7 +70,7 @@ include /etc/nginx/conf.d/*.conf
 
 最后重启以下 Nginx
 
-```shell
+```
 $ sudo nginx -s reload
 ```
 

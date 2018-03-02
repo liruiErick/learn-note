@@ -6,7 +6,7 @@
 
 在存放远程仓库的目录中（假设是 `/home/USER/git`）执行以下命令会创建一个包含 Git 各种配置文件的「裸仓库」。
 
-```shell
+```
 git init --bare REPO_NAME.git
 ```
 
@@ -14,11 +14,11 @@ git init --bare REPO_NAME.git
 
 切换到存放用户所访问文件的目录（假设为 `/home/USER/www`，如果不存在则在 `/home/USER` 中执行 `mkdir www`）：
 
-```shell
-$ git init
-$ git remote add origin ~/git/REPO_NAME.git
-$ git fetch
-$ git checkout master
+```
+git init
+git remote add origin ~/git/REPO_NAME.git
+git fetch
+git checkout master
 ```
 
 #### 配置远程仓库的 Git Hook
@@ -40,7 +40,7 @@ pre-applypatch.sample     pre-receive.sample
 
 这里主要用 post-receive 这个 Hook，但是初始 Hook 模板中没有该文件，因此使用 `cp post-update.sample post-receive` 命令来复制并重命名一个文件为该文件，用 `vim post-receive` 修改。其内容大致如下：
 
-```shell
+```
 #!/bin/sh
 
 unset GIT_DIR # 还原环境变量
@@ -85,7 +85,7 @@ exit 0
 
 保存后赋予可执行权限
 
-```shell
+```
 chmod +x /home/USER/git/REPO_NAME.git/hooks/post-receive
 ```
 
@@ -93,7 +93,7 @@ chmod +x /home/USER/git/REPO_NAME.git/hooks/post-receive
 
 因为执行拉取的时候是 Git 用户所以要把 Web 服务器根目录(`/home/USER/www`) 的权限设定为 Git 用户
 
-```shell
+```
 chown -R git:git /home/USER/www
 ```
 
@@ -107,7 +107,7 @@ cannot open .git/FETCH_HEAD:Permission denied
 
 在本地仓库添加这个服务器上的远程仓库源，这里将其命名为 `deploy`，和托管代码的中央仓库 `origin` 区分开。
 
-```shell
+```
 git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
 ```
 
@@ -123,8 +123,8 @@ git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
 
 `cd ~/.ssh` 切换目录后，执行以下命令生成一对具有相同名字的密钥（私钥和公钥，默认为 `id_rsa` 和 `id_rsa.pub`）
 
-```shell
-$ ssh-keygen -t rsa -C "bjj19851010@gmail.com"
+```
+ssh-keygen -t rsa -C "bjj19851010@gmail.com"
 ```
 
 `-C` 后跟一个用于区分密钥的标识，一般使用邮箱
@@ -152,16 +152,16 @@ IdentityFile ~/.ssh/PRIVATE_KEY     # 本机上存放的私钥路径
 
 **一行命令搞定以上三步**
 
-```shell
-$ ssh-copy-id [-i [identity_file]] [user@]machine
+```
+ssh-copy-id [-i [identity_file]] [user@]machine
 ```
 
 `-i` 参数用来指定公钥文件
 
 例如，把本地的ssh公钥文件安装到远程主机对应的账户下：
 
-```shell
-$ ssh-copy-id user@server
+```
+ssh-copy-id user@server
 or
-$ ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
 ```
