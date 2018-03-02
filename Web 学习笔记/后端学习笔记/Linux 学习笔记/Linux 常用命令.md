@@ -87,3 +87,6 @@ sudo -s
 2、poweroff  立刻关机
 3、shutdown -h now 立刻关机(root用户使用)
 4、shutdown -h 10 10分钟后自动关机
+
+#### 查看硬盘使用情况
+df -h

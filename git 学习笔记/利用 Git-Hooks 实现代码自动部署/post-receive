@@ -2,7 +2,15 @@
 
 unset GIT_DIR
 
-DeployPath="../local"
+MESSAGE=$(git log -1 HEAD --pretty=format:%s)
+
+if [[ "$MESSAGE" == *\=\>pro* ]]; then
+    echo "Deploy to the production environment"
+    DeployPath="../pro"
+else
+    echo "Deploy to the development environment"
+    DeployPath="../dev"
+fi
 
 {
     cd $DeployPath

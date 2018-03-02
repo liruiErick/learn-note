@@ -8,6 +8,13 @@ strtotime('2017-09-16'); // 时间字符串转毫秒数
 
 date('Y-m-d H:i:s', 1505579476); // 格式化时间毫秒数
 
+// 定义常量
+define("HOST", "http://www.xxx.com/");
+// 它使用三个参数：
+// 首个参数定义常量的名称
+// 第二个参数定义常量的值
+// 可选的第三个参数规定常量名是否对大小写不敏感。默认是 false。
+
 // php输出一个文件（必须有写入权限）
 file_put_contents('/var/www/html/vrwanjia/1.txt', $post['message']);
 

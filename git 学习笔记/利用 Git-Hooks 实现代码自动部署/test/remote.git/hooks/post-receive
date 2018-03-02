@@ -1,0 +1,34 @@
+#!/bin/sh
+
+unset GIT_DIR # 还原环境变量
+
+MESSAGE=$(git log -1 HEAD --pretty=format:%s) # 获取 commit message
+
+# 通过 commit message 中是否包含 '=>pro' 来判断需要部署的项目路径
+# DeployPath 是相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
+if [[ "$MESSAGE" == *\=\>pro* ]]; then
+    echo "Deploy to the production environment"
+    DeployPath="../remote-pro"
+else
+    echo "Deploy to the development environment"
+    DeployPath="../remote-dev"
+fi
+
+{ # try
+    cd $DeployPath
+} || { # catch
+    echo "Error, Server update fail!"
+    exit 1
+}
+
+{ # try
+    git reset --hard origin/master
+    git clean -f
+    git pull origin master
+} || { # catch
+    echo "Error, Server update fail!"
+    exit 1
+}
+
+echo "Server update done."
+exit 0
