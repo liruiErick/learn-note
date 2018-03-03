@@ -17,7 +17,7 @@ fi
 { # try
     cd $DeployPath
 } || { # catch
-    echo "Error, Server update fail!"
+    echo "Error, The deployment path was not found!"
     exit 1
 }
 

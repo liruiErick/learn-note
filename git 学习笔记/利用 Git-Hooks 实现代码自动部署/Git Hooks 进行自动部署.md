@@ -7,7 +7,7 @@
 在存放远程仓库的目录中（假设是 `/home/USER/git`）执行以下命令会创建一个包含 Git 各种配置文件的「裸仓库」。
 
 ```
-git init --bare REPO_NAME.git
+$ git init --bare REPO_NAME.git
 ```
 
 > `REPO_NAME` 表示自己起的仓库名称
@@ -15,10 +15,10 @@ git init --bare REPO_NAME.git
 切换到存放用户所访问文件的目录（假设为 `/home/USER/www`，如果不存在则在 `/home/USER` 中执行 `mkdir www`）：
 
 ```
-git init
-git remote add origin ~/git/REPO_NAME.git
-git fetch
-git checkout master
+$ git init
+$ git remote add origin ~/git/REPO_NAME.git
+$ git fetch
+$ git checkout master
 ```
 
 #### 配置远程仓库的 Git Hook
@@ -38,35 +38,36 @@ pre-applypatch.sample     pre-receive.sample
 
 > 注意，在带有 `pre-` 前缀的 Hook 里，使用 `exit 0` 才能确保该操作会被继续，如果使用 `exit 1` 则该操作会被终止。
 
-这里主要用 post-receive 这个 Hook，但是初始 Hook 模板中没有该文件，因此使用 `cp post-update.sample post-receive` 命令来复制并重命名一个文件为该文件，用 `vim post-receive` 修改。其内容大致如下：
+自动部署主要使用 post-receive 这个 Hook，但是初始 Hook 模板中没有这个文件模板，所以需要自行创建一个，其内容大致如下：
 
-```
+```shell
 #!/bin/sh
 
 unset GIT_DIR # 还原环境变量
 
 MESSAGE=$(git log -1 HEAD --pretty=format:%s) # 获取 commit message
+PRO="=>pro"
 
 # 通过 commit message 中是否包含 '=>pro' 来判断需要部署的项目路径
 # DeployPath 是相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
-if [[ "$MESSAGE" == *\=\>pro* ]]; then
-    echo "Deploy to the production environment"
+if [[ "$MESSAGE" == *"$PRO"* ]]; then
+    echo "Deploy to the production environment."
     DeployPath="../pro"
 else
-    echo "Deploy to the development environment"
+    echo "Deploy to the development environment."
     DeployPath="../dev"
 fi
 
 { # try
     cd $DeployPath
 } || { # catch
-    echo "Error, Server update fail!"
+    echo "Error, The deployment path was not found!"
     exit 1
 }
 
 { # try
     git reset --hard origin/master # 用 fetch 到的最新远程 master 分支强制覆盖掉本地 master 分支
-    git clean -f                   # 清理没有被追踪的文件
+    git clean -f                   # 清理没有被追踪的文件(仅在服务器环境的文件与git仓库的文件完全相同时才使用此命令，否则会意外删除掉服务器上的重要文件)
     git pull origin master         # 拉取远程仓库的最新代码
     # npm install                  # 重新安装 npm 依赖
     # npm run test                 # 测试项目
@@ -83,18 +84,33 @@ exit 0
 
 > 注意，如果不加 `unset GIT_DIR` 就会报出 `remote: fatal: not git respository:’.’` 错误
 
-保存后赋予可执行权限
+这里还需要注意，在保存后一定要赋予文件可执行权限，否则该脚本可能无法执行
 
 ```
-chmod +x /home/USER/git/REPO_NAME.git/hooks/post-receive
+$ chmod +x /home/USER/git/REPO_NAME.git/hooks/post-receive
 ```
+
+另外，如果提交后显示出以下错误：
+
+```
+remote: hooks/post-receive: [[: not found
+```
+
+则表示当前服务器的 shell 不支持 `if [[ ]]` 这个扩展，那么可以使用以下脚本代替判断
+
+```shell
+echo "$MESSAGE" | grep "$PRO"
+if test $? -eq 0; then
+```
+
+这里的 `$?` 表示最后命令的退出状态，也就是前一句的 `"$MESSAGE" | grep "$PRO"` 的退出状态，如果匹配到了 `$?` 就为 0，否则表示没有匹配到。需要注意的是，当 `$?` 使用过一次之后，它的值就会变为 0，所以这个值不能够被再次用于判断，如果需要多次使用，可以在第一次使用时将它赋值给变量。
 
 #### 修改web服务器根目录的权限
 
 因为执行拉取的时候是 Git 用户所以要把 Web 服务器根目录(`/home/USER/www`) 的权限设定为 Git 用户
 
 ```
-chown -R git:git /home/USER/www
+$ chown -R git:git /home/USER/www
 ```
 
 如果没有做上述操作就会报：
@@ -108,7 +124,7 @@ cannot open .git/FETCH_HEAD:Permission denied
 在本地仓库添加这个服务器上的远程仓库源，这里将其命名为 `deploy`，和托管代码的中央仓库 `origin` 区分开。
 
 ```
-git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
+$ git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
 ```
 
 这样执行 `git push deploy master` 服务器的 Git 仓库会更新，同时服务器上的网站服务器根目录 `/home/USER/www` 也会自动执行 `git pull` 同步本地的推送，从而实现自动部署了。
@@ -124,7 +140,7 @@ git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
 `cd ~/.ssh` 切换目录后，执行以下命令生成一对具有相同名字的密钥（私钥和公钥，默认为 `id_rsa` 和 `id_rsa.pub`）
 
 ```
-ssh-keygen -t rsa -C "bjj19851010@gmail.com"
+$ ssh-keygen -t rsa -C "bjj19851010@gmail.com"
 ```
 
 `-C` 后跟一个用于区分密钥的标识，一般使用邮箱
@@ -153,7 +169,7 @@ IdentityFile ~/.ssh/PRIVATE_KEY     # 本机上存放的私钥路径
 **一行命令搞定以上三步**
 
 ```
-ssh-copy-id [-i [identity_file]] [user@]machine
+$ ssh-copy-id [-i [identity_file]] [user@]machine
 ```
 
 `-i` 参数用来指定公钥文件
@@ -161,7 +177,7 @@ ssh-copy-id [-i [identity_file]] [user@]machine
 例如，把本地的ssh公钥文件安装到远程主机对应的账户下：
 
 ```
-ssh-copy-id user@server
+$ ssh-copy-id user@server
 or
-ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
+$ ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
 ```

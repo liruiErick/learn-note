@@ -5,17 +5,17 @@ unset GIT_DIR
 MESSAGE=$(git log -1 HEAD --pretty=format:%s)
 
 if [[ "$MESSAGE" == *\=\>pro* ]]; then
-    echo "Deploy to the production environment"
+    echo "Deploy to the production environment."
     DeployPath="../pro"
 else
-    echo "Deploy to the development environment"
+    echo "Deploy to the development environment."
     DeployPath="../dev"
 fi
 
 {
     cd $DeployPath
 } || {
-    echo "Error, Server update fail!"
+    echo "Error, The deployment path was not found!"
     exit 1
 }
 
