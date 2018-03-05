@@ -1,20 +1,24 @@
-﻿### Linux自带的包管理工具
+### Linux自带的包管理工具
 
 RedHat 系列 
 1 常见的安装包格式 rpm 包，安装rpm包的命令是“rpm -参数” 
 2 包管理工具 yum 
 3 支持tar包 
- 
+
 Debian 系列
 1 常见的安装包格式 deb 包，安装deb包的命令是“dpkg -参数”
 2 包管理工具 apt-get
 3 支持tar包
 
 
-### 其他操作
+### 常用操作命令
 
 #### 取得管理员权限
 sudo -s
+
+#### 赋予文件读写权限
+
+sudo chmod -R 777 wordpress/wp-content
 
 #### 重启命令：
 1、reboot
