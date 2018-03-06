@@ -17,7 +17,9 @@
     var defaultOptions = {
         offset: 0, // 锁定时相对于窗口的偏移量，一般为头部的高度
         container: '', // 选择器或者 DOM 对象，如果指定了容器元素，那么锁定只会保持在容器之内
-        fixedClass: 'fixed' // 锁定时的类名
+        fixedClass: 'fixed', // 锁定时的类名
+        placeholderClass: '' // 占位元素的类名，如果不指定该属性，则不会创建占位元素。
+        // 当对象被锁定时，克隆一个占位元素，在锁定对象脱离文档结构时填充原锁定对象的位置。
     };
 
     function Fixer(selector, options) {
@@ -48,12 +50,13 @@
                 if (!this._$container.length) this._$container = null;
             }
 
-            var fixerPosition = this._$fixer.css('position');
-
-            if (fixerPosition === 'static' || fixerPosition === 'relative') {
-                // 克隆一个占位元素，在锁定对象脱离文档结构时填充原锁定对象的位置
-                this._$placeholder = this._$fixer.clone().css({'pointer-events': 'none', 'visibility': 'hidden'});
+            if (this._options.placeholderClass) {
+                var fixerPosition = this._$fixer.css('position');
+                if (fixerPosition === 'static' || fixerPosition === 'relative') {
+                    this._$placeholder = this._$fixer.clone().addClass(this._options.placeholderClass).css({'pointer-events': 'none', 'visibility': 'hidden'});
+                }
             }
+
 
             this._initProxy();
             this._addEvent();
