@@ -2,11 +2,13 @@
 
 var_dump($var); // 输出变量的类型和值，如：float(10.365) 
 
-htmlentities(html); // 返回不被浏览器解析的html源代码
-
 strtotime('2017-09-16'); // 时间字符串转毫秒数
 
-date('Y-m-d H:i:s', 1505579476); // 格式化时间毫秒数
+date('Y-m-d H:i:s', 1505579476); // 将时间毫秒数格式化
+
+mktime(hour,minute,second,month,day,year); // 创建日期对象
+
+$_SERVER["PHP_SELF"]; // 返回当前脚本的文件名
 
 // 定义常量
 define("HOST", "http://www.xxx.com/");
@@ -14,6 +16,19 @@ define("HOST", "http://www.xxx.com/");
 // 首个参数定义常量的名称
 // 第二个参数定义常量的值
 // 可选的第三个参数规定常量名是否对大小写不敏感。默认是 false。
+
+// 把特殊字符转换为 HTML 实体。防止 XSS（跨站点脚本攻击）
+$html = '<div>你好</div>';
+htmlspecialchars($html); // &lt;div&gt;你好&lt;/div&gt;
+htmlentities($html);     // &lt;div&gt;&auml;&frac12;&nbsp;&aring;&yen;&frac12;&lt;/div&gt;
+
+// 过滤函数
+function test_filter($text) {
+  $data = trim($text); // 去除用户输入数据中不必要的字符（多余的空格、制表符、换行）
+  $data = stripslashes($text); // 删除用户输入数据中的反斜杠（\）
+  $data = htmlspecialchars($text);
+  return $text;
+}
 
 // php输出一个文件（必须有写入权限）
 file_put_contents('/var/www/html/vrwanjia/1.txt', $post['message']);
