@@ -1,0 +1,218 @@
+.bottom-fixed-area {
+    position: fixed;
+    width: 100%;
+    height: 0;
+    bottom: 0;
+    z-index: 9;
+
+    .wrap {
+        position: relative;
+    }
+
+    .outer-box {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin-right: -50px;
+        margin-bottom: 40px;
+    }
+
+    .directory-btn {
+        display: block;
+        margin-bottom: 10px;
+        padding: 4px;
+        .sz(32px);
+        line-height: 16px;
+        .ftsz(14px);
+        .bdrd(100%);
+        .acl(@ftcl, none);
+        .bgcl(fade(#fff, 90%) fade(#f0f0f0, 90%));
+        .bxsd(thin);
+        .b;
+        text-align: center;
+    }
+
+    .scroll-top {
+        position: relative;
+        .sz(40px);
+        .bdrd(100%);
+        .bgcl(fade(@theme_color, 70%));
+        .bxsd(thin);
+        cursor: pointer;
+
+        .hover({
+            .bgcl(@theme_color);
+        });
+
+        i {
+            .arrow3-top(#fff, 24px, 20px, 8px);
+            .cxy(24px, 20px);
+        }
+    }
+
+    .authenticate-btn {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin-bottom: 80px;
+        .sz(100px);
+        .bdrd(100%);
+        .bgcl(#fff);
+        .bxsd(box);
+        cursor: pointer;
+        .transition-transform(.3s);
+
+        img {
+            .sz(100%);
+        }
+    }
+
+    .bottom-banner {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        .transition-transform(.3s);
+
+        body.is-down & {
+            .translateY(100%);
+        }
+    }
+
+    .mail-tel {
+        height: 70px;
+        text-align: center;
+        .bgcl(fade(@theme_color, 90%));
+        .box-shadow(0 -1px 2px rgba(0,0,0,0.2));
+        .mean(2);
+
+        a {
+            position: relative;
+            display: block;
+            height: 100%;
+            line-height: 1.4;
+            .acl(#eee #fff, none);
+            .va;
+
+            &:first-child {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: 10px;
+                    bottom: 10px;
+                    right: 0;
+                    .bdr(#fff);
+                }
+            }
+
+            .hover({
+                .bgcl(fade(#000, 10%));
+            });
+        }
+
+        img {
+            .sz(40px);
+        }
+
+        .mobile-icon {
+            display: none;
+        }
+
+        .mail-tel-text {
+            margin-left: 20px;
+
+            .text1 {
+                .ftsz(20px);
+            }
+
+            .text2 {
+                .ftsz(14px);
+            }
+
+            .mobile-text {
+                display: none;
+                .ftsz(16px);
+            }
+        }
+    }
+}
+
+@media screen and (min-width: @screen_lg) { // 超大屏幕及以上（桌面）
+
+}
+@media screen and (min-width: (@screen_sm + 1)) { // iPad 竖屏以上
+    .bottom-fixed-area {
+        .mail-tel {
+            display: none;
+        }
+    }
+}
+@media screen and (max-width: @screen_sm) { // iPad 竖屏及以下
+    .bottom-fixed-area {
+        .outer-box {
+            margin-right: 10px;
+            margin-bottom: 90px;
+        }
+
+        .authenticate-btn {
+            margin-right: -20px;
+            margin-bottom: -15px;
+
+            body.is-scroll & {
+                .translate(100%, 100%);
+            }
+        }
+
+        .mail-tel {
+            height: 40px;
+            .bgcl(fade(#fff, 90%));
+
+            a {
+                .acl(none);
+                color: @theme_color;
+
+                .active({
+                    color: #fff;
+                    .bgcl(fade(@theme_color, 90%));
+                });
+
+                &:first-child {
+                    &:before {
+                        .bdr(@theme_color);
+                    }
+                }
+            }
+
+            img {
+                .sz(24px);
+            }
+
+            .pc-icon {
+                display: none;
+            }
+
+            .mobile-icon {
+                display: inline-block;
+            }
+
+            .mail-tel-text {
+                margin-left: 5px;
+
+                .text1,
+                .text2 {
+                    display: none;
+                }
+
+                .mobile-text {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: @screen_xs) { // iPhone Plus 及以下
+
+}
+@media screen and (max-width: (@screen_ss - 1)) { // iPhoneX 以下
+
+}
