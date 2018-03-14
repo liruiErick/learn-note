@@ -221,3 +221,353 @@ wp_reset_postdata();
 
 ?>
 ```
+
+
+## 返回结果实例
+
+```
+WP_Query Object
+(
+    [query] => Array
+        (
+            [post_type] => bag
+            [posts_per_page] => 32
+            [post_status] => publish
+            [meta_key] => bag_buy_time
+            [meta_type] => DATE
+            [orderby] => meta_value
+            [order] => DESC
+            [meta_query] => Array
+                (
+                    [relation] => AND
+                )
+
+        )
+
+    [query_vars] => Array
+        (
+            [post_type] => bag
+            [posts_per_page] => 32
+            [post_status] => publish
+            [meta_key] => bag_buy_time
+            [meta_type] => DATE
+            [orderby] => meta_value
+            [order] => DESC
+            [meta_query] => Array
+                (
+                    [relation] => AND
+                )
+
+            [error] => 
+            [m] => 
+            [p] => 0
+            [post_parent] => 
+            [subpost] => 
+            [subpost_id] => 
+            [attachment] => 
+            [attachment_id] => 0
+            [name] => 
+            [static] => 
+            [pagename] => 
+            [page_id] => 0
+            [second] => 
+            [minute] => 
+            [hour] => 
+            [day] => 0
+            [monthnum] => 0
+            [year] => 0
+            [w] => 0
+            [category_name] => 
+            [tag] => 
+            [cat] => 
+            [tag_id] => 
+            [author] => 
+            [author_name] => 
+            [feed] => 
+            [tb] => 
+            [paged] => 0
+            [meta_value] => 
+            [preview] => 
+            [s] => 
+            [sentence] => 
+            [title] => 
+            [fields] => 
+            [menu_order] => 
+            [embed] => 
+            [category__in] => Array
+                (
+                )
+
+            [category__not_in] => Array
+                (
+                )
+
+            [category__and] => Array
+                (
+                )
+
+            [post__in] => Array
+                (
+                )
+
+            [post__not_in] => Array
+                (
+                )
+
+            [post_name__in] => Array
+                (
+                )
+
+            [tag__in] => Array
+                (
+                )
+
+            [tag__not_in] => Array
+                (
+                )
+
+            [tag__and] => Array
+                (
+                )
+
+            [tag_slug__in] => Array
+                (
+                )
+
+            [tag_slug__and] => Array
+                (
+                )
+
+            [post_parent__in] => Array
+                (
+                )
+
+            [post_parent__not_in] => Array
+                (
+                )
+
+            [author__in] => Array
+                (
+                )
+
+            [author__not_in] => Array
+                (
+                )
+
+            [ignore_sticky_posts] => 
+            [suppress_filters] => 
+            [cache_results] => 1
+            [update_post_term_cache] => 1
+            [lazy_load_term_meta] => 1
+            [update_post_meta_cache] => 1
+            [nopaging] => 
+            [comments_per_page] => 50
+            [no_found_rows] => 
+        )
+
+    [tax_query] => WP_Tax_Query Object
+        (
+            [queries] => Array
+                (
+                )
+
+            [relation] => AND
+            [table_aliases:protected] => Array
+                (
+                )
+
+            [queried_terms] => Array
+                (
+                )
+
+            [primary_table] => wpf8cd45posts
+            [primary_id_column] => ID
+        )
+
+    [meta_query] => WP_Meta_Query Object
+        (
+            [queries] => Array
+                (
+                    [0] => Array
+                        (
+                            [key] => bag_buy_time
+                            [type] => DATE
+                        )
+
+                    [relation] => OR
+                )
+
+            [relation] => AND
+            [meta_table] => wpf8cd45postmeta
+            [meta_id_column] => post_id
+            [primary_table] => wpf8cd45posts
+            [primary_id_column] => ID
+            [table_aliases:protected] => Array
+                (
+                    [0] => wpf8cd45postmeta
+                )
+
+            [clauses:protected] => Array
+                (
+                    [wpf8cd45postmeta] => Array
+                        (
+                            [key] => bag_buy_time
+                            [type] => DATE
+                            [compare] => =
+                            [alias] => wpf8cd45postmeta
+                            [cast] => DATE
+                        )
+
+                )
+
+            [has_or_relation:protected] => 
+        )
+
+    [date_query] => 
+    [request] => SELECT SQL_CALC_FOUND_ROWS  wpf8cd45posts.ID FROM wpf8cd45posts  INNER JOIN wpf8cd45postmeta ON ( wpf8cd45posts.ID = wpf8cd45postmeta.post_id ) WHERE 1=1  AND ( 
+  wpf8cd45postmeta.meta_key = 'bag_buy_time'
+) AND wpf8cd45posts.post_type = 'bag' AND ((wpf8cd45posts.post_status = 'publish')) GROUP BY wpf8cd45posts.ID ORDER BY CAST(wpf8cd45postmeta.meta_value AS DATE) DESC LIMIT 0, 32
+    [posts] => Array
+        (
+            [0] => WP_Post Object
+                (
+                    [ID] => 77
+                    [post_author] => 1
+                    [post_date] => 2018-03-05 13:03:40
+                    [post_date_gmt] => 2018-03-05 04:03:40
+                    [post_content] => 
+                    [post_title] => 【エルメス高価買取実施中】ケリー28 スペシャルオーダー　エプソン　ローズアザレ【2018.2.28】　
+                    [post_excerpt] => 
+                    [post_status] => publish
+                    [comment_status] => closed
+                    [ping_status] => closed
+                    [post_password] => 
+                    [post_name] => %e3%82%b1%e3%83%aa%e3%83%bc28-%e3%82%b9%e3%83%9a%e3%82%b7%e3%83%a3%e3%83%ab%e3%82%aa%e3%83%bc%e3%83%80%e3%83%bc%e3%80%80%e3%82%a8%e3%83%97%e3%82%bd%e3%83%b3%e3%80%80%e3%83%ad%e3%83%bc%e3%82%ba
+                    [to_ping] => 
+                    [pinged] => 
+                    [post_modified] => 2018-03-12 12:02:10
+                    [post_modified_gmt] => 2018-03-12 03:02:10
+                    [post_content_filtered] => 
+                    [post_parent] => 0
+                    [guid] => http://asubrand.sakura.ne.jp/xiaoma-test/?post_type=bag&#038;p=77
+                    [menu_order] => 0
+                    [post_type] => bag
+                    [post_mime_type] => 
+                    [comment_count] => 0
+                    [filter] => raw
+                )
+
+            [1] => WP_Post Object
+                (
+                    [ID] => 29
+                    [post_author] => 1
+                    [post_date] => 2018-03-05 10:52:34
+                    [post_date_gmt] => 2018-03-05 01:52:34
+                    [post_content] => 
+                    [post_title] => ★バーキン30 エプソン クレ 1,460,000円
+                    [post_excerpt] => 
+                    [post_status] => publish
+                    [comment_status] => closed
+                    [ping_status] => closed
+                    [post_password] => 
+                    [post_name] => birkin-1
+                    [to_ping] => 
+                    [pinged] => 
+                    [post_modified] => 2018-03-12 15:05:00
+                    [post_modified_gmt] => 2018-03-12 06:05:00
+                    [post_content_filtered] => 
+                    [post_parent] => 0
+                    [guid] => http://asubrand.sakura.ne.jp/xiaoma-test/?post_type=bag&#038;p=29
+                    [menu_order] => 0
+                    [post_type] => bag
+                    [post_mime_type] => 
+                    [comment_count] => 0
+                    [filter] => raw
+                )
+
+            ...
+
+        )
+
+    [post_count] => 32
+    [current_post] => -1
+    [in_the_loop] => 
+    [post] => WP_Post Object
+        (
+            [ID] => 77
+            [post_author] => 1
+            [post_date] => 2018-03-05 13:03:40
+            [post_date_gmt] => 2018-03-05 04:03:40
+            [post_content] => 
+            [post_title] => 【エルメス高価買取実施中】ケリー28 スペシャルオーダー　エプソン　ローズアザレ【2018.2.28】　
+            [post_excerpt] => 
+            [post_status] => publish
+            [comment_status] => closed
+            [ping_status] => closed
+            [post_password] => 
+            [post_name] => %e3%82%b1%e3%83%aa%e3%83%bc28-%e3%82%b9%e3%83%9a%e3%82%b7%e3%83%a3%e3%83%ab%e3%82%aa%e3%83%bc%e3%83%80%e3%83%bc%e3%80%80%e3%82%a8%e3%83%97%e3%82%bd%e3%83%b3%e3%80%80%e3%83%ad%e3%83%bc%e3%82%ba
+            [to_ping] => 
+            [pinged] => 
+            [post_modified] => 2018-03-12 12:02:10
+            [post_modified_gmt] => 2018-03-12 03:02:10
+            [post_content_filtered] => 
+            [post_parent] => 0
+            [guid] => http://asubrand.sakura.ne.jp/xiaoma-test/?post_type=bag&#038;p=77
+            [menu_order] => 0
+            [post_type] => bag
+            [post_mime_type] => 
+            [comment_count] => 0
+            [filter] => raw
+        )
+
+    [comment_count] => 0
+    [current_comment] => -1
+    [found_posts] => 32
+    [max_num_pages] => 1
+    [max_num_comment_pages] => 0
+    [is_single] => 
+    [is_preview] => 
+    [is_page] => 
+    [is_archive] => 1
+    [is_date] => 
+    [is_year] => 
+    [is_month] => 
+    [is_day] => 
+    [is_time] => 
+    [is_author] => 
+    [is_category] => 
+    [is_tag] => 
+    [is_tax] => 
+    [is_search] => 
+    [is_feed] => 
+    [is_comment_feed] => 
+    [is_trackback] => 
+    [is_home] => 
+    [is_404] => 
+    [is_embed] => 
+    [is_paged] => 
+    [is_admin] => 
+    [is_attachment] => 
+    [is_singular] => 
+    [is_robots] => 
+    [is_posts_page] => 
+    [is_post_type_archive] => 1
+    [query_vars_hash:WP_Query:private] => 6e073d1711a061cdfc507962beb3e74b
+    [query_vars_changed:WP_Query:private] => 
+    [thumbnails_cached] => 
+    [stopwords:WP_Query:private] => 
+    [compat_fields:WP_Query:private] => Array
+        (
+            [0] => query_vars_hash
+            [1] => query_vars_changed
+        )
+
+    [compat_methods:WP_Query:private] => Array
+        (
+            [0] => init_query_flags
+            [1] => parse_tax_query
+        )
+
+)
+```
+
