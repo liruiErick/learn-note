@@ -16,11 +16,6 @@ define("HOST", "http://www.xxx.com/");
 // 检查一个常亮是否被定义
 defined("HOST"); // 如果被定义则返回 1
 
-// 把特殊字符转换为 HTML 实体。防止 XSS（跨站点脚本攻击）
-$html = '<div>你好</div>';
-htmlspecialchars($html); // &lt;div&gt;你好&lt;/div&gt;
-htmlentities($html);     // &lt;div&gt;&auml;&frac12;&nbsp;&aring;&yen;&frac12;&lt;/div&gt;
-
 // 过滤函数
 function test_filter($text) {
   $data = trim($text); // 去除用户输入数据中不必要的字符（多余的空格、制表符、换行）
