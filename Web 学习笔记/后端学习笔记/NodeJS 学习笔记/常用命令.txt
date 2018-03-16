@@ -1,48 +1,4 @@
-﻿## 命令
-
-pwd
-放回当前路径
-
-cd path
-跳转到指定路径
-
-exit
-退出
-
-ls
-查看当前目录下的文件及文件夹
-
-touch (文件名)
-一是用于把已存在文件的时间标签更新为系统当前的时间（默认方式），它们的数据将原封不动地保留下来
-二是用来创建新的空文件
-
-
-
-## 指令
-
---save
-写入 package.json 的 dependencies（生产依赖）
-
---save-dev
-写入 package.json 的 devDependencies（开发依赖）
-
---out-file
--o
-输出文件
-
---out-dir
--d
-输出目录
-
---watch
-监控
-Example:
---watch src -d build
-箭筒 src 目录下的文件，如果有变化则将 src 目录下文件输出到 build 目录下
-
-
-
-## 运行node程序时传参
+﻿#### 运行node程序时传参
 
 PORT=8085 node app.js
 这里设置的 PORT=8085 可被作为参数传入 app.js，并使用 process.env.PORT 获取
