@@ -109,16 +109,6 @@ wrap  规定当在表单中提交时，文本区域（text area）中的文本�
 <textarea style="overflow-y:hidden;" onpropertychange="this.style.height=this.scrollHeight + 'px'" oninput="this.style.height=this.scrollHeight + 'px'"></textarea>
 
 
-* 传统按钮
-<button type="button">确定</button>  普通按钮
-<button type="submit">提交</button>  提交按钮
-<button type="reset">重置</button>  重置按钮
-// 设置按钮的标签名称
-button对象.innerHTML="确定";
-
-请始终为按钮规定 type 属性。Internet Explorer 的默认类型是 "button"，而其他浏览器中（包括 W3C 规范）的默认值是 "submit"。
-
-
 * 标签
 <label for="被绑定的input元素id">标签</label>
 // 使用单选按钮时，需要用相同的 name 将多个单选框绑定在一起
@@ -131,6 +121,26 @@ button对象.innerHTML="确定";
 
 // 在js中label对象的control属性表示被label绑定的表单元素对象，该属性是个只读属性
 label对象.control;
+
+
+* 按钮
+<button type="button">确定</button>  普通按钮
+<button type="submit">提交</button>  提交按钮
+<button type="reset">重置</button>  重置按钮
+// 设置按钮的标签名称
+button对象.innerHTML="确定";
+
+请始终为按钮规定 type 属性。Internet Explorer 的默认类型是 "button"，而其他浏览器中（包括 W3C 规范）的默认值是 "submit"。
+
+
+* 按钮 元素的 DOM 属性
+
+form {form_name} 规定按钮属于一个或多个表单。
+formaction {url} 覆盖 form 元素的 action 属性。该属性与 type="submit" 配合使用。
+formenctype	{application/x-www-form-urlencoded | multipart/form-data | text/plain} 覆盖 form 元素的 enctype 属性。该属性与 type="submit" 配合使用。
+formmethod {get | post} 覆盖 form 元素的 method 属性。该属性与 type="submit" 配合使用。
+formnovalidate {formnovalidate} 覆盖 form 元素的 novalidate 属性。该属性与 type="submit" 配合使用。
+formtarget {_blank | _self | _parent | _top | framename} 覆盖 form 元素的 target 属性。该属性与 type="submit" 配合使用。
 
 
 * form 元素的 DOM 属性
@@ -201,8 +211,6 @@ $.ajax({
 
 另外，还可以利用form元素对象的getFormData方法生成它！(2017年6月9日测试，chrome 并不支持该方法)
 var formData = document.getElementById("form").getFormData()
-
-
 
 
 * input 元素的 name 属性
