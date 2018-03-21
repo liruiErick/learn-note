@@ -124,28 +124,27 @@
 			// 检查图片地址是否发生变化
 			var data_src = $self.attr(settings.src_attribute),
 				data_size = $self.attr(settings.size_attribute);
+
 			if (data_src) { // 当设置了图片地址时
-				if (data_src === $self.data('original-image')) { // 当前设置的图片地址已经加载
+				if (data_src === $self.data('lazyload-current-image')) { // 当前设置的图片地址已经加载
 					return;
 				} else { // 当前设置的图片地址没有加载
 					self.loaded = false;
 
 					// 如果 src 属性未设置，则使用 placeholder
-					if ($self.attr('src') === undefined || $self.attr('src') === '') {
-						if ($self.is('img')) {
-							$self.attr('src', settings.placeholder);
-						}
+					if ($self.is('img') && ($self.attr('src') === undefined || $self.attr('src') === '')) {
+						$self.attr('src', settings.placeholder);
 					}
 				}
 			} else { // 当没有设置图片地址时
 				self.loaded = true;
-				$self.data('original-image', data_src);
+				$self.data('lazyload-current-image', data_src);
 				if (data_src === '') {
-					// 如果data-src为null或者false，则表示清空图片，并重新使用 placeholder
+					// 如果 data-src 为 null 或者 false，则表示清空图片，并重新使用 placeholder
 					if ($self.is('img')) {
 						$self.attr('src', settings.placeholder);
 					} else {
-						$self.css('background-image', $self.data('background-image'));
+						$self.css('background-image', $self.data('lazyload-background-image'));
 					}
 				}
 				return;
@@ -175,7 +174,7 @@
 						if ($self.is('img') && !data_size) {
 							$self.attr('src', data_src);
 						} else {
-							$self.data('background-image', $self.css('background-image'));
+							$self.data('lazyload-background-image', $self.css('background-image'));
 							$self.css({
 								'background-image': 'url(' + data_src + ')',
 								'background-position': 'center',
@@ -183,6 +182,8 @@
 								'background-size': data_size || '100% 100%'
 							});
 						}
+
+						$self.removeAttr(settings.src_attribute);
 
 						if (animated) {
 							$self[settings.effect](settings.effect_speed);
@@ -193,7 +194,7 @@
 					.attr('src', data_src);
 
 				self.loaded = true;
-				$self.data('original-image', data_src);
+				$self.data('lazyload-current-image', data_src);
 			});
 
 			/* When wanted event is triggered load original image */

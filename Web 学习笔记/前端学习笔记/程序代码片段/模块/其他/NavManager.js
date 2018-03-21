@@ -180,7 +180,7 @@
             // 判断当前滑到到哪个区块
             $.each(this._sections, function(i, $section) {
                 var top = $section.offset().top,
-                    bottom = top + $section.outerHeight();
+                    bottom = top + $section.outerHeight(true);
                 // 当页面顶部进入窗口高度的一半时，将该页面算作当前页面。
                 // 如果当前区块是最后一个，那么当区块底部与窗口底部平齐时，将该区块算作当前区块。
                 if ((i === self._maxIndex && winBottom >= bottom)

@@ -1,4 +1,3 @@
-
 <!-- This version of the throbber is good for sizes less than 28x28dp,
      which follow the stroke thickness calculation: 3 - (28 - diameter) / 16 -->
 <svg version="1" xmlns="http://www.w3.org/2000/svg"
@@ -28,8 +27,8 @@
        */
 
       .qp-circular-loader {
-        width:16px;  /* 2*RADIUS + STROKEWIDTH */
-        height:16px; /* 2*RADIUS + STROKEWIDTH */
+        width: 16px;  /* 2*RADIUS + STROKEWIDTH */
+        height: 16px; /* 2*RADIUS + STROKEWIDTH */
       }
       .qp-circular-loader-path {
         stroke-dasharray: 32.4;  /* 2*RADIUS*PI * ARCSIZE/360 */
