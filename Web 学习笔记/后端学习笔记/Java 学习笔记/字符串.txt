@@ -12,7 +12,7 @@ new String("abc").equals("abc")  // true
 
 // 字符串替换，原来的字符串不发生改变
 String s = "abatbac"；
-String s1 = s.replace('a'，'1')； // 替换字符（不支持正则表达式）
-String s1 = s.replaceAll("ba"，"12")； // 替换字符串
-String s1 = s.replaceFirst("ba"，"12")； // 替换第一个出现的字符串
+String s1 = s.replace("a"，"1")； // 替换字符串（不支持正则表达式）
+String s1 = s.replaceAll("^a"，"12")； // 替换字符串（支持正则表达式）
+String s1 = s.replaceFirst("ba"，"12")； // 替换第一个出现的字符串（支持正则表达式）
 

@@ -1,0 +1,29 @@
+﻿    /**
+     * HTMLEncode
+     * @param obj
+     */
+    public static void HTMLEncode(Object obj) {
+        Field[] field = obj.getClass().getDeclaredFields(); // 获取对象所有的 field
+
+        for(int i = 0; i < field.length; i++) {
+            String type = field[i].getGenericType().toString();
+            if (!type.equals("class java.lang.String")) continue; // 判断该 field 是否为字符串类型
+
+            String name = field[i].getName();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            Method method = obj.getClass().getMethod("get" + name); // 获取 field 的 get 方法
+            String value = (String)method.invoke(obj); // 使用 get 方法取值
+
+            if (value == null || value.length() == 0) continue;
+
+            value = value.replace("&", "&amp;");
+            value = value.replace("<", "&lt;");
+            value = value.replace(">", "&gt;");
+            value = value.replace(" ", "&nbsp;");
+            value = value.replace("'", "&#39;");
+            value = value.replace("\"", "&quot;");
+
+            method = obj.getClass().getMethod("set" + name, new Class[]{String.class}); // 获取 field 的 set 方法
+            method.invoke(obj, new Object[]{value}); // 使用 set 方法赋值
+        }
+    }
