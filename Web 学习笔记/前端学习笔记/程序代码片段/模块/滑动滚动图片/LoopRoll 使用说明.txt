@@ -2,7 +2,7 @@
 
 ## LoopRoll 结构如下
 
-<div id="loopRoll">
+<div id='loopRoll'>
 	<ul>
 		<li></li>
 		<li></li>
@@ -12,16 +12,16 @@
 
 ## 创建一个 LoopRoll
 
-var loopRoll = new LoopRoll("#loopRoll", {
-	prevBtn: ".prevBtn",
-	nextBtn: ".nextBtn"
+var loopRoll = new LoopRoll('#loopRoll', {
+	prevBtn: '.prevBtn',
+	nextBtn: '.nextBtn'
 });
 
 
 ## option 配置项
 {
-	prevBtn: "", // 前一个按钮
-	nextBtn: "", // 前一个按钮
+	prevBtn: '', // 前一个按钮
+	nextBtn: '', // 前一个按钮
 	isVer: false, // 是否为垂直
 	frameRate: 40 // 卷平动画的帧频率
 }

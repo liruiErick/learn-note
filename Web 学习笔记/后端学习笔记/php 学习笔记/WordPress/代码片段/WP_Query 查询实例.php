@@ -33,3 +33,18 @@ $args = array(
 $query = new WP_Query($args);
 $posts = $query->posts;
 ?>
+
+<?php
+// 根据页面使用的模板类型查询，并按日期排序
+$args = array(
+    'post_type'      => 'page',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'meta_key'       => '_wp_page_template',
+    'meta_value'     => 'views/shop-detail/index.php',
+    'orderby'        => 'date',
+    'order'          => 'DESC'
+);
+$query = new WP_Query($args);
+$posts = $query->posts;
+?>

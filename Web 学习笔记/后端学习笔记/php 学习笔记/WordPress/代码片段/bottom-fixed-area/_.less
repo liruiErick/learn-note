@@ -9,40 +9,33 @@
         position: relative;
     }
 
-    .outer-box {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        margin-right: -50px;
-        margin-bottom: 40px;
-    }
-
     .directory-btn {
         display: block;
         margin-bottom: 10px;
         padding: 4px;
         .sz(32px);
-        line-height: 16px;
-        .ftsz(14px);
+        .ftsz(0);
         .bdrd(100%);
         .acl(@ftcl, none);
-        .bgcl(fade(#fff, 90%) fade(#f0f0f0, 90%));
+        .bgcl(fade(@theme_color, 70%) @theme_color);
         .bxsd(thin);
         .b;
+        cursor: pointer;
         text-align: center;
+        .va;
+
+        i {
+            .font-icon(28px, #fff);
+        }
     }
 
     .scroll-top {
         position: relative;
         .sz(40px);
         .bdrd(100%);
-        .bgcl(fade(@theme_color, 70%));
+        .bgcl(fade(@theme_color, 70%) @theme_color);
         .bxsd(thin);
         cursor: pointer;
-
-        .hover({
-            .bgcl(@theme_color);
-        });
 
         i {
             .arrow3-top(#fff, 24px, 20px, 8px);
@@ -51,19 +44,25 @@
     }
 
     .authenticate-btn {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        margin-bottom: 80px;
-        .sz(100px);
+        .sz(90px);
+        .ftsz(0);
         .bdrd(100%);
-        .bgcl(#fff);
+        .acl(#fff, none);
+        .bgcl(red);
         .bxsd(box);
         cursor: pointer;
         .transition-transform(.3s);
+        text-align: center;
+        .va;
 
-        img {
-            .sz(100%);
+        p {
+            margin-bottom: 5px;
+            .ftsz(20px);
+            line-height: 1;
+        }
+
+        i {
+            .ftsz(30px);
         }
     }
 
@@ -137,26 +136,43 @@
     }
 }
 
-@media screen and (min-width: @screen_lg) { // 超大屏幕及以上（桌面）
+.screen-pc-big({ // 超大屏幕及以上（桌面）
 
-}
-@media screen and (min-width: (@screen_sm + 1)) { // iPad 竖屏以上
+});
+.screen-pc({ // iPad 竖屏以上
     .bottom-fixed-area {
+        .outer-box {
+            position: absolute;
+            left: 100%;
+            bottom: 40px;
+            margin-left: 10px;
+        }
+
         .mail-tel {
             display: none;
         }
+
+        .authenticate-btn {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+        }
     }
-}
-@media screen and (max-width: @screen_sm) { // iPad 竖屏及以下
+});
+.screen-mobile({ // iPad 竖屏及以下
     .bottom-fixed-area {
         .outer-box {
-            margin-right: 10px;
-            margin-bottom: 90px;
+            position: absolute;
+            right: 10px;
+            bottom: 90px;
         }
 
         .authenticate-btn {
-            margin-right: -20px;
-            margin-bottom: -15px;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            margin-right: -15px;
+            margin-bottom: -10px;
 
             body.is-scroll & {
                 .translate(100%, 100%);
@@ -170,11 +186,6 @@
             a {
                 .acl(none);
                 color: @theme_color;
-
-                .active({
-                    color: #fff;
-                    .bgcl(fade(@theme_color, 90%));
-                });
 
                 &:first-child {
                     &:before {
@@ -209,10 +220,10 @@
             }
         }
     }
-}
-@media screen and (max-width: @screen_xs) { // iPhone Plus 及以下
+});
+.screen-mobile-middle({ // iPhone Plus 及以下
 
-}
-@media screen and (max-width: (@screen_ss - 1)) { // iPhoneX 以下
+});
+.screen-mobile-small({ // iPhoneX 以下
 
-}
+});

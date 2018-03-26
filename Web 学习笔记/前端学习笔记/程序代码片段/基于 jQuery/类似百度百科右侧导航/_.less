@@ -1,0 +1,95 @@
+.aside__navbar {
+    position: relative;
+    padding: 10px 0 10px 20px;
+    width: @aside_width - 20px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 25px;
+        bottom: 25px;
+        left: 9px;
+        .bdl(#ddd, 2px);
+    }
+
+    &__pointer {
+        position: absolute;
+        left: 2px;
+        top: 18px;
+        .sz(16px, 14px);
+        .bgcl(@theme_color);
+
+        .arrow-right(@theme_color, 5px, 14px, 0 auto auto 100%, 0);
+    }
+
+    a {
+        display: block;
+        padding-left: 10px;
+        height: 30px;
+        line-height: 30px;
+        .acl(none);
+        .bgcl(transparent #f0f0f0);
+    }
+
+    .level-1-list {
+        .ftsz(16px);
+        color: @ftcl;
+
+        > li > a {
+            position: relative;
+
+            &:before {
+                content: '';
+                .sz(8px);
+                .bdrd(100%);
+                .bgcl(#ddd);
+                .cy(8px, left -14px);
+            }
+        }
+    }
+
+    .level-2-list {
+        padding-left: 10px;
+        .ftsz(14px);
+        color: @ftcl2;
+    }
+}
+
+.screen-pc-big({ // 超大屏幕以上
+
+});
+.screen-pc({ // iPad 竖屏以上
+
+});
+.screen-mobile({ // iPad 竖屏及以下
+    .aside-area {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        width: auto !important;
+
+        &.aside-area-show .aside__navbar {
+            .translateX(0);
+        }
+    }
+
+    .aside__navbar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        .bgcl(fade(#fff, 90%));
+        .bxsd(right);
+        .translateX(-110%);
+        .transition-transform(.3s);
+    }
+});
+.screen-mobile-middle({ // iPhone Plus 及以下
+
+});
+.screen-mobile-small({ // iPhoneX 以下
+
+});

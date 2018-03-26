@@ -134,7 +134,6 @@ button对象.innerHTML="确定";
 
 
 * 按钮 元素的 DOM 属性
-
 form {form_name} 规定按钮属于一个或多个表单。
 formaction {url} 覆盖 form 元素的 action 属性。该属性与 type="submit" 配合使用。
 formenctype	{application/x-www-form-urlencoded | multipart/form-data | text/plain} 覆盖 form 元素的 enctype 属性。该属性与 type="submit" 配合使用。

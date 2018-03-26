@@ -79,8 +79,8 @@ function bjj_breadcrumbs() {
             _e( 'Not Found', $text_domain );
             echo  $after;
         } elseif ( !is_single() && !is_page() && get_post_type() != 'post' ) {
-            $post_type = get_post_type_object(get_post_type());
-            echo $before . $post_type->labels->singular_name . $after;
+            $$post_type_obj = get_post_type_object(get_post_type());
+            echo $before . $$post_type_obj->labels->singular_name . $after;
         }
 
         if ( get_query_var('paged') ) { // 分页

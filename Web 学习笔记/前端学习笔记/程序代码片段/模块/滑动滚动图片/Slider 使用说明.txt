@@ -2,7 +2,7 @@
 
 ## Slider 结构如下
 
-<div id="slider">
+<div id='slider'>
 	<ul>
 		<li></li>
 		<li></li>
@@ -12,25 +12,25 @@
 
 ## 创建一个 Slider
 
-var slider = new Slider("#slider", {
-	prevBtn: ".prevBtn",
-	nextBtn: ".nextBtn",
+var slider = new Slider('#slider', {
+	prevBtn: '.prevBtn',
+	nextBtn: '.nextBtn',
 	aequilate: false
 });
 
 
 ## option 配置项
 {
-	item: ">", //基于滑动层元素的子项选择器
+	item: '>', //基于滑动层元素的子项选择器
 	prevBtn: null, //前一页按钮
 	nextBtn: null, //后一页按钮
-	btnDisableClass: "disabled", //前后按钮禁用类名
+	btnDisableClass: 'disabled', //前后按钮禁用类名
 
-	align: "start", //当前项目的对齐方式，默认居于起始位置。"center"表示居中，"end"表示居于结束位置
+	align: 'start', //当前项目的对齐方式，默认居于起始位置。'center'表示居中，'end'表示居于结束位置
 	isVer: false, //排列方向，默认为水平方向。如果值为true则表示垂直方向
 	offset: 0, //设置起始位置的偏移量
 
-	activeClass: "active", //当前焦点的焦点类名
+	activeClass: 'active', //当前焦点的焦点类名
 	initIndex: 0, //初始化时的索引，默认为0
 	duration: 400, //拖拽结束后，滑动动画的持续时间
 	aequilate: true, //每个项目是否等宽

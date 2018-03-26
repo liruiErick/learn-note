@@ -16,7 +16,19 @@
 
     var defaultOptions = {
         offset: 0, // 锁定时相对于窗口的偏移量，一般为头部的高度
-        container: '', // 选择器或者 DOM 对象，如果指定了容器元素，那么锁定只会保持在容器之内
+        interceptor: '', // 择器或者 DOM 对象，如果指定了拦截者，锁定对象在到达拦截者位置时，会被固定在拦截者旁边。
+        observer: '', // 选择器或者 DOM 对象，如果页面高度是动态变化的，那么就需要添加监控的对象，当该对象内容发生变化时，就会重新计算相应的位置数据。
+        // 出于性能考虑，应当尽量缩小监控范围。
+        // 同时要避免监控锁定对象自身以及它父节点，否则会引起死循环
+
+        fixDirection: 'top', // 锁定方向，表示锁定对象的顶部超出窗口顶部时锁定，还是锁定对象底部超出窗口底部时锁定。
+        // 取值为 'top' 或 'bottom'，默认为 'top'。
+
+        fixPosition: '', // 锁定位置，表示锁定对象相对于窗口顶部锁定还是底部锁定。
+        // 取值为 'top' 或 'bottom'。
+        // 当 fixDirection 为 'top' 时，默认为 'top'。
+        // 当 fixDirection 为 'bottom' 时，默认为 'bottom'。
+
         fixedClass: 'fixed', // 锁定时的类名
         placeholderClass: '' // 占位元素的类名，如果不指定该属性，则不会创建占位元素。
         // 当对象被锁定时，克隆一个占位元素，在锁定对象脱离文档结构时填充原锁定对象的位置。
@@ -45,18 +57,39 @@
         constructor: Fixer,
 
         _init: function() {
-            if (this._options.container) {
-                this._$container = $(this._options.container);
-                if (!this._$container.length) this._$container = null;
+            var options = this._options;
+
+            if (options.interceptor) {
+                this._$interceptor = $(options.interceptor);
+                if (!this._$interceptor.length) this._$interceptor = null;
             }
 
-            if (this._options.placeholderClass) {
+            if (options.placeholderClass) {
                 var fixerPosition = this._$fixer.css('position');
                 if (fixerPosition === 'static' || fixerPosition === 'relative') {
-                    this._$placeholder = this._$fixer.clone().addClass(this._options.placeholderClass).css({'pointer-events': 'none', 'visibility': 'hidden'});
+                    this._$placeholder = this._$fixer.clone().addClass(options.placeholderClass).css({'pointer-events': 'none', 'visibility': 'hidden'});
                 }
             }
 
+            if (options.observer) {
+                this._$observeElements = $(options.observer);
+                if (this._$observeElements.length) {
+                    this._addObserver();
+                }
+            }
+
+            this._fixDirIsTop = options.fixDirection !== 'bottom';
+            if (!options.fixPosition) options.fixPosition = this._fixDirIsTop ? 'top' : 'bottom';
+
+            if (options.fixPosition === 'top') {
+                this._fixPosIsTop = true;
+            } else if (options.fixPosition === 'bottom') {
+                this._fixPosIsTop = false;
+            } else {
+                this._fixPosIsTop = this._fixDirIsTop;
+            }
+
+            this._posProp = this._fixPosIsTop ? 'top' : 'bottom';
 
             this._initProxy();
             this._addEvent();
@@ -71,66 +104,85 @@
             $win.off('scroll', this._scroll);
         },
 
+        _addObserver: function() {
+            if (this._observer) return;
+
+            var self = this;
+            this._observer = new MutationObserver(function() {
+                self.update();
+            });
+
+            var options = {
+                subtree: true,
+                attributes: true
+            };
+
+            this._$observeElements.each(function() {
+                self._observer.observe(this, options);
+            });
+        },
+
+        _removeObserver: function() {
+            if (!this._observer) return;
+            this._observer.disconnect();
+            this._observer = null;
+        },
+
         _scroll: function() {
-            var fixerTop = this._fixerTop,
-                maxScrollTop = this._maxScrollTop,
+            var fixDirIsTop = this._fixDirIsTop,
+                startFixScrollTop = this._startFixScrollTop,
+                endFixScrollTop = this._endFixScrollTop,
                 scrollTop = $win.scrollTop();
 
-            if (this._fixed) {
-                if (scrollTop <= fixerTop ||
-                    maxScrollTop && scrollTop >= maxScrollTop) {
-                    this._unfix();
-                }
-            } else {
-                if (maxScrollTop) {
-                    if (scrollTop > fixerTop && scrollTop < maxScrollTop) this._fix();
-                } else if (scrollTop > fixerTop) {
-                    this._fix();
-                }
-            }
+            if (fixDirIsTop && scrollTop <= startFixScrollTop) this._unfix(true);
+            else if (!fixDirIsTop && scrollTop >= startFixScrollTop) this._unfix(true);
+            else if (endFixScrollTop && fixDirIsTop && scrollTop >= endFixScrollTop) this._unfix(false);
+            else if (endFixScrollTop && !fixDirIsTop && scrollTop <= endFixScrollTop) this._unfix(false);
+            else this._fix();
         },
 
         _fix: function() {
-            this._fixed = true;
+            if (!this._unfixed) return;
+            this._unfixed = 0;
+
+            var style = { 'position': 'fixed' };
+            style['margin-' + this._posProp] = 0;
+            style[this._posProp] = this._options.offset;
+            this._$fixer.css(style);
+
+            this._$fixer.addClass(this._options.fixedClass);
 
             if (this._$placeholder) {
                 this._$fixer.after(this._$placeholder);
             }
-
-            this._$fixer.css({
-                'margin-top': 0,
-                'position': 'fixed',
-                'top': this._options.offset
-            });
-
-            this._$fixer.addClass(this._options.fixedClass);
         },
 
-        _unfix: function() {
-            this._fixed = false;
+        _unfix: function(reset) {
+            var style;
+
+            if (reset) {
+                if (this._unfixed === 1) return;
+                this._unfixed = 1;
+
+                style = { 'position': '' };
+                style['margin-' + this._posProp] = '';
+                style[this._posProp] = '';
+                this._$fixer.css(style);
+            } else {
+                if (this._unfixed === -1) return;
+                this._unfixed = -1;
+
+                style = { 'position': 'absolute' };
+                style['margin-' + this._posProp] = '';
+                style[this._posProp] = this._fixerAbsolute;
+                this._$fixer.css(style);
+            }
+
+            this._$fixer.removeClass(this._options.fixedClass);
 
             if (this._$placeholder) {
                 this._$placeholder.detach();
             }
-
-            var maxScrollTop = this._maxScrollTop,
-                scrollTop = $win.scrollTop();
-
-            if (maxScrollTop && scrollTop >= maxScrollTop) {
-                this._$fixer.css({
-                    'margin-top': 0,
-                    'position': 'absolute',
-                    'top': this._fixerAbsTop
-                });
-            } else {
-                this._$fixer.css({
-                    'margin-top': '',
-                    'position': '',
-                    'top': ''
-                });
-            }
-
-            this._$fixer.removeClass(this._options.fixedClass);
         },
 
         // 确保无论函数持有者是谁，调用都不会出错
@@ -143,26 +195,58 @@
         },
 
         update: function() {
-            this._fixed = false;
+            this._unfixed = 1;
 
-            this._$fixer.css({
-                'margin-top': '',
-                'position': '',
-                'top': ''
-            });
+            var style = { 'position': '' };
+            style['margin-' + this._posProp] = '';
+            style[this._posProp] = '';
+            this._$fixer.css(style);
 
-            if (this._$container) {
-                this._maxScrollTop = this._$container.offset().top + this._$container.height() - this._$fixer.outerHeight(true) - this._options.offset;
-                this._fixerAbsTop = this._maxScrollTop - this._$fixer.offsetParent().offset().top + this._$fixer.position().top + this._options.offset;
+            var offset = this._options.offset,
+                fixDirIsTop = this._fixDirIsTop,
+                fixerTop = this._$fixer.offset().top,
+                fixerHeight = this._$fixer.outerHeight(),
+                fixerMarginTop = parseFloat(this._$fixer.css('margin-top')),
+                fixerMarginBottom = parseFloat(this._$fixer.css('margin-bottom'));
+
+            if (this._fixPosIsTop) {
+                this._startFixScrollTop = fixerTop - offset;
+
+                if (this._$interceptor) {
+                    if (fixDirIsTop) {
+                        this._endFixScrollTop = this._$interceptor.offset().top - fixerHeight - fixerMarginBottom;
+                    } else {
+                        this._endFixScrollTop = this._$interceptor.offset().top + this._$interceptor.outerHeight() + fixerMarginTop;
+                    }
+
+                    var offsetParentTop = this._$fixer.offsetParent().offset().top;
+                    this._fixerAbsolute = this._endFixScrollTop - offsetParentTop - fixerMarginTop;
+                    this._endFixScrollTop -= offset;
+                }
+            } else {
+                offset -= $win.height();
+                this._startFixScrollTop = fixerTop + fixerHeight + offset;
+
+                if (this._$interceptor) {
+                    if (fixDirIsTop) {
+                        this._endFixScrollTop = this._$interceptor.offset().top - fixerMarginBottom;
+                    } else {
+                        this._endFixScrollTop = this._$interceptor.offset().top + this._$interceptor.outerHeight() + fixerHeight + fixerMarginTop;
+                    }
+
+                    var $offsetParent = this._$fixer.offsetParent();
+                    var offsetParentBottom = $offsetParent.offset().top + $offsetParent.outerHeight();
+                    this._fixerAbsolute = offsetParentBottom - this._endFixScrollTop - fixerMarginBottom;
+                    this._endFixScrollTop += offset;
+                }
             }
-
-            this._fixerTop = this._$fixer.offset().top - this._options.offset; // 获取锁定对象的初始顶部位
 
             this._scroll();
         },
 
         destroy: function() {
             this._removeEvent();
+            this._removeObserver();
             this._$fixer.removeClass(this._options.fixedClass);
 
             // 清除所有属性
