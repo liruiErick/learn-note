@@ -3,19 +3,22 @@
 unset GIT_DIR
 
 MESSAGE=$(git log -1 HEAD --pretty=format:%s)
+PRO="=>pro"
+DeployPathDev="../remote-dev"
+DeployPathPro="../remote-pro"
 
-if [[ "$MESSAGE" == *\=\>pro* ]]; then
+if [[ "$MESSAGE" == *"$PRO"* ]]; then
+    DeployPro=true
     echo "Deploy to the production environment."
-    DeployPath="../pro"
 else
+    DeployPro=false
     echo "Deploy to the development environment."
-    DeployPath="../dev"
 fi
 
 {
-    cd $DeployPath
+    cd $DeployPathDev
 } || {
-    echo "Error, The deployment path was not found!"
+    echo "Error, The development environment deployment path was not found!"
     exit 1
 }
 
@@ -24,9 +27,32 @@ fi
     git clean -f
     git pull origin master
 } || {
-    echo "Error, Server update fail!"
+    echo "Error, Development environment deployment failed!"
     exit 1
 }
 
-echo "Server update done."
+echo "Development environment deployment successfully."
+
+if $DeployPro; then
+
+{
+    cd $DeployPathPro
+} || {
+    echo "Error, The production environment deployment path was not found!"
+    exit 1
+}
+
+{
+    git reset --hard origin/master
+    git clean -f
+    git pull origin master
+} || {
+    echo "Error, Production environment deployment failed!"
+    exit 1
+}
+
+echo "Production environment deployment successfully."
+
+fi
+
 exit 0
