@@ -71,10 +71,16 @@ fi
     git reset --hard origin/master # 用 fetch 到的最新远程 master 分支强制覆盖掉本地 master 分支
     git clean -f                   # 清理没有被追踪的文件(仅在服务器环境的文件与git仓库的文件完全相同时才使用此命令，否则会意外删除掉服务器上的重要文件)
     git pull origin master         # 拉取远程仓库的最新代码
+
+    # 这里还可以顺便将代码推送到第三方代码托管平台(必需设置 SSH 免密码登录)
+    # ehco "Push to third-party repository."
+    # git push github master
+    # ehco "Push to third-party repository successfully."
+
     # npm install                  # 重新安装 npm 依赖
     # npm run test                 # 测试项目
     # npm run start                # 运行项目
-    # pm2 restart xxx              # pm2重启项目
+    # pm2 restart xxx              # pm2 重启项目
 } || { # catch
     echo "Error, Development environment deployment failed!"
     exit 1
@@ -117,7 +123,7 @@ exit 0
 这里还需要注意，在保存后一定要赋予文件可执行权限，否则该脚本可能无法执行
 
 ```
-$ chmod +x /home/USER/git/REPO_NAME.git/hooks/post-receive
+$ chmod +x post-receive
 ```
 
 另外，如果提交后显示出以下错误：
