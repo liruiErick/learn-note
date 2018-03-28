@@ -38,7 +38,6 @@ array(
 );
 ```
 
-
 #### 为 URL 添加参数
 
 ```php
@@ -51,6 +50,8 @@ add_query_arg( $key, $value, $url );
 
 `$url` (bool | string) (Optional) 要对其执行操作的 URL。
 
+**注意**，如果 URL 中包含非字符或数字的字符，比如汉字或日文，则会出现bug。
+
 **实例**
 
 ```php
@@ -62,7 +63,6 @@ add_query_arg( array(
 ), 'http://example.com' );
 ```
 
-
 #### 为 URL 移除参数
 
 ```php
@@ -72,3 +72,5 @@ remove_query_arg( $key, $query = false );
 `$key` (string | array) (Required) 要删除的一个或多个查询键。
 
 `$query` (bool | string) (Optional) 当为 `false` 时，表示使用当前 URL。默认值： `false`
+
+**注意**，如果 URL 中包含非字符或数字的字符，比如汉字或日文，则会出现bug。

@@ -11,10 +11,10 @@ remove_action('wp_head', 'rsd_link'); // 移除 head 中的 rel="EditURI"
 remove_action('wp_head', 'wlwmanifest_link'); // 移除 head 中的 rel="wlwmanifest"
 
 remove_action('wp_head', 'index_rel_link'); // 当前文章的索引
-remove_action('wp_head', 'start_post_rel_link', 10, 0); // 开始篇 
-remove_action('wp_head', 'parent_post_rel_link', 10, 0); // 父篇
-remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0); // 上、下篇
-remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0); // rel=pre
+remove_action('wp_head', 'start_post_rel_link'); // 开始篇 
+remove_action('wp_head', 'parent_post_rel_link'); // 父篇
+remove_action('wp_head', 'adjacent_posts_rel_link'); // 上、下篇
+remove_action('wp_head', 'adjacent_posts_rel_link_wp_head'); // rel=pre
 
 remove_action('wp_head', 'feed_links', 2); // 文章和评论 feed 
 remove_action('wp_head', 'feed_links_extra', 3);// 额外的 feed，例如 category, tag 页
@@ -29,7 +29,7 @@ remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
 remove_action('wp_head', 'wp_generator'); // WordPress 版本信息
-remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0 ); // rel=shortlink
+remove_action('wp_head', 'wp_shortlink_wp_head'); // rel=shortlink
 remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
 remove_filter('the_content', 'wptexturize'); // 禁用半角符号自动转换为全角
 wp_deregister_script('l10n');
@@ -44,7 +44,7 @@ wp_deregister_script('l10n');
 
 ### 三、remove_action 函数
 
-> 函数原型： remove_action( $tag, $function_to_add, $priority, $accepted_args );
+> 函数原型： remove_action( $tag, $function_to_add, $priority );
 
 该函数移除一个附属于指定动作 hook 的函数。该方法可用来移除附属于特定动作 hook 的默认函数，并可能用其它函数取而代之。参见 `remove_filter()`, `add_action()` and `add_filter()`。
 
@@ -54,9 +54,7 @@ wp_deregister_script('l10n');
 > $tag（字符串）（必需）将要被删除的函数所连接到的动作hook。默认值：None
 > $function_to_remove（回调）（必需） 将要被删除函数的名称默认值：None
 > $priority（整数）（可选）函数优先级（在函数最初连接时定义）默认值：10
-> $accepted_args（整数）（必需）函数所接受参数的数量。默认值：1
-> 返回值
-> （布尔值）函数是否被移除。
+> 返回值（布尔值）函数是否被移除。
 > Ttue 函数被成功移除
 > False 函数未被移除
 
@@ -96,10 +94,10 @@ WordPress 把前后文、第一篇文章和主页链接全放在 meta 中。我�
 
 ```php
 remove_action('wp_head', 'index_rel_link'); // 当前文章的索引
-remove_action('wp_head', 'start_post_rel_link', 10, 0); // 开始篇 
-remove_action('wp_head', 'parent_post_rel_link', 10, 0); // 父篇
-remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0); // 上、下篇
-remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0); // rel=pre
+remove_action('wp_head', 'start_post_rel_link'); // 开始篇 
+remove_action('wp_head', 'parent_post_rel_link'); // 父篇
+remove_action('wp_head', 'adjacent_posts_rel_link'); // 上、下篇
+remove_action('wp_head', 'adjacent_posts_rel_link_wp_head'); // rel=pre
 ```
 
 ### 七、移除 Canonical 标记
