@@ -1,4 +1,4 @@
-## include 和 require 语句
+# include 和 require 语句
 
 通过 include 或 require 语句，可以将 PHP 文件的内容插入另一个 PHP 文件（在服务器执行它之前）。
 

@@ -1,4 +1,4 @@
-## 常用方法
+# 常用方法
 
 print_r($arr); // 打印数组
 
@@ -78,6 +78,7 @@ define("HOST", "http://www.xxx.com/");
 ```php
 defined("HOST"); // 如果被定义则返回 1
 ```
+
 
 
 #### php输出文件
