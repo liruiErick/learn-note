@@ -40,6 +40,8 @@ array(
 
 #### 为 URL 添加参数
 
+**注意**，由于 WordPress 中存在 `&#038;` 问题，因此建议重新定义函数来实现。
+
 ```php
 add_query_arg( $key, $value, $url );
 ```
@@ -49,8 +51,6 @@ add_query_arg( $key, $value, $url );
 `$value` (string) (Optional) 查询变量值。如果 `$key` 参数为数组，则这个参数为要对其执行操作的 URL。
 
 `$url` (bool | string) (Optional) 要对其执行操作的 URL。
-
-**注意**，如果 URL 中包含非字符或数字的字符，比如汉字或日文，则会出现bug。
 
 **实例**
 
@@ -65,6 +65,8 @@ add_query_arg( array(
 
 #### 为 URL 移除参数
 
+**注意**，由于 WordPress 中存在 `&#038;` 问题，因此建议重新定义函数来实现。
+
 ```php
 remove_query_arg( $key, $query = false );
 ```
@@ -73,4 +75,10 @@ remove_query_arg( $key, $query = false );
 
 `$query` (bool | string) (Optional) 当为 `false` 时，表示使用当前 URL。默认值： `false`
 
-**注意**，如果 URL 中包含非字符或数字的字符，比如汉字或日文，则会出现bug。
+**实例**
+
+```php
+remove_query_arg( 'key', 'http://example.com?key=value' );
+```
+
+#### 
