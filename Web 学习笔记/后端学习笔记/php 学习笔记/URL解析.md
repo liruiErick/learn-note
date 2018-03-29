@@ -71,3 +71,36 @@ string(5) "/path"
 string(9) "arg=value"
 string(6) "anchor"
 ```
+
+
+#### parse_str()
+
+将 URL 中的 Query 部分的参数解释到变量中
+
+```php
+parse_str($str, $query);
+```
+
+例如
+
+```php
+parse_str('name=Bill&age=60', $query);
+print_r($query);
+```
+
+输出
+
+```
+Array
+(
+    [name] => 'Bill'
+    [age] => 60
+)
+```
+
+如果没有指定第二个参数，则它们会被输出到全局变量中
+
+```php
+echo $name; //=> 'Bill'
+echo $age;  //=> 60
+```
