@@ -50,16 +50,38 @@ $ git branch -av
 
 #### 合并分支
 
-切换到主分支
+这里以将指定分支合并到 master 分支为例
+
+**合并整个分支**
+
+首先要切换到 master 分支
 
 ```
 $ git checkout master
 ```
 
-将指定分支合并到主分支
+然后将指定分支与当前 master 分支进行合并
 
 ```
-$ git merge <branch_name>
+$ git merge <指定分支名>
+```
+
+**仅合并分支中的部分内容**
+
+如果仅仅是想 Copy 指定分支内的某些文件，可以直接将指定分支的指定内容强行覆盖到当前分支
+
+```
+$ git checkout <指定分支名> <要合并内容的路径> <要合并内容的路径2> ...
+```
+
+如果不想直接覆盖，希望 merge 这部分内容，需要几步操作配合完成
+
+```
+$ git checkout -b <临时分支名>
+$ git merge <指定分支名>
+$ git checkout master
+$ git checkout <临时分支名> <要合并内容的路径>
+$ git branch -d <临时分支名>
 ```
 
 #### 处理冲突
