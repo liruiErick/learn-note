@@ -7,30 +7,32 @@ if (!function_exists('bjj_remove_url_query')) {
     }
 }
 
-// 为 url 删除一个指定的参数
+// 为 url 删除一个指定的参数（针对 #038; 问题）
 if (!function_exists('bjj_remove_query_arg')) {
     function bjj_remove_query_arg($url, $key) {
+        $url = preg_replace('/(&)(#038;)?/', '$1', $url);
         $url = preg_replace('/(.*)(\?|&)' . $key . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&');
         $url = substr($url, 0, -1);
         return $url;
     }
 }
 
-// 为 url 添加一个指定的参数
+// 为 url 添加一个指定的参数（针对 #038; 问题）
 if (!function_exists('bjj_add_query_arg')) {
     function bjj_add_query_arg($url, $key, $value) {
+        $url = preg_replace('/(&)(#038;)?/', '$1', $url);
         preg_match('/(.*)(\?|&)' . $key . '=[^&]+?(&)(.*)/i', $url . '&', $match);
         if (!empty($match)) {
             $url = $match[1] . $match[2] . $key . '=' . $value . '&' . $match[4];
             $url = substr($url, 0, -1);
-        } else {
+        } elseif (strstr($url, '?')) {
             if (preg_match('/(\?|&)$/', $url)) {
                 $url .= $key . '=' . $value;
             } else {
-                $url .= strstr($url, '?') ?
-                    '&' . $key . '=' . $value :
-                    '?' . $key . '=' . $value;
+                $url .= '&' . $key . '=' . $value;
             }
+        } else {
+            $url .= '?' . $key . '=' . $value;
         }
         return $url;
     }
