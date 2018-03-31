@@ -54,14 +54,14 @@ if (!function_exists('bjj_get_google_map_link')) {
 
 // 查询指定的自定义字段的不同值的集合
 // 例如：
-// 查询所有 bag_model == birkin 的 post，将他们的 bag_size 的不同值组成的数组返回
-// bjj_find_field_value_set('bag_size', 'bag_model', 'birkin');
+// 查询所有 buy_record_model == birkin 的 post，将他们的 buy_record_size 的不同值组成的数组返回
+// bjj_find_field_value_set('bag', 'buy_record_size', 'buy_record_model', 'birkin');
 if (!function_exists('bjj_find_field_value_set')) {
-    function bjj_find_field_value_set($key1, $key2 = '', $value2 = '') {
+    function bjj_find_field_value_set($post_type, $key1, $key2 = '', $value2 = '') {
         global $wpdb;
         $sql = "
             SELECT DISTINCT key1.meta_value
-            FROM $wpdb->postmeta key1
+            FROM $wpdb->posts post, $wpdb->postmeta key1
         ";
 
         $key2_exist = !empty($key2) && !empty($value2);
@@ -73,7 +73,9 @@ if (!function_exists('bjj_find_field_value_set')) {
         }
 
         $sql .= "
-            WHERE key1.meta_key = %s
+            WHERE post.post_type = %s
+                and post.ID = key1.post_id
+                and key1.meta_key = %s
         ";
 
         if ($key2_exist) {
@@ -85,11 +87,8 @@ if (!function_exists('bjj_find_field_value_set')) {
         }
 
         $sql .= "ORDER BY key1.meta_value ASC";
-        $sql = $wpdb->prepare($sql, $key1, $key2, $value2);
+        $sql = $wpdb->prepare($sql, $post_type, $key1, $key2, $value2);
 
         return $wpdb->get_col($sql);
     }
 }
-
-
-

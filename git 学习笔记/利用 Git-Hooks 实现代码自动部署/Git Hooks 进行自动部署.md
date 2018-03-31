@@ -47,8 +47,9 @@ unset GIT_DIR # 还原环境变量
 
 MESSAGE=$(git log -1 HEAD --pretty=format:%s) # 获取 commit message
 PRO="=>pro"
-DeployPathDev="../remote-dev" # 相对于远程仓库的路径
-DeployPathPro="../remote-pro" # 相对于开发环境的路径
+DepositoryPath=$PWD # 获取仓库路径(由于服务器在执行时没有用户，导致 ~/ 无法使用，因此需要重新跳回仓库目录)
+DeployPathDev="../remote-dev" # 相对于远程仓库的路径或者绝对路径
+DeployPathPro="../remote-pro" # 相对于远程仓库的路径或者绝对路径
 
 # 通过 commit message 中是否包含 '=>pro' 来判断需要部署的项目路径
 # DeployPath 是相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
@@ -58,6 +59,33 @@ if [[ "$MESSAGE" == *"$PRO"* ]]; then
 else
     DeployPro=false
     echo "Deploy to the development environment."
+fi
+
+if $DeployPro; then
+
+{
+    cd $DeployPathPro
+} || {
+    echo "Error, The production environment deployment path was not found!"
+    exit 1
+}
+
+{
+    git reset --hard origin/master
+    git clean -f
+    git pull origin master
+    # npm install
+    # npm run test
+    # npm run start
+    # pm2 restart xxx
+    cd $DepositoryPath
+} || {
+    echo "Error, Production environment deployment failed!"
+    exit 1
+}
+
+echo "Production environment deployment successfully."
+
 fi
 
 { # try
@@ -87,32 +115,6 @@ fi
 }
 
 echo "Development environment deployment successfully."
-
-if $DeployPro; then
-
-{
-    cd $DeployPathPro
-} || {
-    echo "Error, The production environment deployment path was not found!"
-    exit 1
-}
-
-{
-    git reset --hard origin/master
-    git clean -f
-    git pull origin master
-    # npm install
-    # npm run test
-    # npm run start
-    # pm2 restart xxx
-} || {
-    echo "Error, Production environment deployment failed!"
-    exit 1
-}
-
-echo "Production environment deployment successfully."
-
-fi
 
 exit 0
 
