@@ -55,10 +55,14 @@ DeployPathPro="../remote-pro" # 相对于远程仓库的路径或者绝对路径
 # DeployPath 是相对于 REPO_NAME.git 的目录，而不是 hooks 文件夹
 if [[ "$MESSAGE" == *"$PRO"* ]]; then
     DeployPro=true
-    echo "Deploy to the production environment."
+    echo "╔═══════════════════════════════════════╗"
+    echo "║ Deploy to the production environment. ║"
+    echo "╚═══════════════════════════════════════╝"
 else
     DeployPro=false
-    echo "Deploy to the development environment."
+    echo "╔════════════════════════════════════════╗"
+    echo "║ Deploy to the development environment. ║"
+    echo "╚════════════════════════════════════════╝"
 fi
 
 if $DeployPro; then
@@ -66,7 +70,9 @@ if $DeployPro; then
 {
     cd $DeployPathPro
 } || {
-    echo "Error, The production environment deployment path was not found!"
+    echo "╔══════════════════════════════════════════════════════════════════╗"
+    echo "║ Error, The production environment deployment path was not found! ║"
+    echo "╚══════════════════════════════════════════════════════════════════╝"
     exit 1
 }
 
@@ -80,18 +86,24 @@ if $DeployPro; then
     # pm2 restart xxx
     cd $DepositoryPath
 } || {
-    echo "Error, Production environment deployment failed!"
+    echo "╔══════════════════════════════════════════════════╗"
+    echo "║ Error, Production environment deployment failed! ║"
+    echo "╚══════════════════════════════════════════════════╝"
     exit 1
 }
 
-echo "Production environment deployment successfully."
+echo "╔═════════════════════════════════════════════════╗"
+echo "║ Production environment deployment successfully. ║"
+echo "╚═════════════════════════════════════════════════╝"
 
 fi
 
 { # try
     cd $DeployPathDev
 } || { # catch
-    echo "Error, The development environment deployment path was not found!"
+    echo "╔═══════════════════════════════════════════════════════════════════╗"
+    echo "║ Error, The development environment deployment path was not found! ║"
+    echo "╚═══════════════════════════════════════════════════════════════════╝"
     exit 1
 }
 
@@ -110,11 +122,15 @@ fi
     # npm run start                # 运行项目
     # pm2 restart xxx              # pm2 重启项目
 } || { # catch
-    echo "Error, Development environment deployment failed!"
+    echo "╔═══════════════════════════════════════════════════╗"
+    echo "║ Error, Development environment deployment failed! ║"
+    echo "╚═══════════════════════════════════════════════════╝"
     exit 1
 }
 
-echo "Development environment deployment successfully."
+echo "╔══════════════════════════════════════════════════╗"
+echo "║ Development environment deployment successfully. ║"
+echo "╚══════════════════════════════════════════════════╝"
 
 exit 0
 

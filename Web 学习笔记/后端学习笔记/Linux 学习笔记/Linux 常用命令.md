@@ -16,10 +16,6 @@ Debian 系列
 #### 取得管理员权限
 sudo -s
 
-#### 赋予文件读写权限
-
-sudo chmod -R 777 wordpress/wp-content
-
 #### 重启命令：
 1、reboot
 2、shutdown -r now 立刻重启(root用户使用)

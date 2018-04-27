@@ -3,16 +3,18 @@
 Mongoose库简而言之就是在node环境中操作MongoDB数据库的一种便捷的封装
 使用的话，必须要先安装好环境NodeJS与MongoDB
 
-var Mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 // 链接本地数据库
-var db = mongoose.connect('mongodb://localhost/vrwanjia');
+mongoose.connect('mongodb://localhost/vrwanjia');
 
-db.connection.on('error', function(error) {
+const db = mongoose.connection;
+
+db.on('error', function(error) {
 	console.log('数据库连接失败：' + error);
 });
 
-db.connection.on('open', function() {
+db.once('open', function() {
 	console.log('数据库连接成功！');
 });
 
@@ -20,7 +22,7 @@ db.connection.on('open', function() {
 db.close();
 
 // 创建一个数据模式。（类似于MySQL中创建一个表结构）
-var userSchema = new Mongoose.Schema({
+var userSchema = new mongoose.Schema({
     id: Number,
     name: String,
     password: String,
@@ -36,7 +38,16 @@ var userSchema = new Mongoose.Schema({
     }
 });
 
-// 数据存储前调用
+// 在数据存储之前验证数据
+userSchema.pre('validate', function(next) {
+    // 数据验证
+    if ('invalid' == this.name) {
+        return next(new Error('Name is invalid'));
+    }
+    next();
+});
+
+// 数据存储之前，验证数据之后调用
 userSchema.pre('save', function(next) {
     // 这里this指该条数据
     this.date.updateAt = Date.now();
@@ -72,7 +83,7 @@ UserSchema.methods = {
 
 
 // 通过模式编译生成模型
-var User = Mongoose.model('User', userSchema);
+var User = mongoose.model('User', userSchema);
 
 var data = {
     id: 1,
@@ -80,62 +91,62 @@ var data = {
     password: '123456'
 };
 
-// 使用 User 模式创建的数据，创建一条数据
+// 使用 User 模型创建一条数据
 var user = new User(data);
-// 保存这条数据库
+// 保存这条数据
 user.save(function(err) {
     if (err) {
-        console.log('保存失败')
+        console.log('保存失败');
         return;
     }
     console.log('保存成功');
 });
 
-// 使用 User 模式，创建一条数据
-User.create(data, function(error){
-    if(err){
-        console.log(err)
-        return
+// 使用 User 模型创建并保存一条数据
+User.create(data, function(err){
+    if (err) {
+        console.log(err);
+        return;
     }
-    console.log('保存成功')
+    console.log('保存成功');
     // 关闭数据库链接
     db.close();
 });
 
-// 使用 User 模式，删除数据
+// 使用 User 模型删除数据
 var conditions = { id : 1 };
 User.remove(conditions, function(err) {
     if (err) {
-        console.log(err)
-        return
+        console.log(err);
+        return;
     }
     console.log('删除成功')
     // 关闭数据库链接
     db.close();
 });
 
-// 使用 User 模式，修改数据
+// 使用 User 模型修改数据
 var conditions = { id : 1 };
 var update     = { $set : { name : '汤姆', password : '654321' }};
 var options    = { upsert : true }; // 可选，选项参数
 User.update(conditions, update, options, function(err) {
-    if(err){
-        console.log(err)
-        return
+    if (err) {
+        console.log(err);
+        return;
     }
-    console.log('更新成功')
+    console.log('更新成功');
 });
 
-// 使用 User 模式，查寻数据
+// 使用 User 模型查寻数据
 var conditions = { id : 1 };
 var fields     = {title : 1, content : 1, time : 1}; // 可选，待返回的字段
 var options    = {}; // 可选，选项参数
 User.find(conditions, fields, options, function(err, datas) {
     if (err) {
-        console.log(err)
-        return
+        console.log(err);
+        return;
     }
-    console.log('所有匹配数据组成的数组' + JSON.stringify(datas))
+    console.log('所有匹配数据组成的数组' + JSON.stringify(datas));
     // 关闭数据库链接
     db.close();
 });
