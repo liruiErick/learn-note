@@ -185,11 +185,13 @@ $ git remote add deploy user@192.168.0.1:/home/USER/git/REPO_NAME.git
 
 
 
-## 免密码接远程连服务器
+## 免密码使用SSH连接远程连服务器和远程Git仓库
 
-密钥是免登录连接服务器的通行证。如果本地已经存在并且不想另外生成的话，可以跳过此步。
+密钥是免登录连接服务器的通行证。
 
-#### 生成 SSH 密钥
+### 生成 SSH 密钥
+
+**如果本地已经存在并且不想另外生成的话，可以跳过此步。**
 
 `cd ~/.ssh` 切换目录后，执行以下命令生成一对具有相同名字的密钥（私钥和公钥，默认为 `id_rsa` 和 `id_rsa.pub`）
 
@@ -212,7 +214,7 @@ PreferredAuthentications publickey
 IdentityFile ~/.ssh/PRIVATE_KEY     # 本机上存放的私钥路径
 ```
 
-#### 服务器端认证
+### 服务器端认证
 
 1) 先用 `pbcopy < ~/.ssh/PRIVATE_KEY.pub` 将公钥复制到剪贴板
 
@@ -235,3 +237,9 @@ $ ssh-copy-id user@server
 or
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
 ```
+
+### Git仓库认证
+
+首先，在服务器上创建 SSH 证书。
+
+然后，在 Git 仓库中的 `管理` 或 `设置` 中找到类似 `SSH公钥管理` 的选项，将服务器的公钥添加进去即可。

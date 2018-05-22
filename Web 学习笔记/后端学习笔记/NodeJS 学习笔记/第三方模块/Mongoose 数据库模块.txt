@@ -2,6 +2,7 @@
 
 Mongoose库简而言之就是在node环境中操作MongoDB数据库的一种便捷的封装
 使用的话，必须要先安装好环境NodeJS与MongoDB
+[文档](http://mongoosejs.com/)
 
 var mongoose = require('mongoose');
 
@@ -22,8 +23,10 @@ db.once('open', function() {
 db.close();
 
 // 创建一个数据模式。（类似于MySQL中创建一个表结构）
+// 类型定义参考 http://mongoosejs.com/docs/schematypes.html
+// 每条数据创建后会自动生成 _id 这个唯一属性
+// _id 为一个 mongoose.Schema.Types.ObjectId 对象
 var userSchema = new mongoose.Schema({
-    id: Number,
     name: String,
     password: String,
     date: {
@@ -47,7 +50,7 @@ userSchema.pre('validate', function(next) {
     next();
 });
 
-// 数据存储之前，验证数据之后调用
+// 数据存储之前，验证数据之后调用（新数据创建或数据更新时都会执行）
 userSchema.pre('save', function(next) {
     // 这里this指该条数据
     this.date.updateAt = Date.now();
@@ -73,7 +76,7 @@ userSchema.statics = {
 }
 
 // 为模式添加实例方法
-UserSchema.methods = {
+userSchema.methods = {
     comparePassword: function(_password, cb) {
         ncrypt.compare(_password, this.password, function(err, isMatch) {
             if (err) return cb(err);
@@ -93,13 +96,21 @@ var data = {
 
 // 使用 User 模型创建一条数据
 var user = new User(data);
-// 保存这条数据
+// 调用实例方法，保存这条数据
 user.save(function(err) {
     if (err) {
         console.log('保存失败');
         return;
     }
     console.log('保存成功');
+});
+// 调用实例方法，删除这条数据
+user.remove(function(err) {
+    if (err) {
+        console.log('删除失败');
+        return;
+    }
+    console.log('删除成功');
 });
 
 // 使用 User 模型创建并保存一条数据

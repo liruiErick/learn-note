@@ -146,6 +146,8 @@ click  鼠标单击元素的边框及以内区域时触发该事件
 dblclick  鼠标双击元素的边框及以内区域时触发该事件
 
 // 触摸事件（pc端无效）
+// 从 Chrome 56 开始，在注册触摸事件的监听器时，addEventListener 的第三个参数 useCapture 默认值被修改成了 { passive: true }
+// 这导致调用 e.preventDefault() 时不能达到我们想要的效果，因此需要在注册时手动填入第三个参数为 { passive: false }
 touchstart  触摸开始事件
 touchmove  触摸移动事件（在事件处理函数中最好调用 preventDefault() 来阻止浏览器的默认移动行为，否则可能会影响到当前事件处理函数的执行）
 touchend  触摸结束事件（注意，并不等同于mouseup，无论手指滑动到哪里，都可以出发事件，且event.target永远指向touchstart时的event.target）

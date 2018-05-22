@@ -1,5 +1,18 @@
 <?php
-// 根据 key value 查询
+// 根据分类名称查询
+$args = array(
+    'post_type'      => 'post',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'category_name'  => 'bag-birkin'
+);
+$query = new WP_Query($args);
+$posts = $query->posts;
+?>
+
+
+<?php
+// 根据自定义的 key value 查询
 $args = array(
     'post_type'      => 'bag',
     'posts_per_page' => '10',

@@ -61,8 +61,8 @@ window.scrollX; //IOS 设备专用，返回水平方向上滚动条的值，即�
 window.scrollY; //IOS 设备专用，返回垂直方向上滚动条的值，即窗口显示区左上角相对于当前文档页面的 Y 位置
 
 // 获取页面的 scrollLeft、scrollTop 的兼容写法
-window.pageXOffset || document.documentElement.scrollLeft;
-window.pageYOffset || document.documentElement.scrollTop;
+window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 
 // 以下属性为只读整数。返回整个浏览器的左上角在屏幕上的的 x 坐标和 y 坐标。
 // IE、Safari 和 Opera 支持 screenLeft 和 screenTop。

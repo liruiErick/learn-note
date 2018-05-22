@@ -90,7 +90,7 @@ function isVoid(href) {
 
 // 判断是否为绝对路径
 function isAbsPath(href) {
-	return href && (href.indexOf('http') === 0 || href.indexOf('file:') === 0);
+	return href && (href.indexOf('http') === 0 || href.indexOf('file:') === 0 || href.indexOf('data:') === 0);
 }
 
 // 获取当前的域名

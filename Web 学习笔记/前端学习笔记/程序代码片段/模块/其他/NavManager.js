@@ -17,6 +17,9 @@
 }(this, function($) {
     'use strict';
 
+    var $win = $(window);
+    var $doc = $(allowScroll(document.documentElement) ? document.documentElement : document.body);
+
     /**
      * 默认回调
      * this 指向 NavManager 的实例对象
@@ -96,9 +99,6 @@
 
             this._initProxy();
 
-            this._$win = $(window);
-            this._$doc = $(allowScroll(document.documentElement) ? document.documentElement : document.body);
-
             this._resize();
             this._scroll();
             this._addEvent();
@@ -106,14 +106,14 @@
 
         _addEvent: function() {
             this._$nav.on('click', this._onClickNav);
-            this._$win.on('resize', this._resize);
-            this._$win.on('scroll', this._scroll);
+            $win.on('resize', this._resize);
+            $win.on('scroll', this._scroll);
         },
 
         _removeEvent: function() {
             this._$nav.off('click', this._onClickNav);
-            this._$win.off('resize', this._resize);
-            this._$win.off('scroll', this._scroll);
+            $win.off('resize', this._resize);
+            $win.off('scroll', this._scroll);
         },
 
         _onClickNav: function(e) {
@@ -131,7 +131,7 @@
             var scrollTop = $target.offset().top - this._offset,
                 targetIndex = this._$section.index($target);
 
-            if (this._$win.scrollTop() === scrollTop) return;
+            if ($win.scrollTop() === scrollTop) return;
 
             self._animating = true;
             var $anchor = this._getAnchor($target);
@@ -142,7 +142,7 @@
                 throw err;
             }
 
-            this._$doc.stop().animate({
+            $doc.stop().animate({
                 scrollTop: scrollTop
             }, duration, this._easing, function() {
                 self._animating = false;
@@ -157,7 +157,7 @@
 
         _scroll: function() {
             var self = this,
-                winTop = this._$win.scrollTop(),
+                winTop = $win.scrollTop(),
                 winBottom = winTop + this._winHeight,
                 reference,
                 curSectionIndex,
@@ -220,13 +220,13 @@
         },
 
         _resize: function() {
-            this._winHeight = this._$win.height();
+            this._winHeight = $win.height();
         },
 
         // 确保无论函数持有者是谁，调用都不会出错
         _initProxy: function() {
             for (var p in this) {
-                if (isFunction(this[p])) {
+                if ($.isFunction(this[p])) {
                     this[p] = $.proxy(this, p);
                 }
             }
@@ -236,7 +236,7 @@
             this._removeEvent();
 
             // 清除所有属性
-            for (var p in this) {
+            for (var p in Object.getOwnPropertyNames(this)) {
                 delete this[p];
             }
 
@@ -265,16 +265,6 @@
     // 判断对象是否为数组
     function isArray(obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
-    }
-
-    // 判断是否为字符串
-    function isString(str) {
-        return typeof str === 'string';
-    }
-
-    // 判断是否为函数
-    function isFunction(func) {
-        return typeof func === 'function';
     }
 
     return NavManager;

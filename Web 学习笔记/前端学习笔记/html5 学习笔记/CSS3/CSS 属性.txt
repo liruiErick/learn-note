@@ -355,6 +355,14 @@ object-fit:
 object-position: right 20px bottom 10px;
 
 
+/* 修改输入框光标的颜色 */
+/* Chrome 67 及以上 */
+/* Firefox 61 及以上 */
+/* Safari 11.1 及以上 */
+/* IE、Edge 均不支持*/
+caret-color: red; 
+
+
 
 
 * 各浏览器均支持的私有属性，必须加入各浏览器的私有前缀

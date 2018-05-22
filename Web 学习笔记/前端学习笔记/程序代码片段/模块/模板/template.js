@@ -21,19 +21,19 @@
 }(this, function($) {
     'use strict';
 
-        /**
-         * 默认回调
-         * this 指向 CustomClass 的实例对象
-         * 包含 2 个参数 function(value, oldValue)
-         *
-         * @param {[type]} param1 [description]
-         * @param {[type]} param2 [description]
-         */
-    var noop = function(value, oldValue) {},
+    /**
+     * 默认回调
+     * this 指向 CustomClass 的实例对象
+     * 包含 2 个参数 function(value, oldValue)
+     *
+     * @param param1 {[type]} [description]
+     * @param param2 {[type]} [description]
+     */
+    var noop = function(value, oldValue) {};
 
-        defaultOptions = {
+    var defaultOptions = {
 
-        };
+    };
 
     $.fn.customMethod = function(options) {
         var opt = $.extend({}, defaultOptions, options);
@@ -43,7 +43,7 @@
 
     /**
      * [CustomClass description]
-     * @param {[type]} options [description]
+     * @param options {[type]} [description]
      */
     function CustomClass(options) {
         if (!(this instanceof CustomClass)) {
@@ -92,14 +92,6 @@
             return this;
         },
 
-        _addEvent: function() {
-
-        },
-
-        _removeEvent: function() {
-
-        },
-
         // 确保无论函数持有者是谁，调用都不会出错
         _initProxy: function() {
             for (var p in this) {
@@ -109,18 +101,25 @@
             }
         },
 
+        _addEvent: function() {
+
+        },
+
+        _removeEvent: function() {
+
+        },
+
         destroy: function() {
             this._removeEvent();
 
             // 清除所有属性
-            for (var p in this) {
+            for (var p in Object.getOwnPropertyNames(this)) {
                 delete this[p];
             }
 
             this.__proto__ = Object.prototype;
         }
     });
-
 
     function extend() {
         var options, name, src, copy, copyIsArray,
@@ -332,6 +331,11 @@
         }
 
         return toArray(context.querySelectorAll(selector));
+    }
+
+    // 类似数组对象转数组
+    function toArray(obj) {
+        return Array.prototype.map.call(obj, function(n) { return n });
     }
 
     // 设置属性

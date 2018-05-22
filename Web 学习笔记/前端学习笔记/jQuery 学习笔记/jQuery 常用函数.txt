@@ -81,7 +81,7 @@ $(selector).each(function(index,element));
 // 遍历 jQuery 对象，将每个 DOM 元素传入参数指定的函数，生成返回值所组成的 jQuery 对象。
 $(selector).map(function(index,element));
 
-// 遍历 jQuery 对象，将每个 DOM 元素传入参数指定的函数，生成返回值为true的元素所组成的 jQuery 对象。
+// 遍历 jQuery 对象，将每个 DOM 元素传入参数指定的函数，生成返回值为 true 的元素所组成的 jQuery 对象。
 $(selector).filter(function(index,element));
 
 // 返回 jQuery 对象中首个 DOM 元素在 DOM 树中相对于同胞元素所对应索引。

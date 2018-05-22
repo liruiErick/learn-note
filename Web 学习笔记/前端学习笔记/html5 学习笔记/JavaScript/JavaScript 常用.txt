@@ -1,101 +1,102 @@
-* js�������ⲿjs
+* js中引入外部js
 document.write('<script type="text/javascript" src="javascript.js"></script>');
-ע�⣺����Ҫʹ�����ĵ�����֮��ʹ�� document.write()����Ḳ�Ǹ��ĵ���
-ע�⣺���ַ�������ȴ����ļ�������ɲ�����ִ�У����ǻ�����ִ�к����ļ������׵����� js �ļ���ȱ��֧�ֵĴ����������
+注意：绝不要使用在文档加载之后使用 document.write()，这会覆盖该文档。
+注意：这种方法不会等待该文件加载完成才向下执行，而是会立即执行后面文件，容易导后续 js 文件致缺少支持的代码而报错。
 
 
-* js����script��ǩԪ�� (����Ԫ�ؽڵ�)
+* js创建script标签元素 (创建元素节点)
 var js = document.createElement('script');
 js.setAttribute('type', 'text/javascript');
 js.setAttribute('src', 'javascript.js');
-js.setAttribute('charset', 'gbk'); // ע�⣬��������ı������վ����Ҫ����script�ı����ʽ
+js.setAttribute('charset', 'gbk'); // 注意，如果是中文编码的网站必须要设置script的编码格式
 document.getElementsByTagName('head')[0].appendChild(js);
 js.onload = js.onreadystatechange = function(){
 	if (!js.readyState || js.readyState == "loaded" || js.readyState == "complete") {
 		onload();
 	}
 };
-// IE�� script Ԫ��֧��onreadystatechange�¼�����֧��onload�¼��� 
-// �����Ƚ������ script Ԫ�ز�֧��onreadystatechange�¼���ֻ֧��onload�¼���
-// ע�⣬���js�������ĵ���ֻ��ִ��һ�Σ���ʹ���Ƴ����ٴμ����ĵ�Ҳ�����ٲ�ִ�С��������ʹ��jQuery��js��DOMԪ�����л�����append���¼����ĵ�����js�ᱻ�ٴ�ִ�С�
+// IE的 script 元素支持onreadystatechange事件，不支持onload事件。 
+// 其它先进浏览器 script 元素不支持onreadystatechange事件，只支持onload事件。
+// 注意，如果js被加入文档后只会执行一次，即使被移除后再次加入文档也不会再不执行。但是如果使用jQuery将js的DOM元素序列化后用append重新加入文档，则js会被再次执行。
 
 
-* ���ö�������
-parseInt(string, radix); //���ַ�����ʽ�����ֽ���Ϊintֵ���ַ�����ͷ����Ϊ�����֣�������Ϊ���ַ�������С����������������ַ��������ֹͣ�����ؽ����
-// radix  ���ú������ַ�����Ϊ���ٽ��Ƶ�����������
-//	Ĭ��ֵΪ0����ʾ�������ַ����Ŀ�ͷ�ַ����ж����ֵĽ��ơ�
-//	����ַ����ԡ�0x����0X����ͷ���������� 16 ��������������
-//	����ַ����ԡ�0����ͷ���������� 8 ��������������
-parseFloat(string); //���ַ�����ʽ�����ֽ���Ϊfloatֵ���ַ�����ͷ����Ϊ�����֣�������Ϊ���ַ������������������ַ���ڶ���С���㣬�����ֹͣ�����ؽ����
-isNaN(number); // ������ֶ����Ƿ�ΪNaN
-isFinite(number); // ������ֶ����Ƿ�Ϊ������������������
-eval(string); //���ַ���ת��Ϊ���б������ִ�е���䣬��ִ��
+* 常用顶级函数
+parseInt(string, radix); //将字符串形式的数字解析为int值（字符串开头不能为非数字，但可以为空字符，遇到小数点或其它非数字字符，则解析停止并返回结果）
+// radix  设置函数将字符串作为多少进制的数来解析。
+//	默认值为0，表示将根据字符串的开头字符来判断数字的进制。
+//	如果字符串以“0x”或“0X”开头，将被当做 16 进制数来解析。
+//	如果字符串以“0”开头，将被当做 8 进制数来解析。
+parseFloat(string); //将字符串形式的数字解析为float值（字符串开头不能为非数字，但可以为空字符，遇到其它非数字字符或第二个小数点，则解析停止并返回结果）
+isNaN(number); // 检查数字对象是否为NaN
+isFinite(number); // 检查数字对象是否为否非无穷，即正常的数字
+eval(string); //将字符串转化为已有变量或可执行的语句，并执行
 
 
-* �ַ����ı�������루Unicode��ʽ��
-var code = escape(string); //���ַ������б��룬�����Ϳ��������еļ�����϶�ȡ���ַ������ú��������ѱ����ַ�����
-var str = unescape(code); //���ѱ�����ַ������룬�����ѽ�����ַ�����
-// ���ڸ÷������ܹ�������ͳһ��Դ��ʾ��(URI)���б��룬ECMAScript v3 ����ʹ�ø÷�����Ӧ��ʹ�����·��������:
+* 字符串的编码与解码（Unicode格式）
+var code = escape(string); //对字符串进行编码，这样就可以在所有的计算机上读取该字符串，该函数返回已编码字符串。
+var str = unescape(code); //将已编码的字符串解码，返回已解码的字符串。
+// 由于该方法不能够用来对统一资源标示码(URI)进行编码，ECMAScript v3 反对使用该方法，应用使用以下方法替代它:
 encodeURI();
 encodeURIComponent();
 decodeURI();
 decodeURIComponent();
-���磺
+例如：
 var test="http://www.w3school.com.cn/My first/"
-encodeURI(test); //�����http://www.w3school.com.cn/My%20first/
-encodeURIComponent(test); //�����http%3A%2F%2Fwww.w3school.com.cn%2FMy%20first%2F
+encodeURI(test); //输出：http://www.w3school.com.cn/My%20first/
+encodeURIComponent(test); //输出：http%3A%2F%2Fwww.w3school.com.cn%2FMy%20first%2F
 
 
-* ���ָ�ʽ��
+* 数字格式化
 (10000).toLocaleString('en-US'); // => "10,000"
 
 
-* �ĵ�������Ԫ�أ�����ͼ��ȫ���������ʱִ�иú���
+* 文档内所有元素（包括图像）全部加载完成时执行该函数
 window.onload=function(){};
 
 
-* ֱ�ӻ�ȡ���� id ����Ԫ��
-window.id����
+* 直接获取带有 id 名的元素
+window.id名称
 
 
-* ���������ͣ����ض������͵��ַ�����ʽ���ַ���ΪȫСд��ĸ
-typeof ����
+* 检查对象类型，返回对象类型的字符串形式，字符串为全小写字母
+typeof 对象
 
 
-* ɾ������ļ�ֵ�Ի������ĳһ��
+* 删除对象的键值对或数组的某一项
 delete myObj.key;
 delete myArray[0];
+// 注意，delete 只能删除对象上直接定义的属性键，无法删除对象原型链上继承的属性键
 
 
-* �жϸö����Ƿ�Ϊָ�����͵�ʵ��������Ϊָ�����ͺ�����ʵ�����Է�new�������ַ������ֻ򲼶�ֵ����û�б���װ�ɶ���ļ�����������Ч��
-���� instanceof ����
+* 判断该对象是否为指定类型的实例，或者为指定类型后代类的实例（对非new创建的字符、数字或布尔值，即没有被封装成对象的简单数据类型无效）
+对象 instanceof 类型
 
 
-* ���ض����캯��������
-����.constructor
-// ���жϸö����Ƿ�Ϊָ�����͵�ʵ�������޷��ж��Ƿ�Ϊָ�����ͺ�����ʵ��
-����.constructor == ����
-// Ҳ������������ͬ���Ͷ���
-new ����.constructor();
+* 返回对象构造函数的引用
+对象.constructor
+// 可判断该对象是否为指定类型的实例，但无法判断是否为指定类型后代类的实例
+对象.constructor == 类型
+// 也可以用来创建同类型对象
+new 对象.constructor();
 
 
-* ע�⣬ʹ��instaceof��construcor�����жϵĶ���������ڵ�ǰ window �������ģ�
-���磺
-һ��ҳ�� ���� window ����һ����ܣ������������һ��ҳ�棨�� window �������� window ��������һ��array�������丳ֵ���� window ��һ������
-��ʱ�жϸñ�����Array == object.constructor �᷵��false��
-ԭ��
-1��array�������������ݣ��ڴ��ݹ����У����������õ�ַ�Ĵ��ݡ�
-2��ÿ��ҳ���Arrayԭ�����������õĵ�ַ�ǲ�һ���ģ�����ҳ��������array������Ӧ�Ĺ��캯��������ҳ���Array���󣻸�ҳ���������жϣ�ʹ�õ�Array����������ҳ���Array���мǣ���Ȼ���Ѹ������⣡
+* 注意，使用instaceof和construcor，被判断的对象必须是在当前 window 中声明的！
+比如：
+一个页面 （父 window ）有一个框架，框架中引用了一个页面（子 window ），在子 window 中声明了一个array，并将其赋值给父 window 的一个变量
+这时判断该变量，Array == object.constructor 会返回false；
+原因：
+1、array属于引用型数据，在传递过程中，仅仅是引用地址的传递。
+2、每个页面的Array原生对象所引用的地址是不一样的，在子页面声明的array，所对应的构造函数，是子页面的Array对象；父页面来进行判断，使用的Array并不等于子页面的Array；切记，不然很难跟踪问题！
 
 
-* ��̬���� Function
-д����var func =new Function("param1", "param2", ... "function body");
-���ӣ�var sayHi=new Funciton("toWhom", "alert('hi'+toWhom)");
-˵�������캯���Ĳ���������ȷ����������һ���βξ��Ǻ����壬�������βξ��Ǻ������βΡ�
+* 动态创建 Function
+写法：var func =new Function("param1", "param2", ... "function body");
+例子：var sayHi=new Funciton("toWhom", "alert('hi'+toWhom)");
+说明：构造函数的参数个数不确定，倒数第一个形参就是函数体，其它的形参就是函数的形参。
 
 
-* ������αװ�����飨����jQuery����
-// һ�� Javascript ����ֻҪ������ length ���Ժ� splice ������������������һ�����顣
+* 将对象伪装成数组（类似jQuery对象）
+// 一个 Javascript 对象，只要定义了 length 属性和 splice 方法，它看起来就像一个数组。
 var x = {
 	'0': 'foo',
 	'1': 'bar',
@@ -105,40 +106,40 @@ var x = {
 console.log(x); //=>["foo", "bar", splice: function]
 
 
-* Ϊһ�����Ͷ��󴴽�ԭ�����ԣ��൱��ʵ�� Object-C �е������
-// �����Խ����Ϊÿһ�������Ͷ���ʵ���Ĺ�������
-// ע�⣬��������Ե�ֵΪ������ߺ�������ôÿһ�������Ͷ���ʵ���ĸ����Զ�ָ����ͬ�Ķ�����ߺ���
+* 为一个类型对象创建原型属性，相当于实现 Object-C 中的类别功能
+// 该属性将会成为每一个该类型对象实例的共享属性
+// 注意，如果该属性的值为对象或者函数，那么每一个该类型对象实例的该属性都指向相同的对象或者函数
 function Car() {}
-Car.prototype.��̬������ �� ֵ/����/����;
+Car.prototype.动态属性名 ＝ 值/对象/函数;
 
 
-* ��Ϣ��
-alert("�ı�"); //������û���Ҫ���ȷ����ť���ܼ������в�����
-var bool = confirm("�ı�"); //ȷ�Ͽ�����û����ȷ�ϣ���ô����ֵΪ true������û����ȡ������ô����ֵΪ false��
-var str = prompt("��ʾ��Ϣ", "ռλ��"); //��ʾ������û����ȷ�ϣ���ô����ֵΪ�����ֵ������û����ȡ������ô����ֵΪ null��
+* 消息框
+alert("文本"); //警告框。用户需要点击确定按钮才能继续进行操作。
+var bool = confirm("文本"); //确认框。如果用户点击确认，那么返回值为 true。如果用户点击取消，那么返回值为 false。
+var str = prompt("提示信息", "占位符"); //提示框。如果用户点击确认，那么返回值为输入的值。如果用户点击取消，那么返回值为 null。
 
 
-* ���ü�ʱ��
-// ����һ���Լ�ʱ����������һ��������ID
-setTimeout(�ص�����/"javascript���", ����, ...�ص������Ĳ���);
-clearTimeout(ID); //�����ӦID�ļ�ʱ��
-// ����ѭ����ʱ����������һ��������ID
-setInterval(�ص�����/"javascript���", ����, ...�ص������Ĳ���);
-clearInterval(ID); //�����ӦID�ļ�ʱ��
-// �ӵ�����������ʼΪ��ѡ�������ɴ���������������Ϊ��ʱ���ص������Ĳ���
-// ÿ�δ����µļ�ʱ������ƥ���µ�ID��������ļ�ʱ��ID���ᱻ������
-// һ������£���ʱ����ID�Ǵ�1��ʼ�ģ�����Ǵ�2��ʼ�ģ�Ŀǰû�з��ִ�0��ʼ�ļ�ʱ��
-// chrome �ͻ��ÿ��ˢ��ҳ��ID�����á���IE�᲻�ϵ��ۼ�ID��֪��������ر�
+* 设置计时器
+// 创建一次性计时器，并返回一个正整数ID
+setTimeout(回调函数/"javascript语句", 毫秒, ...回调函数的参数);
+clearTimeout(ID); //清除对应ID的计时器
+// 创建循环计时器，并返回一个正整数ID
+setInterval(回调函数/"javascript语句", 毫秒, ...回调函数的参数);
+clearInterval(ID); //清除对应ID的计时器
+// 从第三个参数开始为可选参数，可传入任意多个参数作为计时器回调函数的参数
+// 每次创建新的计时器都会匹配新的ID，被清除的计时器ID不会被再利用
+// 一般情况下，计时器的ID是从1开始的，火狐是从2开始的，目前没有发现从0开始的计时器
+// chrome 和火狐每次刷新页面ID会重置。而IE会不断的累加ID，知道浏览器关闭
 
 
-* ������
-try{  // try ���еĴ������������������ֹ���������ִ��
+* 错误处理
+try{  // try 块中的代码如果出错，不会终止后续代码的执行
     ...
-} catch(err) {  // try �д�������󣬽���ִ�� catch ����顣e �����Ǳ���ģ����򱨴����ò�������������Ϣ��
-    throw new Error('����'); // �ֶ��׳�һ���쳣��ʾ
+} catch(err) {  // try 中代码出错后，将会执行 catch 代码块。e 参数是必须的，否则报错，该参数包含错误信息。
+    throw new Error('错误'); // 手动抛出一个异常提示
 }
 
-// �� callback ��ִ�еĴ��󱨳��������� callback �ĵ����б�������
+// 将 callback 中执行的错误报出，而非在 callback 的调用行报出错误
 try {
 	callback && callback.call(this);
 } catch(err) {
@@ -148,72 +149,72 @@ try {
 
 
 
-* ��ʹ�õ�������������������������ֵ
+* 不使用第三个变量，交换两个变量的值
 var foo = "aaa", bar = "bbb";
 bar = [foo, foo = bar][0];
 
 
-* undefined �� null �Լ� false ֵ֮�������
-�Ƚ�ʱҪ����ע��
-typeof undefined; // ���� "undefined"
-typeof null; // ���� "object"
-undefined == null; // ���� true
-undefined === null; // ���� false
-undefined == 0; // ���� false
-undefined == ""; // ���� false
-null == 0; // ���� false
-null == ""; // ���� false
-if (typeof x === "undefined"); // �κ�����¶����ᱨ��
-if (x === undefined); // ��� x û�б� var �����������ᱨ����ע�⣬����������������δ�������ԣ������Ǻ������βα������򲻻ᱨ��
+* undefined 与 null 以及 false 值之间的区别
+比较时要格外注意
+typeof undefined; // 返回 "undefined"
+typeof null; // 返回 "object"
+undefined == null; // 返回 true
+undefined === null; // 返回 false
+undefined == 0; // 返回 false
+undefined == ""; // 返回 false
+null == 0; // 返回 false
+null == ""; // 返回 false
+if (typeof x === "undefined"); // 任何情况下都不会报错
+if (x === undefined); // 如果 x 没有被 var 声明，则代码会报错。注意，如果是已声明对象的未定义属性，或者是函数中形参变量，则不会报错
 
 
-* == �Ƚ�ʱ������ת������
-������߶������� �� ���߿���ת��Ϊ���� �� ��Ƚ����֡�
-������߶��� string �� ���߿���ת��Ϊ string �� ��Ƚ� string ��
-���һ�߿�תΪ string, һ�߿�תΪ number, ������ͼ�� string תΪ number �ٱȽ� �� ��� string ����תΪnumber, ��Ϊ NaN, ���� false.
-����� object ����Ƚ� �� ��������ͼת object Ϊ number �� string �ٱȽϡ�
+* == 比较时的类型转换规则
+如果两边都是数字 ， 或者可以转化为数字 ， 则比较数字。
+如果两边都是 string ， 或者可以转化为 string ， 则比较 string 。
+如果一边可转为 string, 一边可转为 number, 则再试图把 string 转为 number 再比较 ， 如果 string 不能转为number, 则为 NaN, 返回 false.
+如果有 object 参与比较 ， 则总是试图转 object 为 number 或 string 再比较。
 
 
-* ����ִ��Ч��
-// ѭ���ٶ���������
-for (var i = 0, l = arr.length; i < l; i++) // ���
-for (var i = 0; i < arr.length; i++) // ����
-for (var i in arr) // �ǳ�������ǰ��������ʮ������һ�����ڱ��������������
+* 代码执行效率
+// 循环速度依次如下
+for (var i = 0, l = arr.length; i < l; i++) // 最快
+for (var i = 0; i < arr.length; i++) // 稍慢
+for (var i in arr) // 非常慢（比前两种慢几十倍），一般用于遍历对象而非数组
 
-// �Ƚ��ٶ���������
+// 比较速度依次如下
 var a = {}, b = [];
-if (a) // �������͵Ĳ���ֵ�ж����
-if (123 == 123 || "123" == "123") // ��ͬ���͵ļ�����֮��ıȽϺͲ���ֵ�ж�һ����
-if (a == b) // ������������֮��ıȽϼ����Ͳ���ֵ�ж�һ���죨��һ��㣩
-if ("123") // ����ע�⣬ֱ�ӽ����ַ����Ĳ����ж���������ʹ���ַ����������в���ֵ�ж������
-if (123 == "123") // ��ͬ���͵ļ���������֮��ıȽϽ�������ǰ������������
-if (a == "123") // �����������������������֮��ıȽϷǳ�������ǰ��������ʮ����
-if (typeof x === "undefined") �� if (x === undefined) // �Ƚ�Ч������ȵ�
+if (a) // 所有类型的布尔值判断最快
+if (123 == 123 || "123" == "123") // 相同类型的简单数据之间的比较和布尔值判断一样快
+if (a == b) // 复杂数据类型之间的比较几乎和布尔值判断一样快（慢一点点）
+if ("123") // 这里注意，直接进行字符串的布尔判断稍慢。而使用字符串变量进行布尔值判断则最快
+if (123 == "123") // 不同类型的简单数据类型之间的比较较慢（比前几种慢几倍）
+if (a == "123") // 复杂数据类型与简单数据类型之间的比较非常慢（比前几种慢几十倍）
+if (typeof x === "undefined") 与 if (x === undefined) // 比较效率是相等的
 
-ע�⣬����ͬ���͵ı������бȽ�ʱ == �� === ��Ч����һ�������ڲ�ͬ���͵ı������бȽ�ʱ === Ҫ�� == ��ܶ౶
-Ҳ����˵���ڱȽ�ǰ�����ж����ͣ�������Ͳ�ͬ === ��ֱ���ж� false���� == ��ǿת���ͺ����ж�
-Ŀǰ������� == �ǽ���һ�ߵı�������ǿ������ת�������ǲ���ʱ�о������۱�������һ�ߣ��Ƚ��ٶ���һ����
+注意，对于同类型的变量进行比较时 == 与 === 的效率是一样，对于不同类型的变量进行比较时 === 要比 == 快很多倍
+也就是说，在比较前会先判断类型，如果类型不同 === 会直接判定 false，而 == 会强转类型后再判断
+目前还不清楚 == 是将哪一边的变量进行强制类型转换，但是测试时感觉，不论变量在哪一边，比较速度是一样的
 
 
-// DOM�����ٶ�
-jQuery ��ȡԪ������ֵ������jsԭ��������3�����ҡ��������ʹ��ԭ��js����������£�������Ҫ�� jQuery
+// DOM操作速度
+jQuery 获取元素属性值，比用js原生方法慢3倍左右。因此在能使用原生js操作的情况下，尽量不要用 jQuery
 for (var i in style) {
 	$obj[0].style[i] = style[i];
 }
-$obj.css(style); // ���������ǰ����3��
+$obj.css(style); // 这个方法比前者慢3倍
 
 
-* ע�͸�ʽ
-@author     �����˵�� ������������ģ�������
+* 注释格式
+@author     对类的说明 标明开发该类模块的作者
 
-@version    �����˵�� ��������ģ��İ汾
+@version    对类的说明 标明该类模块的版本
 
-@see        ���ࡢ���ԡ�������˵�� �ο�ת��Ҳ�����������
+@see        对类、属性、方法的说明 参考转向，也就是相关主题
 
-@param      �Է�����˵�� �Է�����ĳ������˵��
+@param      对方法的说明 对方法中某参数的说明
 
-@return     �Է�����˵�� �Է�������ֵ��˵��
+@return     对方法的说明 对方法返回值的说明
 
-@exception  �Է�����˵�� �Է��������׳����쳣����˵��
+@exception  对方法的说明 对方法可能抛出的异常进行说明
 
 
