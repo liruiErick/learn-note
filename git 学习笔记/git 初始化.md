@@ -128,7 +128,7 @@ folder/**/filename.extension
 $ git rm --cached <file_name>
 ```
 
-将所有文件移出暂存区
+将所有文件移出暂存区，这里的 `-r` 参数表示递归删除。
 
 ```
 $ git rm -r --cached .

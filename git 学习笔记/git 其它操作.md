@@ -111,13 +111,13 @@ $ git rm -f <file_name>
 $ git rm --cached <file_name>
 ```
 
-将所有文件移出暂存区
+将所有文件移出暂存区，这里的 `-r` 参数表示递归。
 
 ```
 $ git rm -r --cached .
 ```
 
-如果文件已经被提交，则需要 `git rm` 来删除：
+如果文件已经被提交，则必须连同文件一起删除：
 
 ```
 $ git rm <file_name>

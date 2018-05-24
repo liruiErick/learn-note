@@ -339,7 +339,8 @@
     cjsTranslate: true,
 
     // 每一个模块集最后都会添加一段 //# sourceUrl 的注释。
-    // （在压缩 angular 模块时，该属性为 ture 可以防止出错）
+    // 设置为 true 后，压缩代码会使用 eval 来解析，并且不会删除注释。
+    // 在压缩 angular 模块时，该属性为 ture 可以防止出错。
     // Introduced in 2.0.2: a bit experimental.
     // Each script in the build layer will be turned into
     // a JavaScript string with a //@ sourceURL comment, and then wrapped in an
