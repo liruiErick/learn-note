@@ -85,9 +85,6 @@
         _init: function() {
             this._eventObj = this._options.obj || document.documentElement;
             this._callbackHolder = this._options.holder;
-            this._startCallback = this._options.start;
-            this._moveCallback = this._options.move;
-            this._endCallback = this._options.end;
 
             this._touchID = -1;
             this._swipeDis = 5; // 判断清扫的距离
@@ -129,7 +126,6 @@
             };
 
             this._eventObj = $(this._eventObj)[0];
-            this._eventTarget = null; // 用于记录当前的事件目标
 
             this._initProxy();
             this._addEvent();
@@ -203,15 +199,10 @@
             this._prevTime = data.startTime = data.dragTime = e.timeStamp;
             data.stepTime = 0;
 
-            this._eventTarget = e.currentTarget;
-
-            try {
-                if (this._startCallback && this._startCallback.call(this._callbackHolder || this._eventTarget, e, extend({}, data)) === false) {
-                    this._touchID = -1;
-                    return;
-                }
-            } catch(err) {
-                throw err;
+            var callback = this._options.start;
+            if (callback && callback.call(this._callbackHolder || this._eventObj, e, extend({}, data)) === false) {
+                this._touchID = -1;
+                return;
             }
 
             this._eventObj.addEventListener(moveEvent, this._moveDragHandler, { passive: false });
@@ -265,11 +256,8 @@
             this._swipeH = data.absStepDx > this._swipeDis;
             this._swipeV = data.absStepDy > this._swipeDis;
 
-            try {
-                this._moveCallback && this._moveCallback.call(this._callbackHolder || this._eventTarget, e, extend({}, data));
-            } catch(err) {
-                throw err;
-            }
+            var callback = this._options.move;
+            callback && callback.call(this._callbackHolder || this._eventObj, e, extend({}, data));
         },
 
         _endDragHandler: function(e) {
@@ -311,14 +299,10 @@
             this._eventObj.removeEventListener(endEvent, this._endDragHandler);
             cancelEvent && this._eventObj.removeEventListener(cancelEvent, this._endDragHandler);
 
-            try {
-                this._endCallback && this._endCallback.call(this._callbackHolder || this._eventTarget, e, extend({}, data));
-            } catch(err) {
-                throw err;
-            }
+            var callback = this._options.end;
+            callback && callback.call(this._callbackHolder || this._eventObj, e, extend({}, data));
 
             this._touchID = -1;
-            this._eventTarget = null;
         },
 
         _getEventObjRect: function() {

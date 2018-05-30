@@ -81,9 +81,9 @@ function setValue(obj, key, value) {
 		return;
 	}
 
-	var reg = /(\[[^\.]*)(\.+)([^\.]*\])/g, // 匹配 a.b['a.b'] 中的 ['a.b']
-		reg2 = /(.+)\[(.+)\]/, // 匹配 a[b] 中的 a 和 b
-		reg3 = /^['"](.+)['"]$/; // 匹配 'b' 中的 b
+	var reg = /(\[[^.]*)(\.+)([^.]*])/g, // 匹配 a.b['a.b'] 中的 ['a.b']
+        reg2 = /(.+)\[(.+)]/, // 匹配 a[b] 中的 a 和 b
+        reg3 = /^['"](.+)['"]$/; // 匹配 'b' 中的 b
 
 	key = key.replace(reg, function(x, $1, $2, $3) {
 		return $1 + $2.replace(/\./g, '\n') + $3;
@@ -99,9 +99,9 @@ function setValue(obj, key, value) {
 
 		if (res) {
 			var sub = res[2],
-				res2 = reg3.exec(sub),
-				sub = res2 ? res2[1] : sub,
-				isArr = !res2 && sub == parseInt(sub);
+				res2 = reg3.exec(sub);
+			sub = res2 ? res2[1] : sub;
+			var isArr = !res2 && sub == parseInt(sub);
 
 			lastObj = lastObj[prop] = lastObj[prop] || (isArr ? [] : {});
 			prop = sub;

@@ -149,6 +149,7 @@
         _addEvent: function() {
             if (!this._options.disableRefresh) {
                 this._dragEvent = new DragEvent({
+                    holder: this,
                     obj: this._$container,
                     move: this._dragMove,
                     end: this._dragEnd
@@ -228,12 +229,7 @@
                 this._$pullLoadText.text(this._options.status.loading.text);
                 this._$moveElem.stop().animate({ 'y': 75 });
 
-                // 将 callback 中执行的错误报出，而非在 callback 的调用行报出错误
-                try {
-                    this._options.refresh && this._options.refresh.call(this);
-                } catch(err) {
-                    throw err;
-                }
+                this._options.refresh && this._options.refresh.call(this);
             } else {
                 this._retraction();
             }
@@ -260,12 +256,7 @@
 
             if (!this._loadExecuted && rect.bottom <= this._winHeight) {
                 this._loadExecuted = true;
-
-                try {
-                    this._options.load && this._options.load.call(this);
-                } catch(err) {
-                    throw err;
-                }
+                this._options.load && this._options.load.call(this);
             } else if (this._loadExecuted && rect.bottom > this._winHeight) {
                 this._loadExecuted = false;
             }

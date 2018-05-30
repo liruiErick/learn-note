@@ -97,7 +97,7 @@ minimal-ui	iOS 7.1的Safari为meta标签新增minimal-ui属性，在网页加载
 因此实际应用时可简写以下任一形式：
 <meta name="viewport" content="width=device-width, user-scalable=no" />
 但是以上写法在微信内置的 webview 下，设备呼出键盘后翻转时会出现屏幕不能自适应的bug，因此必须设置 initial-scale=1.0
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 
 
 

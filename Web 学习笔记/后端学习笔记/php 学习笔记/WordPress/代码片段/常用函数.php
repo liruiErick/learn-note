@@ -52,6 +52,41 @@ if (!function_exists('bjj_get_google_map_link')) {
     }
 }
 
+// 在头部添加样式
+if (!function_exists('bjj_add_style')) {
+    function bjj_add_style($paths) {
+        global $style_paths;
+        $style_paths = $paths;
+        add_action('wp_enqueue_scripts', function() {
+            global $style_paths;
+            if (is_string($style_paths)) {
+                wp_enqueue_style($style_paths, get_template_directory_uri() . $style_paths, null, VERSION);
+            } elseif (is_array($style_paths)) {
+                foreach ($style_paths as $path) {
+                    wp_enqueue_style($path, get_template_directory_uri() . $path, null, VERSION);
+                }
+            }
+        });
+    }
+}
+
+// 根据自定义属性值排序
+if (!function_exists('bjj_post_custom_property_sort')) {
+    // $up 表示是否由小到大排序
+    function bjj_post_custom_property_sort($arr, $prop, $up = false) {
+        global $property, $smallToBig;
+        $property = $prop;
+        $smallToBig = $up;
+        usort($arr, function($a, $b) {
+            global $property, $smallToBig;
+            $a_value = get_field($property, $a->ID);
+            $b_value = get_field($property, $b->ID);
+            return ($smallToBig) ? $a_value - $b_value : $b_value - $a_value;
+        });
+        return $arr;
+    }
+}
+
 // 查询指定的自定义字段的不同值的集合
 // 例如：
 // 查询所有 buy_record_model == birkin 的 post，将他们的 buy_record_size 的不同值组成的数组返回

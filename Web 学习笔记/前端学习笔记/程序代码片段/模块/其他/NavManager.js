@@ -136,22 +136,13 @@
             self._animating = true;
             var $anchor = this._getAnchor($target);
 
-            try {
-                this._onStart(targetIndex, $target, $anchor);
-            } catch(err) {
-                throw err;
-            }
+            this._onStart(targetIndex, $target, $anchor);
 
             $doc.stop().animate({
                 scrollTop: scrollTop
             }, duration, this._easing, function() {
                 self._animating = false;
-
-                try {
-                    self._onEnd(targetIndex, $target, $anchor);
-                } catch(err) {
-                    throw err;
-                }
+                self._onEnd(targetIndex, $target, $anchor);
             });
         },
 
@@ -183,33 +174,24 @@
                     bottom = top + $section.outerHeight(true);
                 // 当页面顶部进入窗口高度的一半时，将该页面算作当前页面。
                 // 如果当前区块是最后一个，那么当区块底部与窗口底部平齐时，将该区块算作当前区块。
-                if ((i === self._maxIndex && winBottom >= bottom)
-                    || (reference >= top && reference < bottom)) {
+                if ((reference >= top && reference < bottom)
+                || (i === self._maxIndex && winBottom >= bottom)) {
                     curSectionIndex = i;
                     $curSection = $section;
                 }
             });
 
-            if (!$curSection) return;
+            if (this._curIndex === curSectionIndex || !$curSection) return;
 
             var $anchor = self._getAnchor($curSection);
             self._$nav.removeClass(self._navActiveClass);
             if ($anchor) $anchor.addClass(self._navActiveClass);
 
             if (this._curIndex >= 0) {
-                try {
-                    self._onLeave(this._curIndex, this._sections[this._curIndex], $anchor);
-                } catch(err) {
-                    throw err;
-                }
+                self._onLeave(this._curIndex, this._sections[this._curIndex], $anchor);
             }
 
-            try {
-                self._onEnter(curSectionIndex, self._sections[curSectionIndex], $anchor);
-            } catch(err) {
-                throw err;
-            }
-
+            self._onEnter(curSectionIndex, self._sections[curSectionIndex], $anchor);
             this._curIndex = curSectionIndex;
         },
 

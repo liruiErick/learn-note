@@ -82,13 +82,6 @@
                 }
             }
 
-            // 将 callback 中执行的错误报出，而非在 callback 的调用行报出错误
-            try {
-                callback && callback.call(this);
-            } catch(err) {
-                throw err;
-            }
-
             return this;
         },
 
