@@ -135,11 +135,12 @@
 
         // 确保无论函数持有者是谁，调用都不会出错
         _initProxy: function() {
-            for (var p in this) {
-                if (isFunction(this[p])) {
-                    this[p] = proxy(this, p);
+            var self = this;
+            Object.getOwnPropertyNames(this.__proto__).forEach(function(prop) {
+                if (isFunction(self[prop])) {
+                    self[prop] = proxy(self, prop);
                 }
-            }
+            });
         },
 
         _addEvent: function() {
@@ -323,17 +324,6 @@
             }
         },
 
-        destroy: function() {
-            this._removeEvent();
-
-            // 清除所有属性
-            for (var p in Object.getOwnPropertyNames(this)) {
-                delete this[p];
-            }
-
-            this.__proto__ = Object.prototype;
-        },
-
         open: function() {
             this._eventObj.addEventListener(startEvent, this._startDragHandler, { passive: false });
             return this;
@@ -353,6 +343,18 @@
             this.close();
             this.stop();
             return this;
+        },
+
+        destroy: function() {
+            this._removeEvent();
+
+            // 清除所有属性
+            var self = this;
+            Object.getOwnPropertyNames(this).forEach(function(prop) {
+                delete self[prop];
+            });
+
+            this.__proto__ = Object.prototype;
         }
     });
 

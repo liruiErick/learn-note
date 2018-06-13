@@ -1,6 +1,7 @@
 <?php
 
 // 注册 post-type
+// bjj_register_post_type('buy-record','買取実績');
 if (!function_exists('bjj_register_post_type')) {
     function bjj_register_post_type($type, $name, $args = array()) {
         $labels = array(
@@ -36,13 +37,14 @@ if (!function_exists('bjj_register_post_type')) {
 }
 
 // 注册 taxonomy
+// bjj_register_taxonomy('buy-record', 'buy-record-category', '買取実績分类');
 if (!function_exists('bjj_register_taxonomy')) {
-    function bjj_register_taxonomy($post_type, $type, $name, $args = array()) {
+    function bjj_register_taxonomy($post_type, $taxonomy_type, $name, $args = array()) {
         $labels = array(
             'name'              => sprintf(_x('%s', 'taxonomy general name', TEXT_DOMAIN), $name),
             'singular_name'     => sprintf(_x('%s', 'taxonomy singular title', TEXT_DOMAIN), $name),
             'search_items'      => sprintf(__('%sを検索', TEXT_DOMAIN), $name),
-            'all_items'         => sprintf(__('%s一覧', TEXT_DOMAIN), $this->plural),
+            'all_items'         => sprintf(__('%s一覧', TEXT_DOMAIN), $name),
             'parent_item'       => sprintf(__('Parent %s', TEXT_DOMAIN), $name),
             'parent_item_colon' => sprintf(__('Parent %s:', TEXT_DOMAIN), $name),
             'edit_item'         => sprintf(__('%sを編集', TEXT_DOMAIN) , $name),
@@ -53,7 +55,7 @@ if (!function_exists('bjj_register_taxonomy')) {
         );
 
         register_taxonomy(
-            $type,
+            $taxonomy_type,
             $post_type,
             array_merge(array(
                 'label'         => sprintf(__('%s', TEXT_DOMAIN), $name),

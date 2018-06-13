@@ -42,15 +42,14 @@ tabBanner.destroy();
     'use strict';
 
     if (typeof module === 'object' && typeof exports === 'object') {
-        module.exports = factory(require('jquery'), require('DragEvent'));
+        module.exports = factory(require('jquery'), require('move-event'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'DragEvent'], factory);
+        define(['jquery', 'move-event'], factory);
     } else {
-        root.bjj = root.bjj || {};
-        root.bjj.TabBanner = factory(root.jQuery, root.bjj.DragEvent);
+        root.TabBanner = factory(root.jQuery, root.MoveEvent);
     }
 
-}(this, function($, DragEvent) {
+}(this, function($, MoveEvent) {
     'use strict';
 
     var is_lte_IE8 = false,
@@ -255,7 +254,7 @@ tabBanner.destroy();
                 this.startY = 0;
                 this.r = 0.5; //声明一个比较是否划过下一张的比较系数
 
-                this.dragEvent = new DragEvent({
+                this.moveEvent = new MoveEvent({
                     obj: this.$wrap,
                     holder: this,
                     start: this._touchstartHandler,
@@ -307,7 +306,7 @@ tabBanner.destroy();
                 this.$nextBtn.off('touchend', this.nextTab);
             }
 
-            this.dragEvent && this.dragEvent.remove();
+            this.moveEvent && this.moveEvent.remove();
         } else {
             $win.off('resize', this.onResize);
             this.$tabBtn.off(this.tabBtnActiveEvent, this._btnTabItem);
@@ -432,7 +431,7 @@ tabBanner.destroy();
             realIndex;
 
         if (this.isVer) {
-            realIndex = data.stepDy < 0 ? Math.ceil(m-this.r) : Math.floor(m+this.r);
+            realIndex = data.dyStep < 0 ? Math.ceil(m-this.r) : Math.floor(m+this.r);
 
             if (data.swipeTop && m > realIndex) { //手指上滑，页面向下显示
                 realIndex++;
@@ -440,7 +439,7 @@ tabBanner.destroy();
                 realIndex--;
             }
         } else {
-            realIndex = data.stepDx < 0 ? Math.ceil(m-this.r) : Math.floor(m+this.r);
+            realIndex = data.dxStep < 0 ? Math.ceil(m-this.r) : Math.floor(m+this.r);
 
             if (data.swipeLeft && m > realIndex) { //手指左滑，页面向右显示
                 realIndex++;

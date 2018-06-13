@@ -1,8 +1,9 @@
 # 常用方法
 
+```php
 print_r($arr); // 打印数组
-
 usleep(100); // 阻断程序 1 秒后再向下执行，参数单位为微秒
+```
 
 
 
@@ -78,6 +79,42 @@ define("HOST", "http://www.xxx.com/");
 ```php
 defined("HOST"); // 如果被定义则返回 1
 ```
+
+
+
+#### 数组转为函数的参数
+
+```php
+call_user_func_array(array($wpdb, 'prepare'), $params);
+// php 5.6
+$wpdb->prepare(...$params);
+```
+
+
+
+#### 函数中获取参数
+
+```php
+function bjj_log(...$args) {
+    // php 5.6 可以使用 ...$args 的方式获得
+    // 也可以使用以下方式获得
+    $number = func_num_args(); //返回函数调用时，给出参数的数量；
+    $args = func_get_args(); //这个是用来返回参数的数组
+    $arg = func_get_arg(n); //可以返回第N-1位参数的值，因为引索的起始是0
+    
+    foreach ($args as $arg) {
+        echo '<br/>===========================<br/>';
+
+        if (is_array($arg) || is_object($arg)) {
+            print_r($arg);
+        } else {
+            echo $arg;
+        }
+    }
+}
+```
+
+
 
 
 

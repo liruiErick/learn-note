@@ -1,4 +1,7 @@
 <?php
+// 参考地址
+// https://codex.wordpress.org/zh-cn:Class_Reference/wpdb
+
 // 在同一张表中（例如：wp_postmeta），查询 'key2' 字段值为 'value2' 的 post 的 key1 字段的值的集合，并且去重
 $sql = "
     SELECT DISTINCT key1.meta_value

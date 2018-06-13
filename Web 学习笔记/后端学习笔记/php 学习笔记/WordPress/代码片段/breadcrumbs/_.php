@@ -37,19 +37,18 @@ function bjj_breadcrumbs() {
                 echo '<a itemprop="breadcrumb" href="' . $home_link . '/' . $slug['slug'] . '/">' . $post_type_obj->labels->singular_name . '</a> ' . $separator . ' ';
                 echo $before . get_the_title() . $after;
             } else { // 文章 post
-                $cat = get_the_category(); $cat = $cat[0];
+                $cat = get_the_category()[0];
                 $cat_code = get_category_parents($cat, TRUE, ' ' . $separator . ' ');
                 echo $cat_code = str_replace ('<a','<a itemprop="breadcrumb"', $cat_code );
                 echo $before . get_the_title() . $after;
             }
         } elseif ( is_attachment() ) { // 附件
             $parent = get_post($post->post_parent);
-            $cat = get_the_category($parent->ID); $cat = $cat[0];
             echo '<a itemprop="breadcrumb" href="' . get_permalink($parent) . '">' . $parent->post_title . '</a> ' . $separator . ' ';
             echo $before . get_the_title() . $after;
-        } elseif ( is_page() && !$post->post_parent ) { // 页面
+        } elseif ( is_page() && !$post->post_parent ) { // 无父级页面
             echo $before . get_the_title() . $after;
-        } elseif ( is_page() && $post->post_parent ) { // 父级页面
+        } elseif ( is_page() && $post->post_parent ) { // 有父级页面
             $parent_id  = $post->post_parent;
             $breadcrumbs = array();
             while ($parent_id) {
@@ -78,9 +77,9 @@ function bjj_breadcrumbs() {
             echo $before;
             _e( 'Not Found', $text_domain );
             echo  $after;
-        } elseif ( !is_single() && !is_page() && get_post_type() != 'post' ) {
-            $$post_type_obj = get_post_type_object(get_post_type());
-            echo $before . $$post_type_obj->labels->singular_name . $after;
+        } elseif ( !is_single() && !is_page() && get_post_type() != 'post' ) { // 自定义 post 列表页
+            $post_type_obj = get_post_type_object(get_post_type());
+            echo $before . $post_type_obj->labels->singular_name . $after;
         }
 
         if ( get_query_var('paged') ) { // 分页

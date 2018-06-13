@@ -6,15 +6,14 @@
     'use strict';
 
     if (typeof module === 'object' && typeof exports === 'object') {
-        module.exports = factory(require('jquery.animate'), require('DragEvent'));
+        module.exports = factory(require('jquery.animate'), require('move-event'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['jquery.animate', 'DragEvent'], factory);
+        define(['jquery.animate', 'move-event'], factory);
     } else {
-        root.bjj = root.bjj || {};
-        root.bjj.PullLoad = factory(root.jQuery, root.bjj.DragEvent);
+        root.PullLoad = factory(root.jQuery, root.MoveEvent);
     }
 
-}(this, function($, DragEvent) {
+}(this, function($, MoveEvent) {
     'use strict';
 
     var $win = $(window),
@@ -72,7 +71,7 @@
         constructor: PullLoad,
 
         _init: function() {
-            this._posY = 0;
+            this._yPos = 0;
             this._status = ''; // 标记下拉刷新时的状态
 
             this._winHeight = 0;
@@ -93,11 +92,12 @@
 
         // 确保无论函数持有者是谁，调用都不会出错
         _initProxy: function() {
-            for (var p in this) {
-                if ($.isFunction(this[p])) {
-                    this[p] = $.proxy(this, p);
+            var self = this;
+            Object.getOwnPropertyNames(this.__proto__).forEach(function(prop) {
+                if ($.isFunction(self[prop])) {
+                    self[prop] = $.proxy(self, prop);
                 }
-            }
+            });
         },
 
         _createElem: function() {
@@ -148,7 +148,7 @@
 
         _addEvent: function() {
             if (!this._options.disableRefresh) {
-                this._dragEvent = new DragEvent({
+                this._moveEvent = new MoveEvent({
                     holder: this,
                     obj: this._$container,
                     move: this._dragMove,
@@ -168,12 +168,12 @@
                 $win.off('scroll', this._scroll);
             }
 
-            this._dragEvent && this._dragEvent.destroy();
-            this._dragEvent = null;
+            this._moveEvent && this._moveEvent.destroy();
+            this._moveEvent = null;
         },
 
         _dragMove: function(e, data) {
-            var dy = data.localDy;
+            var dy = data.dyLocal;
             if (dy < 0 && !this._status) return;
 
             if (!this._status) {
@@ -184,13 +184,13 @@
                 this._$pullLoad.show();
                 this._$pullLoadIcon.addClass(this._options.status.pulling.icon);
                 this._$pullLoadText.text(this._options.status.pulling.text);
-                this._posY = parseFloat(this._$moveElem.css('y'));
+                this._yPos = parseFloat(this._$moveElem.css('y'));
             }
 
             if (this._status === 'pulling' || this._status === 'loosen') {
                 e.preventDefault();
 
-                var pullHalfHeight = dy / 2 + this._posY;
+                var pullHalfHeight = dy / 2 + this._yPos;
 
                 if (dy >= 0 && dy < 150) {
                     this._$moveElem.css('y', pullHalfHeight);
@@ -266,9 +266,10 @@
             this._removeEvent();
 
             // 清除所有属性
-            for (var p in Object.getOwnPropertyNames(this)) {
-                delete this[p];
-            }
+            var self = this;
+            Object.getOwnPropertyNames(this).forEach(function(prop) {
+                delete self[prop];
+            });
 
             this.__proto__ = Object.prototype;
         },

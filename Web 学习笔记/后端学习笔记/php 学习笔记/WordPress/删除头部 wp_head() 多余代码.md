@@ -31,8 +31,6 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action('wp_head', 'wp_generator'); // WordPress 版本信息
 remove_action('wp_head', 'wp_shortlink_wp_head'); // rel=shortlink
 remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
-remove_filter('the_content', 'wptexturize'); // 禁用半角符号自动转换为全角
-wp_deregister_script('l10n');
 ?>
 ```
 

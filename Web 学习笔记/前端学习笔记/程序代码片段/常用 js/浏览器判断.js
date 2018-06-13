@@ -54,9 +54,9 @@ if(is_mobi && window.location.search.indexOf('mv=fp')<0) {
 
 
 // 微信安卓UA
-mozilla/5.0 (linux; u; android 4.1.2; zh-cn; mi-one plus build/jzo54k) applewebkit/534.30 (khtml, like gecko) version/4.0 mobile safari/534.30 micromessenger/5.0.1.352
+// mozilla/5.0 (linux; u; android 4.1.2; zh-cn; mi-one plus build/jzo54k) applewebkit/534.30 (khtml, like gecko) version/4.0 mobile safari/534.30 micromessenger/5.0.1.352
 // 微信iPhone UA
-mozilla/5.0 (iphone; cpu iphone os 5_1_1 like mac os x) applewebkit/534.46 (khtml, like gecko) mobile/9b206 micromessenger/5.0
+// mozilla/5.0 (iphone; cpu iphone os 5_1_1 like mac os x) applewebkit/534.46 (khtml, like gecko) mobile/9b206 micromessenger/5.0
 // JS判断是否为微信浏览器
 var is_weixin = !!navigator.userAgent.match(/MicroMessenger/i);
 // JS判断是否为QQ浏览器

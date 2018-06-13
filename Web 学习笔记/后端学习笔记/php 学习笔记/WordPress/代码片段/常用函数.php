@@ -1,5 +1,29 @@
 <?php
 
+// log
+if (!function_exists('bjj_log')) {
+    function bjj_log(...$args) {
+        foreach ($args as $arg) {
+            echo '<br/>===========================<br/>';
+
+            if (is_array($arg) || is_object($arg)) {
+                print_r($arg);
+            } else {
+                echo $arg;
+            }
+        }
+    }
+}
+
+// 去掉参数值尾部可能存在的斜杠
+if (!function_exists('bjj_get_url_param')) {
+    function bjj_get_url_param($key) {
+        $value = $_GET[$key];
+        if (!empty($value)) $value = preg_replace('/\/$/', '', $value);
+        return $value;
+    }
+}
+
 // 移除 url 中的参数
 if (!function_exists('bjj_remove_url_query')) {
     function bjj_remove_url_query($url) {
@@ -90,40 +114,77 @@ if (!function_exists('bjj_post_custom_property_sort')) {
 // 查询指定的自定义字段的不同值的集合
 // 例如：
 // 查询所有 buy_record_model == birkin 的 post，将他们的 buy_record_size 的不同值组成的数组返回
-// bjj_find_field_value_set('bag', 'buy_record_size', 'buy_record_model', 'birkin');
+// bjj_find_field_value_set('buy-record', 'bag', 'buy_record_size', 'buy_record_model', 'birkin');
 if (!function_exists('bjj_find_field_value_set')) {
-    function bjj_find_field_value_set($post_type, $key1, $key2 = '', $value2 = '') {
+    function bjj_find_field_value_set($post_type, $term_slug, $search_key, $condition_key = '', $condition_value = '') {
         global $wpdb;
+
+        $term_exist = !empty($term_slug);
+        $condition_exist = !empty($condition_key) && !empty($condition_value);
+
         $sql = "
-            SELECT DISTINCT key1.meta_value
-            FROM $wpdb->posts post, $wpdb->postmeta key1
+            SELECT DISTINCT search_key.meta_value
+            FROM $wpdb->posts posts,
+                 $wpdb->postmeta search_key
         ";
 
-        $key2_exist = !empty($key2) && !empty($value2);
-
-        if ($key2_exist) {
+        if ($term_exist) {
             $sql .= "
-                , $wpdb->postmeta key2
+                , $wpdb->terms terms
+                , $wpdb->term_relationships relationships
+            ";
+        }
+
+        if ($condition_exist) {
+            $sql .= "
+                , $wpdb->postmeta condition_key
             ";
         }
 
         $sql .= "
-            WHERE post.post_type = %s
-                and post.ID = key1.post_id
-                and key1.meta_key = %s
+            WHERE posts.post_type = %s
+                and posts.ID = search_key.post_id
+                and search_key.meta_key = %s
         ";
+        $params = array($post_type, $search_key);
 
-        if ($key2_exist) {
+        if ($term_exist) {
             $sql .= "
-                and key1.post_id = key2.post_id
-                and key2.meta_key = %s
-                and key2.meta_value = %s
+                and terms.slug = %s
+                and terms.term_id = relationships.term_taxonomy_id
+                and posts.ID = relationships.object_id
             ";
+            array_push($params, $term_slug);
         }
 
-        $sql .= "ORDER BY key1.meta_value ASC";
-        $sql = $wpdb->prepare($sql, $post_type, $key1, $key2, $value2);
+        if ($condition_exist) {
+            $sql .= "
+                and search_key.post_id = condition_key.post_id
+                and condition_key.meta_key = %s
+                and condition_key.meta_value = %s
+            ";
+            array_push($params, $condition_key, $condition_value);
+        }
+
+        $sql .= "ORDER BY search_key.meta_value ASC";
+        array_unshift($params, $sql);
+        $sql = call_user_func_array(array($wpdb, 'prepare'), $params);
+
 
         return $wpdb->get_col($sql);
+    }
+}
+
+
+/**
+ * 根据 slug 或 post_name 获取 post_ID
+ * @param $post_name {String} slug / name
+ * @return Integer
+ */
+if (!function_exists('bjj_get_post_by_name')) {
+    function bjj_get_post_by_name($post_name) {
+        global $wpdb;
+        $sql = "SELECT ID FROM $wpdb->posts WHERE post_name = '" . urlencode($post_name) . "'";
+        return $wpdb->get_var($sql);
     }
 }

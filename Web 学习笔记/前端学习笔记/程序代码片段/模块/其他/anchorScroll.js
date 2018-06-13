@@ -2,12 +2,11 @@
 	'use strict';
 
 	if (typeof module === 'object' && typeof exports === 'object') {
-		module.exports = factory(require('jquery.animate'), require('DragEvent'));
+		module.exports = factory(require('jquery.animate'));
 	} else if (typeof define === 'function' && define.amd) {
-		define(['jquery.animate', 'DragEvent'], factory);
+		define(['jquery.animate'], factory);
 	} else {
-		root.bjj = root.bjj || {};
-		root.bjj.anchorScroll = factory(root.jQuery);
+		root.anchorScroll = factory(root.jQuery);
 	}
 
 }(this, function($) {

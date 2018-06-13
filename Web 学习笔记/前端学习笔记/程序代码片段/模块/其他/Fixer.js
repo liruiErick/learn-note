@@ -96,6 +96,16 @@
             this.update();
         },
 
+        // 确保无论函数持有者是谁，调用都不会出错
+        _initProxy: function() {
+            var self = this;
+            Object.getOwnPropertyNames(this.__proto__).forEach(function(prop) {
+                if ($.isFunction(self[prop])) {
+                    self[prop] = $.proxy(self, prop);
+                }
+            });
+        },
+
         _addEvent: function() {
             $win.on('scroll', this._scroll);
         },
@@ -185,15 +195,6 @@
             }
         },
 
-        // 确保无论函数持有者是谁，调用都不会出错
-        _initProxy: function() {
-            for (var p in this) {
-                if (isFunction(this[p])) {
-                    this[p] = $.proxy(this, p);
-                }
-            }
-        },
-
         update: function() {
             this._unfixed = 1;
 
@@ -250,9 +251,10 @@
             this._$fixer.removeClass(this._options.fixedClass);
 
             // 清除所有属性
-            for (var p in this) {
-                delete this[p];
-            }
+            var self = this;
+            Object.getOwnPropertyNames(this).forEach(function(prop) {
+                delete self[prop];
+            });
 
             this.__proto__ = Object.prototype;
         }
@@ -261,11 +263,6 @@
     // 判断是否为数字
     function isNumber(num) {
         return typeof num === 'number';
-    }
-
-    // 判断是否为函数
-    function isFunction(func) {
-        return typeof func === 'function';
     }
 
     return Fixer;

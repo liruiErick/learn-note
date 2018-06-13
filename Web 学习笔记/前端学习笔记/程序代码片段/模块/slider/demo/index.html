@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Slider</title>
+<style>
+    body {
+        height: 2000px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        font-size: 0;
+        list-style: none;
+    }
+
+    li {
+        margin: 10px;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 30px;
+        text-align: center;
+        background: #ccc;
+    }
+
+    li.active {
+        background: yellow;
+    }
+
+    .slider {
+        position: relative;
+        margin: 40px 0;
+        border: 2px red solid;
+        overflow: hidden;
+    }
+
+    .btn {
+        position: absolute;
+        padding: 0 10px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #fff;
+        background: rgba(255,0,0,.7);
+        cursor: pointer;
+    }
+
+    .btn.disabled {
+        background: rgba(175,175,175,.7);
+    }
+
+    .horizontal ul {
+        white-space: nowrap;
+    }
+
+    .horizontal li {
+        display: inline-block;
+    }
+
+    .horizontal .prev-btn {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .horizontal .next-btn {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .vertical {
+        width: 80px;
+        height: 300px;
+    }
+
+    .vertical .prev-btn {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .vertical .next-btn {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+</head>
+<body ontouchstart>
+<div class="slider horizontal">
+    <ul>
+        <li>0</li>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <div class="btn prev-btn">prev</div>
+    <div class="btn next-btn">next</div>
+</div>
+
+<div class="slider vertical">
+    <ul>
+        <li>0</li>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+    </ul>
+    <div class="btn prev-btn">prev</div>
+    <div class="btn next-btn">next</div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/MoveEvent.min.js"></script>
+
+<script src="js/Slider.js"></script>
+
+
+<script>
+    var horizontal = new Slider('.horizontal', {
+        prevBtn: '.horizontal .prev-btn',
+        nextBtn: '.horizontal .next-btn',
+        loop: true,
+        align: 'end',
+        alignOffset: 0,
+        autoAdsorb: true,
+        nextRatio: .3,
+        duration: 400,
+        onSlide: function(data) {
+            console.log('horizontal onSlide: ', data.offset, '[' + data.index + ']', data.dom);
+        },
+        onMoveEnd: function(data) {
+            console.log('horizontal onMoveEnd: ', data.offset, '[' + data.index + ']', data.dom);
+        }
+    });
+
+//    horizontal.run();
+
+//    var vertical = new Slider('.vertical', {
+//        prevBtn: '.vertical .prev-btn',
+//        nextBtn: '.vertical .next-btn',
+//        loop: true,
+//        direction: 'y',
+//        align: '',
+//        alignOffset: 0,
+//        autoAdsorb: true,
+//        nextRatio: .3,
+//        onSlide: function(data) {
+//            console.log('vertical onSlide: ', data.offset, '[' + data.index + ']', data.dom);
+//        },
+//        onMoveEnd: function(data) {
+//            console.log('vertical onMoveEnd: ', data.offset, '[' + data.index + ']', data.dom);
+//        }
+//    });
+//
+//    vertical.run();
+
+</script>
+</body>
+</html>

@@ -1,9 +1,0 @@
-﻿#### 运行node程序时传参
-
-PORT=8085 node app.js
-这里设置的 PORT=8085 可被作为参数传入 app.js，并使用 process.env.PORT 获取
-
-
-
-
-

@@ -18,3 +18,5 @@ SELECT *
 FROM  table1_name, table2_name
 WHERE t1.uid = t2.uid
 ```
+
+注意，`INNER JOIN` 与 `JOIN` 相同

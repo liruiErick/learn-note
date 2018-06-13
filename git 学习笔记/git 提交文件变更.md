@@ -6,13 +6,13 @@
 
 将一个文件添加进暂存区
 
-```
+```sh
 $ git add <file_name>
 ```
 
 将当前工作区中所有未被添加进暂存区的文件添加进暂存区，除了 `.gitignore` 中指定的忽略文件以外
 
-```
+```sh
 $ git add .
 ```
 
@@ -20,13 +20,13 @@ $ git add .
 
 如果暂存区中有文件，则将其中的文件提交到仓库
 
-```
+```sh
 $ git commit -m '<评论>'
 ```
 
 带评论提交，用于说明提交内容、变更、作用等
 
-```
+```sh
 $ git commit -m '<评论>'
 ```
 
@@ -34,37 +34,37 @@ $ git commit -m '<评论>'
 
 从 origin 关联的远程仓库获取 `master` 分支上最新的文件到本地，并自动 merge
 
-```
+```sh
 $ git pull origin master
 ```
 
 如果当前分支在远程仓库中有对应的追踪分支（默认为同名分支），则可以省略远程仓库名和分支名
 
-```
+```sh
 $ git pull
 ```
 
 #### git fetch
 
-如果不希望在拉取最新文件后自动 merge，可以使用该命令
+如果不希望在拉取最新文件后自动 Merge，可以使用该命令
 
-从 origin 关联的远程仓库获取 `master` 分支上最新的文件到本地，该操作不会自动 merge
+从 `origin` 关联的远程仓库获取 `master` 分支上最新的文件到本地，该操作不会自动 Merge
 
-```
+```sh
 $ git fetch origin master
 ```
 
 如果当前分支在远程仓库中有对应的追踪分支（默认为同名分支），则可以省略远程仓库名和分支名
 
-```
+```sh
 $ git fetch
 ```
 
 #### git merge
 
-将当前本地仓库的 `master` 分支与刚刚从远程仓库更新的 `master` 分支进行合并
+将本地仓库的当前分支与刚刚从远程仓库更新的 `origin/master` 分支进行合并
 
-```
+```sh
 $ git merge origin/master
 ```
 
@@ -74,9 +74,9 @@ $ git merge origin/master
 fatal: refusing to merge unrelated histories
 ```
 
-则需要在 merge 命令后添加一段指令
+则需要在 Merge 命令后添加一段指令
 
-```
+```sh
 $ git merge origin/master --allow-unrelated-histories
 ```
 
@@ -86,7 +86,7 @@ $ git merge origin/master --allow-unrelated-histories
 
 将本地仓库中的 commit 内容推送至 origin 关联的远程仓库
 
-```
+```sh
 $ git push -u origin master
 ```
 

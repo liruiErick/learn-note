@@ -1,0 +1,39 @@
+﻿修改了默认options选项：
+event : "scroll touchmove",
+effect : "fadeIn",
+placeholder : "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" // 修改为一个1px大小的透明点
+
+
+添加了4个options选项：
+prune_detached  是否删除分离，默认值为false。如果设置为true，那么当图片的边框盒返回值全部为0（即元素隐藏），并且元素不在文档中时，将不再检查该元素（即从检查队列中彻底移除该元素）
+error  图片加载失败时的事件 (Function)，有 2 个参数：elements_left（未加载的图片数量）、settings（lazyload 的参数）。
+src_attribute  真实图片地址的自定义属性，默认值为"data-src"。
+size_attribute  背景图大小的自定义属性，默认值为"data-size"。图片声明了该属性后，将采用背景图的形式呈现，值对应的是CSS属性background-size，这样我们就可以设置图片的呈现方式。
+
+
+
+删除了1个options选项：
+data_attribute  真实图片地址的 data 属性后缀
+
+
+
+为执行了 .lazyload() 方法的 jQuery 对象添加了两个实例方法
+
+1) .update()
+主要作用：
+- 检查所有图片是否满足加载条件。例如在切换选项卡时，之前隐藏的选项显示出来后，选项元素中的img此时就需要检查是否加载。
+- 检查所有元素的图片地址是否发生变化，变化则重新加载图片。如果data-src为空字符串""，则清除当前图片。
+- 如果该 jQuery 对象是由选择器生成的，那么自动刷新 jQuery 对象中包含的 DOM 元素的数量。
+
+2) .allshow()
+直接加载全部图片
+
+
+
+
+// 应用
+var $lazyloadImg = $("#body img");
+$lazyloadImg.lazyload();
+
+// 如果元素被动态修改，则执行刷新方法
+$lazyloadImg.update();

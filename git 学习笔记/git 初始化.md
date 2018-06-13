@@ -4,7 +4,7 @@
 
 首先，你需要新建一个存放版本库的目录，然后进入到该目录所在路径，然后执行：
 
-```
+```sh
 $ git init
 ```
 
@@ -17,13 +17,13 @@ $ git init
 
 关联一个远程仓库，并起名为 origin
 
-```
+```sh
 $ git remote add origin git@git.oschina.net:baijunjie/forum-server.git
 ```
 
 将 origin 关联的远程仓库内的最新文件拉到本地
 
-```
+```sh
 $ git fetch origin
 ```
 
@@ -33,7 +33,7 @@ $ git fetch origin
 
 修改已存在的 origin 仓库关联
 
-```
+```sh
 $ git remote set-url origin https://github.com/baijunjie/PhotoClip.git
 ```
 
@@ -41,13 +41,13 @@ $ git remote set-url origin https://github.com/baijunjie/PhotoClip.git
 
 删除 origin 仓库关联
 
-```
+```sh
 $ git remote rm origin
 ```
 
 #### 查看已有关联
 
-```
+```sh
 $ git remote -v
 ```
 
@@ -60,19 +60,19 @@ $ git remote -v
 
 Linux 使用以下命令
 
-```
+```sh
 $ touch .gitignore
 ```
 
 Windows cmd 使用以下命令
 
-```
+```sh
 $ type nul>.gitignore
 ```
 
 文件规则 Demo
 
-```
+```sh
 # 忽略称为 .idea 的文件和文件夹
 .idea
 
@@ -124,13 +124,13 @@ folder/**/filename.extension
 
 `.gitignore` 只对尚未被 Git 追踪的文件有效，如果你要忽略的文件已经被添加到到暂存区中了，可以使用如下命令移除。
 
-```
+```sh
 $ git rm --cached <file_name>
 ```
 
 将所有文件移出暂存区，这里的 `-r` 参数表示递归删除。
 
-```
+```sh
 $ git rm -r --cached .
 ```
 
@@ -138,7 +138,7 @@ $ git rm -r --cached .
 
 直接从远程克隆版本仓库
 
-```
+```sh
 $ git clone git@git.oschina.net:baijunjie/forum-server.git
 ```
 
@@ -153,7 +153,7 @@ $ git clone git@git.oschina.net:baijunjie/forum-server.git
 
 到本地根目录下的 `.ssh` 文件夹中，查看 `id_rsa.pub` 公钥
 
-```
+```sh
 $ cd
 $ cd .ssh
 $ cat id_rsa.pub
@@ -163,7 +163,7 @@ $ cat id_rsa.pub
 
 测试链接是否成功
 
-```
+```sh
 $ ssh -T git@git.oschina.net
 ```
 
@@ -191,7 +191,7 @@ git@git.oschina.net:baijunjie/forum-server.git
 
 如果不想使用互联网上的远程仓库，那么可以建立一个本地的“远程”仓库。
 
-```
+```sh
 $ mkdir -p ~/<path>/<远程库名>.git                                             
 $ cd ~/<path>/<远程库名>.git
 $ git init --bare
@@ -199,7 +199,7 @@ $ git init --bare
 
 或者用一条命令
 
-```
+```sh
 $ git init --bare ~/git/<远程库名>.git
 ```
 
@@ -207,7 +207,7 @@ $ git init --bare ~/git/<远程库名>.git
 
 之后就可以在本地仓库中使用以下命令来连接到这个“远程”仓库，并push代码
 
-```
+```sh
 $ git remote add origin localhost:/<path>/<远程库名>.git
 $ git push -u origin master
 ```

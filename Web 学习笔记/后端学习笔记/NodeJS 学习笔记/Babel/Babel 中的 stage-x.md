@@ -28,20 +28,19 @@
 
 用过React的同学可能知道，jsx对条件表达式支持的不是太好，你不能很方便的使用if/else表达式，要么你使用三元表达，要么用函数。例如你不能写如下的代码：
 
-```
+```jsx
 var App = React.createClass({
-
     render(){
         let { color } = this.props;
 
         return (
             <div className="parents">
                 {
-                    if(color == 'blue') { 
+                    if (color == 'blue') { 
                         <BlueComponent/>; 
-                    }else if(color == 'red') { 
+                    } else if(color == 'red') { 
                         <RedComponent/>; 
-                    }else { 
+                    } else { 
                         <GreenComponent/>; }
                     }
                 }
@@ -53,16 +52,15 @@ var App = React.createClass({
 
 在React中你只能写成这样：
 
-```
+```jsx
 var App = React.createClass({
-
     render(){
         let { color } = this.props;
 
         const getColoredComponent = color => {
-            if(color === 'blue') { return <BlueComponent/>; }
-            if(color === 'red') { return <RedComponent/>; }
-            if(color === 'green') { return <GreenComponent/>; }
+            if (color === 'blue') { return <BlueComponent/>; }
+            if (color === 'red') { return <RedComponent/>; }
+            if (color === 'green') { return <GreenComponent/>; }
         }
 
         return (
@@ -78,23 +76,22 @@ var App = React.createClass({
 
 这个插件就是为了方便在 jsx写if/else表达式而提出的，我们可以重写下代码。
 
-```
+```jsx
 var App = React.createClass({
-
     render(){
         let { color } = this.props;
 
         return (
             <div className="parents">
-                {do {
-                    if(color == 'blue') { 
+                {
+                    if (color == 'blue') { 
                         <BlueComponent/>; 
-                    }else if(color == 'red') { 
+                    } else if(color == 'red') { 
                         <RedComponent/>; 
-                    }else { 
+                    } else { 
                         <GreenComponent/>; }
                     }
-                }}
+                }
             </div>
         )
     }
@@ -105,7 +102,7 @@ var App = React.createClass({
 
 这个插件，其实就是提供过 **::** 这个操作符来方便快速切换上下文， 如下面的代码：
 
-```
+```js
 obj::func
 // is equivalent to:
 func.bind(obj)
@@ -126,7 +123,6 @@ const box = {
 };
 
 const { getWeight } = box;
-
 console.log(box.getWeight()); // prints '2'
 
 const bigBox = { weight: 10 };
@@ -134,7 +130,6 @@ console.log(bigBox::getWeight()); // prints '10'
 
 // Can be chained:
 function add(val) { return this + val; }
-
 console.log(bigBox::getWeight()::add(5)); // prints '15'
 ```
 
@@ -170,7 +165,7 @@ console.log(sslUrls);
 
 这个插件让人一看觉得挺没趣的，让人甚至觉得它有点鸡肋。因它不是对ES6功能的增加，而是为了增强代码的可读性和可修改性而提出的。如下面的代码所示：
 
-```
+```js
 // 假设有如下的一个函数，它有两个参数
 function clownPuppiesEverywhere(
   param1,
@@ -202,7 +197,7 @@ clownPuppiesEverywhere(
 
 修改了4行代码，嗯嗯嗯。。追求高效的程序猿想想了，以后如果有更多参数了，我是不是要改等多行，得想想，代码改的越少越好，于是有了下面的改动。。
 
-```
+```js
 // 我们来重新定义一下函数
 function clownPuppiesEverywhere(
   param1,
@@ -236,9 +231,8 @@ clownPuppiesEverywhere(
 
 这个插件是对 ES6中解构赋值的一个扩展，因为ES6只支持对数组的解构赋值，对对象是不支持的。如下面的代码所示：
 
-```
+```js
 // 获取剩下的属性
-
 let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
 console.log(x); // 1
 console.log(y); // 2
@@ -260,7 +254,7 @@ console.log(n); // { x: 1, y: 2, a: 3, b: 4 }
 
 `transform-async-to-generator`主要用来支持ES7中的`async`和`await`， 我们可以写出下面的代码：
 
-```
+```js
 const sleep = (timeout)=>{
     return new Promise( (resolve, reject)=>{
         setTimeout(resolve, timeout)
@@ -276,7 +270,7 @@ const sleep = (timeout)=>{
 
 再来一个实际点的例子
 
-```
+```js
 const fetchUsers = (user)=>{
     return window.fetch(`https://api.douban.com/v2/user/${user}`).then( res=>res.json())
 }
@@ -296,9 +290,8 @@ console.log( getUser("flyingzl"))
 
 这个插件算是一个语法糖，可以通过`**`这个符号来进行幂操作，想当于`Math.pow(a,b)`。如下面的样例
 
-```
+```js
 // x ** y
-
 let squared = 2 ** 2;
 // 相当于: 2 * 2
 
@@ -307,7 +300,6 @@ let cubed = 2 ** 3;
 
 
 // x **= y
-
 let a = 2;
 a **= 2;
 // 相当于: a = a * a;

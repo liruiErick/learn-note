@@ -17,7 +17,7 @@ Git 版本回退包括两方面的操作，一个是回退进入暂存区的文�
 
 进入暂存区的文件需要通过 `git reset --hard` 来回退到我们需要的特定版本
 
-```
+```sh
 $ git reset --hard HEAD
 or
 $ git reset --hard <commit_id>
@@ -39,15 +39,15 @@ $ git reset --hard <commit_id>
 
 因此，想要回到未来的某个提交，先通过 `git reflog` 从历史命令中找到想要回到的提交版本的 ID，然后通过 `git reset --hard`来切换
 
-```
+```sh
 $ git reflog
 ```
 
-#### 放弃本地修改，强制更新
+#### 放弃本地修改，强制覆盖
 
 用 fetch 到的最新远程 master 分支强制覆盖掉本地 master 分支
 
-```
+```sh
 $ git fetch --all
 $ git reset --hard origin/master
 ```
@@ -60,7 +60,7 @@ $ git reset --hard origin/master
 
 首先需要将本地版本回退到指定的版本，然后将已经回到的当前 `HEAD` 强制推送到远程仓库。
 
-```
+```sh
 $ git reset --hard <commit_id>
 $ git push origin HEAD --force
 ```
@@ -71,13 +71,13 @@ $ git push origin HEAD --force
 
 丢弃暂存区中某个文件修改
 
-```
+```sh
 $ git checkout -- <file_name>
 ```
 
 丢弃暂存区中的所有修改。效果与 `git reset --hard HEAD` 类似
 
-```
+```sh
 $ git checkout -- .
 ```
 
@@ -94,13 +94,13 @@ $ git checkout -- .
 
 一次 clean 的演习, 告诉你哪些文件会被删除. 记住他不会真正的删除文件, 只是一个提醒
 
-```
+```sh
 $ git clean -n
 ```
 
 删除当前目录下所有未被添加进暂存区的文件，不包含文件夹
 
-```
+```sh
 $ git clean -f
 ```
 
@@ -108,19 +108,19 @@ $ git clean -f
 
 删除指定路径下所有未被添加进暂存区的文件，不包含文件夹
 
-```
+```sh
 $ git clean -f <path>
 ```
 
 删除当前目录下所有未被添加进暂存区的文件和文件夹
 
-```
+```sh
 $ git clean -df
 ```
 
 删除当前目录下所有未被添加进暂存区的文件和文件夹，不管他是否是 `.gitignore` 文件里面指定的文件。
 
-```
+```sh
 $ git clean -xf
 ```
 
@@ -129,14 +129,14 @@ $ git clean -xf
 
 `git reset` 和 `git clean` 是一对好基友. 结合使用他们能让你的工作目录完全回退到最近一次 commit 的时候
 
-```
+```sh
 $ git reset --hard
 $ git clean -df
 ```
 
 或者
 
-```
+```sh
 $ git checkout -- .
 $ git clean -df
 ```

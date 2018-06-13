@@ -67,13 +67,13 @@
         _init: function() {
             var opt = this._options;
 
-            if (isArray(opt.nav)) {
+            if ($.isArray(opt.nav)) {
                 this._$nav = $($.map(opt.nav, function(n) { return $(n)[0]; }));
             } else {
                 this._$nav = $(opt.nav);
             }
 
-            if (isArray(opt.section)) {
+            if ($.isArray(opt.section)) {
                 this._$section = $($.map(opt.section, function(n) { return $(n)[0]; }));
             } else {
                 this._$section = $(opt.section);
@@ -104,6 +104,16 @@
             this._addEvent();
         },
 
+        // 确保无论函数持有者是谁，调用都不会出错
+        _initProxy: function() {
+            var _this = this;
+            Object.getOwnPropertyNames(this.__proto__).forEach(function(prop) {
+                if ($.isFunction(_this[prop])) {
+                    _this[prop] = $.proxy(_this, prop);
+                }
+            });
+        },
+
         _addEvent: function() {
             this._$nav.on('click', this._onClickNav);
             $win.on('resize', this._resize);
@@ -127,71 +137,80 @@
         },
 
         _setScrollTop: function($target, duration) {
-            var self = this;
+            if (this._animating) return;
+            this._animating = true;
+
+            var _this = this;
             var scrollTop = $target.offset().top - this._offset,
                 targetIndex = this._$section.index($target);
 
             if ($win.scrollTop() === scrollTop) return;
 
-            self._animating = true;
             var $anchor = this._getAnchor($target);
-
             this._onStart(targetIndex, $target, $anchor);
 
             $doc.stop().animate({
                 scrollTop: scrollTop
             }, duration, this._easing, function() {
-                self._animating = false;
-                self._onEnd(targetIndex, $target, $anchor);
+                _this._animating = false;
+                _this._onEnd(targetIndex, $target, $anchor);
             });
         },
 
         _scroll: function() {
-            var self = this,
-                winTop = $win.scrollTop(),
+            var winTop = $win.scrollTop(),
                 winBottom = winTop + this._winHeight,
                 reference,
                 curSectionIndex,
                 $curSection;
 
-            switch(this._enterPosition) {
-                case 'top':
-                    reference = winTop + this._offset;
-                    break;
-                case 'middle':
-                    reference = winTop + this._offset + (this._winHeight - this._offset) * 0.5;
-                    break;
-                case 'bottom':
-                    reference = winBottom;
-                    break;
-            }
-
-            reference += this._enterPositionOffset;
-
-            // 判断当前滑到到哪个区块
-            $.each(this._sections, function(i, $section) {
-                var top = $section.offset().top,
-                    bottom = top + $section.outerHeight(true);
-                // 当页面顶部进入窗口高度的一半时，将该页面算作当前页面。
-                // 如果当前区块是最后一个，那么当区块底部与窗口底部平齐时，将该区块算作当前区块。
-                if ((reference >= top && reference < bottom)
-                || (i === self._maxIndex && winBottom >= bottom)) {
-                    curSectionIndex = i;
-                    $curSection = $section;
+            // 如果窗口底部与文档底部平齐，将最后一个区块算作当前区块。
+            if (winBottom > this._bodyHeight) {
+                curSectionIndex = this._maxIndex;
+                $curSection = this._sections[curSectionIndex];
+            } else {
+                switch(this._enterPosition) {
+                    case 'top':
+                        reference = winTop + this._offset;
+                        break;
+                    case 'middle':
+                        reference = winTop + this._offset + (this._winHeight - this._offset) * 0.5;
+                        break;
+                    case 'bottom':
+                        reference = winBottom;
+                        break;
                 }
-            });
+
+                reference += this._enterPositionOffset;
+
+                // 判断当前滑到到哪个区块
+                // 由于区块间可能存在包含关系，并且区块数组是以文档结构由外向内的顺序
+                // 因此需要先判断子区块是否进入，也就是倒叙判断
+                var l = this._sections.length;
+                while(l--) {
+                    var $section = this._sections[l],
+                        top = $section.offset().top,
+                        bottom = top + $section.outerHeight(true);
+
+                    if (reference >= top && reference < bottom) {
+                        curSectionIndex = l;
+                        $curSection = $section;
+                        break;
+                    }
+                }
+            }
 
             if (this._curIndex === curSectionIndex || !$curSection) return;
 
-            var $anchor = self._getAnchor($curSection);
-            self._$nav.removeClass(self._navActiveClass);
-            if ($anchor) $anchor.addClass(self._navActiveClass);
+            var $anchor = this._getAnchor($curSection);
+            this._$nav.removeClass(this._navActiveClass);
+            if ($anchor) $anchor.addClass(this._navActiveClass);
 
             if (this._curIndex >= 0) {
-                self._onLeave(this._curIndex, this._sections[this._curIndex], $anchor);
+                this._onLeave(this._curIndex, this._sections[this._curIndex], $anchor);
             }
 
-            self._onEnter(curSectionIndex, self._sections[curSectionIndex], $anchor);
+            this._onEnter(curSectionIndex, this._sections[curSectionIndex], $anchor);
             this._curIndex = curSectionIndex;
         },
 
@@ -203,24 +222,17 @@
 
         _resize: function() {
             this._winHeight = $win.height();
-        },
-
-        // 确保无论函数持有者是谁，调用都不会出错
-        _initProxy: function() {
-            for (var p in this) {
-                if ($.isFunction(this[p])) {
-                    this[p] = $.proxy(this, p);
-                }
-            }
+            this._bodyHeight = document.body.scrollHeight;
         },
 
         destroy: function() {
             this._removeEvent();
 
             // 清除所有属性
-            for (var p in Object.getOwnPropertyNames(this)) {
-                delete this[p];
-            }
+            var _this = this;
+            Object.getOwnPropertyNames(this).forEach(function(prop) {
+                delete _this[prop];
+            });
 
             this.__proto__ = Object.prototype;
         }
@@ -242,11 +254,6 @@
             elem.scrollLeft = sl;
             return true;
         }
-    }
-
-    // 判断对象是否为数组
-    function isArray(obj) {
-        return Object.prototype.toString.call(obj) === '[object Array]';
     }
 
     return NavManager;

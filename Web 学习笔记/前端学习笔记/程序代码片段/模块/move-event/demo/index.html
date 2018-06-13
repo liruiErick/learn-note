@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>MoveEvent</title>
+<style>
+    .box {
+        margin: 10px;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 30px;
+        text-align: center;
+        background: #ccc;
+        border: red 2px solid;
+    }
+</style>
+</head>
+<body ontouchstart>
+
+<div class="box"></div>
+
+
+<script src="js/MoveEvent.js"></script>
+
+
+<script>
+    new MoveEvent({
+        obj: '.box',
+        holder: this,
+        move: function(e, data) {
+            console.log(data);
+        }
+    });
+</script>
+</body>
+</html>

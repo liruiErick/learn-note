@@ -25,6 +25,10 @@ yarn add --dev/-D 添加到 devDependencies
 yarn add --peer/-P 添加到 peerDependencies
 yarn add --optional/-O 添加到 optionalDependencies
 
+yarn global add <module name>
+等同于
+npm install <module name> -g
+
 yarn upgrade <module name>
 等同于
 npm update <module name>

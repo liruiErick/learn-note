@@ -62,36 +62,25 @@
         _init: function() {
             this._onChange = typeof this._options.onChange === 'function' ? this._options.onChange : null;
 
-            this._initProxy();
-
             // 获得位移属性
-            var moveAttr;
+            var moveProp;
             if ($.cssHooks.x) {
-                if (this.isVer) moveAttr = 'y';
-                else moveAttr = 'x';
+                this._moveProp = isVer ? 'y' : 'x';
 
                 if ($.support.transform3d) {
-                    this.$elem.css('z', 0);
+                    this._$wrap.css('z', 0);
                 }
             } else {
-                if (this.isVer) moveAttr = 'top';
-                else moveAttr = 'left';
+                this._moveProp = isVer ? 'top' : 'left';
 
-                if (this.$elem.css('position') === 'static') {
-                    this.$elem.css('position', 'relative');
+                if (this._$wrap.css('position') === 'static') {
+                    this._$wrap.css('position', 'relative');
                 }
             }
 
-            return this;
-        },
-
-        // 确保无论函数持有者是谁，调用都不会出错
-        _initProxy: function() {
-            for (var p in this) {
-                if (isFunction(this[p])) {
-                    this[p] = proxy(this, p);
-                }
-            }
+            this._initProxy();
+            this._addEvent();
+            this._createApi('destroy');
         },
 
         _addEvent: function() {
@@ -102,17 +91,69 @@
 
         },
 
-        destroy: function() {
+        _createApi: function(api) {
+            var _this = this;
+
+            Array.prototype.forEach.call(arguments, function(arg) {
+                var privateName, publicName;
+
+                if (isString(arg)) {
+                    privateName = publicName = arg;
+                } else if (isArray(arg)) {
+                    privateName = arg[0];
+                    publicName = arg[1];
+                }
+
+                _this[publicName] = function() {
+                    _this['_' + privateName].apply(_this, arguments);
+                    return _this;
+                };
+            });
+        },
+
+        _destroy: function() {
             this._removeEvent();
-
-            // 清除所有属性
-            for (var p in Object.getOwnPropertyNames(this)) {
-                delete this[p];
-            }
-
-            this.__proto__ = Object.prototype;
+            destroy(this);
         }
     });
+
+    function createApi(context) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        Array.prototype.forEach.call(args, function(arg) {
+            let privateName, publicName;
+
+            if (isString(arg)) {
+                privateName = publicName = arg;
+            } else if (isArray(arg)) {
+                privateName = arg[0];
+                publicName = arg[1];
+            }
+
+            if (privateName.indexOf('_')) privateName = '_' + privateName;
+            if (!publicName.indexOf('_')) publicName = publicName.substr(1);
+
+            context[publicName].forEach(function() {
+                context[privateName].apply(context, arguments);
+                return context;
+            };
+        });
+    }
+
+    function destroy(context) {
+        // 清除所有属性
+        Object.getOwnPropertyNames(context).forEach(function(prop) {
+            delete context[prop];
+        });
+
+        context.__proto__ = Object.prototype;
+    }
+
+    function bind(context) {
+        var methods = Array.prototype.slice.call(arguments, 1);
+        methods.forEach(function(method) {
+            context[method] = context[method].bind(context);
+        });
+    }
 
     function extend() {
         var options, name, src, copy, copyIsArray,
@@ -185,42 +226,11 @@
         return target;
     }
 
-    // 使用方法一：
-    // 第一个参数为调用的方法
-    // 第二个参数为该方法调用时 this 的引用对象，如果传入 null，则不会改变 this 的引用
-    // 使用方法二：
-    // 第一个参数为调用方法时 this 的引用对象，如果传入 null，则不会改变 this 的引用
-    // 第二个参数为将要调用 this 引用对象的方法的名称字符串
-    // 以上两种用法从第三个参数开始可以为调用函数传入若干个参数
-    // 如果该函数本身就有默认参数，比如 .each() 方法会给函数传入两个参数，分别为索引号和对应的对象，那么通过代理设置的参数会插在原函数的参数前
-    var guid = 0;
-    function proxy(func, target) {
-        if (typeof target === 'string') {
-            var tmp = func[target];
-            target = func;
-            func = tmp;
-        }
-
-        if (typeof func !== 'function') {
-            return undefined;
-        }
-
-        var slice = Array.prototype.slice,
-            args = slice.call(arguments, 2),
-            proxy = function() {
-                return func.apply(target || this, args.concat(slice.call(arguments)));
-            };
-
-        proxy.guid = func.guid = func.guid || guid++;
-
-        return proxy;
-    }
-
     /**
      * 让隐藏元素正确执行程序（IE9及以上浏览器）
-     * @param  {DOM|Array} elems  DOM元素或者DOM元素组成的数组
-     * @param  {Function}  func   需要执行的程序函数
-     * @param  {Object}    target 执行程序时函数中 this 的指向
+     * @param elems  {DOM|Array} DOM元素或者DOM元素组成的数组
+     * @param func   {Function}  需要执行的程序函数
+     * @param target {Object}    执行程序时函数中 this 的指向
      */
     var defaultDisplayMap = {};
     function hideAction(elems, func, target) {
